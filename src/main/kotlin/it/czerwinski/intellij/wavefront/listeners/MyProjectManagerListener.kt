@@ -1,8 +1,8 @@
-package com.github.sczerwinski.wavefrontobjintellijplugin.listeners
+package it.czerwinski.intellij.wavefront.listeners
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import com.github.sczerwinski.wavefrontobjintellijplugin.services.MyProjectService
+import it.czerwinski.intellij.wavefront.services.MyProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 

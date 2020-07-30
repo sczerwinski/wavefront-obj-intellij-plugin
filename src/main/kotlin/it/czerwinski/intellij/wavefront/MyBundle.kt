@@ -1,4 +1,4 @@
-package com.github.sczerwinski.wavefrontobjintellijplugin
+package it.czerwinski.intellij.wavefront
 
 import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls

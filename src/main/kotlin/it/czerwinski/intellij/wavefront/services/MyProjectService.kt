@@ -1,7 +1,7 @@
-package com.github.sczerwinski.wavefrontobjintellijplugin.services
+package it.czerwinski.intellij.wavefront.services
 
 import com.intellij.openapi.project.Project
-import com.github.sczerwinski.wavefrontobjintellijplugin.MyBundle
+import it.czerwinski.intellij.wavefront.MyBundle
 
 class MyProjectService(project: Project) {
 

@@ -8,12 +8,12 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="it.czerwinski.intellij.wavefront.services.MyApplicationService"/>
-        <projectService serviceImplementation="it.czerwinski.intellij.wavefront.services.MyProjectService"/>
+        <applicationService serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjApplicationService"/>
+        <projectService serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjProjectService"/>
     </extensions>
 
     <projectListeners>
-        <listener class="it.czerwinski.intellij.wavefront.listeners.MyProjectManagerListener"
+        <listener class="it.czerwinski.intellij.wavefront.listeners.WavefrontObjProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </projectListeners>
 </idea-plugin>

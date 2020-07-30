@@ -1,19 +1,19 @@
 <idea-plugin>
-    <id>com.github.sczerwinski.wavefrontobjintellijplugin</id>
-    <name>wavefront-obj-intellij-plugin</name>
-    <vendor>sczerwinski</vendor>
+    <id>it.czerwinski.intellij.wavefront</id>
+    <name>Wavefront OBJ format</name>
+    <vendor>Slawomir Czerwinski</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.sczerwinski.wavefrontobjintellijplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.sczerwinski.wavefrontobjintellijplugin.services.MyProjectService"/>
+        <applicationService serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjApplicationService"/>
+        <projectService serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjProjectService"/>
     </extensions>
 
     <projectListeners>
-        <listener class="com.github.sczerwinski.wavefrontobjintellijplugin.listeners.MyProjectManagerListener"
+        <listener class="it.czerwinski.intellij.wavefront.listeners.WavefrontObjProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </projectListeners>
 </idea-plugin>

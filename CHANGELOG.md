@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# wavefront-obj-intellij-plugin Changelog
+# Wavefront OBJ Format IntelliJ Plugin Changelog
 
 ## [Unreleased]
 ### Added

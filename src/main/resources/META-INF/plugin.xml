@@ -22,6 +22,8 @@
         <lang.syntaxHighlighter
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjSyntaxHighlighter"/>
+        <colorSettingsPage
+                implementation="it.czerwinski.intellij.wavefront.language.ObjColorSettingsPage"/>
 
         <!-- Services -->
         <applicationService

@@ -37,12 +37,27 @@ private item_ ::= (vertex|textureCoordinates|vertexNormal|face|COMMENT|CRLF)
 
 private groupingItem_ ::= (object|group)
 
-object ::= (OBJECT_KEYWORD STRING) + item_* { methods = [getName] }
-group ::= (GROUP_KEYWORD STRING) + item_* { methods = [getName] }
+object ::= (OBJECT_KEYWORD STRING) + item_* {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement"
+  methods = [getName]
+}
+group ::= (GROUP_KEYWORD STRING) + item_* {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement"
+  methods = [getName]
+}
 
-vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) { methods = [getCoordinates] }
-textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?) { methods = [getCoordinates] }
-vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT) { methods = [getCoordinates] }
+vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
+  methods = [getCoordinates]
+}
+textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?)  {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
+  methods = [getCoordinates]
+}
+vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
+  methods = [getCoordinates]
+}
 
 face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*)
 private faceVertex ::=
@@ -50,6 +65,15 @@ private faceVertex ::=
   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
   | (vertexIndex)
 
-vertexIndex ::= (INDEX) { methods = [getValue] }
-textureCoordinatesIndex ::= (INDEX) { methods = [getValue] }
-vertexNormalIndex ::= (INDEX) { methods = [getValue] }
+vertexIndex ::= (INDEX) {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement"
+  methods = [getValue]
+}
+textureCoordinatesIndex ::= (INDEX) {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement"
+  methods = [getValue]
+}
+vertexNormalIndex ::= (INDEX) {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement"
+  methods = [getValue]
+}

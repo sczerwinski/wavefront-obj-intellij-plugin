@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ObjTextureCoordinates extends PsiElement {
+public interface ObjTextureCoordinates extends ObjVectorElement {
 
   @NotNull
   List<Float> getCoordinates();

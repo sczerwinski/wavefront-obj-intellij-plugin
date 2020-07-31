@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ObjTextureCoordinatesIndex extends PsiElement {
+public interface ObjTextureCoordinatesIndex extends ObjIndexElement {
 
   @Nullable
   Integer getValue();

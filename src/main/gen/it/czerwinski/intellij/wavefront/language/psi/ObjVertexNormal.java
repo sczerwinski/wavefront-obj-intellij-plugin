@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ObjVertexNormal extends PsiElement {
+public interface ObjVertexNormal extends ObjVectorElement {
 
   @NotNull
   List<Float> getCoordinates();

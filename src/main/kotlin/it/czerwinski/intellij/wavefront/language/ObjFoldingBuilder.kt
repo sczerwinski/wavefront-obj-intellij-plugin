@@ -26,8 +26,11 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import it.czerwinski.intellij.wavefront.language.psi.ObjGroup
+import it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement
+import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjObject
 import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinatesIndex
+import it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormalIndex
 import org.jetbrains.annotations.NonNls
@@ -36,38 +39,29 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> =
         listOf(
-            buildObjObjectFoldRegions(root),
-            buildObjGroupFoldRegions(root),
-            buildObjVertexIndexFoldRegions(root),
-            buildObjTextureCoordinatesIndexFoldRegions(root),
-            buildObjVertexNormalIndexFoldRegions(root)
-        ).flatten().toTypedArray()
+            buildObjGroupingElements(root),
+            buildObjVertexIndices(root),
+            buildObjTextureCoordinatesIndices(root),
+            buildObjVertexNormalIndices(root)
+        )
+            .flatten()
+            .map { element -> FoldingDescriptor(element.node, element.textRange) }
+            .toTypedArray()
 
-    private fun buildObjObjectFoldRegions(root: PsiElement): List<FoldingDescriptor> =
-        PsiTreeUtil.findChildrenOfType(root, ObjObject::class.java)
-            .map(::createFoldingDescriptor)
+    private fun buildObjGroupingElements(root: PsiElement): List<PsiElement> =
+        PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java).toList()
 
-    private fun buildObjGroupFoldRegions(root: PsiElement): List<FoldingDescriptor> =
-        PsiTreeUtil.findChildrenOfType(root, ObjGroup::class.java)
-            .map(::createFoldingDescriptor)
-
-    private fun buildObjVertexIndexFoldRegions(root: PsiElement): List<FoldingDescriptor> =
+    private fun buildObjVertexIndices(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, ObjVertexIndex::class.java)
             .filter { index -> checkVertexExists(index.containingFile, index.value ?: 0) }
-            .map(::createFoldingDescriptor)
 
-    private fun buildObjTextureCoordinatesIndexFoldRegions(root: PsiElement): List<FoldingDescriptor> =
+    private fun buildObjTextureCoordinatesIndices(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, ObjTextureCoordinatesIndex::class.java)
             .filter { index -> checkTextureCoordinatesExist(index.containingFile, index.value ?: 0) }
-            .map(::createFoldingDescriptor)
 
-    private fun buildObjVertexNormalIndexFoldRegions(root: PsiElement): List<FoldingDescriptor> =
+    private fun buildObjVertexNormalIndices(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, ObjVertexNormalIndex::class.java)
             .filter { index -> checkVertexNormalExists(index.containingFile, index.value ?: 0) }
-            .map(::createFoldingDescriptor)
-
-    private fun createFoldingDescriptor(element: PsiElement): FoldingDescriptor =
-        FoldingDescriptor(element.node, element.textRange)
 
     override fun getPlaceholderText(node: ASTNode): String? =
         when (val element = node.psi) {
@@ -85,26 +79,25 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private fun getVertexPlaceholder(element: ObjVertexIndex): String? =
         element.value
             ?.let { findVertex(element.containingFile, it) }
-            ?.let { vertex -> joinCoordinates(coordinates = vertex.coordinates) }
+            ?.let(this::joinCoordinates)
             ?: DEFAULT_PLACEHOLDER_TEXT
 
     private fun getTextureCoordinatesPlaceholder(element: ObjTextureCoordinatesIndex): String? =
         element.value
             ?.let { findTextureCoordinates(element.containingFile, it) }
-            ?.let { textureCoordinates -> joinCoordinates(coordinates = textureCoordinates.coordinates) }
+            ?.let(this::joinCoordinates)
             ?: DEFAULT_PLACEHOLDER_TEXT
 
     private fun getVertexNormalPlaceholder(element: ObjVertexNormalIndex): String? =
         element.value
             ?.let { findVertexNormal(element.containingFile, it) }
-            ?.let { vertexNormal -> joinCoordinates(vertexNormal.coordinates) }
+            ?.let(this::joinCoordinates)
             ?: DEFAULT_PLACEHOLDER_TEXT
 
-    private fun joinCoordinates(coordinates: MutableList<Float>): String =
-        coordinates.joinToString(prefix = "[", separator = " ", postfix = "]")
+    private fun joinCoordinates(element: ObjVectorElement): String =
+        element.coordinates.joinToString(prefix = "[", separator = " ", postfix = "]")
 
-    override fun isCollapsedByDefault(node: ASTNode): Boolean =
-        node.psi is ObjVertexIndex || node.psi is ObjTextureCoordinatesIndex || node.psi is ObjVertexNormalIndex
+    override fun isCollapsedByDefault(node: ASTNode): Boolean = node.psi is ObjIndexElement
 
     companion object {
         @NonNls

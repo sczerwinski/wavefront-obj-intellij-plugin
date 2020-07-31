@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ObjGroup extends PsiElement {
+public interface ObjGroup extends ObjGroupingElement {
 
   @NotNull
   List<ObjFace> getFaceList();

@@ -17,47 +17,22 @@
 package it.czerwinski.intellij.wavefront.language.psi.impl
 
 import com.intellij.psi.tree.TokenSet
-import it.czerwinski.intellij.wavefront.language.psi.ObjGroup
-import it.czerwinski.intellij.wavefront.language.psi.ObjObject
-import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinates
-import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinatesIndex
+import it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement
+import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertex
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertexIndex
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormal
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormalIndex
+import it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement
 
 object ObjPsiImplUtil {
 
     @JvmStatic
-    fun getName(obj: ObjObject): String? =
-        obj.node.findChildByType(ObjTypes.STRING)?.text
+    fun getName(element: ObjGroupingElement): String? =
+        element.node.findChildByType(ObjTypes.STRING)?.text
 
     @JvmStatic
-    fun getName(group: ObjGroup): String? =
-        group.node.findChildByType(ObjTypes.STRING)?.text
-
-    @JvmStatic
-    fun getCoordinates(vertex: ObjVertex): List<Float?> =
-        vertex.node.getChildren(TokenSet.create(ObjTypes.FLOAT))
+    fun getCoordinates(element: ObjVectorElement): List<Float?> =
+        element.node.getChildren(TokenSet.create(ObjTypes.FLOAT))
             .map { it.text.toFloatOrNull() }
 
     @JvmStatic
-    fun getCoordinates(textureCoordinates: ObjTextureCoordinates): List<Float?> =
-        textureCoordinates.node.getChildren(TokenSet.create(ObjTypes.FLOAT))
-            .map { it.text.toFloatOrNull() }
-
-    @JvmStatic
-    fun getCoordinates(vertexNormal: ObjVertexNormal): List<Float?> =
-        vertexNormal.node.getChildren(TokenSet.create(ObjTypes.FLOAT))
-            .map { it.text.toFloatOrNull() }
-
-    @JvmStatic
-    fun getValue(index: ObjVertexIndex): Int? = index.text.toIntOrNull()
-
-    @JvmStatic
-    fun getValue(index: ObjTextureCoordinatesIndex): Int? = index.text.toIntOrNull()
-
-    @JvmStatic
-    fun getValue(index: ObjVertexNormalIndex): Int? = index.text.toIntOrNull()
+    fun getValue(element: ObjIndexElement): Int? = element.text.toIntOrNull()
 }

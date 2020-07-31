@@ -16,6 +16,9 @@
                 fieldName="INSTANCE"
                 language="Wavefront OBJ"
                 extensions="obj"/>
+        <lang.parserDefinition
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.ObjParserDefinition"/>
 
         <!-- Services -->
         <applicationService

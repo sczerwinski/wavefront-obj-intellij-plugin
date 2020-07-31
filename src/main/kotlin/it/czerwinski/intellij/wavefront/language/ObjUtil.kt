@@ -20,41 +20,24 @@ package it.czerwinski.intellij.wavefront.language
 
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
-import it.czerwinski.intellij.wavefront.language.psi.ObjGroup
-import it.czerwinski.intellij.wavefront.language.psi.ObjObject
 import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormal
 
 fun findAllVertices(file: PsiFile): List<ObjVertex> =
-    PsiTreeUtil.getChildrenOfAnyType(file, ObjObject::class.java, ObjGroup::class.java)
-        .let { listOf(file) + it.toList() }
-        .flatMap { parent ->
-            PsiTreeUtil.getChildrenOfType(parent, ObjVertex::class.java)?.toList().orEmpty()
-        }
-        .filterNotNull()
+    PsiTreeUtil.findChildrenOfType(file, ObjVertex::class.java).toList()
 
 fun findVertex(file: PsiFile, index: Int): ObjVertex? =
     findAllVertices(file).getOrNull(index - 1)
 
 fun findAllTextureCoordinates(file: PsiFile): List<ObjTextureCoordinates> =
-    PsiTreeUtil.getChildrenOfAnyType(file, ObjObject::class.java, ObjGroup::class.java)
-        .let { listOf(file) + it.toList() }
-        .flatMap { parent ->
-            PsiTreeUtil.getChildrenOfType(parent, ObjTextureCoordinates::class.java)?.toList().orEmpty()
-        }
-        .filterNotNull()
+    PsiTreeUtil.findChildrenOfType(file, ObjTextureCoordinates::class.java).toList()
 
 fun findTextureCoordinates(file: PsiFile, index: Int): ObjTextureCoordinates? =
     findAllTextureCoordinates(file).getOrNull(index - 1)
 
 fun findAllVertexNormals(file: PsiFile): List<ObjVertexNormal> =
-    PsiTreeUtil.getChildrenOfAnyType(file, ObjObject::class.java, ObjGroup::class.java)
-        .let { listOf(file) + it.toList() }
-        .flatMap { parent ->
-            PsiTreeUtil.getChildrenOfType(parent, ObjVertexNormal::class.java)?.toList().orEmpty()
-        }
-        .filterNotNull()
+    PsiTreeUtil.findChildrenOfType(file, ObjVertexNormal::class.java).toList()
 
 fun findVertexNormal(file: PsiFile, index: Int): ObjVertexNormal? =
     findAllVertexNormals(file).getOrNull(index - 1)

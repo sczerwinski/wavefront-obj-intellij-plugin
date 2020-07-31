@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("WavefrontObjUtil")
+@file:JvmName("ObjUtil")
 
 package it.czerwinski.intellij.wavefront.language
 

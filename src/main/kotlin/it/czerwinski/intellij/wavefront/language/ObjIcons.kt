@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("WavefrontObjIcons")
+@file:JvmName("ObjIcons")
 
 package it.czerwinski.intellij.wavefront.language
 

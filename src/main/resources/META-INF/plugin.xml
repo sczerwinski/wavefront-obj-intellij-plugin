@@ -8,12 +8,30 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjApplicationService"/>
-        <projectService serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjProjectService"/>
+
+        <!-- OBJ File Type -->
+        <fileType
+                name="Wavefront OBJ File"
+                implementationClass="it.czerwinski.intellij.wavefront.language.ObjFileType"
+                fieldName="INSTANCE"
+                language="Wavefront OBJ"
+                extensions="obj"/>
+
+        <!-- Services -->
+        <applicationService
+                serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjApplicationService"/>
+        <projectService
+                serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjProjectService"/>
+
     </extensions>
 
     <projectListeners>
-        <listener class="it.czerwinski.intellij.wavefront.listeners.WavefrontObjProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+
+        <!-- Listeners -->
+        <listener
+                class="it.czerwinski.intellij.wavefront.listeners.WavefrontObjProjectManagerListener"
+                topic="com.intellij.openapi.project.ProjectManagerListener"/>
+
     </projectListeners>
+
 </idea-plugin>

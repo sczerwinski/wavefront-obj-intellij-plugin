@@ -1,0 +1,53 @@
+/*
+ * Copyright 2020 Slawomir Czerwinski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{
+  parserClass="it.czerwinski.intellij.wavefront.language.parser.ObjParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Obj"
+  psiImplClassSuffix="Impl"
+  psiPackage="it.czerwinski.intellij.wavefront.language.psi"
+  psiImplPackage="it.czerwinski.intellij.wavefront.language.psi.impl"
+
+  elementTypeHolderClass="it.czerwinski.intellij.wavefront.language.psi.ObjTypes"
+  elementTypeClass="it.czerwinski.intellij.wavefront.language.psi.ObjElementType"
+  tokenTypeClass="it.czerwinski.intellij.wavefront.language.psi.ObjTokenType"
+}
+
+objFile ::= (groupingItem_|item_)*
+
+private item_ ::= (vertex|textureCoordinates|vertexNormal|face|COMMENT|CRLF)
+
+private groupingItem_ ::= (object|group)
+
+object ::= (OBJECT_KEYWORD STRING) + item_*
+group ::= (GROUP_KEYWORD STRING) + item_*
+
+vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?)
+textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?)
+vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)
+
+face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*)
+private faceVertex ::=
+  (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex)
+  | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
+  | (vertexIndex)
+
+vertexIndex ::= (INDEX)
+textureCoordinatesIndex ::= (INDEX)
+vertexNormalIndex ::= (INDEX)

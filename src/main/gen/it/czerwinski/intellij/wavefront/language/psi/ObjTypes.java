@@ -13,6 +13,8 @@ public interface ObjTypes {
   IElementType LINE = new ObjElementType("LINE");
   IElementType OBJECT = new ObjElementType("OBJECT");
   IElementType POINT = new ObjElementType("POINT");
+  IElementType SMOOTH_SHADING = new ObjElementType("SMOOTH_SHADING");
+  IElementType SMOOTH_SHADING_FLAG = new ObjElementType("SMOOTH_SHADING_FLAG");
   IElementType TEXTURE_COORDINATES = new ObjElementType("TEXTURE_COORDINATES");
   IElementType TEXTURE_COORDINATES_INDEX = new ObjElementType("TEXTURE_COORDINATES_INDEX");
   IElementType VERTEX = new ObjElementType("VERTEX");
@@ -23,12 +25,14 @@ public interface ObjTypes {
   IElementType COMMENT = new ObjTokenType("COMMENT");
   IElementType CRLF = new ObjTokenType("CRLF");
   IElementType FACE_KEYWORD = new ObjTokenType("FACE_KEYWORD");
+  IElementType FLAG = new ObjTokenType("FLAG");
   IElementType FLOAT = new ObjTokenType("FLOAT");
   IElementType GROUP_KEYWORD = new ObjTokenType("GROUP_KEYWORD");
   IElementType INDEX = new ObjTokenType("INDEX");
   IElementType LINE_KEYWORD = new ObjTokenType("LINE_KEYWORD");
   IElementType OBJECT_KEYWORD = new ObjTokenType("OBJECT_KEYWORD");
   IElementType POINT_KEYWORD = new ObjTokenType("POINT_KEYWORD");
+  IElementType SMOOTH_SHADING_KEYWORD = new ObjTokenType("SMOOTH_SHADING_KEYWORD");
   IElementType STRING = new ObjTokenType("STRING");
   IElementType TEXTURE_COORDINATES_KEYWORD = new ObjTokenType("TEXTURE_COORDINATES_KEYWORD");
   IElementType VERTEX_INDEX_SEPARATOR = new ObjTokenType("VERTEX_INDEX_SEPARATOR");
@@ -52,6 +56,12 @@ public interface ObjTypes {
       }
       else if (type == POINT) {
         return new ObjPointImpl(node);
+      }
+      else if (type == SMOOTH_SHADING) {
+        return new ObjSmoothShadingImpl(node);
+      }
+      else if (type == SMOOTH_SHADING_FLAG) {
+        return new ObjSmoothShadingFlagImpl(node);
       }
       else if (type == TEXTURE_COORDINATES) {
         return new ObjTextureCoordinatesImpl(node);

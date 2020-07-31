@@ -27,6 +27,14 @@ public class ObjVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSmoothShading(@NotNull ObjSmoothShading o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSmoothShadingFlag(@NotNull ObjSmoothShadingFlag o) {
+    visitPsiElement(o);
+  }
+
   public void visitTextureCoordinates(@NotNull ObjTextureCoordinates o) {
     visitVectorElement(o);
   }

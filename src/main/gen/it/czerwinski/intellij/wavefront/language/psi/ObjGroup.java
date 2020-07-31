@@ -17,6 +17,9 @@ public interface ObjGroup extends ObjGroupingElement {
   List<ObjPoint> getPointList();
 
   @NotNull
+  List<ObjSmoothShading> getSmoothShadingList();
+
+  @NotNull
   List<ObjTextureCoordinates> getTextureCoordinatesList();
 
   @NotNull

@@ -42,14 +42,16 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.VERTEX_NORMAL_KEYWORD,
             ObjTypes.FACE_KEYWORD,
             ObjTypes.LINE_KEYWORD,
-            ObjTypes.POINT_KEYWORD ->
+            ObjTypes.POINT_KEYWORD,
+            ObjTypes.SMOOTH_SHADING_KEYWORD ->
                 arrayOf(ATTR_KEYWORD)
 
             ObjTypes.STRING ->
                 arrayOf(ATTR_STRING)
 
             ObjTypes.FLOAT,
-            ObjTypes.INDEX ->
+            ObjTypes.INDEX,
+            ObjTypes.FLAG ->
                 arrayOf(ATTR_NUMBER)
 
             ObjTypes.VERTEX_INDEX_SEPARATOR ->

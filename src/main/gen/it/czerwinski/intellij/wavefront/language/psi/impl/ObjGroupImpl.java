@@ -46,6 +46,12 @@ public class ObjGroupImpl extends ASTWrapperPsiElement implements ObjGroup {
 
   @Override
   @NotNull
+  public List<ObjSmoothShading> getSmoothShadingList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjSmoothShading.class);
+  }
+
+  @Override
+  @NotNull
   public List<ObjTextureCoordinates> getTextureCoordinatesList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjTextureCoordinates.class);
   }

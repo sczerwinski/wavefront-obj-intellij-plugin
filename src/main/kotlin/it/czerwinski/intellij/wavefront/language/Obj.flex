@@ -50,14 +50,18 @@ POINT_KEYWORD="p"
 
 VERTEX_INDEX_SEPARATOR=\/
 
+SMOOTH_SHAING_KEYWORD="s"
+
 STRING=[^\ \t\r\n\f][^\r\n\f]*
 FLOAT="-"?((0)|([1-9][\d]*))"."[\d]+
 INDEX=([1-9][\d]*)
+FLAG=(1)|(off)
 
 %state WAITING_STRING
 %state WAITING_FLOAT
 %state WAITING_FACE_VERTEX
 %state WAITING_VERTEX_INDEX
+%state WAITING_FLAG
 
 %%
 
@@ -74,6 +78,8 @@ INDEX=([1-9][\d]*)
 <YYINITIAL> {LINE_KEYWORD} { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.LINE_KEYWORD; }
 <YYINITIAL> {POINT_KEYWORD} { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.POINT_KEYWORD; }
 
+<YYINITIAL> {SMOOTH_SHAING_KEYWORD} { yybegin(WAITING_FLAG); return ObjTypes.SMOOTH_SHADING_KEYWORD; }
+
 <WAITING_STRING> {WHITE_SPACE} { yybegin(WAITING_STRING); return TokenType.WHITE_SPACE; }
 <WAITING_STRING> {STRING} { yybegin(YYINITIAL); return ObjTypes.STRING; }
 
@@ -86,6 +92,9 @@ INDEX=([1-9][\d]*)
 
 <WAITING_VERTEX_INDEX> {WHITE_SPACE} { yybegin(WAITING_VERTEX_INDEX); return TokenType.WHITE_SPACE; }
 <WAITING_VERTEX_INDEX> {INDEX} { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.INDEX; }
+
+<WAITING_FLAG> {WHITE_SPACE} { yybegin(WAITING_FLAG); return TokenType.WHITE_SPACE; }
+<WAITING_FLAG> {FLAG} { yybegin(YYINITIAL); return ObjTypes.FLAG; }
 
 ({CRLF}|{WHITE_SPACE})+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 

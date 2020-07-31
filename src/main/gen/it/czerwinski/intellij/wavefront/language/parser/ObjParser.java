@@ -207,7 +207,10 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // vertex|textureCoordinates|vertexNormal|point|line|face|COMMENT|CRLF
+  // vertex | textureCoordinates | vertexNormal
+  //   | point | line | face
+  //   | smoothShading
+  //   | COMMENT | CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -217,6 +220,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
     if (!r) r = point(b, l + 1);
     if (!r) r = line(b, l + 1);
     if (!r) r = face(b, l + 1);
+    if (!r) r = smoothShading(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     return r;
@@ -353,6 +357,31 @@ public class ObjParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, POINT_KEYWORD);
     r = r && vertexIndex(b, l + 1);
     exit_section_(b, m, POINT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SMOOTH_SHADING_KEYWORD smoothShadingFlag
+  public static boolean smoothShading(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "smoothShading")) return false;
+    if (!nextTokenIs(b, SMOOTH_SHADING_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SMOOTH_SHADING_KEYWORD);
+    r = r && smoothShadingFlag(b, l + 1);
+    exit_section_(b, m, SMOOTH_SHADING, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (FLAG)
+  public static boolean smoothShadingFlag(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "smoothShadingFlag")) return false;
+    if (!nextTokenIs(b, FLAG)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FLAG);
+    exit_section_(b, m, SMOOTH_SHADING_FLAG, r);
     return r;
   }
 

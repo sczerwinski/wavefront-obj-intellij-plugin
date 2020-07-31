@@ -43,6 +43,7 @@ class ObjLexer implements FlexLexer {
   public static final int WAITING_FLOAT = 4;
   public static final int WAITING_FACE_VERTEX = 6;
   public static final int WAITING_VERTEX_INDEX = 8;
+  public static final int WAITING_FLAG = 10;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -51,7 +52,7 @@ class ObjLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1,  1,  2,  2,  3,  3,  4, 4
+     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5, 5
   };
 
   /** 
@@ -80,9 +81,10 @@ class ObjLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 416 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\4\1\2\1\1\2\2\22\0\1\4\2\0\1\3\11\0\1\16\1\22\1\15\1\17\11\20\54\0"+
-    "\1\12\1\6\4\0\1\13\1\0\1\11\1\5\1\14\3\0\1\10\1\0\1\7\16\0\1\1\32\0\12\21"+
-    "\46\0\12\21\14\0\12\21\20\0\12\21\6\0\12\21\16\0\2\1\54\0\12\21\16\0\62\21");
+    "\11\0\1\4\1\2\1\1\2\2\22\0\1\4\2\0\1\3\11\0\1\17\1\23\1\15\1\20\1\24\10\21"+
+    "\54\0\1\12\1\6\4\0\1\13\1\0\1\11\1\5\1\14\2\0\1\16\1\10\1\0\1\7\16\0\1\1\32"+
+    "\0\12\22\46\0\12\22\14\0\12\22\20\0\12\22\6\0\12\22\16\0\2\1\54\0\12\22\16"+
+    "\0\62\22");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -90,12 +92,13 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\5\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\2\12\1\13\1\14\3\1\1\15\1\16"+
-    "\1\17\1\20\1\21\1\22\1\23\3\0\1\24";
+    "\6\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\2\13\1\14\1\15\3\1\1\16"+
+    "\1\17\1\20\1\21\1\22\1\23\1\1\1\24\1\25"+
+    "\1\26\4\0\1\27";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[32];
+    int [] result = new int[38];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -120,13 +123,14 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\23\0\46\0\71\0\114\0\137\0\162\0\205"+
-    "\0\137\0\137\0\230\0\137\0\137\0\137\0\253\0\276"+
-    "\0\162\0\162\0\321\0\344\0\367\0\162\0\137\0\u010a"+
-    "\0\162\0\u011d\0\137\0\137\0\344\0\367\0\u0130\0\u0130";
+    "\0\0\0\25\0\52\0\77\0\124\0\151\0\176\0\223"+
+    "\0\250\0\176\0\176\0\275\0\176\0\176\0\176\0\176"+
+    "\0\322\0\347\0\223\0\223\0\374\0\u0111\0\u0126\0\223"+
+    "\0\176\0\u013b\0\223\0\u0150\0\223\0\u0165\0\176\0\176"+
+    "\0\176\0\u0111\0\u0126\0\u017a\0\u018f\0\u017a";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[32];
+    int [] result = new int[38];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -149,19 +153,22 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\6\2\7\1\10\1\7\1\11\1\12\1\13\2\6"+
-    "\1\14\1\15\1\16\6\6\1\17\1\20\1\7\1\17"+
-    "\1\21\16\17\1\6\2\7\1\6\1\22\11\6\1\23"+
-    "\1\24\1\25\3\6\2\7\1\6\1\26\10\6\1\27"+
-    "\2\6\1\30\3\6\2\7\1\6\1\31\13\6\1\32"+
-    "\2\6\24\0\2\7\1\0\1\7\16\0\2\10\1\0"+
-    "\20\10\10\0\1\33\1\34\11\0\2\17\1\0\21\17"+
-    "\1\20\1\7\1\17\1\20\16\17\17\0\1\35\1\36"+
-    "\24\0\1\37\17\0\3\36\1\37\17\0\3\30\20\0"+
-    "\3\32\20\0\3\40\1\0";
+    "\1\7\2\10\1\11\1\10\1\12\1\13\1\14\2\7"+
+    "\1\15\1\16\1\17\1\7\1\20\6\7\1\21\1\22"+
+    "\1\10\1\21\1\23\20\21\1\7\2\10\1\7\1\24"+
+    "\12\7\1\25\1\26\1\27\2\7\1\27\1\7\2\10"+
+    "\1\7\1\30\10\7\1\31\3\7\1\32\2\7\1\32"+
+    "\1\7\2\10\1\7\1\33\14\7\1\34\2\7\1\34"+
+    "\1\7\2\10\1\7\1\35\1\36\16\7\1\37\26\0"+
+    "\2\10\1\0\1\10\20\0\2\11\1\0\22\11\10\0"+
+    "\1\40\1\41\13\0\2\21\1\0\23\21\1\22\1\10"+
+    "\1\21\1\22\20\21\20\0\1\42\1\43\2\0\1\43"+
+    "\23\0\1\44\21\0\3\43\1\44\1\43\20\0\3\32"+
+    "\1\0\1\32\20\0\3\34\1\0\1\34\12\0\1\45"+
+    "\32\0\3\46\1\0\1\46\12\0\1\37\12\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[323];
+    int [] result = new int[420];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -199,11 +206,11 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\5\0\1\11\2\1\2\11\1\1\3\11\10\1\1\11"+
-    "\3\1\2\11\3\0\1\1";
+    "\6\0\1\11\2\1\2\11\1\1\4\11\10\1\1\11"+
+    "\5\1\3\11\4\0\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[32];
+    int [] result = new int[38];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -520,102 +527,117 @@ class ObjLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 21: break;
+          case 24: break;
           case 2: 
             { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 22: break;
+          case 25: break;
           case 3: 
             { yybegin(YYINITIAL); return ObjTypes.COMMENT;
             } 
             // fall through
-          case 23: break;
+          case 26: break;
           case 4: 
             { yybegin(WAITING_STRING); return ObjTypes.OBJECT_KEYWORD;
             } 
             // fall through
-          case 24: break;
+          case 27: break;
           case 5: 
             { yybegin(WAITING_STRING); return ObjTypes.GROUP_KEYWORD;
             } 
             // fall through
-          case 25: break;
+          case 28: break;
           case 6: 
             { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_KEYWORD;
             } 
             // fall through
-          case 26: break;
+          case 29: break;
           case 7: 
             { yybegin(WAITING_FACE_VERTEX); return ObjTypes.FACE_KEYWORD;
             } 
             // fall through
-          case 27: break;
+          case 30: break;
           case 8: 
             { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.LINE_KEYWORD;
             } 
             // fall through
-          case 28: break;
+          case 31: break;
           case 9: 
             { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.POINT_KEYWORD;
             } 
             // fall through
-          case 29: break;
-          case 10: 
-            { yybegin(YYINITIAL); return ObjTypes.STRING;
-            } 
-            // fall through
-          case 30: break;
-          case 11: 
-            { yybegin(WAITING_STRING); return TokenType.WHITE_SPACE;
-            } 
-            // fall through
-          case 31: break;
-          case 12: 
-            { yybegin(WAITING_FLOAT); return TokenType.WHITE_SPACE;
-            } 
-            // fall through
           case 32: break;
-          case 13: 
-            { yybegin(WAITING_FACE_VERTEX); return TokenType.WHITE_SPACE;
+          case 10: 
+            { yybegin(WAITING_FLAG); return ObjTypes.SMOOTH_SHADING_KEYWORD;
             } 
             // fall through
           case 33: break;
-          case 14: 
-            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.VERTEX_INDEX_SEPARATOR;
+          case 11: 
+            { yybegin(YYINITIAL); return ObjTypes.STRING;
             } 
             // fall through
           case 34: break;
-          case 15: 
-            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.INDEX;
+          case 12: 
+            { yybegin(WAITING_STRING); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 35: break;
-          case 16: 
-            { yybegin(WAITING_VERTEX_INDEX); return TokenType.WHITE_SPACE;
+          case 13: 
+            { yybegin(WAITING_FLOAT); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 36: break;
-          case 17: 
-            { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.INDEX;
+          case 14: 
+            { yybegin(WAITING_FACE_VERTEX); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 37: break;
-          case 18: 
-            { yybegin(WAITING_FLOAT); return ObjTypes.TEXTURE_COORDINATES_KEYWORD;
+          case 15: 
+            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.VERTEX_INDEX_SEPARATOR;
             } 
             // fall through
           case 38: break;
-          case 19: 
-            { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_NORMAL_KEYWORD;
+          case 16: 
+            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.INDEX;
             } 
             // fall through
           case 39: break;
-          case 20: 
-            { yybegin(WAITING_FLOAT); return ObjTypes.FLOAT;
+          case 17: 
+            { yybegin(WAITING_VERTEX_INDEX); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 40: break;
+          case 18: 
+            { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.INDEX;
+            } 
+            // fall through
+          case 41: break;
+          case 19: 
+            { yybegin(WAITING_FLAG); return TokenType.WHITE_SPACE;
+            } 
+            // fall through
+          case 42: break;
+          case 20: 
+            { yybegin(YYINITIAL); return ObjTypes.FLAG;
+            } 
+            // fall through
+          case 43: break;
+          case 21: 
+            { yybegin(WAITING_FLOAT); return ObjTypes.TEXTURE_COORDINATES_KEYWORD;
+            } 
+            // fall through
+          case 44: break;
+          case 22: 
+            { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_NORMAL_KEYWORD;
+            } 
+            // fall through
+          case 45: break;
+          case 23: 
+            { yybegin(WAITING_FLOAT); return ObjTypes.FLOAT;
+            } 
+            // fall through
+          case 46: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

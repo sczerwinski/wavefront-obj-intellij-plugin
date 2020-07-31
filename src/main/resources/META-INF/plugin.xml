@@ -19,6 +19,9 @@
         <lang.parserDefinition
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjParserDefinition"/>
+        <lang.syntaxHighlighter
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.ObjSyntaxHighlighter"/>
 
         <!-- Services -->
         <applicationService

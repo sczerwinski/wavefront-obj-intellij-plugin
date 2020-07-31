@@ -26,4 +26,10 @@ public class ObjVertexIndexImpl extends ASTWrapperPsiElement implements ObjVerte
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public Integer getValue() {
+    return ObjPsiImplUtil.getValue(this);
+  }
+
 }

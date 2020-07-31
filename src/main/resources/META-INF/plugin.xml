@@ -27,6 +27,9 @@
         <annotator
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjAnnotator"/>
+        <lang.foldingBuilder
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.ObjFoldingBuilder"/>
 
         <!-- Services -->
         <applicationService

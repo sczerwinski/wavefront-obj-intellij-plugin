@@ -36,96 +36,37 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex)
-  //   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
-  //   | (vertexIndex)
-  static boolean compoundVertexIndex(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "compoundVertexIndex")) return false;
-    if (!nextTokenIs(b, INDEX)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = compoundVertexIndex_0(b, l + 1);
-    if (!r) r = compoundVertexIndex_1(b, l + 1);
-    if (!r) r = compoundVertexIndex_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex
-  private static boolean compoundVertexIndex_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "compoundVertexIndex_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = vertexIndex(b, l + 1);
-    r = r && consumeToken(b, VERTEX_INDEX_SEPARATOR);
-    r = r && compoundVertexIndex_0_2(b, l + 1);
-    r = r && consumeToken(b, VERTEX_INDEX_SEPARATOR);
-    r = r && vertexNormalIndex(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // textureCoordinatesIndex?
-  private static boolean compoundVertexIndex_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "compoundVertexIndex_0_2")) return false;
-    textureCoordinatesIndex(b, l + 1);
-    return true;
-  }
-
-  // vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex
-  private static boolean compoundVertexIndex_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "compoundVertexIndex_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = vertexIndex(b, l + 1);
-    r = r && consumeToken(b, VERTEX_INDEX_SEPARATOR);
-    r = r && textureCoordinatesIndex(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (vertexIndex)
-  private static boolean compoundVertexIndex_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "compoundVertexIndex_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = vertexIndex(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // FACE_KEYWORD compoundVertexIndex compoundVertexIndex compoundVertexIndex + (compoundVertexIndex)*
+  // FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*
   public static boolean face(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "face")) return false;
     if (!nextTokenIs(b, FACE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, FACE_KEYWORD);
-    r = r && compoundVertexIndex(b, l + 1);
-    r = r && compoundVertexIndex(b, l + 1);
+    r = r && faceVertex(b, l + 1);
+    r = r && faceVertex(b, l + 1);
     r = r && face_3(b, l + 1);
     r = r && face_4(b, l + 1);
     exit_section_(b, m, FACE, r);
     return r;
   }
 
-  // compoundVertexIndex +
+  // faceVertex +
   private static boolean face_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "face_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = compoundVertexIndex(b, l + 1);
+    r = faceVertex(b, l + 1);
     while (r) {
       int c = current_position_(b);
-      if (!compoundVertexIndex(b, l + 1)) break;
+      if (!faceVertex(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "face_3", c)) break;
     }
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (compoundVertexIndex)*
+  // (faceVertex)*
   private static boolean face_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "face_4")) return false;
     while (true) {
@@ -136,12 +77,71 @@ public class ObjParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (compoundVertexIndex)
+  // (faceVertex)
   private static boolean face_4_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "face_4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = compoundVertexIndex(b, l + 1);
+    r = faceVertex(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex)
+  //   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
+  //   | (vertexIndex)
+  static boolean faceVertex(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "faceVertex")) return false;
+    if (!nextTokenIs(b, INDEX)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = faceVertex_0(b, l + 1);
+    if (!r) r = faceVertex_1(b, l + 1);
+    if (!r) r = faceVertex_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex
+  private static boolean faceVertex_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "faceVertex_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = vertexIndex(b, l + 1);
+    r = r && consumeToken(b, VERTEX_INDEX_SEPARATOR);
+    r = r && faceVertex_0_2(b, l + 1);
+    r = r && consumeToken(b, VERTEX_INDEX_SEPARATOR);
+    r = r && vertexNormalIndex(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // textureCoordinatesIndex?
+  private static boolean faceVertex_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "faceVertex_0_2")) return false;
+    textureCoordinatesIndex(b, l + 1);
+    return true;
+  }
+
+  // vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex
+  private static boolean faceVertex_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "faceVertex_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = vertexIndex(b, l + 1);
+    r = r && consumeToken(b, VERTEX_INDEX_SEPARATOR);
+    r = r && textureCoordinatesIndex(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (vertexIndex)
+  private static boolean faceVertex_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "faceVertex_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = vertexIndex(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

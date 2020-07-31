@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface ObjVertex extends PsiElement {
 
+  @NotNull
+  List<Float> getCoordinates();
+
 }

@@ -26,4 +26,10 @@ public class ObjVertexNormalIndexImpl extends ASTWrapperPsiElement implements Ob
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public Integer getValue() {
+    return ObjPsiImplUtil.getValue(this);
+  }
+
 }

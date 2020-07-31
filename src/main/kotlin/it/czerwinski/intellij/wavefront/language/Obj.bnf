@@ -27,6 +27,8 @@
   elementTypeHolderClass="it.czerwinski.intellij.wavefront.language.psi.ObjTypes"
   elementTypeClass="it.czerwinski.intellij.wavefront.language.psi.ObjElementType"
   tokenTypeClass="it.czerwinski.intellij.wavefront.language.psi.ObjTokenType"
+
+  psiImplUtilClass="it.czerwinski.intellij.wavefront.language.psi.impl.ObjPsiImplUtil"
 }
 
 objFile ::= (groupingItem_|item_)*
@@ -35,12 +37,12 @@ private item_ ::= (vertex|textureCoordinates|vertexNormal|face|COMMENT|CRLF)
 
 private groupingItem_ ::= (object|group)
 
-object ::= (OBJECT_KEYWORD STRING) + item_*
-group ::= (GROUP_KEYWORD STRING) + item_*
+object ::= (OBJECT_KEYWORD STRING) + item_* { methods = [getName] }
+group ::= (GROUP_KEYWORD STRING) + item_* { methods = [getName] }
 
-vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?)
-textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?)
-vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)
+vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) { methods = [getCoordinates] }
+textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?) { methods = [getCoordinates] }
+vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT) { methods = [getCoordinates] }
 
 face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*)
 private faceVertex ::=
@@ -48,6 +50,6 @@ private faceVertex ::=
   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
   | (vertexIndex)
 
-vertexIndex ::= (INDEX)
-textureCoordinatesIndex ::= (INDEX)
-vertexNormalIndex ::= (INDEX)
+vertexIndex ::= (INDEX) { methods = [getValue] }
+textureCoordinatesIndex ::= (INDEX) { methods = [getValue] }
+vertexNormalIndex ::= (INDEX) { methods = [getValue] }

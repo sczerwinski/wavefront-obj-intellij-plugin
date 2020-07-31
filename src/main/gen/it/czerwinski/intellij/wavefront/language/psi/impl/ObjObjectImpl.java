@@ -50,4 +50,10 @@ public class ObjObjectImpl extends ASTWrapperPsiElement implements ObjObject {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjVertexNormal.class);
   }
 
+  @Override
+  @Nullable
+  public String getName() {
+    return ObjPsiImplUtil.getName(this);
+  }
+
 }

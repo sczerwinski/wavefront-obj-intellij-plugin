@@ -30,14 +30,23 @@ fun findAllVertices(file: PsiFile): List<ObjVertex> =
 fun findVertex(file: PsiFile, index: Int): ObjVertex? =
     findAllVertices(file).getOrNull(index - 1)
 
+fun checkVertexExists(file: PsiFile, index: Int): Boolean =
+    findVertex(file, index) != null
+
 fun findAllTextureCoordinates(file: PsiFile): List<ObjTextureCoordinates> =
     PsiTreeUtil.findChildrenOfType(file, ObjTextureCoordinates::class.java).toList()
 
 fun findTextureCoordinates(file: PsiFile, index: Int): ObjTextureCoordinates? =
     findAllTextureCoordinates(file).getOrNull(index - 1)
 
+fun checkTextureCoordinatesExist(file: PsiFile, index: Int): Boolean =
+    findTextureCoordinates(file, index) != null
+
 fun findAllVertexNormals(file: PsiFile): List<ObjVertexNormal> =
     PsiTreeUtil.findChildrenOfType(file, ObjVertexNormal::class.java).toList()
 
 fun findVertexNormal(file: PsiFile, index: Int): ObjVertexNormal? =
     findAllVertexNormals(file).getOrNull(index - 1)
+
+fun checkVertexNormalExists(file: PsiFile, index: Int): Boolean =
+    findVertexNormal(file, index) != null

@@ -50,4 +50,10 @@ public class ObjGroupImpl extends ASTWrapperPsiElement implements ObjGroup {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjVertexNormal.class);
   }
 
+  @Override
+  @Nullable
+  public String getName() {
+    return ObjPsiImplUtil.getName(this);
+  }
+
 }

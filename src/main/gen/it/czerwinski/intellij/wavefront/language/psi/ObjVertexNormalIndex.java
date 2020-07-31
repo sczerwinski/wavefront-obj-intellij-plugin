@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface ObjVertexNormalIndex extends PsiElement {
 
+  @Nullable
+  Integer getValue();
+
 }

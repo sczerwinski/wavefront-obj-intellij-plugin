@@ -26,4 +26,10 @@ public class ObjTextureCoordinatesIndexImpl extends ASTWrapperPsiElement impleme
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public Integer getValue() {
+    return ObjPsiImplUtil.getValue(this);
+  }
+
 }

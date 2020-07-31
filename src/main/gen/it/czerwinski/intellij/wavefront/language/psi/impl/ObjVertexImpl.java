@@ -26,4 +26,10 @@ public class ObjVertexImpl extends ASTWrapperPsiElement implements ObjVertex {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<Float> getCoordinates() {
+    return ObjPsiImplUtil.getCoordinates(this);
+  }
+
 }

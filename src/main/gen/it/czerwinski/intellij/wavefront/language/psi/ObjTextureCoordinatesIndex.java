@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface ObjTextureCoordinatesIndex extends PsiElement {
 
+  @Nullable
+  Integer getValue();
+
 }

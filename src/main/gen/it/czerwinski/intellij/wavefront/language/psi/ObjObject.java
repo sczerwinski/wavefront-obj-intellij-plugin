@@ -19,4 +19,7 @@ public interface ObjObject extends PsiElement {
   @NotNull
   List<ObjVertexNormal> getVertexNormalList();
 
+  @Nullable
+  String getName();
+
 }

@@ -10,7 +10,9 @@ public interface ObjTypes {
 
   IElementType FACE = new ObjElementType("FACE");
   IElementType GROUP = new ObjElementType("GROUP");
+  IElementType LINE = new ObjElementType("LINE");
   IElementType OBJECT = new ObjElementType("OBJECT");
+  IElementType POINT = new ObjElementType("POINT");
   IElementType TEXTURE_COORDINATES = new ObjElementType("TEXTURE_COORDINATES");
   IElementType TEXTURE_COORDINATES_INDEX = new ObjElementType("TEXTURE_COORDINATES_INDEX");
   IElementType VERTEX = new ObjElementType("VERTEX");
@@ -24,7 +26,9 @@ public interface ObjTypes {
   IElementType FLOAT = new ObjTokenType("FLOAT");
   IElementType GROUP_KEYWORD = new ObjTokenType("GROUP_KEYWORD");
   IElementType INDEX = new ObjTokenType("INDEX");
+  IElementType LINE_KEYWORD = new ObjTokenType("LINE_KEYWORD");
   IElementType OBJECT_KEYWORD = new ObjTokenType("OBJECT_KEYWORD");
+  IElementType POINT_KEYWORD = new ObjTokenType("POINT_KEYWORD");
   IElementType STRING = new ObjTokenType("STRING");
   IElementType TEXTURE_COORDINATES_KEYWORD = new ObjTokenType("TEXTURE_COORDINATES_KEYWORD");
   IElementType VERTEX_INDEX_SEPARATOR = new ObjTokenType("VERTEX_INDEX_SEPARATOR");
@@ -40,8 +44,14 @@ public interface ObjTypes {
       else if (type == GROUP) {
         return new ObjGroupImpl(node);
       }
+      else if (type == LINE) {
+        return new ObjLineImpl(node);
+      }
       else if (type == OBJECT) {
         return new ObjObjectImpl(node);
+      }
+      else if (type == POINT) {
+        return new ObjPointImpl(node);
       }
       else if (type == TEXTURE_COORDINATES) {
         return new ObjTextureCoordinatesImpl(node);

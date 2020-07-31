@@ -11,6 +11,12 @@ public interface ObjObject extends ObjGroupingElement {
   List<ObjFace> getFaceList();
 
   @NotNull
+  List<ObjLine> getLineList();
+
+  @NotNull
+  List<ObjPoint> getPointList();
+
+  @NotNull
   List<ObjTextureCoordinates> getTextureCoordinatesList();
 
   @NotNull

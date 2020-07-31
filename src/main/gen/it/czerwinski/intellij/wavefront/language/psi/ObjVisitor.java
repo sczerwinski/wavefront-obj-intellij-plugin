@@ -15,8 +15,16 @@ public class ObjVisitor extends PsiElementVisitor {
     visitGroupingElement(o);
   }
 
+  public void visitLine(@NotNull ObjLine o) {
+    visitPsiElement(o);
+  }
+
   public void visitObject(@NotNull ObjObject o) {
     visitGroupingElement(o);
+  }
+
+  public void visitPoint(@NotNull ObjPoint o) {
+    visitPsiElement(o);
   }
 
   public void visitTextureCoordinates(@NotNull ObjTextureCoordinates o) {

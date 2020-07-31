@@ -33,7 +33,7 @@
 
 objFile ::= (groupingItem_|item_)*
 
-private item_ ::= (vertex|textureCoordinates|vertexNormal|face|COMMENT|CRLF)
+private item_ ::= (vertex|textureCoordinates|vertexNormal|point|line|face|COMMENT|CRLF)
 
 private groupingItem_ ::= (object|group)
 
@@ -60,6 +60,9 @@ vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
 }
 
 face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*)
+line ::= (LINE_KEYWORD vertexIndex vertexIndex + (vertexIndex)*)
+point ::= (POINT_KEYWORD vertexIndex)
+
 private faceVertex ::=
   (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex)
   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)

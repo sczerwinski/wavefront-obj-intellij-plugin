@@ -40,7 +40,9 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.VERTEX_KEYWORD,
             ObjTypes.TEXTURE_COORDINATES_KEYWORD,
             ObjTypes.VERTEX_NORMAL_KEYWORD,
-            ObjTypes.FACE_KEYWORD ->
+            ObjTypes.FACE_KEYWORD,
+            ObjTypes.LINE_KEYWORD,
+            ObjTypes.POINT_KEYWORD ->
                 arrayOf(ATTR_KEYWORD)
 
             ObjTypes.STRING ->

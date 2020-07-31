@@ -207,16 +207,69 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // vertex|textureCoordinates|vertexNormal|face|COMMENT|CRLF
+  // vertex|textureCoordinates|vertexNormal|point|line|face|COMMENT|CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = vertex(b, l + 1);
     if (!r) r = textureCoordinates(b, l + 1);
     if (!r) r = vertexNormal(b, l + 1);
+    if (!r) r = point(b, l + 1);
+    if (!r) r = line(b, l + 1);
     if (!r) r = face(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LINE_KEYWORD vertexIndex vertexIndex + (vertexIndex)*
+  public static boolean line(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "line")) return false;
+    if (!nextTokenIs(b, LINE_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LINE_KEYWORD);
+    r = r && vertexIndex(b, l + 1);
+    r = r && line_2(b, l + 1);
+    r = r && line_3(b, l + 1);
+    exit_section_(b, m, LINE, r);
+    return r;
+  }
+
+  // vertexIndex +
+  private static boolean line_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "line_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = vertexIndex(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!vertexIndex(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "line_2", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (vertexIndex)*
+  private static boolean line_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "line_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!line_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "line_3", c)) break;
+    }
+    return true;
+  }
+
+  // (vertexIndex)
+  private static boolean line_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "line_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = vertexIndex(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -288,6 +341,19 @@ public class ObjParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "object_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // POINT_KEYWORD vertexIndex
+  public static boolean point(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "point")) return false;
+    if (!nextTokenIs(b, POINT_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, POINT_KEYWORD);
+    r = r && vertexIndex(b, l + 1);
+    exit_section_(b, m, POINT, r);
+    return r;
   }
 
   /* ********************************************************** */

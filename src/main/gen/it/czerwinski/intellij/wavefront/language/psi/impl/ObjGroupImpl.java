@@ -34,6 +34,18 @@ public class ObjGroupImpl extends ASTWrapperPsiElement implements ObjGroup {
 
   @Override
   @NotNull
+  public List<ObjLine> getLineList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjLine.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ObjPoint> getPointList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjPoint.class);
+  }
+
+  @Override
+  @NotNull
   public List<ObjTextureCoordinates> getTextureCoordinatesList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjTextureCoordinates.class);
   }

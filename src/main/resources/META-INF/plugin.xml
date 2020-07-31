@@ -24,6 +24,9 @@
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjSyntaxHighlighter"/>
         <colorSettingsPage
                 implementation="it.czerwinski.intellij.wavefront.language.ObjColorSettingsPage"/>
+        <annotator
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.ObjAnnotator"/>
 
         <!-- Services -->
         <applicationService

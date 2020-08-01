@@ -35,7 +35,7 @@ CRLF=\R
 
 COMMENT_LINE="#"[^\r\n\f]*
 
-WHITE_SPACE=[\ \t]
+WHITE_SPACE=[\ \t]+
 
 OBJECT_KEYWORD="o"
 GROUP_KEYWORD="g"

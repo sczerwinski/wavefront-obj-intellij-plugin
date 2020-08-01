@@ -33,6 +33,9 @@
         <lang.psiStructureViewFactory
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.structure.ObjStructureViewFactory"/>
+        <lang.formatter
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.formatting.ObjFormattingModelBuilder"/>
 
         <!-- Services -->
         <applicationService

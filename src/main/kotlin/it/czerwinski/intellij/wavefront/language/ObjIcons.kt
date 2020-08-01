@@ -42,3 +42,6 @@ val OBJ_FACE_VERTEX_ICON: Icon = IconLoader.getIcon("/icons/objFaceVertexIcon.sv
 
 val OBJ_SMOOTH_SHADING_ON_ICON: Icon = IconLoader.getIcon("/icons/objSmoothShadingOnIcon.svg")
 val OBJ_SMOOTH_SHADING_OFF_ICON: Icon = IconLoader.getIcon("/icons/objSmoothShadingOffIcon.svg")
+
+val OBJ_MATERIAL_FILE_ICON: Icon = IconLoader.getIcon("/icons/objMaterialFileIcon.svg")
+val OBJ_MATERIAL_ICON: Icon = IconLoader.getIcon("/icons/objMaterialIcon.svg")

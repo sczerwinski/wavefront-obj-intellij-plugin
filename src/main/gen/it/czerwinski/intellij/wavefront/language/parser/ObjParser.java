@@ -210,6 +210,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
   // vertex | textureCoordinates | vertexNormal
   //   | point | line | face
   //   | smoothShading
+  //   | materialFileReference | materialReference
   //   | COMMENT | CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
@@ -221,6 +222,8 @@ public class ObjParser implements PsiParser, LightPsiParser {
     if (!r) r = line(b, l + 1);
     if (!r) r = face(b, l + 1);
     if (!r) r = smoothShading(b, l + 1);
+    if (!r) r = materialFileReference(b, l + 1);
+    if (!r) r = materialReference(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     return r;
@@ -274,6 +277,30 @@ public class ObjParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = vertexIndex(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // MATERIAL_FILE_REF_KEYWORD REFERENCE
+  public static boolean materialFileReference(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "materialFileReference")) return false;
+    if (!nextTokenIs(b, MATERIAL_FILE_REF_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, MATERIAL_FILE_REF_KEYWORD, REFERENCE);
+    exit_section_(b, m, MATERIAL_FILE_REFERENCE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // MATERIAL_REFERENCE_KEYWORD REFERENCE
+  public static boolean materialReference(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "materialReference")) return false;
+    if (!nextTokenIs(b, MATERIAL_REFERENCE_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, MATERIAL_REFERENCE_KEYWORD, REFERENCE);
+    exit_section_(b, m, MATERIAL_REFERENCE, r);
     return r;
   }
 

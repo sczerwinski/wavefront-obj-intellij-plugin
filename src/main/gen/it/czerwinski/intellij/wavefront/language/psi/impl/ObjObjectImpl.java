@@ -40,6 +40,18 @@ public class ObjObjectImpl extends ASTWrapperPsiElement implements ObjObject {
 
   @Override
   @NotNull
+  public List<ObjMaterialFileReference> getMaterialFileReferenceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjMaterialFileReference.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ObjMaterialReference> getMaterialReferenceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjMaterialReference.class);
+  }
+
+  @Override
+  @NotNull
   public List<ObjPoint> getPointList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjPoint.class);
   }

@@ -37,6 +37,7 @@ private item_ ::= (
   vertex | textureCoordinates | vertexNormal
   | point | line | face
   | smoothShading
+  | materialFileReference | materialReference
   | COMMENT | CRLF
 )
 
@@ -89,4 +90,12 @@ vertexNormalIndex ::= (INDEX) {
 smoothShading ::= (SMOOTH_SHADING_KEYWORD FLAG) {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement"
   methods = [getValue]
+}
+
+materialFileReference ::= (MATERIAL_FILE_REF_KEYWORD REFERENCE) {
+  methods = [getFilename]
+}
+
+materialReference ::= (MATERIAL_REFERENCE_KEYWORD REFERENCE) {
+  methods = [getMaterialName]
 }

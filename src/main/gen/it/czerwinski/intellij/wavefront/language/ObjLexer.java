@@ -44,6 +44,7 @@ class ObjLexer implements FlexLexer {
   public static final int WAITING_FACE_VERTEX = 6;
   public static final int WAITING_VERTEX_INDEX = 8;
   public static final int WAITING_FLAG = 10;
+  public static final int WAITING_REFERENCE = 12;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -52,7 +53,7 @@ class ObjLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5, 5
+     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6, 6
   };
 
   /** 
@@ -81,10 +82,10 @@ class ObjLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 416 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\4\1\2\1\1\2\2\22\0\1\4\2\0\1\3\11\0\1\17\1\23\1\15\1\20\1\24\10\21"+
-    "\54\0\1\12\1\6\4\0\1\13\1\0\1\11\1\5\1\14\2\0\1\16\1\10\1\0\1\7\16\0\1\1\32"+
-    "\0\12\22\46\0\12\22\14\0\12\22\20\0\12\22\6\0\12\22\16\0\2\1\54\0\12\22\16"+
-    "\0\62\22");
+    "\11\0\1\4\1\2\1\1\2\2\22\0\1\4\2\0\1\3\11\0\1\24\1\30\1\15\1\25\1\31\10\26"+
+    "\50\0\1\21\2\0\1\23\1\12\1\6\1\0\1\20\2\0\1\13\1\17\1\11\1\5\1\14\2\0\1\16"+
+    "\1\10\1\22\1\7\16\0\1\1\32\0\12\27\46\0\12\27\14\0\12\27\20\0\12\27\6\0\12"+
+    "\27\16\0\2\1\54\0\12\27\16\0\62\27");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -92,13 +93,14 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\6\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\2\13\1\14\1\15\3\1\1\16"+
-    "\1\17\1\20\1\21\1\22\1\23\1\1\1\24\1\25"+
-    "\1\26\4\0\1\27";
+    "\7\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\2\1\2\13\1\14\1\15\3\1"+
+    "\1\16\1\17\1\20\1\21\1\22\1\23\1\1\1\24"+
+    "\2\25\1\26\1\27\1\30\10\0\1\31\4\0\1\32"+
+    "\1\33";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[38];
+    int [] result = new int[54];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -123,14 +125,16 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\25\0\52\0\77\0\124\0\151\0\176\0\223"+
-    "\0\250\0\176\0\176\0\275\0\176\0\176\0\176\0\176"+
-    "\0\322\0\347\0\223\0\223\0\374\0\u0111\0\u0126\0\223"+
-    "\0\176\0\u013b\0\223\0\u0150\0\223\0\u0165\0\176\0\176"+
-    "\0\176\0\u0111\0\u0126\0\u017a\0\u018f\0\u017a";
+    "\0\0\0\32\0\64\0\116\0\150\0\202\0\234\0\266"+
+    "\0\320\0\352\0\266\0\266\0\u0104\0\266\0\266\0\266"+
+    "\0\266\0\u011e\0\u0138\0\u0152\0\u016c\0\320\0\320\0\u0186"+
+    "\0\u01a0\0\u01ba\0\320\0\266\0\u01d4\0\320\0\u01ee\0\320"+
+    "\0\u0208\0\266\0\u0222\0\u023c\0\320\0\266\0\266\0\u0256"+
+    "\0\u0270\0\u01a0\0\u01ba\0\u028a\0\u02a4\0\u02be\0\u02d8\0\u028a"+
+    "\0\u02f2\0\u030c\0\u0326\0\u0340\0\266\0\266";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[38];
+    int [] result = new int[54];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -153,22 +157,27 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\7\2\10\1\11\1\10\1\12\1\13\1\14\2\7"+
-    "\1\15\1\16\1\17\1\7\1\20\6\7\1\21\1\22"+
-    "\1\10\1\21\1\23\20\21\1\7\2\10\1\7\1\24"+
-    "\12\7\1\25\1\26\1\27\2\7\1\27\1\7\2\10"+
-    "\1\7\1\30\10\7\1\31\3\7\1\32\2\7\1\32"+
-    "\1\7\2\10\1\7\1\33\14\7\1\34\2\7\1\34"+
-    "\1\7\2\10\1\7\1\35\1\36\16\7\1\37\26\0"+
-    "\2\10\1\0\1\10\20\0\2\11\1\0\22\11\10\0"+
-    "\1\40\1\41\13\0\2\21\1\0\23\21\1\22\1\10"+
-    "\1\21\1\22\20\21\20\0\1\42\1\43\2\0\1\43"+
-    "\23\0\1\44\21\0\3\43\1\44\1\43\20\0\3\32"+
-    "\1\0\1\32\20\0\3\34\1\0\1\34\12\0\1\45"+
-    "\32\0\3\46\1\0\1\46\12\0\1\37\12\0";
+    "\1\10\2\11\1\12\1\11\1\13\1\14\1\15\2\10"+
+    "\1\16\1\17\1\20\1\10\1\21\1\22\2\10\1\23"+
+    "\7\10\1\24\1\25\1\11\1\24\1\26\25\24\1\10"+
+    "\2\11\1\10\1\27\17\10\1\30\1\31\1\32\2\10"+
+    "\1\32\1\10\2\11\1\10\1\33\10\10\1\34\10\10"+
+    "\1\35\2\10\1\35\1\10\2\11\1\10\1\36\21\10"+
+    "\1\37\2\10\1\37\1\10\2\11\1\10\1\40\1\41"+
+    "\23\10\1\42\1\43\1\44\1\11\1\43\1\45\25\43"+
+    "\33\0\2\11\1\0\1\11\25\0\2\12\1\0\27\12"+
+    "\10\0\1\46\1\47\30\0\1\50\37\0\1\51\13\0"+
+    "\2\24\1\0\30\24\1\25\1\11\1\24\1\25\25\24"+
+    "\25\0\1\52\1\53\2\0\1\53\30\0\1\54\26\0"+
+    "\3\53\1\54\1\53\25\0\3\35\1\0\1\35\25\0"+
+    "\3\37\1\0\1\37\12\0\1\55\17\0\2\43\1\0"+
+    "\30\43\1\44\1\11\1\43\1\44\25\43\13\0\1\56"+
+    "\41\0\1\57\33\0\3\60\1\0\1\60\12\0\1\42"+
+    "\32\0\1\61\35\0\1\62\32\0\1\63\21\0\1\64"+
+    "\42\0\1\65\23\0\1\66\16\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[420];
+    int [] result = new int[858];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -206,11 +215,11 @@ class ObjLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\6\0\1\11\2\1\2\11\1\1\4\11\10\1\1\11"+
-    "\5\1\3\11\4\0\1\1";
+    "\7\0\1\11\2\1\2\11\1\1\4\11\12\1\1\11"+
+    "\5\1\1\11\3\1\2\11\10\0\1\1\4\0\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[38];
+    int [] result = new int[54];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -527,117 +536,137 @@ class ObjLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 24: break;
+          case 28: break;
           case 2: 
             { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 25: break;
+          case 29: break;
           case 3: 
             { yybegin(YYINITIAL); return ObjTypes.COMMENT;
             } 
             // fall through
-          case 26: break;
+          case 30: break;
           case 4: 
             { yybegin(WAITING_STRING); return ObjTypes.OBJECT_KEYWORD;
             } 
             // fall through
-          case 27: break;
+          case 31: break;
           case 5: 
             { yybegin(WAITING_STRING); return ObjTypes.GROUP_KEYWORD;
             } 
             // fall through
-          case 28: break;
+          case 32: break;
           case 6: 
             { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_KEYWORD;
             } 
             // fall through
-          case 29: break;
+          case 33: break;
           case 7: 
             { yybegin(WAITING_FACE_VERTEX); return ObjTypes.FACE_KEYWORD;
             } 
             // fall through
-          case 30: break;
+          case 34: break;
           case 8: 
             { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.LINE_KEYWORD;
             } 
             // fall through
-          case 31: break;
+          case 35: break;
           case 9: 
             { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.POINT_KEYWORD;
             } 
             // fall through
-          case 32: break;
+          case 36: break;
           case 10: 
             { yybegin(WAITING_FLAG); return ObjTypes.SMOOTH_SHADING_KEYWORD;
             } 
             // fall through
-          case 33: break;
+          case 37: break;
           case 11: 
             { yybegin(YYINITIAL); return ObjTypes.STRING;
             } 
             // fall through
-          case 34: break;
+          case 38: break;
           case 12: 
             { yybegin(WAITING_STRING); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 35: break;
+          case 39: break;
           case 13: 
             { yybegin(WAITING_FLOAT); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 36: break;
+          case 40: break;
           case 14: 
             { yybegin(WAITING_FACE_VERTEX); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 37: break;
+          case 41: break;
           case 15: 
             { yybegin(WAITING_FACE_VERTEX); return ObjTypes.VERTEX_INDEX_SEPARATOR;
             } 
             // fall through
-          case 38: break;
+          case 42: break;
           case 16: 
             { yybegin(WAITING_FACE_VERTEX); return ObjTypes.INDEX;
             } 
             // fall through
-          case 39: break;
+          case 43: break;
           case 17: 
             { yybegin(WAITING_VERTEX_INDEX); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 40: break;
+          case 44: break;
           case 18: 
             { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.INDEX;
             } 
             // fall through
-          case 41: break;
+          case 45: break;
           case 19: 
             { yybegin(WAITING_FLAG); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 42: break;
+          case 46: break;
           case 20: 
             { yybegin(YYINITIAL); return ObjTypes.FLAG;
             } 
             // fall through
-          case 43: break;
+          case 47: break;
           case 21: 
+            { yybegin(YYINITIAL); return ObjTypes.REFERENCE;
+            } 
+            // fall through
+          case 48: break;
+          case 22: 
+            { yybegin(WAITING_REFERENCE); return TokenType.WHITE_SPACE;
+            } 
+            // fall through
+          case 49: break;
+          case 23: 
             { yybegin(WAITING_FLOAT); return ObjTypes.TEXTURE_COORDINATES_KEYWORD;
             } 
             // fall through
-          case 44: break;
-          case 22: 
+          case 50: break;
+          case 24: 
             { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_NORMAL_KEYWORD;
             } 
             // fall through
-          case 45: break;
-          case 23: 
+          case 51: break;
+          case 25: 
             { yybegin(WAITING_FLOAT); return ObjTypes.FLOAT;
             } 
             // fall through
-          case 46: break;
+          case 52: break;
+          case 26: 
+            { yybegin(WAITING_REFERENCE); return ObjTypes.MATERIAL_FILE_REF_KEYWORD;
+            } 
+            // fall through
+          case 53: break;
+          case 27: 
+            { yybegin(WAITING_REFERENCE); return ObjTypes.MATERIAL_REFERENCE_KEYWORD;
+            } 
+            // fall through
+          case 54: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

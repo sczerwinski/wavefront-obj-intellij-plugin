@@ -33,6 +33,7 @@ class ObjColorSettingsPage : ColorSettingsPage {
     override fun getDemoText(): String =
         """
             # OBJ File: 'cube.obj'
+            mtllib cube.mtl
             o Cube
             v 1.000000 1.000000 -1.000000
             v 1.000000 -1.000000 -1.000000
@@ -62,6 +63,7 @@ class ObjColorSettingsPage : ColorSettingsPage {
             vn 0.0000 -1.0000 0.0000
             vn 1.0000 0.0000 0.0000
             vn 0.0000 0.0000 -1.0000
+            usemtl White
             s off
             f 1/1/1 5/2/1 7/3/1 3/4/1
             f 4/5/2 3/4/2 7/6/2 8/7/2
@@ -89,6 +91,10 @@ class ObjColorSettingsPage : ColorSettingsPage {
         AttributesDescriptor(
             WavefrontObjBundle.message("coloring_attribute_number"),
             ObjSyntaxHighlighter.ATTR_NUMBER
+        ),
+        AttributesDescriptor(
+            WavefrontObjBundle.message("coloring_attribute_reference"),
+            ObjSyntaxHighlighter.ATTR_REFERENCE
         ),
         AttributesDescriptor(
             WavefrontObjBundle.message("coloring_attribute_comment"),

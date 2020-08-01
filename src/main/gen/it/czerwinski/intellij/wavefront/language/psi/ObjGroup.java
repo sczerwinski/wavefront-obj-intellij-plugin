@@ -14,6 +14,12 @@ public interface ObjGroup extends ObjGroupingElement {
   List<ObjLine> getLineList();
 
   @NotNull
+  List<ObjMaterialFileReference> getMaterialFileReferenceList();
+
+  @NotNull
+  List<ObjMaterialReference> getMaterialReferenceList();
+
+  @NotNull
   List<ObjPoint> getPointList();
 
   @NotNull

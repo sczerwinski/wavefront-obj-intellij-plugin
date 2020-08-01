@@ -12,6 +12,8 @@ public interface ObjTypes {
   IElementType FACE_VERTEX = new ObjElementType("FACE_VERTEX");
   IElementType GROUP = new ObjElementType("GROUP");
   IElementType LINE = new ObjElementType("LINE");
+  IElementType MATERIAL_FILE_REFERENCE = new ObjElementType("MATERIAL_FILE_REFERENCE");
+  IElementType MATERIAL_REFERENCE = new ObjElementType("MATERIAL_REFERENCE");
   IElementType OBJECT = new ObjElementType("OBJECT");
   IElementType POINT = new ObjElementType("POINT");
   IElementType SMOOTH_SHADING = new ObjElementType("SMOOTH_SHADING");
@@ -30,8 +32,11 @@ public interface ObjTypes {
   IElementType GROUP_KEYWORD = new ObjTokenType("GROUP_KEYWORD");
   IElementType INDEX = new ObjTokenType("INDEX");
   IElementType LINE_KEYWORD = new ObjTokenType("LINE_KEYWORD");
+  IElementType MATERIAL_FILE_REF_KEYWORD = new ObjTokenType("MATERIAL_FILE_REF_KEYWORD");
+  IElementType MATERIAL_REFERENCE_KEYWORD = new ObjTokenType("MATERIAL_REFERENCE_KEYWORD");
   IElementType OBJECT_KEYWORD = new ObjTokenType("OBJECT_KEYWORD");
   IElementType POINT_KEYWORD = new ObjTokenType("POINT_KEYWORD");
+  IElementType REFERENCE = new ObjTokenType("REFERENCE");
   IElementType SMOOTH_SHADING_KEYWORD = new ObjTokenType("SMOOTH_SHADING_KEYWORD");
   IElementType STRING = new ObjTokenType("STRING");
   IElementType TEXTURE_COORDINATES_KEYWORD = new ObjTokenType("TEXTURE_COORDINATES_KEYWORD");
@@ -53,6 +58,12 @@ public interface ObjTypes {
       }
       else if (type == LINE) {
         return new ObjLineImpl(node);
+      }
+      else if (type == MATERIAL_FILE_REFERENCE) {
+        return new ObjMaterialFileReferenceImpl(node);
+      }
+      else if (type == MATERIAL_REFERENCE) {
+        return new ObjMaterialReferenceImpl(node);
       }
       else if (type == OBJECT) {
         return new ObjObjectImpl(node);

@@ -23,6 +23,14 @@ public class ObjVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMaterialFileReference(@NotNull ObjMaterialFileReference o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMaterialReference(@NotNull ObjMaterialReference o) {
+    visitPsiElement(o);
+  }
+
   public void visitObject(@NotNull ObjObject o) {
     visitGroupingElement(o);
   }

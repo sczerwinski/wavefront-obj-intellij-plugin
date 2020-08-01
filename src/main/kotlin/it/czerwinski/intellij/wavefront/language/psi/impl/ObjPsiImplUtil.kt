@@ -25,6 +25,8 @@ import it.czerwinski.intellij.wavefront.language.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
+import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
+import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement
@@ -67,4 +69,12 @@ object ObjPsiImplUtil {
             "off" -> false
             else -> null
         }
+
+    @JvmStatic
+    fun getFilename(element: ObjMaterialFileReference): String? =
+        element.node.findChildByType(ObjTypes.REFERENCE)?.text
+
+    @JvmStatic
+    fun getMaterialName(element: ObjMaterialReference): String? =
+        element.node.findChildByType(ObjTypes.REFERENCE)?.text
 }

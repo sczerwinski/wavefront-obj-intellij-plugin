@@ -43,7 +43,9 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.FACE_KEYWORD,
             ObjTypes.LINE_KEYWORD,
             ObjTypes.POINT_KEYWORD,
-            ObjTypes.SMOOTH_SHADING_KEYWORD ->
+            ObjTypes.SMOOTH_SHADING_KEYWORD,
+            ObjTypes.MATERIAL_FILE_REF_KEYWORD,
+            ObjTypes.MATERIAL_REFERENCE_KEYWORD ->
                 arrayOf(ATTR_KEYWORD)
 
             ObjTypes.STRING ->
@@ -56,6 +58,9 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
 
             ObjTypes.VERTEX_INDEX_SEPARATOR ->
                 arrayOf(ATTR_OPERATOR)
+
+            ObjTypes.REFERENCE ->
+                arrayOf(ATTR_REFERENCE)
 
             TokenType.BAD_CHARACTER ->
                 arrayOf(ATTR_BAD_CHARACTER)
@@ -75,6 +80,8 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             createTextAttributesKey("OBJ_STRING", DefaultLanguageHighlighterColors.STRING)
         internal val ATTR_NUMBER: TextAttributesKey =
             createTextAttributesKey("OBJ_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
+        internal val ATTR_REFERENCE: TextAttributesKey =
+            createTextAttributesKey("OBJ_REFERENCE", DefaultLanguageHighlighterColors.IDENTIFIER)
         internal val ATTR_BAD_CHARACTER: TextAttributesKey =
             createTextAttributesKey("OBJ_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
     }

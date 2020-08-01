@@ -30,6 +30,8 @@ import it.czerwinski.intellij.wavefront.language.OBJ_FACE_VERTEX_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_FILE_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_GROUP_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_LINE_ICON
+import it.czerwinski.intellij.wavefront.language.OBJ_MATERIAL_FILE_ICON
+import it.czerwinski.intellij.wavefront.language.OBJ_MATERIAL_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_OBJECT_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_POINT_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_SMOOTH_SHADING_OFF_ICON
@@ -46,6 +48,8 @@ import it.czerwinski.intellij.wavefront.language.psi.ObjFaceVertex
 import it.czerwinski.intellij.wavefront.language.psi.ObjFile
 import it.czerwinski.intellij.wavefront.language.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.language.psi.ObjLine
+import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
+import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.language.psi.ObjObject
 import it.czerwinski.intellij.wavefront.language.psi.ObjPoint
 import it.czerwinski.intellij.wavefront.language.psi.ObjSmoothShading
@@ -82,6 +86,9 @@ object ObjItemPresentationFactory {
         is ObjVertexNormalIndex -> createPresentation(element)
 
         is ObjSmoothShading -> createPresentation(element)
+
+        is ObjMaterialFileReference -> createPresentation(element)
+        is ObjMaterialReference -> createPresentation(element)
 
         else -> createErrorPresentation(
             errorMessage = WavefrontObjBundle.message("structure_presentation_error_unknownElement"),
@@ -207,6 +214,20 @@ object ObjItemPresentationFactory {
             icon = if (value) OBJ_SMOOTH_SHADING_ON_ICON else OBJ_SMOOTH_SHADING_OFF_ICON
         )
     }
+
+    private fun createPresentation(materialFileReference: ObjMaterialFileReference): ItemPresentation =
+        createPresentation(
+            presentableText = materialFileReference.filename
+                ?: WavefrontObjBundle.message("structure_presentation_materialFile"),
+            icon = OBJ_MATERIAL_FILE_ICON
+        )
+
+    private fun createPresentation(materialReference: ObjMaterialReference): ItemPresentation =
+        createPresentation(
+            presentableText = materialReference.materialName
+                ?: WavefrontObjBundle.message("structure_presentation_material"),
+            icon = OBJ_MATERIAL_ICON
+        )
 
     private fun createErrorPresentation(
         errorMessage: String,

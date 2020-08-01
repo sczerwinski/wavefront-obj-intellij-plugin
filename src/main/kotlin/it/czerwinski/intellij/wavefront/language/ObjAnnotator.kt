@@ -20,7 +20,10 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
+import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinatesIndex
+import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormalIndex
 
@@ -34,6 +37,8 @@ class ObjAnnotator : Annotator {
             is ObjVertexIndex -> annotateVertexIndex(element, holder)
             is ObjTextureCoordinatesIndex -> annotateTextureCoordinatesIndex(element, holder)
             is ObjVertexNormalIndex -> annotateVertexNormalIndex(element, holder)
+            is ObjMaterialFileReference -> annotateMaterialFileReference(element, holder)
+            is ObjMaterialReference -> annotateMaterialReference(element, holder)
         }
     }
 
@@ -99,5 +104,33 @@ class ObjAnnotator : Annotator {
             element,
             WavefrontObjBundle.message("annotation_error_invalidIndex")
         )
+    }
+
+    private fun annotateMaterialFileReference(
+        element: ObjMaterialFileReference,
+        holder: AnnotationHolder
+    ) {
+        val materialFilenameNode = element.node.findChildByType(ObjTypes.REFERENCE)
+        if (materialFilenameNode != null) {
+            if (!materialFilenameNode.text.endsWith(suffix = ".mtl")) {
+                holder.createWarningAnnotation(
+                    materialFilenameNode,
+                    WavefrontObjBundle.message("annotation_warning_mtlFileExtension")
+                )
+            }
+        }
+    }
+
+    private fun annotateMaterialReference(
+        element: ObjMaterialReference,
+        holder: AnnotationHolder
+    ) {
+        val materialNameNode = element.node.findChildByType(ObjTypes.REFERENCE)
+        if (materialNameNode != null) {
+            holder.createWeakWarningAnnotation(
+                materialNameNode,
+                WavefrontObjBundle.message("annotation_warning_cannotValidateMaterial")
+            )
+        }
     }
 }

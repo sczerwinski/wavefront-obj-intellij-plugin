@@ -30,6 +30,9 @@
         <lang.foldingBuilder
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjFoldingBuilder"/>
+        <lang.psiStructureViewFactory
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.structure.ObjStructureViewFactory"/>
 
         <!-- Services -->
         <applicationService

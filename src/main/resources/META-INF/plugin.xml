@@ -36,6 +36,9 @@
         <lang.formatter
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.formatting.ObjFormattingModelBuilder"/>
+        <lang.commenter
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.language.ObjCommenter"/>
 
         <!-- Services -->
         <applicationService

@@ -18,12 +18,6 @@ package it.czerwinski.intellij.wavefront.language.psi
 
 import com.intellij.psi.PsiElement
 
-interface ObjVectorElement : PsiElement {
-
-    val index: Int
-
-    val coordinates: List<Float?>
+interface ObjFlagElement : PsiElement {
+    val value: Boolean?
 }
-
-val ObjVectorElement.coordinatesString: String
-    get() = coordinates.joinToString(prefix = "[", separator = " ", postfix = "]")

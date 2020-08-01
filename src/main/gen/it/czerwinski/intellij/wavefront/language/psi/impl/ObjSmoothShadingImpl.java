@@ -27,9 +27,9 @@ public class ObjSmoothShadingImpl extends ASTWrapperPsiElement implements ObjSmo
   }
 
   @Override
-  @NotNull
-  public ObjSmoothShadingFlag getSmoothShadingFlag() {
-    return findNotNullChildByClass(ObjSmoothShadingFlag.class);
+  @Nullable
+  public Boolean getValue() {
+    return ObjPsiImplUtil.getValue(this);
   }
 
 }

@@ -27,6 +27,11 @@ public class ObjTextureCoordinatesImpl extends ASTWrapperPsiElement implements O
   }
 
   @Override
+  public int getIndex() {
+    return ObjPsiImplUtil.getIndex(this);
+  }
+
+  @Override
   @NotNull
   public List<Float> getCoordinates() {
     return ObjPsiImplUtil.getCoordinates(this);

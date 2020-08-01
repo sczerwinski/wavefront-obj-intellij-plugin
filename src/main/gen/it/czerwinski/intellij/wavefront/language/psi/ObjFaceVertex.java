@@ -5,11 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ObjTextureCoordinates extends ObjVectorElement {
+public interface ObjFaceVertex extends PsiElement {
 
-  int getIndex();
+  @Nullable
+  ObjTextureCoordinatesIndex getTextureCoordinatesIndex();
 
   @NotNull
-  List<Float> getCoordinates();
+  ObjVertexIndex getVertexIndex();
+
+  @Nullable
+  ObjVertexNormalIndex getVertexNormalIndex();
 
 }

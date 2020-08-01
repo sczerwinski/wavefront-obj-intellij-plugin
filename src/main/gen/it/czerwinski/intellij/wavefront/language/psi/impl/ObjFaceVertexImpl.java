@@ -11,19 +11,37 @@ import static it.czerwinski.intellij.wavefront.language.psi.ObjTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.language.psi.*;
 
-public class ObjSmoothShadingFlagImpl extends ASTWrapperPsiElement implements ObjSmoothShadingFlag {
+public class ObjFaceVertexImpl extends ASTWrapperPsiElement implements ObjFaceVertex {
 
-  public ObjSmoothShadingFlagImpl(@NotNull ASTNode node) {
+  public ObjFaceVertexImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ObjVisitor visitor) {
-    visitor.visitSmoothShadingFlag(this);
+    visitor.visitFaceVertex(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public ObjTextureCoordinatesIndex getTextureCoordinatesIndex() {
+    return findChildByClass(ObjTextureCoordinatesIndex.class);
+  }
+
+  @Override
+  @NotNull
+  public ObjVertexIndex getVertexIndex() {
+    return findNotNullChildByClass(ObjVertexIndex.class);
+  }
+
+  @Override
+  @Nullable
+  public ObjVertexNormalIndex getVertexNormalIndex() {
+    return findChildByClass(ObjVertexNormalIndex.class);
   }
 
 }

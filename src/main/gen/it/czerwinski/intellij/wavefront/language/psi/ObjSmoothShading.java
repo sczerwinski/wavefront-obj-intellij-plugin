@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ObjSmoothShading extends PsiElement {
+public interface ObjSmoothShading extends ObjFlagElement {
 
-  @NotNull
-  ObjSmoothShadingFlag getSmoothShadingFlag();
+  @Nullable
+  Boolean getValue();
 
 }

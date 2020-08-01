@@ -28,20 +28,14 @@ public class ObjFaceImpl extends ASTWrapperPsiElement implements ObjFace {
 
   @Override
   @NotNull
-  public List<ObjTextureCoordinatesIndex> getTextureCoordinatesIndexList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjTextureCoordinatesIndex.class);
+  public List<ObjFaceVertex> getFaceVertexList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjFaceVertex.class);
   }
 
   @Override
-  @NotNull
-  public List<ObjVertexIndex> getVertexIndexList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjVertexIndex.class);
-  }
-
-  @Override
-  @NotNull
-  public List<ObjVertexNormalIndex> getVertexNormalIndexList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjVertexNormalIndex.class);
+  @Nullable
+  public ObjFaceType getType() {
+    return ObjPsiImplUtil.getType(this);
   }
 
 }

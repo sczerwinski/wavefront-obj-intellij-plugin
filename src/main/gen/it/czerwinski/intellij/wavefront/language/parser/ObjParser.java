@@ -91,7 +91,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
   // (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex)
   //   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
   //   | (vertexIndex)
-  static boolean faceVertex(PsiBuilder b, int l) {
+  public static boolean faceVertex(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "faceVertex")) return false;
     if (!nextTokenIs(b, INDEX)) return false;
     boolean r;
@@ -99,7 +99,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
     r = faceVertex_0(b, l + 1);
     if (!r) r = faceVertex_1(b, l + 1);
     if (!r) r = faceVertex_2(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, m, FACE_VERTEX, r);
     return r;
   }
 
@@ -361,27 +361,14 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SMOOTH_SHADING_KEYWORD smoothShadingFlag
+  // SMOOTH_SHADING_KEYWORD FLAG
   public static boolean smoothShading(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "smoothShading")) return false;
     if (!nextTokenIs(b, SMOOTH_SHADING_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SMOOTH_SHADING_KEYWORD);
-    r = r && smoothShadingFlag(b, l + 1);
+    r = consumeTokens(b, 0, SMOOTH_SHADING_KEYWORD, FLAG);
     exit_section_(b, m, SMOOTH_SHADING, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // (FLAG)
-  public static boolean smoothShadingFlag(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "smoothShadingFlag")) return false;
-    if (!nextTokenIs(b, FLAG)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, FLAG);
-    exit_section_(b, m, SMOOTH_SHADING_FLAG, r);
     return r;
   }
 

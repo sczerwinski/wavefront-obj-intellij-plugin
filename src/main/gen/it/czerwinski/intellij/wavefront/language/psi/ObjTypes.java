@@ -9,12 +9,12 @@ import it.czerwinski.intellij.wavefront.language.psi.impl.*;
 public interface ObjTypes {
 
   IElementType FACE = new ObjElementType("FACE");
+  IElementType FACE_VERTEX = new ObjElementType("FACE_VERTEX");
   IElementType GROUP = new ObjElementType("GROUP");
   IElementType LINE = new ObjElementType("LINE");
   IElementType OBJECT = new ObjElementType("OBJECT");
   IElementType POINT = new ObjElementType("POINT");
   IElementType SMOOTH_SHADING = new ObjElementType("SMOOTH_SHADING");
-  IElementType SMOOTH_SHADING_FLAG = new ObjElementType("SMOOTH_SHADING_FLAG");
   IElementType TEXTURE_COORDINATES = new ObjElementType("TEXTURE_COORDINATES");
   IElementType TEXTURE_COORDINATES_INDEX = new ObjElementType("TEXTURE_COORDINATES_INDEX");
   IElementType VERTEX = new ObjElementType("VERTEX");
@@ -45,6 +45,9 @@ public interface ObjTypes {
       if (type == FACE) {
         return new ObjFaceImpl(node);
       }
+      else if (type == FACE_VERTEX) {
+        return new ObjFaceVertexImpl(node);
+      }
       else if (type == GROUP) {
         return new ObjGroupImpl(node);
       }
@@ -59,9 +62,6 @@ public interface ObjTypes {
       }
       else if (type == SMOOTH_SHADING) {
         return new ObjSmoothShadingImpl(node);
-      }
-      else if (type == SMOOTH_SHADING_FLAG) {
-        return new ObjSmoothShadingFlagImpl(node);
       }
       else if (type == TEXTURE_COORDINATES) {
         return new ObjTextureCoordinatesImpl(node);

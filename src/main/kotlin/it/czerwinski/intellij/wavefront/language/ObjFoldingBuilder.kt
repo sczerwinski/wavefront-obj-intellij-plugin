@@ -30,9 +30,9 @@ import it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjObject
 import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinatesIndex
-import it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormalIndex
+import it.czerwinski.intellij.wavefront.language.psi.coordinatesString
 import org.jetbrains.annotations.NonNls
 
 class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
@@ -78,24 +78,18 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     private fun getVertexPlaceholder(element: ObjVertexIndex): String? =
         element.value
-            ?.let { findVertex(element.containingFile, it) }
-            ?.let(this::joinCoordinates)
+            ?.let { findVertex(element.containingFile, it)?.coordinatesString }
             ?: DEFAULT_PLACEHOLDER_TEXT
 
     private fun getTextureCoordinatesPlaceholder(element: ObjTextureCoordinatesIndex): String? =
         element.value
-            ?.let { findTextureCoordinates(element.containingFile, it) }
-            ?.let(this::joinCoordinates)
+            ?.let { findTextureCoordinates(element.containingFile, it)?.coordinatesString }
             ?: DEFAULT_PLACEHOLDER_TEXT
 
     private fun getVertexNormalPlaceholder(element: ObjVertexNormalIndex): String? =
         element.value
-            ?.let { findVertexNormal(element.containingFile, it) }
-            ?.let(this::joinCoordinates)
+            ?.let { findVertexNormal(element.containingFile, it)?.coordinatesString }
             ?: DEFAULT_PLACEHOLDER_TEXT
-
-    private fun joinCoordinates(element: ObjVectorElement): String =
-        element.coordinates.joinToString(prefix = "[", separator = " ", postfix = "]")
 
     override fun isCollapsedByDefault(node: ASTNode): Boolean = node.psi is ObjIndexElement
 

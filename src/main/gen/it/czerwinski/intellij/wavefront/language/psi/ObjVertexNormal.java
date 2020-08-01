@@ -7,6 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface ObjVertexNormal extends ObjVectorElement {
 
+  int getIndex();
+
   @NotNull
   List<Float> getCoordinates();
 

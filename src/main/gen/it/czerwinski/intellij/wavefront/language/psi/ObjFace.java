@@ -8,12 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface ObjFace extends PsiElement {
 
   @NotNull
-  List<ObjTextureCoordinatesIndex> getTextureCoordinatesIndexList();
+  List<ObjFaceVertex> getFaceVertexList();
 
-  @NotNull
-  List<ObjVertexIndex> getVertexIndexList();
-
-  @NotNull
-  List<ObjVertexNormalIndex> getVertexNormalIndexList();
+  @Nullable
+  ObjFaceType getType();
 
 }

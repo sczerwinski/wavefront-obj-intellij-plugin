@@ -16,14 +16,20 @@
 
 package it.czerwinski.intellij.wavefront.language.psi
 
-import com.intellij.psi.PsiElement
+enum class ObjFaceType {
+    TRIANGLE,
+    QUAD,
+    POLYGON;
 
-interface ObjVectorElement : PsiElement {
+    companion object {
+        private const val TRIANGLE_VERTICES_COUNT = 3
+        private const val QUAD_VERTICES_COUNT = 4
 
-    val index: Int
-
-    val coordinates: List<Float?>
+        fun fromVerticesCount(verticesCount: Int): ObjFaceType? = when (verticesCount) {
+            in 0 until TRIANGLE_VERTICES_COUNT -> null
+            TRIANGLE_VERTICES_COUNT -> TRIANGLE
+            QUAD_VERTICES_COUNT -> QUAD
+            else -> POLYGON
+        }
+    }
 }
-
-val ObjVectorElement.coordinatesString: String
-    get() = coordinates.joinToString(prefix = "[", separator = " ", postfix = "]")

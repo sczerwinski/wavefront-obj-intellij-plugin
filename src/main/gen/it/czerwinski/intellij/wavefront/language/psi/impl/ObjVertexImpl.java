@@ -27,6 +27,11 @@ public class ObjVertexImpl extends ASTWrapperPsiElement implements ObjVertex {
   }
 
   @Override
+  public int getIndex() {
+    return ObjPsiImplUtil.getIndex(this);
+  }
+
+  @Override
   @NotNull
   public List<Float> getCoordinates() {
     return ObjPsiImplUtil.getCoordinates(this);

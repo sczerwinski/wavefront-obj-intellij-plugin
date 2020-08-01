@@ -53,22 +53,22 @@ group ::= (GROUP_KEYWORD STRING) + item_* {
 
 vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getCoordinates]
+  methods = [getIndex getCoordinates]
 }
 textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?)  {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getCoordinates]
+  methods = [getIndex getCoordinates]
 }
 vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getCoordinates]
+  methods = [getIndex getCoordinates]
 }
 
-face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*)
+face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*) { methods = [getType] }
 line ::= (LINE_KEYWORD vertexIndex vertexIndex + (vertexIndex)*)
 point ::= (POINT_KEYWORD vertexIndex)
 
-private faceVertex ::=
+faceVertex ::=
   (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex? VERTEX_INDEX_SEPARATOR vertexNormalIndex)
   | (vertexIndex VERTEX_INDEX_SEPARATOR textureCoordinatesIndex)
   | (vertexIndex)
@@ -86,5 +86,7 @@ vertexNormalIndex ::= (INDEX) {
   methods = [getValue]
 }
 
-smoothShading ::= (SMOOTH_SHADING_KEYWORD smoothShadingFlag)
-smoothShadingFlag ::= (FLAG)
+smoothShading ::= (SMOOTH_SHADING_KEYWORD FLAG) {
+  implements = "it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement"
+  methods = [getValue]
+}

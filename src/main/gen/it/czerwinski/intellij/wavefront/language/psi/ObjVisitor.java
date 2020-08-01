@@ -11,6 +11,10 @@ public class ObjVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFaceVertex(@NotNull ObjFaceVertex o) {
+    visitPsiElement(o);
+  }
+
   public void visitGroup(@NotNull ObjGroup o) {
     visitGroupingElement(o);
   }
@@ -28,11 +32,7 @@ public class ObjVisitor extends PsiElementVisitor {
   }
 
   public void visitSmoothShading(@NotNull ObjSmoothShading o) {
-    visitPsiElement(o);
-  }
-
-  public void visitSmoothShadingFlag(@NotNull ObjSmoothShadingFlag o) {
-    visitPsiElement(o);
+    visitFlagElement(o);
   }
 
   public void visitTextureCoordinates(@NotNull ObjTextureCoordinates o) {
@@ -57,6 +57,10 @@ public class ObjVisitor extends PsiElementVisitor {
 
   public void visitVertexNormalIndex(@NotNull ObjVertexNormalIndex o) {
     visitIndexElement(o);
+  }
+
+  public void visitFlagElement(@NotNull ObjFlagElement o) {
+    visitPsiElement(o);
   }
 
   public void visitGroupingElement(@NotNull ObjGroupingElement o) {

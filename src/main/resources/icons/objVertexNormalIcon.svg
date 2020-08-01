@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 16 16">
+    <path style="fill:none;stroke:#304000;stroke-width:2px" d="m 5,11 8,-8"/>
+    <path style="fill:none;stroke:#304000;stroke-width:2px;stroke-linecap:square" d="m 9,3 h 4 v 4"/>
+    <path style="fill:#608000;stroke:#304000;stroke-width:0.5px" d="m 3,7 6,6 -2,2 -6,-6 2,-2 z"/>
+    <path style="fill:none;stroke:#a0f000;stroke-width:1px" d="m 5,11 8,-8"/>
+    <path style="fill:none;stroke:#a0f000;stroke-width:1px;stroke-linecap:square" d="m 9,3 h 4 v 4"/>
+</svg>

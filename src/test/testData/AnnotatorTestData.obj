@@ -1,0 +1,29 @@
+mtllib tetrahedron.mtl
+mtllib <warning descr="Suspicious filename. Material are typically defined in .mtl files.">tetrahedron.txt</warning>
+
+v 1.0 1.0 1.0
+v 2.0 2.0 2.0
+v 3.0 3.0 3.0
+
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+
+vn 0.5 0.5 0.5
+
+usemtl <weak_warning descr="Cannot validate material name (.mtl files not supported yet)">Marble</weak_warning>
+
+f 1 2 3
+f 1 2 <error descr="Unresolved vertex: 4">4</error>
+
+f 1/1 2/2 3/3
+f 1/1 2/2 3/<error descr="Unresolved texture coordinates: 4">4</error>
+
+f 1/1/1 2/2/1 3/3/1
+f 1/1/1 2/2/1 3/3/<error descr="Unresolved vertex normal: 2">2</error>
+
+l 1 2 3
+l 1 2 <error descr="Unresolved vertex: 4">4</error>
+
+p 1
+p <error descr="Unresolved vertex: 4">4</error>

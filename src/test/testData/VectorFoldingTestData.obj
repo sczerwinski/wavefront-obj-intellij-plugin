@@ -1,0 +1,11 @@
+v 1.0 1.0 1.0
+v 2.0 2.0 2.0
+v 3.0 3.0 3.0
+
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+
+vn 0.5 0.5 0.5
+
+f <fold text='[1.0 1.0 1.0]'>1</fold>/<fold text='[0.0 0.0]'>1</fold>/<fold text='[0.5 0.5 0.5]'>1</fold> <fold text='[2.0 2.0 2.0]'>2</fold>/<fold text='[1.0 0.0]'>2</fold>/<fold text='[0.5 0.5 0.5]'>1</fold> <fold text='[3.0 3.0 3.0]'>3</fold>/<fold text='[1.0 1.0]'>3</fold>/<fold text='[0.5 0.5 0.5]'>1</fold>

@@ -39,6 +39,9 @@
         <lang.commenter
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjCommenter"/>
+        <spellchecker.support
+                language="Wavefront OBJ"
+                implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
 
         <!-- Services -->
         <applicationService

@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.language.psi.ObjTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.language.psi.*;
 
-public class ObjObjectImpl extends ASTWrapperPsiElement implements ObjObject {
+public class ObjObjectImpl extends ObjGroupingElementImpl implements ObjObject {
 
   public ObjObjectImpl(@NotNull ASTNode node) {
     super(node);
@@ -78,12 +77,6 @@ public class ObjObjectImpl extends ASTWrapperPsiElement implements ObjObject {
   @NotNull
   public List<ObjVertexNormal> getVertexNormalList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjVertexNormal.class);
-  }
-
-  @Override
-  @Nullable
-  public String getName() {
-    return ObjPsiImplUtil.getName(this);
   }
 
 }

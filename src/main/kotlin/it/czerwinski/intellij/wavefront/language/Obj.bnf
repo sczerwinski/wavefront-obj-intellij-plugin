@@ -44,12 +44,12 @@ private item_ ::= (
 private groupingItem_ ::= (object|group)
 
 object ::= (OBJECT_KEYWORD STRING) + item_* {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjGroupingElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement"
-  methods = [getName]
 }
 group ::= (GROUP_KEYWORD STRING) + item_* {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjGroupingElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement"
-  methods = [getName]
 }
 
 vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) {

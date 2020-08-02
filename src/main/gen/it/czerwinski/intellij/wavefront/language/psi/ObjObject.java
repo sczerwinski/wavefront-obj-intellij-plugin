@@ -34,7 +34,4 @@ public interface ObjObject extends ObjGroupingElement {
   @NotNull
   List<ObjVertexNormal> getVertexNormalList();
 
-  @Nullable
-  String getName();
-
 }

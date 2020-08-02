@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 16 16">
+    <rect style="fill:#403000;stroke:#403000;stroke-width:0.5px" x="1.75" y="1.75" width="12.5" height="12.5"/>
+    <path style="fill:#806000;stroke:none;" d="m 2,2 4,0 0,4 -4,0 0,-4 z m 8,0 4,0 0,4 -4,0 0,-4 z m -4,4 4,0 0,4 -4,0 0,-4 z m -4,4 4,0 0,4 -4,0 0,-4 z m 8,0 4,0 0,4 -4,0 0,-4 z"/>
+    <path style="fill:none;stroke:#f0a000;stroke-width:1px" d="m 3,3 6,6 m -6,0 6,-6"/>
+</svg>

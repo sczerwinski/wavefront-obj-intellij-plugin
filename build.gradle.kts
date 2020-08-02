@@ -75,6 +75,7 @@ tasks {
     withType<JavaCompile> {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
+        sourceSets["main"].java.srcDirs("src/main/gen")
     }
     listOf("compileKotlin", "compileTestKotlin").forEach {
         getByName<KotlinCompile>(it) {

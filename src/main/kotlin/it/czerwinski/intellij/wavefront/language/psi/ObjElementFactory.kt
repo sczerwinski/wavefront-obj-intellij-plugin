@@ -16,6 +16,20 @@
 
 package it.czerwinski.intellij.wavefront.language.psi
 
-import com.intellij.psi.PsiNameIdentifierOwner
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiFileFactory
+import it.czerwinski.intellij.wavefront.language.ObjFileType
 
-interface ObjGroupingElement : PsiNameIdentifierOwner
+object ObjElementFactory {
+
+    fun createObject(project: Project, name: String): ObjObject {
+        val file = createFile(project, text = "o $name")
+        return file.firstChild as ObjObject
+    }
+
+    private fun createFile(project: Project, text: String): ObjFile {
+        val name = "temp.obj"
+        return PsiFileFactory.getInstance(project)
+            .createFileFromText(name, ObjFileType, text) as ObjFile
+    }
+}

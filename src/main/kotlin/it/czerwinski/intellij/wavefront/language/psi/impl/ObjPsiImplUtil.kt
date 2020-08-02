@@ -23,7 +23,6 @@ import it.czerwinski.intellij.wavefront.language.findAllVertices
 import it.czerwinski.intellij.wavefront.language.psi.ObjFace
 import it.czerwinski.intellij.wavefront.language.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement
-import it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
@@ -34,10 +33,6 @@ import it.czerwinski.intellij.wavefront.language.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormal
 
 object ObjPsiImplUtil {
-
-    @JvmStatic
-    fun getName(element: ObjGroupingElement): String? =
-        element.node.findChildByType(ObjTypes.STRING)?.text
 
     @JvmStatic
     fun getIndex(element: ObjVectorElement): Int {

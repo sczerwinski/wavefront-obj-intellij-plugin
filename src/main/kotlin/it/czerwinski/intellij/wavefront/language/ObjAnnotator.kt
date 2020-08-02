@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.language
 
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
@@ -52,10 +53,10 @@ class ObjAnnotator : Annotator {
         } else {
             val vertexElement = findVertex(element.containingFile, index)
             if (vertexElement == null) {
-                holder.createErrorAnnotation(
-                    element,
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
                     WavefrontObjBundle.message("annotation_error_vertexNotFound", index)
-                )
+                ).range(element).create()
             }
         }
     }
@@ -70,10 +71,10 @@ class ObjAnnotator : Annotator {
         } else {
             val textureCoordinatesElement = findTextureCoordinates(element.containingFile, index)
             if (textureCoordinatesElement == null) {
-                holder.createErrorAnnotation(
-                    element,
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
                     WavefrontObjBundle.message("annotation_error_textureCoordinatesNotFound", index)
-                )
+                ).range(element).create()
             }
         }
     }
@@ -88,10 +89,10 @@ class ObjAnnotator : Annotator {
         } else {
             val vertexNormalElement = findVertexNormal(element.containingFile, index)
             if (vertexNormalElement == null) {
-                holder.createErrorAnnotation(
-                    element,
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
                     WavefrontObjBundle.message("annotation_error_vertexNormalNotFound", index)
-                )
+                ).range(element).create()
             }
         }
     }
@@ -100,10 +101,10 @@ class ObjAnnotator : Annotator {
         element.text.toIntOrNull()
 
     private fun AnnotationHolder.createInvalidIndexAnnotation(element: PsiElement) {
-        createErrorAnnotation(
-            element,
+        newAnnotation(
+            HighlightSeverity.ERROR,
             WavefrontObjBundle.message("annotation_error_invalidIndex")
-        )
+        ).range(element).create()
     }
 
     private fun annotateMaterialFileReference(
@@ -113,10 +114,10 @@ class ObjAnnotator : Annotator {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.REFERENCE)
         if (materialFilenameNode != null) {
             if (!materialFilenameNode.text.endsWith(suffix = ".mtl")) {
-                holder.createWarningAnnotation(
-                    materialFilenameNode,
+                holder.newAnnotation(
+                    HighlightSeverity.WARNING,
                     WavefrontObjBundle.message("annotation_warning_mtlFileExtension")
-                )
+                ).range(materialFilenameNode).create()
             }
         }
     }
@@ -127,10 +128,10 @@ class ObjAnnotator : Annotator {
     ) {
         val materialNameNode = element.node.findChildByType(ObjTypes.REFERENCE)
         if (materialNameNode != null) {
-            holder.createWeakWarningAnnotation(
-                materialNameNode,
+            holder.newAnnotation(
+                HighlightSeverity.WEAK_WARNING,
                 WavefrontObjBundle.message("annotation_warning_cannotValidateMaterial")
-            )
+            ).range(materialNameNode).create()
         }
     }
 }

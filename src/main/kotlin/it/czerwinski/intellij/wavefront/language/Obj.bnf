@@ -54,15 +54,15 @@ group ::= (GROUP_KEYWORD STRING) + item_* {
 
 vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getIndex getCoordinates]
+  methods = [getCoordinates]
 }
 textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?)  {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getIndex getCoordinates]
+  methods = [getCoordinates]
 }
 vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getIndex getCoordinates]
+  methods = [getCoordinates]
 }
 
 face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*) { methods = [getType] }

@@ -17,33 +17,16 @@
 package it.czerwinski.intellij.wavefront.language.psi.impl
 
 import com.intellij.psi.tree.TokenSet
-import it.czerwinski.intellij.wavefront.language.findAllTextureCoordinates
-import it.czerwinski.intellij.wavefront.language.findAllVertexNormals
-import it.czerwinski.intellij.wavefront.language.findAllVertices
 import it.czerwinski.intellij.wavefront.language.psi.ObjFace
 import it.czerwinski.intellij.wavefront.language.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
-import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertex
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormal
 
 object ObjPsiImplUtil {
-
-    @JvmStatic
-    fun getIndex(element: ObjVectorElement): Int {
-        val psiFile = element.containingFile
-        return when (element) {
-            is ObjVertex -> findAllVertices(psiFile)
-            is ObjTextureCoordinates -> findAllTextureCoordinates(psiFile)
-            is ObjVertexNormal -> findAllVertexNormals(psiFile)
-            else -> emptyList()
-        }.indexOf(element) + 1
-    }
 
     @JvmStatic
     fun getCoordinates(element: ObjVectorElement): List<Float?> =

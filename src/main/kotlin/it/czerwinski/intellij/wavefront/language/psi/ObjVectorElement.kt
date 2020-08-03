@@ -20,8 +20,6 @@ import com.intellij.psi.PsiElement
 
 interface ObjVectorElement : PsiElement {
 
-    val index: Int
-
     val coordinates: List<Float?>
 }
 

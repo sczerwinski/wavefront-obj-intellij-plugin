@@ -18,12 +18,10 @@
                 extensions="obj"/>
         <lang.parserDefinition
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.ObjParserDefinition"/>
+                implementationClass="it.czerwinski.intellij.wavefront.language.parser.ObjParserDefinition"/>
         <lang.syntaxHighlighter
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjSyntaxHighlighter"/>
-        <colorSettingsPage
-                implementation="it.czerwinski.intellij.wavefront.language.ObjColorSettingsPage"/>
         <annotator
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.language.ObjAnnotator"/>
@@ -42,6 +40,10 @@
         <spellchecker.support
                 language="Wavefront OBJ"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
+
+        <!-- Settings -->
+        <colorSettingsPage
+                implementation="it.czerwinski.intellij.wavefront.settings.ObjColorSettingsPage"/>
 
         <!-- Services -->
         <applicationService

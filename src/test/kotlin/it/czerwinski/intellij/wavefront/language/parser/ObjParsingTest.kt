@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.language
+package it.czerwinski.intellij.wavefront.language.parser
 
 import com.intellij.testFramework.ParsingTestCase
 

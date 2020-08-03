@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.language
+package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
@@ -22,13 +22,17 @@ import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.language.OBJ_FILE_ICON
+import it.czerwinski.intellij.wavefront.language.ObjSyntaxHighlighter
 import javax.swing.Icon
 
 class ObjColorSettingsPage : ColorSettingsPage {
 
-    override fun getIcon(): Icon? = OBJ_FILE_ICON
+    override fun getIcon(): Icon? =
+        OBJ_FILE_ICON
 
-    override fun getHighlighter(): SyntaxHighlighter = ObjSyntaxHighlighter()
+    override fun getHighlighter(): SyntaxHighlighter =
+        ObjSyntaxHighlighter()
 
     override fun getDemoText(): String =
         """

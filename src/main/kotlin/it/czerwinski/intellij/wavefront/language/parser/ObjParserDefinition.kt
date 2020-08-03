@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.language
+package it.czerwinski.intellij.wavefront.language.parser
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
@@ -27,7 +27,8 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import it.czerwinski.intellij.wavefront.language.parser.ObjParser
+import it.czerwinski.intellij.wavefront.language.ObjLanguage
+import it.czerwinski.intellij.wavefront.language.ObjLexerAdapter
 import it.czerwinski.intellij.wavefront.language.psi.ObjFile
 import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
 

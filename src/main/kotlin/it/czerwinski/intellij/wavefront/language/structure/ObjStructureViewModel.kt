@@ -30,8 +30,6 @@ class ObjStructureViewModel(
     override fun getSorters(): Array<Sorter> = Sorter.EMPTY_ARRAY
 
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean = false
-//        element is PsiFile || element is ObjGroupingElement
 
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
-//        element !is PsiFile && element !is ObjGroupingElement
 }

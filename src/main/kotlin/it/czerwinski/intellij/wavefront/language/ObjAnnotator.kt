@@ -51,8 +51,7 @@ class ObjAnnotator : Annotator {
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            val vertexElement = findVertex(element.containingFile, index)
-            if (vertexElement == null) {
+            if (!checkVertexExists(element.containingFile, index)) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message("annotation_error_vertexNotFound", index)
@@ -69,8 +68,7 @@ class ObjAnnotator : Annotator {
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            val textureCoordinatesElement = findTextureCoordinates(element.containingFile, index)
-            if (textureCoordinatesElement == null) {
+            if (!checkTextureCoordinatesExist(element.containingFile, index)) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message("annotation_error_textureCoordinatesNotFound", index)
@@ -87,8 +85,7 @@ class ObjAnnotator : Annotator {
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            val vertexNormalElement = findVertexNormal(element.containingFile, index)
-            if (vertexNormalElement == null) {
+            if (!checkVertexNormalExists(element.containingFile, index)) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message("annotation_error_vertexNormalNotFound", index)

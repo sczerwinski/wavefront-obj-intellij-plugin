@@ -39,12 +39,8 @@ class ObjCodeInsightTest : LightObjCodeInsightFixtureTestCase() {
         myFixture.checkResultByFile("FormatterTestDataExpected.obj")
     }
 
-    fun testVectorFolding() {
-        myFixture.testFolding("$testDataPath/VectorFoldingTestData.obj")
-    }
-
-    fun testObjectFolding() {
-        myFixture.testFolding("$testDataPath/ObjectFoldingTestData.obj")
+    fun testFolding() {
+        myFixture.testFolding("$testDataPath/FoldingTestData.obj")
     }
 
     fun testCommenter() {

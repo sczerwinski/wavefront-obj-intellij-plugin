@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("TooManyFunctions")
-
 package it.czerwinski.intellij.wavefront.language
 
 import com.intellij.lang.ASTNode
@@ -29,39 +27,17 @@ import it.czerwinski.intellij.wavefront.language.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.language.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjObject
-import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinatesIndex
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertexIndex
-import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormalIndex
-import it.czerwinski.intellij.wavefront.language.psi.coordinatesString
 import org.jetbrains.annotations.NonNls
 
 class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> =
-        listOf(
-            buildObjGroupingElements(root),
-            buildObjVertexIndices(root),
-            buildObjTextureCoordinatesIndices(root),
-            buildObjVertexNormalIndices(root)
-        )
-            .flatten()
+        buildObjGroupingElements(root)
             .map { element -> FoldingDescriptor(element.node, element.textRange) }
             .toTypedArray()
 
     private fun buildObjGroupingElements(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java).toList()
-
-    private fun buildObjVertexIndices(root: PsiElement): List<PsiElement> =
-        PsiTreeUtil.findChildrenOfType(root, ObjVertexIndex::class.java)
-            .filter { index -> checkVertexExists(index.containingFile, index.value ?: 0) }
-
-    private fun buildObjTextureCoordinatesIndices(root: PsiElement): List<PsiElement> =
-        PsiTreeUtil.findChildrenOfType(root, ObjTextureCoordinatesIndex::class.java)
-            .filter { index -> checkTextureCoordinatesExist(index.containingFile, index.value ?: 0) }
-
-    private fun buildObjVertexNormalIndices(root: PsiElement): List<PsiElement> =
-        PsiTreeUtil.findChildrenOfType(root, ObjVertexNormalIndex::class.java)
-            .filter { index -> checkVertexNormalExists(index.containingFile, index.value ?: 0) }
 
     override fun getPlaceholderText(node: ASTNode): String? =
         when (val element = node.psi) {
@@ -69,27 +45,8 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
             is ObjObject -> OBJECT_PLACEHOLDER_TEXT_FORMAT.format(element.name)
             is ObjGroup -> GROUP_PLACEHOLDER_TEXT_FORMAT.format(element.name)
 
-            is ObjVertexIndex -> getVertexPlaceholder(element)
-            is ObjTextureCoordinatesIndex -> getTextureCoordinatesPlaceholder(element)
-            is ObjVertexNormalIndex -> getVertexNormalPlaceholder(element)
-
             else -> DEFAULT_PLACEHOLDER_TEXT
         }
-
-    private fun getVertexPlaceholder(element: ObjVertexIndex): String? =
-        element.value
-            ?.let { findVertex(element.containingFile, it)?.coordinatesString }
-            ?: DEFAULT_PLACEHOLDER_TEXT
-
-    private fun getTextureCoordinatesPlaceholder(element: ObjTextureCoordinatesIndex): String? =
-        element.value
-            ?.let { findTextureCoordinates(element.containingFile, it)?.coordinatesString }
-            ?: DEFAULT_PLACEHOLDER_TEXT
-
-    private fun getVertexNormalPlaceholder(element: ObjVertexNormalIndex): String? =
-        element.value
-            ?.let { findVertexNormal(element.containingFile, it)?.coordinatesString }
-            ?: DEFAULT_PLACEHOLDER_TEXT
 
     override fun isCollapsedByDefault(node: ASTNode): Boolean = node.psi is ObjIndexElement
 

@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface ObjSmoothShading extends ObjFlagElement {
 
-  @Nullable
-  Boolean getValue();
-
 }

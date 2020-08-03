@@ -16,23 +16,21 @@
 
 package it.czerwinski.intellij.wavefront.language.psi.impl
 
-import it.czerwinski.intellij.wavefront.language.psi.ObjFace
-import it.czerwinski.intellij.wavefront.language.psi.ObjFaceType
-import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
-import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
+import com.intellij.extapi.psi.ASTWrapperPsiElement
+import com.intellij.lang.ASTNode
+import it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement
 import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
 
-object ObjPsiImplUtil {
+abstract class ObjFlagElementImpl(
+    node: ASTNode
+) : ASTWrapperPsiElement(node), ObjFlagElement {
 
-    @JvmStatic
-    fun getType(element: ObjFace): ObjFaceType? =
-        ObjFaceType.fromVerticesCount(element.faceVertexList.size)
+    private val valueNode get() = node.findChildByType(ObjTypes.FLAG)
 
-    @JvmStatic
-    fun getFilename(element: ObjMaterialFileReference): String? =
-        element.node.findChildByType(ObjTypes.REFERENCE)?.text
-
-    @JvmStatic
-    fun getMaterialName(element: ObjMaterialReference): String? =
-        element.node.findChildByType(ObjTypes.REFERENCE)?.text
+    override val value: Boolean?
+        get() = when (valueNode?.text) {
+            "1" -> true
+            "off" -> false
+            else -> null
+        }
 }

@@ -16,23 +16,18 @@
 
 package it.czerwinski.intellij.wavefront.language.psi.impl
 
-import it.czerwinski.intellij.wavefront.language.psi.ObjFace
-import it.czerwinski.intellij.wavefront.language.psi.ObjFaceType
-import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialFileReference
-import it.czerwinski.intellij.wavefront.language.psi.ObjMaterialReference
+import com.intellij.extapi.psi.ASTWrapperPsiElement
+import com.intellij.lang.ASTNode
+import com.intellij.psi.tree.TokenSet
 import it.czerwinski.intellij.wavefront.language.psi.ObjTypes
+import it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement
 
-object ObjPsiImplUtil {
+abstract class ObjVectorElementImpl(
+    node: ASTNode
+) : ASTWrapperPsiElement(node), ObjVectorElement {
 
-    @JvmStatic
-    fun getType(element: ObjFace): ObjFaceType? =
-        ObjFaceType.fromVerticesCount(element.faceVertexList.size)
+    private val coordinatesNodes get() = node.getChildren(TokenSet.create(ObjTypes.FLOAT))
 
-    @JvmStatic
-    fun getFilename(element: ObjMaterialFileReference): String? =
-        element.node.findChildByType(ObjTypes.REFERENCE)?.text
-
-    @JvmStatic
-    fun getMaterialName(element: ObjMaterialReference): String? =
-        element.node.findChildByType(ObjTypes.REFERENCE)?.text
+    override val coordinates: List<Float?>
+        get() = coordinatesNodes.map { it.text.toFloatOrNull() }
 }

@@ -53,16 +53,16 @@ group ::= (GROUP_KEYWORD STRING) + item_* {
 }
 
 vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjVectorElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getCoordinates]
 }
 textureCoordinates ::= (TEXTURE_COORDINATES_KEYWORD FLOAT FLOAT? FLOAT?)  {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjVectorElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getCoordinates]
 }
 vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjVectorElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjVectorElement"
-  methods = [getCoordinates]
 }
 
 face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*) { methods = [getType] }
@@ -75,21 +75,21 @@ faceVertex ::=
   | (vertexIndex)
 
 vertexIndex ::= (INDEX) {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjIndexElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement"
-  methods = [getValue]
 }
 textureCoordinatesIndex ::= (INDEX) {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjIndexElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement"
-  methods = [getValue]
 }
 vertexNormalIndex ::= (INDEX) {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjIndexElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjIndexElement"
-  methods = [getValue]
 }
 
 smoothShading ::= (SMOOTH_SHADING_KEYWORD FLAG) {
+  mixin = "it.czerwinski.intellij.wavefront.language.psi.impl.ObjFlagElementImpl"
   implements = "it.czerwinski.intellij.wavefront.language.psi.ObjFlagElement"
-  methods = [getValue]
 }
 
 materialFileReference ::= (MATERIAL_FILE_REF_KEYWORD REFERENCE) {

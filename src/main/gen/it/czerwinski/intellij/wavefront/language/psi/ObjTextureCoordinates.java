@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface ObjTextureCoordinates extends ObjVectorElement {
 
-  @NotNull
-  List<Float> getCoordinates();
-
 }

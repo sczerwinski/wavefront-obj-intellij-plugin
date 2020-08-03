@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.language.psi.ObjTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.language.psi.*;
 
-public class ObjSmoothShadingImpl extends ASTWrapperPsiElement implements ObjSmoothShading {
+public class ObjSmoothShadingImpl extends ObjFlagElementImpl implements ObjSmoothShading {
 
   public ObjSmoothShadingImpl(@NotNull ASTNode node) {
     super(node);
@@ -24,12 +23,6 @@ public class ObjSmoothShadingImpl extends ASTWrapperPsiElement implements ObjSmo
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public Boolean getValue() {
-    return ObjPsiImplUtil.getValue(this);
   }
 
 }

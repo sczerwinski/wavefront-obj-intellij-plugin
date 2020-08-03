@@ -88,7 +88,9 @@ object ObjItemPresentationFactory {
         is ObjMaterialReference -> createPresentation(element)
 
         else -> createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message("structure_presentation_error_unknownElement"),
+            errorMessage = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.error.unknownElement"
+            ),
             elementText = element.text
         )
     }
@@ -99,29 +101,39 @@ object ObjItemPresentationFactory {
     )
 
     private fun createPresentation(obj: ObjObject): ItemPresentation = createPresentation(
-        presentableText = obj.name ?: WavefrontObjBundle.message("structure_presentation_object"),
+        presentableText = obj.name ?: WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.object"
+        ),
         icon = OBJ_OBJECT_ICON
     )
 
     private fun createPresentation(group: ObjGroup): ItemPresentation = createPresentation(
-        presentableText = group.name ?: WavefrontObjBundle.message("structure_presentation_group"),
+        presentableText = group.name ?: WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.group"
+        ),
         icon = OBJ_GROUP_ICON
     )
 
     private fun createPresentation(vertex: ObjVertex): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_vertex"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.vertex"
+        ),
         locationString = vertex.coordinatesString,
         icon = OBJ_VERTEX_ICON
     )
 
     private fun createPresentation(textureCoordinates: ObjTextureCoordinates): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_textureCoordinates"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.textureCoordinates"
+        ),
         locationString = textureCoordinates.coordinatesString,
         icon = OBJ_TEXTURE_COORDINATES_ICON
     )
 
     private fun createPresentation(vertexNormal: ObjVertexNormal): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_vertexNormal"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.vertexNormal"
+        ),
         locationString = vertexNormal.coordinatesString,
         icon = OBJ_VERTEX_NORMAL_ICON
     )
@@ -129,11 +141,15 @@ object ObjItemPresentationFactory {
     private fun createPresentation(face: ObjFace): ItemPresentation {
         val faceType = face.type
         return if (faceType == null) createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message("structure_presentation_error_faceType"),
+            errorMessage = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.face.type.error"
+            ),
             elementText = face.text
         )
         else createPresentation(
-            presentableText = WavefrontObjBundle.message("structure_presentation_face"),
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.face"
+            ),
             icon = when (faceType) {
                 ObjFaceType.TRIANGLE -> OBJ_FACE_TRIANGLE_ICON
                 ObjFaceType.QUAD -> OBJ_FACE_QUAD_ICON
@@ -143,22 +159,30 @@ object ObjItemPresentationFactory {
     }
 
     private fun createPresentation(line: ObjLine): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_line"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.line"
+        ),
         icon = OBJ_LINE_ICON
     )
 
     private fun createPresentation(point: ObjPoint): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_point"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.point"
+        ),
         icon = OBJ_POINT_ICON
     )
 
     private fun createPresentation(faceVertex: ObjFaceVertex): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_face_vertex"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.faceVertex"
+        ),
         icon = OBJ_FACE_VERTEX_ICON
     )
 
     private fun createPresentation(vertexIndex: ObjVertexIndex): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_vertex"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.vertex"
+        ),
         locationString = vertexIndex.value.toString(),
         icon = OBJ_VERTEX_ICON
     )
@@ -166,13 +190,17 @@ object ObjItemPresentationFactory {
     private fun createPresentation(
         textureCoordinatesIndex: ObjTextureCoordinatesIndex
     ): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_textureCoordinates"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.textureCoordinates"
+        ),
         locationString = textureCoordinatesIndex.value.toString(),
         icon = OBJ_TEXTURE_COORDINATES_ICON
     )
 
     private fun createPresentation(vertexNormalIndex: ObjVertexNormalIndex): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message("structure_presentation_vertexNormal"),
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.vertexNormal"
+        ),
         locationString = vertexNormalIndex.value.toString(),
         icon = OBJ_VERTEX_NORMAL_ICON
     )
@@ -180,14 +208,18 @@ object ObjItemPresentationFactory {
     private fun createPresentation(smoothShading: ObjSmoothShading): ItemPresentation {
         val value = smoothShading.value
         return if (value == null) createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message("structure_presentation_error_smoothShading"),
+            errorMessage = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.smoothShading.error"
+            ),
             elementText = smoothShading.text
         )
         else createPresentation(
-            presentableText = WavefrontObjBundle.message("structure_presentation_smoothShading"),
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.smoothShading"
+            ),
             locationString = WavefrontObjBundle.message(
-                if (value) "structure_presentation_flagTrue"
-                else "structure_presentation_flagFalse"
+                if (value) "fileTypes.obj.structure.presentation.flag.true"
+                else "fileTypes.obj.structure.presentation.flag.false"
             ),
             icon = if (value) OBJ_SMOOTH_SHADING_ON_ICON else OBJ_SMOOTH_SHADING_OFF_ICON
         )
@@ -195,15 +227,17 @@ object ObjItemPresentationFactory {
 
     private fun createPresentation(materialFileReference: ObjMaterialFileReference): ItemPresentation =
         createPresentation(
-            presentableText = materialFileReference.filename
-                ?: WavefrontObjBundle.message("structure_presentation_materialFile"),
+            presentableText = materialFileReference.filename ?: WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.materialFile"
+            ),
             icon = OBJ_MATERIAL_FILE_ICON
         )
 
     private fun createPresentation(materialReference: ObjMaterialReference): ItemPresentation =
         createPresentation(
-            presentableText = materialReference.materialName
-                ?: WavefrontObjBundle.message("structure_presentation_material"),
+            presentableText = materialReference.materialName ?: WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.material"
+            ),
             icon = OBJ_MATERIAL_ICON
         )
 
@@ -212,7 +246,7 @@ object ObjItemPresentationFactory {
         elementText: String
     ): ItemPresentation = createPresentation(
         presentableText = WavefrontObjBundle.message(
-            "structure_presentation_error",
+            "fileTypes.obj.structure.presentation.error",
             errorMessage
         ),
         locationString = elementText,

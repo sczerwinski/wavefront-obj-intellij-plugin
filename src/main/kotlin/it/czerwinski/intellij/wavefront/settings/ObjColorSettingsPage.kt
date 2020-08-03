@@ -81,36 +81,37 @@ class ObjColorSettingsPage : ColorSettingsPage {
 
     override fun getAttributeDescriptors(): Array<AttributesDescriptor> = arrayOf(
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_keyword"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.keyword"),
             ObjSyntaxHighlighter.ATTR_KEYWORD
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_operator"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.operator"),
             ObjSyntaxHighlighter.ATTR_OPERATOR
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_string"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.string"),
             ObjSyntaxHighlighter.ATTR_STRING
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_number"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.number"),
             ObjSyntaxHighlighter.ATTR_NUMBER
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_reference"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.reference"),
             ObjSyntaxHighlighter.ATTR_REFERENCE
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_comment"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.comment"),
             ObjSyntaxHighlighter.ATTR_COMMENT
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("coloring_attribute_bad_character"),
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.badCharacter"),
             ObjSyntaxHighlighter.ATTR_BAD_CHARACTER
         )
     )
 
     override fun getColorDescriptors(): Array<ColorDescriptor> = ColorDescriptor.EMPTY_ARRAY
 
-    override fun getDisplayName(): String = WavefrontObjBundle.message("objFileTypeName")
+    override fun getDisplayName(): String =
+        WavefrontObjBundle.message("settings.fileTypes.obj.name")
 }

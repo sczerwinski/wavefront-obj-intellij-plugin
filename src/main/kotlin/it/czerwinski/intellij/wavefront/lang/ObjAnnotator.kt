@@ -54,7 +54,10 @@ class ObjAnnotator : Annotator {
             if (!checkVertexExists(element.containingFile, index)) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
-                    WavefrontObjBundle.message("annotation_error_vertexNotFound", index)
+                    WavefrontObjBundle.message(
+                        "fileTypes.obj.annotation.error.vertexNotFound",
+                        index
+                    )
                 ).range(element).create()
             }
         }
@@ -71,7 +74,10 @@ class ObjAnnotator : Annotator {
             if (!checkTextureCoordinatesExist(element.containingFile, index)) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
-                    WavefrontObjBundle.message("annotation_error_textureCoordinatesNotFound", index)
+                    WavefrontObjBundle.message(
+                        "fileTypes.obj.annotation.error.textureCoordinatesNotFound",
+                        index
+                    )
                 ).range(element).create()
             }
         }
@@ -88,7 +94,10 @@ class ObjAnnotator : Annotator {
             if (!checkVertexNormalExists(element.containingFile, index)) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
-                    WavefrontObjBundle.message("annotation_error_vertexNormalNotFound", index)
+                    WavefrontObjBundle.message(
+                        "fileTypes.obj.annotation.error.vertexNormalNotFound",
+                        index
+                    )
                 ).range(element).create()
             }
         }
@@ -100,7 +109,7 @@ class ObjAnnotator : Annotator {
     private fun AnnotationHolder.createInvalidIndexAnnotation(element: PsiElement) {
         newAnnotation(
             HighlightSeverity.ERROR,
-            WavefrontObjBundle.message("annotation_error_invalidIndex")
+            WavefrontObjBundle.message("fileTypes.obj.annotation.error.invalidIndex")
         ).range(element).create()
     }
 
@@ -113,7 +122,9 @@ class ObjAnnotator : Annotator {
             if (!materialFilenameNode.text.endsWith(suffix = ".mtl")) {
                 holder.newAnnotation(
                     HighlightSeverity.WARNING,
-                    WavefrontObjBundle.message("annotation_warning_mtlFileExtension")
+                    WavefrontObjBundle.message(
+                        "fileTypes.obj.annotation.warning.mtlFileExtension"
+                    )
                 ).range(materialFilenameNode).create()
             }
         }
@@ -127,7 +138,9 @@ class ObjAnnotator : Annotator {
         if (materialNameNode != null) {
             holder.newAnnotation(
                 HighlightSeverity.WEAK_WARNING,
-                WavefrontObjBundle.message("annotation_warning_cannotValidateMaterial")
+                WavefrontObjBundle.message(
+                    "fileTypes.obj.annotation.warning.cannotValidateMaterial"
+                )
             ).range(materialNameNode).create()
         }
     }

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>it.czerwinski.intellij.wavefront</id>
-    <name>Wavefront OBJ format</name>
+    <name>Wavefront OBJ</name>
     <vendor>Slawomir Czerwinski</vendor>
 
     <!-- Product and plugin compatibility requirements -->

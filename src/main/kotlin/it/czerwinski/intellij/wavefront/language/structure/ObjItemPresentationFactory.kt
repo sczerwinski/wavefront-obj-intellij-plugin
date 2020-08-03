@@ -39,9 +39,6 @@ import it.czerwinski.intellij.wavefront.language.OBJ_SMOOTH_SHADING_ON_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_TEXTURE_COORDINATES_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_VERTEX_ICON
 import it.czerwinski.intellij.wavefront.language.OBJ_VERTEX_NORMAL_ICON
-import it.czerwinski.intellij.wavefront.language.findTextureCoordinates
-import it.czerwinski.intellij.wavefront.language.findVertex
-import it.czerwinski.intellij.wavefront.language.findVertexNormal
 import it.czerwinski.intellij.wavefront.language.psi.ObjFace
 import it.czerwinski.intellij.wavefront.language.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.language.psi.ObjFaceVertex
@@ -112,28 +109,19 @@ object ObjItemPresentationFactory {
     )
 
     private fun createPresentation(vertex: ObjVertex): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message(
-            "structure_presentation_vertex",
-            vertex.index
-        ),
+        presentableText = WavefrontObjBundle.message("structure_presentation_vertex"),
         locationString = vertex.coordinatesString,
         icon = OBJ_VERTEX_ICON
     )
 
     private fun createPresentation(textureCoordinates: ObjTextureCoordinates): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message(
-            "structure_presentation_textureCoordinates",
-            textureCoordinates.index
-        ),
+        presentableText = WavefrontObjBundle.message("structure_presentation_textureCoordinates"),
         locationString = textureCoordinates.coordinatesString,
         icon = OBJ_TEXTURE_COORDINATES_ICON
     )
 
     private fun createPresentation(vertexNormal: ObjVertexNormal): ItemPresentation = createPresentation(
-        presentableText = WavefrontObjBundle.message(
-            "structure_presentation_vertexNormal",
-            vertexNormal.index
-        ),
+        presentableText = WavefrontObjBundle.message("structure_presentation_vertexNormal"),
         locationString = vertexNormal.coordinatesString,
         icon = OBJ_VERTEX_NORMAL_ICON
     )
@@ -169,35 +157,25 @@ object ObjItemPresentationFactory {
         icon = OBJ_FACE_VERTEX_ICON
     )
 
-    private fun createPresentation(vertexIndex: ObjVertexIndex): ItemPresentation {
-        val vertex = vertexIndex.value
-            ?.let { findVertex(vertexIndex.containingFile, it) }
-        return if (vertex == null) createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message("structure_presentation_error_vertexNotFound"),
-            elementText = vertexIndex.text
-        )
-        else createPresentation(vertex)
-    }
+    private fun createPresentation(vertexIndex: ObjVertexIndex): ItemPresentation = createPresentation(
+        presentableText = WavefrontObjBundle.message("structure_presentation_vertex"),
+        locationString = vertexIndex.value.toString(),
+        icon = OBJ_VERTEX_ICON
+    )
 
-    private fun createPresentation(textureCoordinatesIndex: ObjTextureCoordinatesIndex): ItemPresentation {
-        val textureCoordinates = textureCoordinatesIndex.value
-            ?.let { findTextureCoordinates(textureCoordinatesIndex.containingFile, it) }
-        return if (textureCoordinates == null) createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message("structure_presentation_error_textureCoordinatesNotFound"),
-            elementText = textureCoordinatesIndex.text
-        )
-        else createPresentation(textureCoordinates)
-    }
+    private fun createPresentation(
+        textureCoordinatesIndex: ObjTextureCoordinatesIndex
+    ): ItemPresentation = createPresentation(
+        presentableText = WavefrontObjBundle.message("structure_presentation_textureCoordinates"),
+        locationString = textureCoordinatesIndex.value.toString(),
+        icon = OBJ_TEXTURE_COORDINATES_ICON
+    )
 
-    private fun createPresentation(vertexNormalIndex: ObjVertexNormalIndex): ItemPresentation {
-        val vertexNormal = vertexNormalIndex.value
-            ?.let { findVertexNormal(vertexNormalIndex.containingFile, it) }
-        return if (vertexNormal == null) createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message("structure_presentation_error_vertexNormalNotFound"),
-            elementText = vertexNormalIndex.text
-        )
-        else createPresentation(vertexNormal)
-    }
+    private fun createPresentation(vertexNormalIndex: ObjVertexNormalIndex): ItemPresentation = createPresentation(
+        presentableText = WavefrontObjBundle.message("structure_presentation_vertexNormal"),
+        locationString = vertexNormalIndex.value.toString(),
+        icon = OBJ_VERTEX_NORMAL_ICON
+    )
 
     private fun createPresentation(smoothShading: ObjSmoothShading): ItemPresentation {
         val value = smoothShading.value

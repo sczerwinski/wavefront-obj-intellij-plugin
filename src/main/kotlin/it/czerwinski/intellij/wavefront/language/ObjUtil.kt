@@ -19,34 +19,31 @@
 package it.czerwinski.intellij.wavefront.language
 
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.PsiTreeUtil
+import it.czerwinski.intellij.wavefront.language.psi.ObjGroup
+import it.czerwinski.intellij.wavefront.language.psi.ObjObject
 import it.czerwinski.intellij.wavefront.language.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.language.psi.ObjVertexNormal
-
-fun findAllVertices(file: PsiFile): List<ObjVertex> =
-    PsiTreeUtil.findChildrenOfType(file, ObjVertex::class.java).toList()
-
-fun findVertex(file: PsiFile, index: Int): ObjVertex? =
-    findAllVertices(file).getOrNull(index - 1)
+import it.czerwinski.intellij.wavefront.language.psi.util.countChildrenOfType
+import it.czerwinski.intellij.wavefront.language.psi.util.getChildrenOfType
 
 fun checkVertexExists(file: PsiFile, index: Int): Boolean =
-    findVertex(file, index) != null
+    index in 1..countVertices(file)
 
-fun findAllTextureCoordinates(file: PsiFile): List<ObjTextureCoordinates> =
-    PsiTreeUtil.findChildrenOfType(file, ObjTextureCoordinates::class.java).toList()
-
-fun findTextureCoordinates(file: PsiFile, index: Int): ObjTextureCoordinates? =
-    findAllTextureCoordinates(file).getOrNull(index - 1)
+private fun countVertices(file: PsiFile) =
+    (listOf(file) + file.getChildrenOfType<ObjObject>() + file.getChildrenOfType<ObjGroup>())
+        .sumBy { it.countChildrenOfType<ObjVertex>() }
 
 fun checkTextureCoordinatesExist(file: PsiFile, index: Int): Boolean =
-    findTextureCoordinates(file, index) != null
+    index in 1..countTextureCoordinates(file)
 
-fun findAllVertexNormals(file: PsiFile): List<ObjVertexNormal> =
-    PsiTreeUtil.findChildrenOfType(file, ObjVertexNormal::class.java).toList()
-
-fun findVertexNormal(file: PsiFile, index: Int): ObjVertexNormal? =
-    findAllVertexNormals(file).getOrNull(index - 1)
+private fun countTextureCoordinates(file: PsiFile) =
+    (listOf(file) + file.getChildrenOfType<ObjObject>() + file.getChildrenOfType<ObjGroup>())
+        .sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
 
 fun checkVertexNormalExists(file: PsiFile, index: Int): Boolean =
-    findVertexNormal(file, index) != null
+    index in 1..countVertexNormals(file)
+
+private fun countVertexNormals(file: PsiFile) =
+    (listOf(file) + file.getChildrenOfType<ObjObject>() + file.getChildrenOfType<ObjGroup>())
+        .sumBy { it.countChildrenOfType<ObjVertexNormal>() }

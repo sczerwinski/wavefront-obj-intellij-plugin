@@ -12,31 +12,31 @@
         <!-- OBJ File Type -->
         <fileType
                 name="Wavefront OBJ File"
-                implementationClass="it.czerwinski.intellij.wavefront.language.ObjFileType"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFileType"
                 fieldName="INSTANCE"
                 language="Wavefront OBJ"
                 extensions="obj"/>
         <lang.parserDefinition
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.parser.ObjParserDefinition"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.parser.ObjParserDefinition"/>
         <lang.syntaxHighlighter
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.ObjSyntaxHighlighter"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter"/>
         <annotator
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.ObjAnnotator"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjAnnotator"/>
         <lang.foldingBuilder
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.ObjFoldingBuilder"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFoldingBuilder"/>
         <lang.psiStructureViewFactory
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.structure.ObjStructureViewFactory"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.structure.ObjStructureViewFactory"/>
         <lang.formatter
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.formatting.ObjFormattingModelBuilder"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.ObjFormattingModelBuilder"/>
         <lang.commenter
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.language.ObjCommenter"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjCommenter"/>
         <spellchecker.support
                 language="Wavefront OBJ"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>

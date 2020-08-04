@@ -39,6 +39,8 @@ repositories {
 }
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    api("org.jogamp.jogl:jogl-all-main:2.3.2")
+    api("org.jogamp.gluegen:gluegen-rt-main:2.3.2")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
 }
 

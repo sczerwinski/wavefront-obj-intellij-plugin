@@ -20,26 +20,27 @@ import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorLocation
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.ui.GLPanelWrapper
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import java.beans.PropertyChangeListener
 import javax.swing.JComponent
-import javax.swing.JLabel
-import javax.swing.JPanel
 
 class ObjPreviewFileEditor(
     project: Project,
     virtualFile: VirtualFile
 ) : UserDataHolderBase(), FileEditor {
 
-    private val objFile: ObjFile? =
-        PsiManager.getInstance(project).findFile(virtualFile) as? ObjFile
+    private val component = GLPanelWrapper()
 
-    private val component = JPanel().apply {
-        add(JLabel("3D preview of '${objFile?.name}' will appear here"))
+    init {
+        component.updateObjFile(
+            PsiManager.getInstance(project).findFile(virtualFile) as? ObjFile
+        )
     }
 
     override fun getComponent(): JComponent = component
@@ -61,5 +62,7 @@ class ObjPreviewFileEditor(
 
     override fun getCurrentLocation(): FileEditorLocation? = null
 
-    override fun dispose() = Unit
+    override fun dispose() {
+        Disposer.dispose(component)
+    }
 }

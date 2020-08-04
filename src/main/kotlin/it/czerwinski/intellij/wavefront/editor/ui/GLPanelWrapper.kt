@@ -68,7 +68,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private fun attachJPanel() {
         val canvas = GLJPanel()
         val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
-        presenter = GL2Presenter(background, animator)
+        presenter = GL2Presenter(animator)
         presenter.updateModel(model)
         canvas.addGLEventListener(presenter)
 

@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.ui
 
+import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.jogamp.opengl.GL
 import com.jogamp.opengl.GL2
 import com.jogamp.opengl.GLAnimatorControl
@@ -25,10 +26,8 @@ import it.czerwinski.intellij.wavefront.editor.gl.glClearColor
 import it.czerwinski.intellij.wavefront.editor.gl.glFaces
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
-import java.awt.Color
 
 class GL2Presenter(
-    private val background: Color,
     animator: GLAnimatorControl
 ) : GLPresenter<GL2>,
     GLAnimatorControl by animator,
@@ -43,6 +42,9 @@ class GL2Presenter(
         fov = FOV
     )
 
+    private val background get() =
+        EditorColorsManager.getInstance().globalScheme.defaultBackground
+
     private lateinit var glu: GLU
 
     override fun updateModel(newModel: GLModel?) {
@@ -55,7 +57,6 @@ class GL2Presenter(
     ) = drawable.runInGLContext {
         glu = GLU()
 
-        glClearColor(background)
         glClearDepth(1.0)
 
         glEnable(GL.GL_DEPTH_TEST)
@@ -102,6 +103,7 @@ class GL2Presenter(
     }
 
     override fun display(drawable: GLAutoDrawable?) = drawable.runInGLContext {
+        glClearColor(background)
         glClear(GL2.GL_COLOR_BUFFER_BIT or GL2.GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         glu.gluLookAt(

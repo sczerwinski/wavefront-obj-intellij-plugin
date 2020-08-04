@@ -19,8 +19,7 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.psi.PsiFile
-import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
-import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
+import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
@@ -31,19 +30,19 @@ fun checkVertexExists(file: PsiFile, index: Int): Boolean =
     index in 1..countVertices(file)
 
 private fun countVertices(file: PsiFile) =
-    (listOf(file) + file.getChildrenOfType<ObjObject>() + file.getChildrenOfType<ObjGroup>())
+    (listOf(file) + file.getChildrenOfType<ObjGroupingElement>())
         .sumBy { it.countChildrenOfType<ObjVertex>() }
 
 fun checkTextureCoordinatesExist(file: PsiFile, index: Int): Boolean =
     index in 1..countTextureCoordinates(file)
 
 private fun countTextureCoordinates(file: PsiFile) =
-    (listOf(file) + file.getChildrenOfType<ObjObject>() + file.getChildrenOfType<ObjGroup>())
+    (listOf(file) + file.getChildrenOfType<ObjGroupingElement>())
         .sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
 
 fun checkVertexNormalExists(file: PsiFile, index: Int): Boolean =
     index in 1..countVertexNormals(file)
 
 private fun countVertexNormals(file: PsiFile) =
-    (listOf(file) + file.getChildrenOfType<ObjObject>() + file.getChildrenOfType<ObjGroup>())
+    (listOf(file) + file.getChildrenOfType<ObjGroupingElement>())
         .sumBy { it.countChildrenOfType<ObjVertexNormal>() }

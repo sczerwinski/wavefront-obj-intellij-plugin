@@ -2,6 +2,8 @@
     <id>it.czerwinski.intellij.wavefront</id>
     <name>Wavefront OBJ</name>
     <vendor>Slawomir Czerwinski</vendor>
+    <category>Languages</category>
+    <resource-bundle>messages.WavefrontObjBundle</resource-bundle>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
@@ -61,5 +63,33 @@
                 topic="com.intellij.openapi.project.ProjectManagerListener"/>
 
     </projectListeners>
+
+    <!-- Editor -->
+    <extensions defaultExtensionNs="com.intellij">
+        <fileEditorProvider
+                implementation="it.czerwinski.intellij.wavefront.editor.ObjSplitEditorProvider"/>
+    </extensions>
+
+    <actions>
+        <group
+                id="ObjSplitEditor.Toolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.TextOnlySplitLayoutAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.TextOnlySplitLayoutAction"
+                    icon="AllIcons.General.LayoutEditorOnly">
+            </action>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.TextAndPreviewSplitLayoutAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.TextAndPreviewSplitLayoutAction"
+                    icon="AllIcons.General.LayoutEditorPreview">
+            </action>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.PreviewOnlySplitLayoutAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PreviewOnlySplitLayoutAction"
+                    icon="AllIcons.General.LayoutPreviewOnly">
+            </action>
+        </group>
+    </actions>
 
 </idea-plugin>

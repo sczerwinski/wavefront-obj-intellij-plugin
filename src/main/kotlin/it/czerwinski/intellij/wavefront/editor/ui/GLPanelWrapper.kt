@@ -93,7 +93,9 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     }
 
     override fun dispose() {
-        Disposer.dispose(presenter)
+        if (::presenter.isInitialized) {
+            Disposer.dispose(presenter)
+        }
     }
 
     companion object {

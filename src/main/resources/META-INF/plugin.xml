@@ -46,6 +46,12 @@
         <!-- Settings -->
         <colorSettingsPage
                 implementation="it.czerwinski.intellij.wavefront.settings.ObjColorSettingsPage"/>
+        <applicationService
+                serviceImplementation="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState"/>
+        <applicationConfigurable
+                id="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsConfigurable"
+                groupId="language"
+                instance="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsConfigurable"/>
 
         <!-- Services -->
         <applicationService

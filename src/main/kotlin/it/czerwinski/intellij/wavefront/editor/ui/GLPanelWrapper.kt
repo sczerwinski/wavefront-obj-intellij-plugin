@@ -24,8 +24,11 @@ import com.intellij.openapi.util.Disposer
 import com.jogamp.opengl.awt.GLJPanel
 import com.jogamp.opengl.util.FPSAnimator
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
+import it.czerwinski.intellij.wavefront.editor.model.GLCameraModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModelFactory
+import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import java.awt.BorderLayout
 import javax.swing.JLabel
@@ -53,6 +56,16 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             }
         }
 
+    private var cameraModel: GLCameraModel = GLCameraModelFactory.createDefault()
+        set(value) {
+            field = value
+            invokeLater(modalityState) {
+                if (::presenter.isInitialized) {
+                    presenter.updateCameraModel(value)
+                }
+            }
+        }
+
     init {
         invokeLater(modalityState, ::attachPlaceholder)
     }
@@ -70,6 +83,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
         presenter = GL2Presenter(animator)
         presenter.updateModel(model)
+        presenter.updateCameraModel(cameraModel)
         canvas.addGLEventListener(presenter)
 
         add(canvas, BorderLayout.CENTER)
@@ -85,11 +99,10 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     private fun createModel(objFile: ObjFile?) {
         model = objFile?.let(GLModelFactory::create)
-        if (::presenter.isInitialized) {
-            invokeLater(modalityState) {
-                presenter.updateModel(model)
-            }
-        }
+    }
+
+    fun updateUpVector(upVector: UpVector) {
+        cameraModel = cameraModel.copy(upVector = upVector)
     }
 
     override fun dispose() {

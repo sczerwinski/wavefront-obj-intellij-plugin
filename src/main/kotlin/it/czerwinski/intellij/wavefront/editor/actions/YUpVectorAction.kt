@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.editor.actions
 
-import com.intellij.openapi.Disposable
-import com.jogamp.opengl.GL
-import com.jogamp.opengl.GLAnimatorControl
-import com.jogamp.opengl.GLEventListener
-import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
-import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
-interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
-    fun updateModel(newModel: GLModel?)
-    fun updateCameraModel(newCameraModel: GLCameraModel)
-}
+class YUpVectorAction : UpVectorAction(UpVector.Y_UP)

@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+@file:Suppress("TooManyFunctions")
+
 package it.czerwinski.intellij.wavefront.editor
 
+import com.intellij.openapi.actionSystem.ActionGroup
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.ActionPlaces
+import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorLocation
 import com.intellij.openapi.fileEditor.FileEditorState
@@ -25,6 +31,9 @@ import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
+import it.czerwinski.intellij.wavefront.editor.ui.EditorWithToolbar
 import it.czerwinski.intellij.wavefront.editor.ui.GLPanelWrapper
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import java.beans.PropertyChangeListener
@@ -35,17 +44,49 @@ class ObjPreviewFileEditor(
     virtualFile: VirtualFile
 ) : UserDataHolderBase(), FileEditor {
 
-    private val component = GLPanelWrapper()
+    private val glPanel: GLPanelWrapper by lazy { GLPanelWrapper() }
+
+    private val actionToolbar: ActionToolbar by lazy { createActionToolbar() }
+
+    private val _component: JComponent by lazy { createComponent() }
+
+    var upVector: UpVector = UpVector.Z_UP
+        private set
 
     init {
-        component.updateObjFile(
+        glPanel.updateObjFile(
             PsiManager.getInstance(project).findFile(virtualFile) as? ObjFile
         )
     }
 
-    override fun getComponent(): JComponent = component
+    private fun createActionToolbar(): ActionToolbar {
+        val actionManager = ActionManager.getInstance()
 
-    override fun getPreferredFocusedComponent(): JComponent? = component
+        check(actionManager.isGroup(TOOLBAR_ACTIONS_GROUP_ID)) {
+            "Actions group not found: $TOOLBAR_ACTIONS_GROUP_ID"
+        }
+
+        val group = actionManager.getAction(TOOLBAR_ACTIONS_GROUP_ID) as ActionGroup
+        val toolbar = actionManager.createActionToolbar(
+            ActionPlaces.EDITOR_TOOLBAR,
+            group,
+            true
+        )
+        toolbar.setTargetComponent(glPanel)
+        toolbar.setReservePlaceAutoPopupIcon(false)
+        return toolbar
+    }
+
+    private fun createComponent(): JComponent {
+        return EditorWithToolbar(
+            toolbarComponent = EditorToolbarHeader(rightActionToolbar = actionToolbar),
+            editorComponent = glPanel
+        )
+    }
+
+    override fun getComponent(): JComponent = _component
+
+    override fun getPreferredFocusedComponent(): JComponent? = _component
 
     override fun getName(): String =
         WavefrontObjBundle.message("editor.fileTypes.obj.preview.name")
@@ -63,6 +104,17 @@ class ObjPreviewFileEditor(
     override fun getCurrentLocation(): FileEditorLocation? = null
 
     override fun dispose() {
-        Disposer.dispose(component)
+        Disposer.dispose(glPanel)
+    }
+
+    fun triggerUpVectorChange(upVector: UpVector) {
+        this.upVector = upVector
+        glPanel.updateUpVector(upVector)
+        actionToolbar.updateActionsImmediately()
+        component.repaint()
+    }
+
+    companion object {
+        private const val TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.Toolbar"
     }
 }

@@ -96,6 +96,22 @@
                     icon="AllIcons.General.LayoutPreviewOnly">
             </action>
         </group>
+        <group
+                id="ObjPreviewFileEditor.Toolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
+                    icon="WavefrontObjIcons.X_UP_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.YUpVectorAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.YUpVectorAction"
+                    icon="WavefrontObjIcons.Y_UP_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZUpVectorAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZUpVectorAction"
+                    icon="WavefrontObjIcons.Z_UP_ACTION"/>
+        </group>
     </actions>
 
 </idea-plugin>

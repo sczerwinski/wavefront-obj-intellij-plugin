@@ -23,7 +23,6 @@ import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
-import com.intellij.openapi.actionSystem.impl.ActionToolbarImpl
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorLocation
@@ -37,30 +36,34 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.pom.Navigatable
 import com.intellij.ui.JBSplitter
-import com.intellij.util.ui.JBEmptyBorder
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.wavefront.editor.ui.EditorSplitter
+import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
+import it.czerwinski.intellij.wavefront.editor.ui.EditorWithToolbar
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
-import java.awt.BorderLayout
 import java.beans.PropertyChangeListener
 import javax.swing.JComponent
-import javax.swing.JPanel
 
 class ObjSplitEditor(
-    private val textEditor: TextEditor,
-    private val previewEditor: ObjPreviewFileEditor
+    val textEditor: TextEditor,
+    val previewEditor: ObjPreviewFileEditor
 ) : UserDataHolderBase(), TextEditor {
 
-    private val actionToolbar: ActionToolbar? by lazy { createActionToolbar() }
-    private lateinit var splitter: JBSplitter
+    private val textEditorComponent get() = textEditor.component
+    private val previewEditorComponent get() = previewEditor.component
+
+    private val splitter: JBSplitter by lazy { createSplitter() }
+
+    private val actionToolbar: ActionToolbar by lazy { createActionToolbar() }
+
     private val _component: JComponent by lazy { createComponent() }
 
     var splitEditorLayout: SplitEditorLayout = SplitEditorLayout.SPLIT
         private set
 
     init {
-        textEditor.component.isVisible = splitEditorLayout.isShowingTextEditor
-        previewEditor.component.isVisible = splitEditorLayout.isShowingPreviewEditor
+        updateEditorsVisibility()
 
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
@@ -76,49 +79,45 @@ class ObjSplitEditor(
         )
     }
 
-    private fun createActionToolbar(): ActionToolbar? {
+    private fun createSplitter(): JBSplitter {
+        val splitter = EditorSplitter(
+            vertical = WavefrontObjSettingsState.getInstance()?.isVerticalSplit ?: false
+        )
+        splitter.splitterProportionKey = "ObjSplitEditor.Proportion"
+        splitter.components = textEditorComponent to previewEditorComponent
+        return splitter
+    }
+
+    private fun createActionToolbar(): ActionToolbar {
         val actionManager = ActionManager.getInstance()
 
-        if (actionManager.isGroup(TOOLBAR_ACTIONS_GROUP_ID)) {
-            val group = actionManager.getAction(TOOLBAR_ACTIONS_GROUP_ID) as ActionGroup
-            val toolbar = actionManager.createActionToolbar(
-                ActionPlaces.EDITOR_TOOLBAR,
-                group,
-                true
-            ) as ActionToolbarImpl
-            toolbar.border = JBEmptyBorder(
-                TOOLBAR_VERTICAL_MARGIN,
-                TOOLBAR_HORIZONTAL_MARGIN,
-                TOOLBAR_VERTICAL_MARGIN,
-                TOOLBAR_HORIZONTAL_MARGIN
-            )
-            return toolbar
-        } else {
-            return null
+        check(actionManager.isGroup(TOOLBAR_ACTIONS_GROUP_ID)) {
+            "Actions group not found: $TOOLBAR_ACTIONS_GROUP_ID"
         }
+
+        val group = actionManager.getAction(TOOLBAR_ACTIONS_GROUP_ID) as ActionGroup
+        val toolbar = actionManager.createActionToolbar(
+            ActionPlaces.EDITOR_TOOLBAR,
+            group,
+            true
+        )
+        toolbar.setTargetComponent(splitter)
+        toolbar.setReservePlaceAutoPopupIcon(false)
+        return toolbar
     }
 
     private fun createComponent(): JComponent {
-        splitter = JBSplitter(
-            WavefrontObjSettingsState.getInstance()?.isVerticalSplit ?: false,
-            DEFAULT_SPLIT_PROPORTION,
-            MIN_SPLIT_PROPORTION,
-            MAX_SPLIT_PROPORTION
+        val result = EditorWithToolbar(
+            toolbarComponent = EditorToolbarHeader(rightActionToolbar = actionToolbar),
+            editorComponent = splitter
         )
-        splitter.splitterProportionKey = "ObjSplitEditor.Proportion"
-        splitter.firstComponent = textEditor.component
-        splitter.secondComponent = previewEditor.component
-        splitter.dividerWidth = DIVIDER_WIDTH
-
-        val result = JPanel(BorderLayout())
-
-        actionToolbar?.component?.let { result.add(it, BorderLayout.NORTH) }
-        result.add(splitter, BorderLayout.CENTER)
-
-        textEditor.component.isVisible = splitEditorLayout.isShowingTextEditor
-        previewEditor.component.isVisible = splitEditorLayout.isShowingPreviewEditor
-
+        updateEditorsVisibility()
         return result
+    }
+
+    private fun updateEditorsVisibility() {
+        textEditorComponent.isVisible = splitEditorLayout.isShowingTextEditor
+        previewEditorComponent.isVisible = splitEditorLayout.isShowingPreviewEditor
     }
 
     override fun getComponent(): JComponent = _component
@@ -194,10 +193,8 @@ class ObjSplitEditor(
     fun triggerSplitEditorLayoutChange(splitEditorLayout: SplitEditorLayout) {
         this.splitEditorLayout = splitEditorLayout
 
-        textEditor.component.isVisible = splitEditorLayout.isShowingTextEditor
-        previewEditor.component.isVisible = splitEditorLayout.isShowingPreviewEditor
-
-        actionToolbar?.updateActionsImmediately()
+        updateEditorsVisibility()
+        actionToolbar.updateActionsImmediately()
         component.repaint()
 
         preferredFocusedComponent?.let {
@@ -224,14 +221,7 @@ class ObjSplitEditor(
     }
 
     companion object {
-        private const val DEFAULT_SPLIT_PROPORTION = 0.5f
-        private const val MIN_SPLIT_PROPORTION = 0.15f
-        private const val MAX_SPLIT_PROPORTION = 0.85f
-        private const val DIVIDER_WIDTH = 3
-
         private const val TOOLBAR_ACTIONS_GROUP_ID = "ObjSplitEditor.Toolbar"
-        private const val TOOLBAR_HORIZONTAL_MARGIN = 2
-        private const val TOOLBAR_VERTICAL_MARGIN = 0
 
         val KEY_PARENT_SPLIT_EDITOR: Key<ObjSplitEditor> =
             Key.create("ObjSplitEditor.parentSplitEditor")

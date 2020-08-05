@@ -16,14 +16,17 @@
 
 package it.czerwinski.intellij.wavefront.editor.ui
 
-import com.intellij.openapi.Disposable
-import com.jogamp.opengl.GL
-import com.jogamp.opengl.GLAnimatorControl
-import com.jogamp.opengl.GLEventListener
-import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
-import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import java.awt.BorderLayout
+import javax.swing.JComponent
+import javax.swing.JPanel
 
-interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
-    fun updateModel(newModel: GLModel?)
-    fun updateCameraModel(newCameraModel: GLCameraModel)
+class EditorWithToolbar(
+    toolbarComponent: JComponent,
+    editorComponent: JComponent
+) : JPanel(BorderLayout()) {
+
+    init {
+        add(toolbarComponent, BorderLayout.BEFORE_FIRST_LINE)
+        add(editorComponent, BorderLayout.CENTER)
+    }
 }

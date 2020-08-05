@@ -24,6 +24,7 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.impl.ActionToolbarImpl
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorLocation
 import com.intellij.openapi.fileEditor.FileEditorState
@@ -39,6 +40,7 @@ import com.intellij.ui.JBSplitter
 import com.intellij.util.ui.JBEmptyBorder
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 import java.awt.BorderLayout
 import java.beans.PropertyChangeListener
 import javax.swing.JComponent
@@ -50,6 +52,7 @@ class ObjSplitEditor(
 ) : UserDataHolderBase(), TextEditor {
 
     private val actionToolbar: ActionToolbar? by lazy { createActionToolbar() }
+    private lateinit var splitter: JBSplitter
     private val _component: JComponent by lazy { createComponent() }
 
     var splitEditorLayout: SplitEditorLayout = SplitEditorLayout.SPLIT
@@ -61,6 +64,16 @@ class ObjSplitEditor(
 
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
+
+        ApplicationManager.getApplication().messageBus.connect(this).subscribe(
+            WavefrontObjSettingsState.SettingsChangedListener.TOPIC,
+            object : WavefrontObjSettingsState.SettingsChangedListener {
+                override fun settingsChanged(settings: WavefrontObjSettingsState?) {
+                    splitter.orientation = settings?.isVerticalSplit ?: false
+                    component.repaint()
+                }
+            }
+        )
     }
 
     private fun createActionToolbar(): ActionToolbar? {
@@ -86,8 +99,8 @@ class ObjSplitEditor(
     }
 
     private fun createComponent(): JComponent {
-        val splitter = JBSplitter(
-            false,
+        splitter = JBSplitter(
+            WavefrontObjSettingsState.getInstance()?.isVerticalSplit ?: false,
             DEFAULT_SPLIT_PROPORTION,
             MIN_SPLIT_PROPORTION,
             MAX_SPLIT_PROPORTION

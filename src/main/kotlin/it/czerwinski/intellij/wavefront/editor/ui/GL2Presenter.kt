@@ -33,14 +33,11 @@ class GL2Presenter(
     GLAnimatorControl by animator,
     GLContext<GL2> by GL2Context {
 
+    private var aspect: Float = 1f
+
     private var model: GLModel? = null
 
-    private val cameraModel: GLCameraModel = GLCameraModel(
-        distance = CAMERA_DISTANCE,
-        angle = CAMERA_ANGLE,
-        elevation = CAMERA_ELEVATION,
-        fov = FOV
-    )
+    private var cameraModel: GLCameraModel? = null
 
     private val background get() =
         EditorColorsManager.getInstance().globalScheme.defaultBackground
@@ -49,6 +46,11 @@ class GL2Presenter(
 
     override fun updateModel(newModel: GLModel?) {
         model = newModel
+        resume()
+    }
+
+    override fun updateCameraModel(newCameraModel: GLCameraModel) {
+        cameraModel = newCameraModel
         resume()
     }
 
@@ -87,17 +89,9 @@ class GL2Presenter(
         height: Int
     ) = drawable.runInGLContext {
         if (width == 0 || height == 0) return@runInGLContext
-        val aspect = width.toFloat() / height.toFloat()
-        val fovY = cameraModel.fov / aspect.coerceAtMost(1f)
+        aspect = width.toFloat() / height.toFloat()
 
         glViewport(0, 0, width, height)
-
-        glMatrixMode(GL2.GL_PROJECTION)
-        glLoadIdentity()
-        glu.gluPerspective(fovY, aspect, cameraModel.near, cameraModel.far)
-
-        glMatrixMode(GL2.GL_MODELVIEW)
-        glLoadIdentity()
 
         resume()
     }
@@ -105,14 +99,26 @@ class GL2Presenter(
     override fun display(drawable: GLAutoDrawable?) = drawable.runInGLContext {
         glClearColor(background)
         glClear(GL2.GL_COLOR_BUFFER_BIT or GL2.GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
-        glu.gluLookAt(
-            cameraModel.x, cameraModel.y, cameraModel.z,
-            0f, 0f, 0f,
-            0f, 0f, 1f
-        )
+        updateProjectionMatrix()
+        updateModelViewMatrix()
         model?.let { model -> glFaces(model) }
         pause()
+    }
+
+    private fun GL2.updateProjectionMatrix() {
+        glMatrixMode(GL2.GL_PROJECTION)
+        glLoadIdentity()
+        cameraModel?.run {
+            glu.gluPerspective(fovY(aspect), aspect, near, far)
+        }
+    }
+
+    private fun GL2.updateModelViewMatrix() {
+        glMatrixMode(GL2.GL_MODELVIEW)
+        glLoadIdentity()
+        cameraModel?.run {
+            glu.gluLookAt(x, y, z, CENTER_X, CENTER_Y, CENTER_Z, upX, upY, upZ)
+        }
     }
 
     override fun dispose(drawable: GLAutoDrawable?) = Unit
@@ -122,10 +128,9 @@ class GL2Presenter(
     }
 
     companion object {
-        private const val FOV = 50f
-        private const val CAMERA_DISTANCE = 5f
-        private const val CAMERA_ANGLE = -30f
-        private const val CAMERA_ELEVATION = 30f
+        private const val CENTER_X = 0f
+        private const val CENTER_Y = 0f
+        private const val CENTER_Z = 0f
 
         private val AMBIENT_COLOR = floatArrayOf(.7f, .7f, .7f, 1f)
         private val DIFFUSE_COLOR = floatArrayOf(.9f, .9f, .9f, 1f)
@@ -133,6 +138,6 @@ class GL2Presenter(
         private const val SHININESS = 128f
 
         private val LIGHT_POSITION =
-            floatArrayOf(-CAMERA_DISTANCE, CAMERA_DISTANCE, CAMERA_DISTANCE)
+            floatArrayOf(-10f, 10f, 10f)
     }
 }

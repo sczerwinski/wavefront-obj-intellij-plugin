@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.editor.model
 
-import com.intellij.openapi.Disposable
-import com.jogamp.opengl.GL
-import com.jogamp.opengl.GLAnimatorControl
-import com.jogamp.opengl.GLEventListener
-import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
-import it.czerwinski.intellij.wavefront.editor.model.GLModel
-
-interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
-    fun updateModel(newModel: GLModel?)
-    fun updateCameraModel(newCameraModel: GLCameraModel)
+enum class UpVector(
+    val x: Float,
+    val y: Float,
+    val z: Float
+) {
+    X_UP(x = 1f, y = 0f, z = 0f),
+    Y_UP(x = 0f, y = 1f, z = 0f),
+    Z_UP(x = 0f, y = 0f, z = 1f);
 }

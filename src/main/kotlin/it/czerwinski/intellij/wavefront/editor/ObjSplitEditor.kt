@@ -46,8 +46,8 @@ import java.beans.PropertyChangeListener
 import javax.swing.JComponent
 
 class ObjSplitEditor(
-    private val textEditor: TextEditor,
-    private val previewEditor: ObjPreviewFileEditor
+    val textEditor: TextEditor,
+    val previewEditor: ObjPreviewFileEditor
 ) : UserDataHolderBase(), TextEditor {
 
     private val textEditorComponent get() = textEditor.component

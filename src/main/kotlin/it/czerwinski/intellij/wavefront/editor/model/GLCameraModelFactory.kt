@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.editor.model
 
-import com.intellij.openapi.Disposable
-import com.jogamp.opengl.GL
-import com.jogamp.opengl.GLAnimatorControl
-import com.jogamp.opengl.GLEventListener
-import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
-import it.czerwinski.intellij.wavefront.editor.model.GLModel
+object GLCameraModelFactory {
 
-interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
-    fun updateModel(newModel: GLModel?)
-    fun updateCameraModel(newCameraModel: GLCameraModel)
+    private const val DISTANCE = 5f
+    private const val ANGLE = -30f
+    private const val ELEVATION = 30f
+    private const val FOV = 50f
+
+    fun createDefault(): GLCameraModel = GLCameraModel(
+        distance = DISTANCE,
+        angle = ANGLE,
+        elevation = ELEVATION,
+        fov = FOV,
+        upVector = UpVector.Z_UP
+    )
 }

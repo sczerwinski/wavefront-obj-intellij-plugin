@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package icons;
 
-import com.intellij.openapi.Disposable
-import com.jogamp.opengl.GL
-import com.jogamp.opengl.GLAnimatorControl
-import com.jogamp.opengl.GLEventListener
-import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
-import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import com.intellij.openapi.util.IconLoader;
+import org.jetbrains.annotations.NotNull;
 
-interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
-    fun updateModel(newModel: GLModel?)
-    fun updateCameraModel(newCameraModel: GLCameraModel)
+import javax.swing.*;
+
+public class WavefrontObjIcons {
+
+    @NotNull
+    public static final Icon X_UP_ACTION =
+            IconLoader.getIcon("/icons/editor_actions/xUp.svg");
+
+    @NotNull
+    public static final Icon Y_UP_ACTION =
+            IconLoader.getIcon("/icons/editor_actions/yUp.svg");
+
+    @NotNull
+    public static final Icon Z_UP_ACTION =
+            IconLoader.getIcon("/icons/editor_actions/zUp.svg");
 }

@@ -24,6 +24,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
+import kotlin.math.abs
 
 data class GLModel(
     val vertices: List<ObjVertex>,
@@ -32,9 +33,14 @@ data class GLModel(
     val faces: List<ObjFace>
 ) {
 
-    val triangles = faces.filter { it.type === ObjFaceType.TRIANGLE }
-    val quads = faces.filter { it.type === ObjFaceType.QUAD }
-    val polygons = faces.filter { it.type === ObjFaceType.POLYGON }
+    val size: Float
+        get() = vertices.flatMap { vertex ->
+            vertex.coordinates.filterNotNull().map { abs(it) }
+        }.max() ?: 0f
+
+    val triangles get() = faces.filter { it.type === ObjFaceType.TRIANGLE }
+    val quads get() = faces.filter { it.type === ObjFaceType.QUAD }
+    val polygons get() = faces.filter { it.type === ObjFaceType.POLYGON }
 
     fun vertexAtIndex(
         vertexIndex: ObjVertexIndex

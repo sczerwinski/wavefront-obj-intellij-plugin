@@ -21,7 +21,9 @@ import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.util.Disposer
+import com.jetbrains.rd.util.AtomicReference
 import com.jogamp.opengl.awt.GLJPanel
+import com.jogamp.opengl.math.FloatUtil
 import com.jogamp.opengl.util.FPSAnimator
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
@@ -31,9 +33,13 @@ import it.czerwinski.intellij.wavefront.editor.model.GLModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import java.awt.BorderLayout
+import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
+import java.awt.event.MouseWheelListener
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.SwingConstants
+import javax.swing.event.MouseInputAdapter
 
 class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
@@ -56,15 +62,11 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             }
         }
 
-    private var cameraModel: GLCameraModel = GLCameraModelFactory.createDefault()
-        set(value) {
-            field = value
-            invokeLater(modalityState) {
-                if (::presenter.isInitialized) {
-                    presenter.updateCameraModel(value)
-                }
-            }
-        }
+    private val modelSize: Float
+        get() = (model?.size?.takeUnless { it == 0f }) ?: EMPTY_MODEL_SIZE
+
+    private val cameraModel: AtomicReference<GLCameraModel> =
+        AtomicReference(GLCameraModelFactory.createDefault())
 
     init {
         invokeLater(modalityState, ::attachPlaceholder)
@@ -83,8 +85,13 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
         presenter = GL2Presenter(animator)
         presenter.updateModel(model)
-        presenter.updateCameraModel(cameraModel)
+        presenter.updateCameraModel(cameraModel.get())
         canvas.addGLEventListener(presenter)
+
+        canvas.addMouseWheelListener(ZoomingMouseWheelListener())
+        val panningMouseInputListener = PanningMouseInputListener()
+        canvas.addMouseListener(panningMouseInputListener)
+        canvas.addMouseMotionListener(panningMouseInputListener)
 
         add(canvas, BorderLayout.CENTER)
         remove(placeholder)
@@ -99,10 +106,31 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     private fun createModel(objFile: ObjFile?) {
         model = objFile?.let(GLModelFactory::create)
+        updateCameraModel { oldCameraModel ->
+            oldCameraModel.copy(
+                distance = oldCameraModel.distance.coerceAtLeast(
+                    minimumValue = modelSize * DEFAULT_DISTANCE_FACTOR
+                )
+            )
+        }
+    }
+
+    private fun updateCameraModel(transform: (GLCameraModel) -> GLCameraModel) {
+        cameraModel.getAndUpdate { oldCameraModel ->
+            val newCameraModel = transform(oldCameraModel)
+            invokeLater(modalityState) {
+                if (::presenter.isInitialized) {
+                    presenter.updateCameraModel(cameraModel.get())
+                }
+            }
+            return@getAndUpdate newCameraModel
+        }
     }
 
     fun updateUpVector(upVector: UpVector) {
-        cameraModel = cameraModel.copy(upVector = upVector)
+        updateCameraModel { oldCameraModel ->
+            oldCameraModel.copy(upVector = upVector)
+        }
     }
 
     override fun dispose() {
@@ -111,7 +139,96 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         }
     }
 
+    inner class ZoomingMouseWheelListener : MouseWheelListener {
+
+        override fun mouseWheelMoved(event: MouseWheelEvent?) {
+            val scrollAmount = ZOOM_PRECISION * (event?.wheelRotation ?: 0)
+
+            if (scrollAmount != 0f) {
+                updateCameraModel { oldCameraModel ->
+                    oldCameraModel.zoomed(scrollAmount)
+                }
+            }
+        }
+
+        private fun GLCameraModel.zoomed(zoomAmount: Float): GLCameraModel {
+            val newDistance = distance * FloatUtil.pow(ZOOM_BASE, zoomAmount)
+            return copy(
+                distance = newDistance.coerceIn(
+                    minimumValue = modelSize * MIN_DISTANCE_FACTOR,
+                    maximumValue = modelSize * MAX_DISTANCE_FACTOR
+                )
+            )
+        }
+    }
+
+    inner class PanningMouseInputListener : MouseInputAdapter() {
+
+        private var anchorX: Int? = null
+        private var anchorY: Int? = null
+
+        override fun mousePressed(event: MouseEvent?) {
+            anchorX = event?.x
+            anchorY = event?.y
+        }
+
+        override fun mouseDragged(event: MouseEvent?) {
+            if (event != null) {
+                updatePanning(event.x, event.y)
+            }
+        }
+
+        override fun mouseReleased(event: MouseEvent?) {
+            if (event != null) {
+                updatePanning(event.x, event.y)
+            }
+            mousePressed(null)
+        }
+
+        private fun updatePanning(x: Int, y: Int) {
+            val dx = anchorX?.let { (x - it) * PAN_PRECISION } ?: 0f
+            val dy = anchorY?.let { (y - it) * PAN_PRECISION } ?: 0f
+            anchorX = x
+            anchorY = y
+            if (dx != 0f || dy != 0f) {
+                updateCameraModel { oldCameraModel ->
+                    oldCameraModel.panned(dx, dy)
+                }
+            }
+        }
+
+        private fun GLCameraModel.panned(
+            panningAngle: Float,
+            panningElevation: Float
+        ): GLCameraModel {
+            val newAngle = angle + panningAngle
+            val newElevation = elevation + panningElevation
+            return copy(
+                angle = newAngle % FULL_ANGLE,
+                elevation = newElevation.coerceIn(
+                    minimumValue = MIN_ELEVATION,
+                    maximumValue = MAX_ELEVATION
+                )
+            )
+        }
+    }
+
     companion object {
         private const val DEFAULT_FPS_LIMIT = 10
+
+        private const val EMPTY_MODEL_SIZE = 1f
+
+        private const val MIN_DISTANCE_FACTOR = .1f
+        private const val MAX_DISTANCE_FACTOR = 10f
+        private const val DEFAULT_DISTANCE_FACTOR = 5f
+
+        private const val ZOOM_BASE = 2f
+        private const val ZOOM_PRECISION = .1f
+
+        private const val PAN_PRECISION = .5f
+
+        private const val FULL_ANGLE = 360f
+        private const val MIN_ELEVATION = -89f
+        private const val MAX_ELEVATION = 89f
     }
 }

@@ -17,9 +17,11 @@
 package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.ui.components.JBRadioButton
-import com.intellij.ui.layout.panel
+import com.intellij.util.ui.FormBuilder
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import javax.swing.ButtonGroup
 import javax.swing.JComponent
+import javax.swing.JLabel
 import javax.swing.JPanel
 
 class WavefrontObjSettingsComponent {
@@ -41,14 +43,18 @@ class WavefrontObjSettingsComponent {
         }
 
     init {
-        mainPanel = panel {
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split")) {
-                buttonGroup {
-                    row { horizontalSplitRadioButton() }
-                    row { verticalSplitRadioButton() }
-                }
-            }
-        }
+        val buttonGroup = ButtonGroup()
+        buttonGroup.add(horizontalSplitRadioButton)
+        buttonGroup.add(verticalSplitRadioButton)
+
+        mainPanel = FormBuilder.createFormBuilder()
+            .addComponent(
+                JLabel(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split"))
+            )
+            .addComponent(horizontalSplitRadioButton)
+            .addComponent(verticalSplitRadioButton)
+            .addComponentFillVertically(JPanel(), 0)
+            .panel
     }
 
     fun getPreferredFocusedComponent(): JComponent = horizontalSplitRadioButton

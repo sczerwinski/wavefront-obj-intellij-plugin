@@ -53,22 +53,7 @@
                 groupId="language"
                 instance="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsConfigurable"/>
 
-        <!-- Services -->
-        <applicationService
-                serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjApplicationService"/>
-        <projectService
-                serviceImplementation="it.czerwinski.intellij.wavefront.services.WavefrontObjProjectService"/>
-
     </extensions>
-
-    <projectListeners>
-
-        <!-- Listeners -->
-        <listener
-                class="it.czerwinski.intellij.wavefront.listeners.WavefrontObjProjectManagerListener"
-                topic="com.intellij.openapi.project.ProjectManagerListener"/>
-
-    </projectListeners>
 
     <!-- Editor -->
     <extensions defaultExtensionNs="com.intellij">

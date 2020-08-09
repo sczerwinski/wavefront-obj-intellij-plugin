@@ -19,8 +19,8 @@ package it.czerwinski.intellij.wavefront.settings
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.Configurable
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import javax.swing.JComponent
 import org.jetbrains.annotations.Nls
+import javax.swing.JComponent
 
 class WavefrontObjSettingsConfigurable : Configurable {
 

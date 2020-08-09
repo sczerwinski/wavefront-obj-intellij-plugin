@@ -56,8 +56,32 @@ issue tracker.
 
   Download the
   [latest release][latest_release]
-  and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> >
+  and install it manually using:
+   
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> >
   <kbd>Install plugin from disk...</kbd>
+
+## Usage
+
+### OBJ File Type And Editor
+
+After installation, `.obj` file extension will be automatically associated with Wavefront OBJ
+file format and editor.
+
+#### 3D Preview Controls
+
+- Hold mouse left button on the 3D preview and move to pan the camera.
+- Use mouse wheel to zoom in/out.
+
+### Settings
+
+- To change Wavefront OBJ editor color scheme, use:
+
+  <kbd>Preferences</kbd> > <kbd>Editor</kbd> > <kbd>Color Scheme</kbd> > <kbd>Wavefront OBJ</kbd>
+
+- To change plugin configuration, use
+
+  <kbd>Preferences</kbd> > <kbd>Languages & Frameworks</kbd> > <kbd>Wavefront OBJ</kbd>
 
 ---
 

@@ -5,7 +5,7 @@
 [![Downloads][jb_download_badge]][jb_plugin_page]
 
 <!-- Plugin description -->
-Adds support for [Wavefront OBJ files][wikipedia_obj].
+Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
 
 - OBJ file format syntax
 - 3D preview of OBJ files
@@ -91,6 +91,5 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 [jb_version_badge]: https://img.shields.io/jetbrains/plugin/v/it.czerwinski.intellij.wavefront.svg
 [jb_download_badge]: https://img.shields.io/jetbrains/plugin/d/it.czerwinski.intellij.wavefront.svg
 [jb_plugin_page]: https://plugins.jetbrains.com/plugin/it.czerwinski.intellij.wavefront
-[wikipedia_obj]: https://en.wikipedia.org/wiki/Wavefront_.obj_file
 [latest_release]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/releases/latest
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template

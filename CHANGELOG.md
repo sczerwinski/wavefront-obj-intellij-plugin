@@ -3,6 +3,10 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Fixed
+- Correct link in plugin description
+
+## [0.1.0]
 ### Added
 - Support for Wavefront OBJ files
   - Syntax highlighting

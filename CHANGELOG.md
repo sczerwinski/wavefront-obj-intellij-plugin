@@ -3,6 +3,8 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+
+## [0.1.1]
 ### Fixed
 - Correct link in plugin description
 

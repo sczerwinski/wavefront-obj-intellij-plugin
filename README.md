@@ -88,8 +88,8 @@ file format and editor.
 Plugin based on the [IntelliJ Platform Plugin Template][template].
 
 [build_badge]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/workflows/Build/badge.svg
-[jb_version_badge]: https://img.shields.io/jetbrains/plugin/v/it.czerwinski.intellij.wavefront.svg
-[jb_download_badge]: https://img.shields.io/jetbrains/plugin/d/it.czerwinski.intellij.wavefront.svg
-[jb_plugin_page]: https://plugins.jetbrains.com/plugin/it.czerwinski.intellij.wavefront
+[jb_version_badge]: https://img.shields.io/jetbrains/plugin/v/14843-wavefront-obj
+[jb_download_badge]: https://img.shields.io/jetbrains/plugin/d/14843-wavefront-obj
+[jb_plugin_page]: https://plugins.jetbrains.com/plugin/14843-wavefront-obj
 [latest_release]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/releases/latest
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template

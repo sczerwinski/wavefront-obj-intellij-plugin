@@ -4,14 +4,20 @@
 
 ## [Unreleased]
 ### Changed
-- Using IntelliJ Platform Plugin Template 0.3.3
+- Using IntelliJ Platform Plugin Template 0.3.4
   - Simplify and optimize GitHub Actions
-  - Gradle Wrapper upgrade to v6.6
-  - Dependencies – bump org.jetbrains.kotlin.jvm to 1.4.0
-  - Dependencies – bump io.gitlab.arturbosch.detekt to 1.11.0
+  - Gradle Wrapper upgrade to 6.6.1
+  - Dependencies – upgrade `org.jetbrains.kotlin.jvm` to 1.4.0
+  - Dependencies – upgrade `org.jetbrains.intellij` to 0.4.22
+  - Dependencies – upgrade `org.jetbrains.changelog` to 0.5.0
+  - Dependencies – upgrade `io.gitlab.arturbosch.detekt` to 1.12.0
+  - Dependencies – upgrade `org.jlleitschuh.gradle.ktlint` to 9.4.0
 
 ### Removed
 - Support for IDE v.2019.3
+
+### Fixed
+- GitHub Actions – cache Gradle dependencies and wrapper separately
 
 ## [0.1.1]
 ### Fixed

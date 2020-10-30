@@ -23,6 +23,9 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.util.Disposer
 import com.jetbrains.rd.util.AtomicReference
 import com.jetbrains.rd.util.string.printToString
+import com.jogamp.opengl.GLCapabilities
+import com.jogamp.opengl.GLException
+import com.jogamp.opengl.GLProfile
 import com.jogamp.opengl.awt.GLJPanel
 import com.jogamp.opengl.math.FloatUtil
 import com.jogamp.opengl.util.FPSAnimator
@@ -84,7 +87,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     private fun attachJPanel() {
         try {
-            val canvas = GLJPanel()
+            val canvas = GLJPanel(getGLCapabilities())
             val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
 
             presenter = GL2Presenter(animator, ::showError)
@@ -105,6 +108,24 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         } catch (expected: Throwable) {
             showError(expected)
         }
+    }
+
+    private fun getGLCapabilities(): GLCapabilities {
+        val supportedProfiles = listOf(
+            GLProfile.GL2ES1,
+            GLProfile.GLES1,
+            GLProfile.GL3bc,
+            GLProfile.GL4bc,
+            null,
+        )
+        for (profileName in supportedProfiles) {
+            try {
+                val profile = GLProfile.get(profileName)
+                return GLCapabilities(profile)
+            } catch (ignored: GLException) {
+            }
+        }
+        throw UnsupportedOperationException("Could not find any supported GL profile")
     }
 
     private fun showError(exception: Throwable) {

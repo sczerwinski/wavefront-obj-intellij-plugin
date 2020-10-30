@@ -30,6 +30,7 @@
 - Remove Third-party IntelliJ Plugin Verifier GitHub Action
 
 ### Fixed
+- Handling exceptions in 3D preview
 - GitHub Actions – cache Gradle dependencies and wrapper separately
 - `pluginName` variable name collision with `intellij` closure getter in Gradle configuration
 - Using correct encoding of ellipsis character when initializing 3D preview

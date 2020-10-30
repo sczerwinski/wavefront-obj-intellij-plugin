@@ -94,13 +94,13 @@ class ObjLexer implements FlexLexer {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\7\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\2\1\2\13\1\14\1\15\3\1"+
-    "\1\16\1\17\1\20\1\21\1\22\1\23\1\1\1\24"+
-    "\2\25\1\26\1\27\1\30\10\0\1\31\6\0\1\31"+
+    "\1\10\1\11\1\12\2\1\2\13\1\14\1\15\1\1"+
+    "\2\16\1\17\1\20\1\21\1\22\1\23\1\24\1\1"+
+    "\1\25\2\26\1\27\1\30\1\31\10\0\2\16\4\0"+
     "\1\32\1\33";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[57];
+    int [] result = new int[55];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -130,12 +130,11 @@ class ObjLexer implements FlexLexer {
     "\0\275\0\u0129\0\u0144\0\u015f\0\u017a\0\u0195\0\u01b0\0\u01cb"+
     "\0\u01e6\0\u0201\0\u021c\0\275\0\u0237\0\u0252\0\u026d\0\u0288"+
     "\0\u02a3\0\275\0\u02be\0\u02d9\0\u02f4\0\275\0\275\0\u030f"+
-    "\0\u032a\0\u01e6\0\u0201\0\u0345\0\u0360\0\u037b\0\u0396\0\u03b1"+
-    "\0\u03cc\0\u03e7\0\u0402\0\u041d\0\u0438\0\u0453\0\u0453\0\275"+
-    "\0\275";
+    "\0\u032a\0\u0345\0\u0360\0\u037b\0\u0396\0\u03b1\0\u03cc\0\u03cc"+
+    "\0\u03e7\0\u0402\0\u041d\0\u0438\0\u0453\0\275\0\275";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[57];
+    int [] result = new int[55];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -170,17 +169,18 @@ class ObjLexer implements FlexLexer {
     "\10\0\1\46\1\47\31\0\1\50\40\0\1\51\14\0"+
     "\2\24\1\0\31\24\1\25\1\11\1\24\1\25\26\24"+
     "\1\0\2\11\1\0\1\26\27\0\2\11\1\0\1\27"+
-    "\53\0\1\52\1\53\3\0\1\53\30\0\1\54\27\0"+
-    "\3\53\1\54\1\0\1\53\1\0\2\11\1\0\1\33"+
-    "\53\0\3\35\2\0\1\35\1\0\2\11\1\0\1\36"+
-    "\53\0\3\37\2\0\1\37\1\0\2\11\1\0\1\40"+
-    "\40\0\1\55\20\0\2\43\1\0\31\43\1\44\1\11"+
-    "\1\43\1\44\26\43\1\0\2\11\1\0\1\45\41\0"+
-    "\1\56\42\0\1\57\34\0\3\60\2\0\1\60\12\0"+
-    "\1\42\33\0\1\61\36\0\1\62\36\0\1\63\1\0"+
-    "\3\60\2\0\1\60\20\0\1\64\22\0\1\65\46\0"+
-    "\1\66\3\67\1\0\1\66\1\67\21\0\1\70\24\0"+
-    "\1\71\44\0\3\67\2\0\1\67";
+    "\53\0\1\31\1\32\3\0\1\32\23\0\1\52\4\0"+
+    "\1\53\25\0\1\52\1\0\3\32\1\53\1\0\1\32"+
+    "\1\0\2\11\1\0\1\33\53\0\3\35\2\0\1\35"+
+    "\1\0\2\11\1\0\1\36\53\0\3\37\2\0\1\37"+
+    "\1\0\2\11\1\0\1\40\40\0\1\54\20\0\2\43"+
+    "\1\0\31\43\1\44\1\11\1\43\1\44\26\43\1\0"+
+    "\2\11\1\0\1\45\41\0\1\55\42\0\1\56\33\0"+
+    "\1\57\3\60\1\0\1\57\1\60\25\0\3\61\2\0"+
+    "\1\61\12\0\1\42\33\0\1\62\36\0\1\63\40\0"+
+    "\3\60\2\0\1\60\23\0\1\52\1\0\3\61\2\0"+
+    "\1\61\20\0\1\64\22\0\1\65\43\0\1\66\24\0"+
+    "\1\67\17\0";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[1134];
@@ -222,11 +222,10 @@ class ObjLexer implements FlexLexer {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\7\0\1\11\2\1\2\11\1\1\4\11\12\1\1\11"+
-    "\5\1\1\11\3\1\2\11\10\0\1\1\6\0\1\1"+
-    "\2\11";
+    "\5\1\1\11\3\1\2\11\10\0\2\1\4\0\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[57];
+    int [] result = new int[55];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -605,62 +604,62 @@ class ObjLexer implements FlexLexer {
             // fall through
           case 40: break;
           case 14: 
-            { yybegin(WAITING_FACE_VERTEX); return TokenType.WHITE_SPACE;
+            { yybegin(WAITING_FLOAT); return ObjTypes.FLOAT;
             } 
             // fall through
           case 41: break;
           case 15: 
-            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.VERTEX_INDEX_SEPARATOR;
+            { yybegin(WAITING_FACE_VERTEX); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 42: break;
           case 16: 
-            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.INDEX;
+            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.VERTEX_INDEX_SEPARATOR;
             } 
             // fall through
           case 43: break;
           case 17: 
-            { yybegin(WAITING_VERTEX_INDEX); return TokenType.WHITE_SPACE;
+            { yybegin(WAITING_FACE_VERTEX); return ObjTypes.INDEX;
             } 
             // fall through
           case 44: break;
           case 18: 
-            { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.INDEX;
+            { yybegin(WAITING_VERTEX_INDEX); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 45: break;
           case 19: 
-            { yybegin(WAITING_FLAG); return TokenType.WHITE_SPACE;
+            { yybegin(WAITING_VERTEX_INDEX); return ObjTypes.INDEX;
             } 
             // fall through
           case 46: break;
           case 20: 
-            { yybegin(YYINITIAL); return ObjTypes.FLAG;
+            { yybegin(WAITING_FLAG); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 47: break;
           case 21: 
-            { yybegin(YYINITIAL); return ObjTypes.REFERENCE;
+            { yybegin(YYINITIAL); return ObjTypes.FLAG;
             } 
             // fall through
           case 48: break;
           case 22: 
-            { yybegin(WAITING_REFERENCE); return TokenType.WHITE_SPACE;
+            { yybegin(YYINITIAL); return ObjTypes.REFERENCE;
             } 
             // fall through
           case 49: break;
           case 23: 
-            { yybegin(WAITING_FLOAT); return ObjTypes.TEXTURE_COORDINATES_KEYWORD;
+            { yybegin(WAITING_REFERENCE); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 50: break;
           case 24: 
-            { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_NORMAL_KEYWORD;
+            { yybegin(WAITING_FLOAT); return ObjTypes.TEXTURE_COORDINATES_KEYWORD;
             } 
             // fall through
           case 51: break;
           case 25: 
-            { yybegin(WAITING_FLOAT); return ObjTypes.FLOAT;
+            { yybegin(WAITING_FLOAT); return ObjTypes.VERTEX_NORMAL_KEYWORD;
             } 
             // fall through
           case 52: break;

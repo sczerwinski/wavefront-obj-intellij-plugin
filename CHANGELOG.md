@@ -3,14 +3,18 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+- Fix default to opt-out of bundling Kotlin standard library in plugin distribution
+
 ### Changed
-- Using IntelliJ Platform Plugin Template 0.3.4
+- Using IntelliJ Platform Plugin Template 0.4.0
   - Simplify and optimize GitHub Actions
+  - GitHub Actions: allow releasing plugin even for the base project
   - Gradle Wrapper upgrade to 6.6.1
-  - Dependencies – upgrade `org.jetbrains.kotlin.jvm` to 1.4.0
-  - Dependencies – upgrade `org.jetbrains.intellij` to 0.4.22
-  - Dependencies – upgrade `org.jetbrains.changelog` to 0.5.0
-  - Dependencies – upgrade `io.gitlab.arturbosch.detekt` to 1.12.0
+  - Dependencies – upgrade `org.jetbrains.kotlin.jvm` to 1.4.10
+  - Dependencies – upgrade `org.jetbrains.intellij` to 0.4.26
+  - Dependencies – upgrade `org.jetbrains.changelog` to 0.6.0
+  - Dependencies – upgrade `io.gitlab.arturbosch.detekt` to 1.14.1
   - Dependencies – upgrade `org.jlleitschuh.gradle.ktlint` to 9.4.0
 
 ### Removed
@@ -18,6 +22,7 @@
 
 ### Fixed
 - GitHub Actions – cache Gradle dependencies and wrapper separately
+- `pluginName` variable name collision with `intellij` closure getter in Gradle configuration
 
 ## [0.1.1]
 ### Fixed

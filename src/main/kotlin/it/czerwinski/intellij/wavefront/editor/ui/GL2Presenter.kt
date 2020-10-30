@@ -28,10 +28,11 @@ import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 
 class GL2Presenter(
-    animator: GLAnimatorControl
+    animator: GLAnimatorControl,
+    private val errorCallback: (Throwable) -> Unit
 ) : GLPresenter<GL2>,
     GLAnimatorControl by animator,
-    GLContext<GL2> by GL2Context {
+    GLContext<GL2> {
 
     private var aspect: Float = 1f
 
@@ -46,12 +47,12 @@ class GL2Presenter(
 
     override fun updateModel(newModel: GLModel?) {
         model = newModel
-        resume()
+        if (isStarted && isPaused) resume()
     }
 
     override fun updateCameraModel(newCameraModel: GLCameraModel) {
         cameraModel = newCameraModel
-        resume()
+        if (isStarted && isPaused) resume()
     }
 
     override fun init(
@@ -79,6 +80,14 @@ class GL2Presenter(
         glMaterialfv(GL.GL_FRONT, GL2.GL_DIFFUSE, DIFFUSE_COLOR, 0)
         glMaterialfv(GL.GL_FRONT, GL2.GL_SPECULAR, SPECULAR_COLOR, 0)
         glMaterialf(GL.GL_FRONT, GL2.GL_SHININESS, SHININESS)
+    }
+
+    override fun GLAutoDrawable?.runInGLContext(block: GL2.() -> Unit) {
+        try {
+            with(GL2Context) { runInGLContext(block) }
+        } catch (expected: Throwable) {
+            errorCallback(expected)
+        }
     }
 
     override fun reshape(

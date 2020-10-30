@@ -3,6 +3,13 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Changed
+- Using IntelliJ Platform Plugin Template 0.3.3
+  - Simplify and optimize GitHub Actions
+  - Gradle Wrapper upgrade to v6.6
+  - Dependencies – bump org.jetbrains.kotlin.jvm to 1.4.0
+  - Dependencies – bump io.gitlab.arturbosch.detekt to 1.11.0
+
 ### Removed
 - Support for IDE v.2019.3
 

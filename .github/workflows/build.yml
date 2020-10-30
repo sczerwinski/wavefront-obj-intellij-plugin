@@ -37,17 +37,12 @@ jobs:
     name: Test
     needs: gradleValidation
     runs-on: ubuntu-latest
+    container: gradle:jdk8
     steps:
 
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v2
-
-      # Setup Java 1.8 environment for the next steps
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
 
       # Cache Gradle dependencies
       - name: Setup Cache
@@ -59,17 +54,13 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      # Run detekt
-      - name: Run Linters
+      # Run detekt, ktlint and tests
+      - name: Run Linters and Test
         run: ./gradlew check
 
       # Run verifyPlugin Gradle task
       - name: Verify Plugin
         run: ./gradlew verifyPlugin
-
-      # Run test Gradle task
-      - name: Run Tests
-        run: ./gradlew test
 
   # Build plugin with buildPlugin Gradle task and provide the artifact for the next workflow jobs
   # Requires test job to be passed
@@ -77,6 +68,7 @@ jobs:
     name: Build
     needs: test
     runs-on: ubuntu-latest
+    container: gradle:jdk8
     outputs:
       name: ${{ steps.properties.outputs.name }}
       version: ${{ steps.properties.outputs.version }}
@@ -87,12 +79,6 @@ jobs:
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v2
-
-      # Setup Java 1.8 environment for the next steps
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
 
       # Cache Gradle dependencies
       - name: Setup Cache
@@ -107,10 +93,12 @@ jobs:
       # Set environment variables
       - name: Export Properties
         id: properties
+        shell: bash
         run: |
-          VERSION="$(./gradlew properties --console=plain -q | grep "^version:" | cut -f2- -d ' ')"
-          NAME="$(./gradlew properties --console=plain -q | grep "^name:" | cut -f2- -d ' ')"
-          CHANGELOG=$(./gradlew getChangelog --unreleased --no-header --console=plain -q)
+          PROPERTIES="$(./gradlew properties --console=plain -q)"
+          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
+          NAME="$(echo "$PROPERTIES" | grep "^name:" | cut -f2- -d ' ')"
+          CHANGELOG="$(./gradlew getChangelog --unreleased --no-header --console=plain -q)"
           CHANGELOG="${CHANGELOG//'%'/'%25'}"
           CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
           CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
@@ -169,7 +157,6 @@ jobs:
   # If accepted and published, release workflow would be triggered
   releaseDraft:
     name: Release Draft
-    if: github.ref == 'refs/heads/master'
     needs: [build, verify]
     runs-on: ubuntu-latest
     steps:

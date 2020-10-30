@@ -59,7 +59,7 @@ class ObjSplitEditor(
 
     private val _component: JComponent by lazy { createComponent() }
 
-    var splitEditorLayout: SplitEditorLayout = SplitEditorLayout.SPLIT
+    var splitEditorLayout: SplitEditorLayout = SplitEditorLayout.TEXT
         private set
 
     init {

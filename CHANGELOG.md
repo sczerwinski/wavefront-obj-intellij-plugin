@@ -10,6 +10,7 @@
 - Cache downloaded IDEs used by Plugin Verifier for the verification
 
 ### Changed
+- Set default editor layout to text only
 - Update platform version to `2020.1`
 - GitHub Actions:
   - Simplify and optimize GitHub Actions

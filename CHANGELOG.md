@@ -6,22 +6,28 @@
 ### Added
 - Fix default to opt-out of bundling Kotlin standard library in plugin distribution
 - Introduced `platformPlugins` property in `gradle.properties` for configuring dependencies to bundled/external plugins
+- Integration with [IntelliJ Plugin Verifier](https://github.com/JetBrains/intellij-plugin-verifier) through the [Gradle IntelliJ Plugin](https://github.com/JetBrains/gradle-intellij-plugin#plugin-verifier-dsl) `runPluginVerifier` task
+- Cache downloaded IDEs used by Plugin Verifier for the verification
 
 ### Changed
 - Update platform version to `2020.1`
-- Update IntelliJ Platform Plugin Template to `0.5.1`
+- GitHub Actions:
   - Simplify and optimize GitHub Actions
-  - GitHub Actions: allow releasing plugin even for the base project
-  - Disable "Release Draft" job for pull requests in the "Build" GitHub Actions Workflow
-  - Upgrade Gradle Wrapper to `6.7`
-  - Dependencies – upgrade `org.jetbrains.kotlin.jvm` to `1.4.10`
-  - Dependencies – upgrade `org.jetbrains.intellij` to `0.5.0`
-  - Dependencies – upgrade `org.jetbrains.changelog` to `0.6.2`
-  - Dependencies – upgrade `io.gitlab.arturbosch.detekt` to `1.14.1`
-  - Dependencies – upgrade `org.jlleitschuh.gradle.ktlint` to `9.4.1`
+  - Allow releasing plugin even for the base project
+  - Disable "Release Draft" job for pull requests in the "Build" Workflow
+  - `gradleValidation` update to `gradle/wrapper-validation-action@v1.0.3`
+  - `releaseDraft` update to `actions/download-artifact@v2`
+- Upgrade Gradle Wrapper to `6.7`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.10`
+  - Upgrade `org.jetbrains.intellij` to `0.6.1`
+  - Upgrade `org.jetbrains.changelog` to `0.6.2`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.14.2`
+  - Upgrade `org.jlleitschuh.gradle.ktlint` to `9.4.1`
 
 ### Removed
-- Support for platform version `2019.3`
+- Remove support for platform version `2019.3`
+- Remove Third-party IntelliJ Plugin Verifier GitHub Action
 
 ### Fixed
 - GitHub Actions – cache Gradle dependencies and wrapper separately

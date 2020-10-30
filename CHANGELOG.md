@@ -32,6 +32,7 @@
 ### Fixed
 - GitHub Actions – cache Gradle dependencies and wrapper separately
 - `pluginName` variable name collision with `intellij` closure getter in Gradle configuration
+- Using correct encoding of ellipsis character when initializing 3D preview
 
 ## [0.1.1]
 ### Fixed

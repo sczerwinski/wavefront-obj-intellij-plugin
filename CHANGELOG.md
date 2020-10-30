@@ -3,6 +3,8 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Removed
+- Support for IDE v.2019.3
 
 ## [0.1.1]
 ### Fixed

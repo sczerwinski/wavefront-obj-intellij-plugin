@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
@@ -51,13 +52,13 @@ class ObjAnnotator : Annotator {
             holder.createInvalidIndexAnnotation(element)
         } else {
             if (!checkVertexExists(element.containingFile, index)) {
-                holder.createErrorAnnotation(
-                    element,
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
                         "fileTypes.obj.annotation.error.vertexNotFound",
                         index
                     )
-                )
+                ).range(element).create()
             }
         }
     }
@@ -71,13 +72,13 @@ class ObjAnnotator : Annotator {
             holder.createInvalidIndexAnnotation(element)
         } else {
             if (!checkTextureCoordinatesExist(element.containingFile, index)) {
-                holder.createErrorAnnotation(
-                    element,
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
                         "fileTypes.obj.annotation.error.textureCoordinatesNotFound",
                         index
                     )
-                )
+                ).range(element).create()
             }
         }
     }
@@ -91,13 +92,13 @@ class ObjAnnotator : Annotator {
             holder.createInvalidIndexAnnotation(element)
         } else {
             if (!checkVertexNormalExists(element.containingFile, index)) {
-                holder.createErrorAnnotation(
-                    element,
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
                         "fileTypes.obj.annotation.error.vertexNormalNotFound",
                         index
                     )
-                )
+                ).range(element).create()
             }
         }
     }
@@ -106,10 +107,10 @@ class ObjAnnotator : Annotator {
         element.text.toIntOrNull()
 
     private fun AnnotationHolder.createInvalidIndexAnnotation(element: PsiElement) {
-        createErrorAnnotation(
-            element,
+        newAnnotation(
+            HighlightSeverity.ERROR,
             WavefrontObjBundle.message("fileTypes.obj.annotation.error.invalidIndex")
-        )
+        ).range(element).create()
     }
 
     private fun annotateMaterialFileReference(
@@ -119,12 +120,12 @@ class ObjAnnotator : Annotator {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.REFERENCE)
         if (materialFilenameNode != null) {
             if (!materialFilenameNode.text.endsWith(suffix = ".mtl")) {
-                holder.createWarningAnnotation(
-                    materialFilenameNode,
+                holder.newAnnotation(
+                    HighlightSeverity.WARNING,
                     WavefrontObjBundle.message(
                         "fileTypes.obj.annotation.warning.mtlFileExtension"
                     )
-                )
+                ).range(materialFilenameNode).create()
             }
         }
     }
@@ -135,12 +136,12 @@ class ObjAnnotator : Annotator {
     ) {
         val materialNameNode = element.node.findChildByType(ObjTypes.REFERENCE)
         if (materialNameNode != null) {
-            holder.createWeakWarningAnnotation(
-                materialNameNode,
+            holder.newAnnotation(
+                HighlightSeverity.WEAK_WARNING,
                 WavefrontObjBundle.message(
                     "fileTypes.obj.annotation.warning.cannotValidateMaterial"
                 )
-            )
+            ).range(materialNameNode).create()
         }
     }
 }

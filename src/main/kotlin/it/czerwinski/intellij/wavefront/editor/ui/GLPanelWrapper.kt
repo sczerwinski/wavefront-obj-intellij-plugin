@@ -40,6 +40,7 @@ import java.awt.BorderLayout
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.awt.event.MouseWheelListener
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextArea
@@ -47,6 +48,8 @@ import javax.swing.SwingConstants
 import javax.swing.event.MouseInputAdapter
 
 class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
+
+    private val initPreviewTriggered = AtomicBoolean(false)
 
     private val placeholder = JLabel(
         WavefrontObjBundle.message("editor.fileTypes.obj.preview.placeholder"),
@@ -81,8 +84,12 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         removeAll()
         add(placeholder, BorderLayout.CENTER)
         invalidate()
+    }
 
-        invokeLater(modalityState, ::attachJPanel)
+    fun initPreview() {
+        if (initPreviewTriggered.compareAndSet(false, true)) {
+            invokeLater(modalityState, ::attachJPanel)
+        }
     }
 
     private fun attachJPanel() {

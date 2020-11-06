@@ -118,6 +118,9 @@ class ObjSplitEditor(
     private fun updateEditorsVisibility() {
         textEditorComponent.isVisible = splitEditorLayout.isShowingTextEditor
         previewEditorComponent.isVisible = splitEditorLayout.isShowingPreviewEditor
+        if (splitEditorLayout.isShowingPreviewEditor) {
+            previewEditor.initPreview()
+        }
     }
 
     override fun getComponent(): JComponent = _component

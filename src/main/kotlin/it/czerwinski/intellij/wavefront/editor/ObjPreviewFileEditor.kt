@@ -84,6 +84,10 @@ class ObjPreviewFileEditor(
         )
     }
 
+    fun initPreview() {
+        glPanel.initPreview()
+    }
+
     override fun getComponent(): JComponent = _component
 
     override fun getPreferredFocusedComponent(): JComponent? = _component

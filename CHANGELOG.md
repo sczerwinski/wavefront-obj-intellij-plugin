@@ -3,17 +3,11 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
+- Update `pluginVerifierIdeVersions` in the `gradle.properties` file
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `0.6.2`
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.1.2]
 ### Added
 - Fix default to opt-out of bundling Kotlin standard library in plugin distribution

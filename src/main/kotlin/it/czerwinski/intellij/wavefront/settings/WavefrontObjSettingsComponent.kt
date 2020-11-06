@@ -16,9 +16,11 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.layout.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -26,12 +28,45 @@ class WavefrontObjSettingsComponent {
 
     val mainPanel: JPanel
 
+    private val previewDisabledCheckBox = JBCheckBox(
+        WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.disabled")
+    )
+
+    private val layoutTextRadioButton = JBRadioButton(
+        WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.text")
+    )
+    private val layoutSplitRadioButton = JBRadioButton(
+        WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")
+    )
+    private val layoutPreviewRadioButton = JBRadioButton(
+        WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.preview")
+    )
+
     private val horizontalSplitRadioButton = JBRadioButton(
         WavefrontObjBundle.message("settings.editor.fileTypes.obj.split.horizontal")
     )
     private val verticalSplitRadioButton = JBRadioButton(
         WavefrontObjBundle.message("settings.editor.fileTypes.obj.split.vertical")
     )
+
+    var isPreviewDisabled: Boolean
+        get() = previewDisabledCheckBox.isSelected
+        set(value) {
+            previewDisabledCheckBox.isSelected = value
+        }
+
+    var defaultEditorLayout: SplitEditorLayout
+        get() = when {
+            layoutTextRadioButton.isSelected -> SplitEditorLayout.TEXT
+            layoutSplitRadioButton.isSelected -> SplitEditorLayout.SPLIT
+            layoutPreviewRadioButton.isSelected -> SplitEditorLayout.PREVIEW
+            else -> SplitEditorLayout.TEXT
+        }
+        set(value) {
+            layoutTextRadioButton.isSelected = value == SplitEditorLayout.TEXT
+            layoutSplitRadioButton.isSelected = value == SplitEditorLayout.SPLIT
+            layoutPreviewRadioButton.isSelected = value == SplitEditorLayout.PREVIEW
+        }
 
     var isVerticalSplit: Boolean
         get() = verticalSplitRadioButton.isSelected
@@ -42,6 +77,16 @@ class WavefrontObjSettingsComponent {
 
     init {
         mainPanel = panel {
+            row {
+                previewDisabledCheckBox()
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout")) {
+                buttonGroup {
+                    row { layoutTextRadioButton() }
+                    row { layoutSplitRadioButton() }
+                    row { layoutPreviewRadioButton() }
+                }
+            }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split")) {
                 buttonGroup {
                     row { horizontalSplitRadioButton() }

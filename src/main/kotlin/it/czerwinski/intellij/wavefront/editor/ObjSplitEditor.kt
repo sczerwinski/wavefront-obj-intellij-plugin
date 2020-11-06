@@ -50,6 +50,8 @@ class ObjSplitEditor(
     val previewEditor: ObjPreviewFileEditor
 ) : UserDataHolderBase(), TextEditor {
 
+    private val settingsState get() = WavefrontObjSettingsState.getInstance()
+
     private val textEditorComponent get() = textEditor.component
     private val previewEditorComponent get() = previewEditor.component
 
@@ -59,7 +61,8 @@ class ObjSplitEditor(
 
     private val _component: JComponent by lazy { createComponent() }
 
-    var splitEditorLayout: SplitEditorLayout = SplitEditorLayout.TEXT
+    var splitEditorLayout: SplitEditorLayout =
+        settingsState?.defaultEditorLayout ?: SplitEditorLayout.TEXT
         private set
 
     init {
@@ -72,6 +75,9 @@ class ObjSplitEditor(
             WavefrontObjSettingsState.SettingsChangedListener.TOPIC,
             object : WavefrontObjSettingsState.SettingsChangedListener {
                 override fun settingsChanged(settings: WavefrontObjSettingsState?) {
+                    splitEditorLayout =
+                        if (settings?.isPreviewDisabled == true) SplitEditorLayout.TEXT
+                        else settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
                     splitter.orientation = settings?.isVerticalSplit ?: false
                     component.repaint()
                 }
@@ -80,9 +86,7 @@ class ObjSplitEditor(
     }
 
     private fun createSplitter(): JBSplitter {
-        val splitter = EditorSplitter(
-            vertical = WavefrontObjSettingsState.getInstance()?.isVerticalSplit ?: false
-        )
+        val splitter = EditorSplitter(vertical = settingsState?.isVerticalSplit ?: false)
         splitter.splitterProportionKey = "ObjSplitEditor.Proportion"
         splitter.components = textEditorComponent to previewEditorComponent
         return splitter

@@ -50,6 +50,8 @@ class ObjSplitEditor(
     val previewEditor: ObjPreviewFileEditor
 ) : UserDataHolderBase(), TextEditor {
 
+    private val settingsState get() = WavefrontObjSettingsState.getInstance()
+
     private val textEditorComponent get() = textEditor.component
     private val previewEditorComponent get() = previewEditor.component
 
@@ -59,7 +61,8 @@ class ObjSplitEditor(
 
     private val _component: JComponent by lazy { createComponent() }
 
-    var splitEditorLayout: SplitEditorLayout = SplitEditorLayout.TEXT
+    var splitEditorLayout: SplitEditorLayout =
+        settingsState?.defaultEditorLayout ?: SplitEditorLayout.TEXT
         private set
 
     init {
@@ -73,16 +76,17 @@ class ObjSplitEditor(
             object : WavefrontObjSettingsState.SettingsChangedListener {
                 override fun settingsChanged(settings: WavefrontObjSettingsState?) {
                     splitter.orientation = settings?.isVerticalSplit ?: false
-                    component.repaint()
+                    triggerSplitEditorLayoutChange(
+                        if (settings?.isPreviewDisabled == true) SplitEditorLayout.TEXT
+                        else settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
+                    )
                 }
             }
         )
     }
 
     private fun createSplitter(): JBSplitter {
-        val splitter = EditorSplitter(
-            vertical = WavefrontObjSettingsState.getInstance()?.isVerticalSplit ?: false
-        )
+        val splitter = EditorSplitter(vertical = settingsState?.isVerticalSplit ?: false)
         splitter.splitterProportionKey = "ObjSplitEditor.Proportion"
         splitter.components = textEditorComponent to previewEditorComponent
         return splitter
@@ -118,6 +122,9 @@ class ObjSplitEditor(
     private fun updateEditorsVisibility() {
         textEditorComponent.isVisible = splitEditorLayout.isShowingTextEditor
         previewEditorComponent.isVisible = splitEditorLayout.isShowingPreviewEditor
+        if (splitEditorLayout.isShowingPreviewEditor) {
+            previewEditor.initPreview()
+        }
     }
 
     override fun getComponent(): JComponent = _component

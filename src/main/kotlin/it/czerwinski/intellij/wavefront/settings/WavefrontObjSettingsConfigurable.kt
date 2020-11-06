@@ -19,6 +19,7 @@ package it.czerwinski.intellij.wavefront.settings
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.Configurable
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
 
@@ -40,11 +41,16 @@ class WavefrontObjSettingsConfigurable : Configurable {
 
     override fun isModified(): Boolean {
         val settings = WavefrontObjSettingsState.getInstance()
-        return component.isVerticalSplit != settings?.isVerticalSplit
+        return settings == null ||
+            component.isPreviewDisabled != settings.isPreviewDisabled ||
+            component.defaultEditorLayout != settings.defaultEditorLayout ||
+            component.isVerticalSplit != settings.isVerticalSplit
     }
 
     override fun apply() {
         val settings = WavefrontObjSettingsState.getInstance()
+        settings?.isPreviewDisabled = component.isPreviewDisabled
+        settings?.defaultEditorLayout = component.defaultEditorLayout
         settings?.isVerticalSplit = component.isVerticalSplit
         ApplicationManager.getApplication().messageBus
             .syncPublisher(WavefrontObjSettingsState.SettingsChangedListener.TOPIC)
@@ -53,6 +59,8 @@ class WavefrontObjSettingsConfigurable : Configurable {
 
     override fun reset() {
         val settings = WavefrontObjSettingsState.getInstance()
+        component.isPreviewDisabled = settings?.isPreviewDisabled ?: false
+        component.defaultEditorLayout = settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
         component.isVerticalSplit = settings?.isVerticalSplit ?: false
     }
 }

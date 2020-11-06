@@ -23,12 +23,19 @@ import com.intellij.openapi.components.Storage
 import com.intellij.util.messages.Topic
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Attribute
+import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 
 @State(
     name = "it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState",
     storages = [Storage("wavefrontObjSettings.xml")]
 )
 class WavefrontObjSettingsState : PersistentStateComponent<WavefrontObjSettingsState> {
+
+    @field:Attribute
+    var isPreviewDisabled: Boolean = false
+
+    @field:Attribute
+    var defaultEditorLayout: SplitEditorLayout = SplitEditorLayout.TEXT
 
     @field:Attribute
     var isVerticalSplit: Boolean = false

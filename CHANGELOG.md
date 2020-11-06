@@ -3,10 +3,17 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+- Setting: Disable 3D preview
+- Setting: Default layout
+
 ### Changed
 - Update `pluginVerifierIdeVersions` in the `gradle.properties` file
 - Dependencies:
   - Upgrade `org.jetbrains.intellij` to `0.6.2`
+
+### Fixed
+- Not creating `GLPanel` before 3D preview set to visible
 
 ## [0.1.2]
 ### Added

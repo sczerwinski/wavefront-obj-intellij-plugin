@@ -77,20 +77,30 @@ class WavefrontObjSettingsComponent {
 
     init {
         mainPanel = panel {
-            row {
-                previewDisabledCheckBox()
-            }
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout")) {
-                buttonGroup {
-                    row { layoutTextRadioButton() }
-                    row { layoutSplitRadioButton() }
-                    row { layoutPreviewRadioButton() }
+            titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
+                row {
+                    previewDisabledCheckBox()
                 }
-            }
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split")) {
-                buttonGroup {
-                    row { horizontalSplitRadioButton() }
-                    row { verticalSplitRadioButton() }
+                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout")) {
+                    previewDisabledCheckBox.addChangeListener {
+                        visible = !previewDisabledCheckBox.isSelected
+                        subRowsVisible = visible
+                    }
+                    buttonGroup {
+                        row { layoutTextRadioButton() }
+                        row { layoutSplitRadioButton() }
+                        row { layoutPreviewRadioButton() }
+                    }
+                }
+                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split")) {
+                    previewDisabledCheckBox.addChangeListener {
+                        visible = !previewDisabledCheckBox.isSelected
+                        subRowsVisible = visible
+                    }
+                    buttonGroup {
+                        row { horizontalSplitRadioButton() }
+                        row { verticalSplitRadioButton() }
+                    }
                 }
             }
         }

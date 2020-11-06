@@ -75,11 +75,11 @@ class ObjSplitEditor(
             WavefrontObjSettingsState.SettingsChangedListener.TOPIC,
             object : WavefrontObjSettingsState.SettingsChangedListener {
                 override fun settingsChanged(settings: WavefrontObjSettingsState?) {
-                    splitEditorLayout =
+                    splitter.orientation = settings?.isVerticalSplit ?: false
+                    triggerSplitEditorLayoutChange(
                         if (settings?.isPreviewDisabled == true) SplitEditorLayout.TEXT
                         else settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
-                    splitter.orientation = settings?.isVerticalSplit ?: false
-                    component.repaint()
+                    )
                 }
             }
         )

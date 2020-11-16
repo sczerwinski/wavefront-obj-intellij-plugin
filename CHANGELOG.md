@@ -4,16 +4,12 @@
 
 ## [Unreleased]
 ### Added
+- Predefined Run/Debug Configurations
 
 ### Changed
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `0.6.3`
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.1.3]
 ### Added
 - Setting: Disable 3D preview

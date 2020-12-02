@@ -5,10 +5,12 @@
 ## [Unreleased]
 ### Added
 - Predefined Run/Debug Configurations
+- Support for platform version 203.*
 
 ### Changed
 - Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `0.6.3`
+  - Upgrade `org.jetbrains.intellij` to `0.6.5`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.20`
 
 ## [0.1.3]
 ### Added

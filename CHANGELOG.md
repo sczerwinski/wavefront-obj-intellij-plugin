@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.1.4]
+### Added
 - Predefined Run/Debug Configurations
 - Support for platform version 203.*
 

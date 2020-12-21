@@ -4,16 +4,20 @@
 
 ## [Unreleased]
 ### Added
+- Dependabot integration
+- Show `idea.log` logs of the run IDE in the Run console
 
 ### Changed
-
-### Deprecated
-
-### Removed
+- `build.gradle.kts`: simpler syntax for configuring `KotlinCompile`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.21`
+  - Upgrade `detekt-formatting` to `1.15.0`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.15.0`
+- `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.3`, `2020.3.1`
 
 ### Fixed
+- Return `Supplier<@Nls String>` instead of `String` in `MyBundle.messagePointer`
 
-### Security
 ## [0.1.4]
 ### Added
 - Predefined Run/Debug Configurations

@@ -9,14 +9,17 @@
 
 ### Changed
 - `build.gradle.kts`: simpler syntax for configuring `KotlinCompile`
+- Upgrade Gradle Wrapper to `6.8`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.21-2`
   - Upgrade `detekt-formatting` to `1.15.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.15.0`
+  - Upgrade `org.jetbrains.changelog` to `1.0.1`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.3`, `2020.3.1`
 
 ### Fixed
 - Return `Supplier<@Nls String>` instead of `String` in `MyBundle.messagePointer`
+- GitHub Actions: Use the correct property in the "Upload artifact" step
 
 ## [0.1.4]
 ### Added

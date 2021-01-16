@@ -127,3 +127,7 @@ tasks {
         channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
     }
 }
+
+changelog {
+    version = "${project.version}"
+}

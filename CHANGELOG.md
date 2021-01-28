@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Support for drawing lines in 3D preview
+- Support for drawing points in 3D preview
 
 ## [0.1.5]
 ### Added

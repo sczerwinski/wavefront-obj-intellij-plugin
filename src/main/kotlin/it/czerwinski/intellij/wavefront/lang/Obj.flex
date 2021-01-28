@@ -56,7 +56,7 @@ MATERIAL_FILE_REF_KEYWORD="mtllib"
 MATERIAL_REFERENCE_KEYWORD="usemtl"
 
 STRING=[^\ \t\r\n\f][^\r\n\f]*
-FLOAT="-"?((0)|([1-9][\d]*))("."[\d]+)?(e[+-]?[\d]+)?
+FLOAT="-"?((0)|([1-9][\d]*))("."[\d]+)?([Ee][+-]?[\d]+)?
 INDEX=([1-9][\d]*)
 FLAG=(1)|(off)
 

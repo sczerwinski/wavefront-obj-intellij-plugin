@@ -19,6 +19,7 @@
 
 ### Fixed
 - Update signature of overridden method `RelatedItemLineMarkerProvider.collectNavigationMarkers(...)`
+- Replace deprecated method `FormattingModelBuilder.createModel(...)`
 
 ### Security
 ## [0.3.0]

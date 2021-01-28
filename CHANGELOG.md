@@ -9,6 +9,7 @@
 ### Changed
 - Update platform version to `2020.3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
+- Update Java version to `11`
 
 ### Deprecated
 

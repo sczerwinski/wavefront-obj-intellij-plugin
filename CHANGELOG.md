@@ -18,6 +18,7 @@
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.3`, `2020.3.1`
 
 ### Fixed
+- Allow `float` scientific notation with upper case `E`
 - Return `Supplier<@Nls String>` instead of `String` in `MyBundle.messagePointer`
 - GitHub Actions: Use the correct property in the "Upload artifact" step
 

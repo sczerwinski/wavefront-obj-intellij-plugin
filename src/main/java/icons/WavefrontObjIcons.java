@@ -24,14 +24,15 @@ import javax.swing.*;
 public class WavefrontObjIcons {
 
     @NotNull
-    public static final Icon X_UP_ACTION =
-            IconLoader.getIcon("/icons/editor_actions/xUp.svg");
+    public static final Icon X_UP_ACTION = getIcon("/icons/editor_actions/xUp.svg");
 
     @NotNull
-    public static final Icon Y_UP_ACTION =
-            IconLoader.getIcon("/icons/editor_actions/yUp.svg");
+    public static final Icon Y_UP_ACTION = getIcon("/icons/editor_actions/yUp.svg");
 
     @NotNull
-    public static final Icon Z_UP_ACTION =
-            IconLoader.getIcon("/icons/editor_actions/zUp.svg");
+    public static final Icon Z_UP_ACTION = getIcon("/icons/editor_actions/zUp.svg");
+
+    private static Icon getIcon(String path) {
+        return IconLoader.getIcon(path, WavefrontObjIcons.class);
+    }
 }

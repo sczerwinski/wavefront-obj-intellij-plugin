@@ -22,6 +22,8 @@ import com.jogamp.opengl.GL2
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceVertex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
+import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
@@ -130,4 +132,38 @@ fun GL2.glVertex(vertex: ObjVertex) {
     val w = coordinates.getOrNull(INDEX_W)
     if (w == null) glVertex3f(x, y, z)
     else glVertex4f(x, y, z, w)
+}
+
+fun GL2.glLines(model: GLModel) {
+    for (line in model.lines) {
+        glLine(model, line)
+    }
+}
+
+fun GL2.glLine(model: GLModel, line: ObjLine) {
+    glBegin(GL2.GL_LINE_STRIP)
+    glLineVertices(model, line)
+    glEnd()
+}
+
+fun GL2.glLineVertices(model: GLModel, line: ObjLine) {
+    for (lineVertexIndex in line.vertexIndexList) {
+        glVertex(model, lineVertexIndex)
+    }
+}
+
+fun GL2.glPoints(model: GLModel) {
+    glBegin(GL2.GL_POINTS)
+    glAllPoints(model)
+    glEnd()
+}
+
+fun GL2.glAllPoints(model: GLModel) {
+    for (point in model.points) {
+        glPoint(model, point)
+    }
+}
+
+fun GL2.glPoint(model: GLModel, point: ObjPoint) {
+    glVertex(model, point.vertexIndex)
 }

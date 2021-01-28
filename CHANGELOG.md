@@ -4,16 +4,9 @@
 
 ## [Unreleased]
 ### Added
+- Support for drawing lines in 3D preview
+- Support for drawing points in 3D preview
 
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.1.5]
 ### Added
 - Dependabot integration

@@ -24,6 +24,7 @@ import com.jogamp.opengl.GLAutoDrawable
 import com.jogamp.opengl.glu.GLU
 import it.czerwinski.intellij.wavefront.editor.gl.glClearColor
 import it.czerwinski.intellij.wavefront.editor.gl.glFaces
+import it.czerwinski.intellij.wavefront.editor.gl.glLines
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 
@@ -110,7 +111,12 @@ class GL2Presenter(
         glClear(GL2.GL_COLOR_BUFFER_BIT or GL2.GL_DEPTH_BUFFER_BIT)
         updateProjectionMatrix()
         updateModelViewMatrix()
-        model?.let { model -> glFaces(model) }
+        model?.let { model ->
+            glFaces(model)
+            glDisable(GL2.GL_LIGHTING)
+            glLines(model)
+            glEnable(GL2.GL_LIGHTING)
+        }
         pause()
     }
 

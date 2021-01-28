@@ -20,6 +20,7 @@ import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
+import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
@@ -32,7 +33,8 @@ object GLModelFactory {
             vertices = getAllVertices(objFile),
             textureCoordinates = getAllTextureCoordinates(objFile),
             vertexNormals = getAllVertexNormals(objFile),
-            faces = getAllFaces(objFile)
+            faces = getAllFaces(objFile),
+            lines = getAllLines(objFile)
         )
 
     private fun getAllVertices(file: PsiFile): List<ObjVertex> =
@@ -54,4 +56,9 @@ object GLModelFactory {
         file.getChildrenOfType<ObjFace>() +
             file.getChildrenOfType<ObjGroupingElement>()
                 .flatMap { it.getChildrenOfType<ObjFace>() }
+
+    private fun getAllLines(file: PsiFile): List<ObjLine> =
+        file.getChildrenOfType<ObjLine>() +
+            file.getChildrenOfType<ObjGroupingElement>()
+                .flatMap { it.getChildrenOfType<ObjLine>() }
 }

@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.model
 
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceType
+import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
@@ -30,7 +31,8 @@ data class GLModel(
     val vertices: List<ObjVertex>,
     val textureCoordinates: List<ObjTextureCoordinates>,
     val vertexNormals: List<ObjVertexNormal>,
-    val faces: List<ObjFace>
+    val faces: List<ObjFace>,
+    val lines: List<ObjLine>
 ) {
 
     val size: Float

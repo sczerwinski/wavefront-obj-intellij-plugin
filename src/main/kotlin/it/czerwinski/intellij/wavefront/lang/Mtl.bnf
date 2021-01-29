@@ -31,7 +31,10 @@
 
 mtlFile ::= material*
 
-material ::= (NEW_MATERIAL_KEYWORD MATERIAL_NAME) + item_*
+material ::= (NEW_MATERIAL_KEYWORD MATERIAL_NAME) + item_* {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlMaterialElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement"
+}
 
 private item_ ::= (
   color_ | property_ | map_
@@ -40,37 +43,91 @@ private item_ ::= (
 
 private color_ ::= (ambientColor | diffuseColor | specularColor | transmissionFilter)
 
-ambientColor ::= (AMBIENT_COLOR_KEYWORD FLOAT FLOAT FLOAT)
-diffuseColor ::= (DIFFUSE_COLOR_KEYWORD FLOAT FLOAT FLOAT)
-specularColor ::= (SPECULAR_COLOR_KEYWORD FLOAT FLOAT FLOAT)
-transmissionFilter ::= (TRANSMISSION_FILTER_KEYWORD FLOAT FLOAT FLOAT)
+ambientColor ::= (AMBIENT_COLOR_KEYWORD FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlColorElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement"
+}
+diffuseColor ::= (DIFFUSE_COLOR_KEYWORD FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlColorElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement"
+}
+specularColor ::= (SPECULAR_COLOR_KEYWORD FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlColorElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement"
+}
+transmissionFilter ::= (TRANSMISSION_FILTER_KEYWORD FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlColorElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement"
+}
 
 private property_ ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity)
 
-illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE)
-dissolve ::= (DISSOLVE_KEYWORD FLOAT)
-specularExponent ::= (SPECULAR_EXPONENT_KEYWORD FLOAT)
-sharpness ::= (SHARPNESS_KEYWORD FLOAT)
-opticalDensity ::= (OPTICAL_DENSITY_KEYWORD FLOAT)
+illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlIlluminationValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement"
+}
+dissolve ::= (DISSOLVE_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+specularExponent ::= (SPECULAR_EXPONENT_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+sharpness ::= (SHARPNESS_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+opticalDensity ::= (OPTICAL_DENSITY_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
 
 private map_ ::= (colorMap_ | scalarMap_ | bumpMap | reflectionMap)
 
 private colorMap_ ::= (ambientColorMap | diffuseColorMap | specularColorMap)
 
-ambientColorMap ::= (AMBIENT_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE)
-diffuseColorMap ::= (DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE)
-specularColorMap ::= (SPECULAR_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE)
+ambientColorMap ::= (AMBIENT_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+diffuseColorMap ::= (DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+specularColorMap ::= (SPECULAR_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
 
 private scalarMap_ ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap)
 
-specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
-dissolveMap ::= (DISSOLVE_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
-displacementMap ::= (DISPLACEMENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
-stencilDecalMap ::= (STENCIL_DECAL_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
+specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+dissolveMap ::= (DISSOLVE_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+displacementMap ::= (DISPLACEMENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+stencilDecalMap ::= (STENCIL_DECAL_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
 
-bumpMap ::= (BUMP_MAP_KEYWORD bumpMapOptions_ TEXTURE_FILE)
+bumpMap ::= (BUMP_MAP_KEYWORD bumpMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
 
-reflectionMap ::= (REFLECTION_MAP_KEYWORD reflectionMapOptions_ TEXTURE_FILE)
+reflectionMap ::= (REFLECTION_MAP_KEYWORD reflectionMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
 
 private colorMapOptions_ ::= (
     blendUOption | blendVOption
@@ -96,20 +153,56 @@ private bumpMapOptions_ ::= (
     | valueModifierOption
     | offsetOption | scaleOption | turbulenceOption
     | resolutionOption
-    | bumpMultiplier
+    | bumpMultiplierOption
 )*
 
 private reflectionMapOptions_ ::= reflectionTypeOption + colorMapOptions_
 
-blendUOption ::= (BLEND_U_OPTION_NAME FLAG)
-blendVOption ::= (BLEND_V_OPTION_NAME FLAG)
-colorCorrectionOption ::= (COLOR_CORRECTION_OPTION_NAME FLAG)
-clampOption ::= (CLAMP_OPTION_NAME FLAG)
-scalarChannelOption ::= (SCALAR_CHANNEL_OPTION_NAME SCALAR_CHANNEL)
-valueModifierOption ::= (VALUE_MODIFIER_OPTION_NAME FLOAT FLOAT)
-offsetOption ::= (OFFSET_OPTION_NAME FLOAT FLOAT FLOAT)
-scaleOption ::= (SCALE_OPTION_NAME FLOAT FLOAT FLOAT)
-turbulenceOption ::= (TURBULENCE_OPTION_NAME FLOAT FLOAT FLOAT)
-resolutionOption ::= (RESOLUTION_OPTION_NAME INTEGER)
-bumpMultiplier ::= (BUMP_MULTIPLIER_OPTION_NAME FLOAT)
-reflectionTypeOption ::= (REFLECTION_TYPE_OPTION_NAME REFLECTION_TYPE)
+blendUOption ::= (BLEND_U_OPTION_NAME FLAG) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFlagValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFlagValueElement"
+}
+blendVOption ::= (BLEND_V_OPTION_NAME FLAG) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFlagValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFlagValueElement"
+}
+colorCorrectionOption ::= (COLOR_CORRECTION_OPTION_NAME FLAG) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFlagValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFlagValueElement"
+}
+clampOption ::= (CLAMP_OPTION_NAME FLAG) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFlagValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFlagValueElement"
+}
+scalarChannelOption ::= (SCALAR_CHANNEL_OPTION_NAME SCALAR_CHANNEL) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlScalarChannelValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannelValueElement"
+}
+valueModifierOption ::= (VALUE_MODIFIER_OPTION_NAME FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatVectorValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatVectorValueElement"
+}
+offsetOption ::= (OFFSET_OPTION_NAME FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatVectorValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatVectorValueElement"
+}
+scaleOption ::= (SCALE_OPTION_NAME FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatVectorValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatVectorValueElement"
+}
+turbulenceOption ::= (TURBULENCE_OPTION_NAME FLOAT FLOAT FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatVectorValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatVectorValueElement"
+}
+resolutionOption ::= (RESOLUTION_OPTION_NAME INTEGER) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlIntegerValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlIntegerValueElement"
+}
+bumpMultiplierOption ::= (BUMP_MULTIPLIER_OPTION_NAME FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+reflectionTypeOption ::= (REFLECTION_TYPE_OPTION_NAME REFLECTION_TYPE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlReflectionTypeValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTypeValueElement"
+}

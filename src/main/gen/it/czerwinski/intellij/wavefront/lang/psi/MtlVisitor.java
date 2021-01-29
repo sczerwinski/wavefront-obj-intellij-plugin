@@ -8,126 +8,166 @@ import com.intellij.psi.PsiElement;
 public class MtlVisitor extends PsiElementVisitor {
 
   public void visitAmbientColor(@NotNull MtlAmbientColor o) {
-    visitPsiElement(o);
+    visitColorElement(o);
   }
 
   public void visitAmbientColorMap(@NotNull MtlAmbientColorMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitBlendUOption(@NotNull MtlBlendUOption o) {
-    visitPsiElement(o);
+    visitFlagValueElement(o);
   }
 
   public void visitBlendVOption(@NotNull MtlBlendVOption o) {
-    visitPsiElement(o);
+    visitFlagValueElement(o);
   }
 
   public void visitBumpMap(@NotNull MtlBumpMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
-  public void visitBumpMultiplier(@NotNull MtlBumpMultiplier o) {
-    visitPsiElement(o);
+  public void visitBumpMultiplierOption(@NotNull MtlBumpMultiplierOption o) {
+    visitFloatValueElement(o);
   }
 
   public void visitClampOption(@NotNull MtlClampOption o) {
-    visitPsiElement(o);
+    visitFlagValueElement(o);
   }
 
   public void visitColorCorrectionOption(@NotNull MtlColorCorrectionOption o) {
-    visitPsiElement(o);
+    visitFlagValueElement(o);
   }
 
   public void visitDiffuseColor(@NotNull MtlDiffuseColor o) {
-    visitPsiElement(o);
+    visitColorElement(o);
   }
 
   public void visitDiffuseColorMap(@NotNull MtlDiffuseColorMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitDisplacementMap(@NotNull MtlDisplacementMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitDissolve(@NotNull MtlDissolve o) {
-    visitPsiElement(o);
+    visitFloatValueElement(o);
   }
 
   public void visitDissolveMap(@NotNull MtlDissolveMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitIllumination(@NotNull MtlIllumination o) {
-    visitPsiElement(o);
+    visitIlluminationValueElement(o);
   }
 
   public void visitMaterial(@NotNull MtlMaterial o) {
-    visitPsiElement(o);
+    visitMaterialElement(o);
   }
 
   public void visitOffsetOption(@NotNull MtlOffsetOption o) {
-    visitPsiElement(o);
+    visitFloatVectorValueElement(o);
   }
 
   public void visitOpticalDensity(@NotNull MtlOpticalDensity o) {
-    visitPsiElement(o);
+    visitFloatValueElement(o);
   }
 
   public void visitReflectionMap(@NotNull MtlReflectionMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitReflectionTypeOption(@NotNull MtlReflectionTypeOption o) {
-    visitPsiElement(o);
+    visitReflectionTypeValueElement(o);
   }
 
   public void visitResolutionOption(@NotNull MtlResolutionOption o) {
-    visitPsiElement(o);
+    visitIntegerValueElement(o);
   }
 
   public void visitScalarChannelOption(@NotNull MtlScalarChannelOption o) {
-    visitPsiElement(o);
+    visitScalarChannelValueElement(o);
   }
 
   public void visitScaleOption(@NotNull MtlScaleOption o) {
-    visitPsiElement(o);
+    visitFloatVectorValueElement(o);
   }
 
   public void visitSharpness(@NotNull MtlSharpness o) {
-    visitPsiElement(o);
+    visitFloatValueElement(o);
   }
 
   public void visitSpecularColor(@NotNull MtlSpecularColor o) {
-    visitPsiElement(o);
+    visitColorElement(o);
   }
 
   public void visitSpecularColorMap(@NotNull MtlSpecularColorMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitSpecularExponent(@NotNull MtlSpecularExponent o) {
-    visitPsiElement(o);
+    visitFloatValueElement(o);
   }
 
   public void visitSpecularExponentMap(@NotNull MtlSpecularExponentMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitStencilDecalMap(@NotNull MtlStencilDecalMap o) {
-    visitPsiElement(o);
+    visitTextureElement(o);
   }
 
   public void visitTransmissionFilter(@NotNull MtlTransmissionFilter o) {
-    visitPsiElement(o);
+    visitColorElement(o);
   }
 
   public void visitTurbulenceOption(@NotNull MtlTurbulenceOption o) {
-    visitPsiElement(o);
+    visitFloatVectorValueElement(o);
   }
 
   public void visitValueModifierOption(@NotNull MtlValueModifierOption o) {
+    visitFloatVectorValueElement(o);
+  }
+
+  public void visitColorElement(@NotNull MtlColorElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFlagValueElement(@NotNull MtlFlagValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFloatValueElement(@NotNull MtlFloatValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFloatVectorValueElement(@NotNull MtlFloatVectorValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIlluminationValueElement(@NotNull MtlIlluminationValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIntegerValueElement(@NotNull MtlIntegerValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMaterialElement(@NotNull MtlMaterialElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReflectionTypeValueElement(@NotNull MtlReflectionTypeValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitScalarChannelValueElement(@NotNull MtlScalarChannelValueElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTextureElement(@NotNull MtlTextureElement o) {
     visitPsiElement(o);
   }
 

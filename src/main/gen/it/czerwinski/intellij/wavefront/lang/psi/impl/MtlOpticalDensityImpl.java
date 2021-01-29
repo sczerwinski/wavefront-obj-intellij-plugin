@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.MtlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
 
-public class MtlOpticalDensityImpl extends ASTWrapperPsiElement implements MtlOpticalDensity {
+public class MtlOpticalDensityImpl extends MtlFloatValueElementImpl implements MtlOpticalDensity {
 
   public MtlOpticalDensityImpl(@NotNull ASTNode node) {
     super(node);

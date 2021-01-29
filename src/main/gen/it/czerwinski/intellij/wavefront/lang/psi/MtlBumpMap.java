@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MtlBumpMap extends PsiElement {
+public interface MtlBumpMap extends MtlTextureElement {
 
   @NotNull
   List<MtlBlendUOption> getBlendUOptionList();
@@ -14,7 +14,7 @@ public interface MtlBumpMap extends PsiElement {
   List<MtlBlendVOption> getBlendVOptionList();
 
   @NotNull
-  List<MtlBumpMultiplier> getBumpMultiplierList();
+  List<MtlBumpMultiplierOption> getBumpMultiplierOptionList();
 
   @NotNull
   List<MtlClampOption> getClampOptionList();

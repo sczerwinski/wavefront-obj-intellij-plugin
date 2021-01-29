@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.MtlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
 
-public class MtlDisplacementMapImpl extends ASTWrapperPsiElement implements MtlDisplacementMap {
+public class MtlDisplacementMapImpl extends MtlTextureElementImpl implements MtlDisplacementMap {
 
   public MtlDisplacementMapImpl(@NotNull ASTNode node) {
     super(node);

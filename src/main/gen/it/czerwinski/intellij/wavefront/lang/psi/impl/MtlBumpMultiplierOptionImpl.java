@@ -8,17 +8,16 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.MtlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
 
-public class MtlBumpMultiplierImpl extends ASTWrapperPsiElement implements MtlBumpMultiplier {
+public class MtlBumpMultiplierOptionImpl extends MtlFloatValueElementImpl implements MtlBumpMultiplierOption {
 
-  public MtlBumpMultiplierImpl(@NotNull ASTNode node) {
+  public MtlBumpMultiplierOptionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MtlVisitor visitor) {
-    visitor.visitBumpMultiplier(this);
+    visitor.visitBumpMultiplierOption(this);
   }
 
   @Override

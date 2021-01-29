@@ -5,6 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MtlTransmissionFilter extends PsiElement {
+public interface MtlTransmissionFilter extends MtlColorElement {
 
 }

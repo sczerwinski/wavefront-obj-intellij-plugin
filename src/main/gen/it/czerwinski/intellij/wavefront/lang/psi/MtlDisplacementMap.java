@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MtlDisplacementMap extends PsiElement {
+public interface MtlDisplacementMap extends MtlTextureElement {
 
   @NotNull
   List<MtlBlendUOption> getBlendUOptionList();

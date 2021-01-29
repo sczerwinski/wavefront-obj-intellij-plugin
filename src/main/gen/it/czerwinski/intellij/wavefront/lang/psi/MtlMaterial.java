@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MtlMaterial extends PsiElement {
+public interface MtlMaterial extends MtlMaterialElement {
 
   @NotNull
   List<MtlAmbientColor> getAmbientColorList();

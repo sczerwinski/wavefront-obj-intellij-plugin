@@ -107,7 +107,7 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | valueModifierOption
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
-  //     | bumpMultiplier
+  //     | bumpMultiplierOption
   // )*
   static boolean bumpMapOptions_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bumpMapOptions_")) return false;
@@ -125,7 +125,7 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | valueModifierOption
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
-  //     | bumpMultiplier
+  //     | bumpMultiplierOption
   private static boolean bumpMapOptions__0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bumpMapOptions__0")) return false;
     boolean r;
@@ -138,19 +138,19 @@ public class MtlParser implements PsiParser, LightPsiParser {
     if (!r) r = scaleOption(b, l + 1);
     if (!r) r = turbulenceOption(b, l + 1);
     if (!r) r = resolutionOption(b, l + 1);
-    if (!r) r = bumpMultiplier(b, l + 1);
+    if (!r) r = bumpMultiplierOption(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
   // BUMP_MULTIPLIER_OPTION_NAME FLOAT
-  public static boolean bumpMultiplier(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bumpMultiplier")) return false;
+  public static boolean bumpMultiplierOption(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bumpMultiplierOption")) return false;
     if (!nextTokenIs(b, BUMP_MULTIPLIER_OPTION_NAME)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, BUMP_MULTIPLIER_OPTION_NAME, FLOAT);
-    exit_section_(b, m, BUMP_MULTIPLIER, r);
+    exit_section_(b, m, BUMP_MULTIPLIER_OPTION, r);
     return r;
   }
 

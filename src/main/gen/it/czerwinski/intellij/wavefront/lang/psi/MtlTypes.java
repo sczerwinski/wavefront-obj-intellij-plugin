@@ -13,7 +13,7 @@ public interface MtlTypes {
   IElementType BLEND_U_OPTION = new MtlElementType("BLEND_U_OPTION");
   IElementType BLEND_V_OPTION = new MtlElementType("BLEND_V_OPTION");
   IElementType BUMP_MAP = new MtlElementType("BUMP_MAP");
-  IElementType BUMP_MULTIPLIER = new MtlElementType("BUMP_MULTIPLIER");
+  IElementType BUMP_MULTIPLIER_OPTION = new MtlElementType("BUMP_MULTIPLIER_OPTION");
   IElementType CLAMP_OPTION = new MtlElementType("CLAMP_OPTION");
   IElementType COLOR_CORRECTION_OPTION = new MtlElementType("COLOR_CORRECTION_OPTION");
   IElementType DIFFUSE_COLOR = new MtlElementType("DIFFUSE_COLOR");
@@ -100,8 +100,8 @@ public interface MtlTypes {
       else if (type == BUMP_MAP) {
         return new MtlBumpMapImpl(node);
       }
-      else if (type == BUMP_MULTIPLIER) {
-        return new MtlBumpMultiplierImpl(node);
+      else if (type == BUMP_MULTIPLIER_OPTION) {
+        return new MtlBumpMultiplierOptionImpl(node);
       }
       else if (type == CLAMP_OPTION) {
         return new MtlClampOptionImpl(node);

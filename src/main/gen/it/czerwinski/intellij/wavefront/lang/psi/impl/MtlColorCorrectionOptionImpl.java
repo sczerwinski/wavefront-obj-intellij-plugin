@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.MtlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
 
-public class MtlColorCorrectionOptionImpl extends ASTWrapperPsiElement implements MtlColorCorrectionOption {
+public class MtlColorCorrectionOptionImpl extends MtlFlagValueElementImpl implements MtlColorCorrectionOption {
 
   public MtlColorCorrectionOptionImpl(@NotNull ASTNode node) {
     super(node);

@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.MtlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
 
-public class MtlBumpMapImpl extends ASTWrapperPsiElement implements MtlBumpMap {
+public class MtlBumpMapImpl extends MtlTextureElementImpl implements MtlBumpMap {
 
   public MtlBumpMapImpl(@NotNull ASTNode node) {
     super(node);
@@ -41,8 +40,8 @@ public class MtlBumpMapImpl extends ASTWrapperPsiElement implements MtlBumpMap {
 
   @Override
   @NotNull
-  public List<MtlBumpMultiplier> getBumpMultiplierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlBumpMultiplier.class);
+  public List<MtlBumpMultiplierOption> getBumpMultiplierOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlBumpMultiplierOption.class);
   }
 
   @Override

@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.MtlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
 
-public class MtlDiffuseColorImpl extends ASTWrapperPsiElement implements MtlDiffuseColor {
+public class MtlDiffuseColorImpl extends MtlColorElementImpl implements MtlDiffuseColor {
 
   public MtlDiffuseColorImpl(@NotNull ASTNode node) {
     super(node);

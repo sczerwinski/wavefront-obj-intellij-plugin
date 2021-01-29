@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MtlReflectionMap extends PsiElement {
+public interface MtlReflectionMap extends MtlTextureElement {
 
   @NotNull
   List<MtlBlendUOption> getBlendUOptionList();

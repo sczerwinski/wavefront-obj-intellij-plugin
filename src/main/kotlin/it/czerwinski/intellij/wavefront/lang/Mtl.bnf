@@ -1,0 +1,117 @@
+/*
+ * Copyright 2020-2021 Slawomir Czerwinski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{
+  parserClass="it.czerwinski.intellij.wavefront.lang.parser.MtlParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Mtl"
+  psiImplClassSuffix="Impl"
+  psiPackage="it.czerwinski.intellij.wavefront.lang.psi"
+  psiImplPackage="it.czerwinski.intellij.wavefront.lang.psi.impl"
+
+  elementTypeHolderClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTypes"
+  elementTypeClass="it.czerwinski.intellij.wavefront.lang.psi.MtlElementType"
+  tokenTypeClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTokenType"
+
+  psiImplUtilClass="it.czerwinski.intellij.wavefront.lang.psi.impl.MtlPsiImplUtil"
+}
+
+mtlFile ::= material*
+
+material ::= (NEW_MATERIAL_KEYWORD MATERIAL_NAME) + item_*
+
+private item_ ::= (
+  color | property | map
+  | COMMENT | CRLF
+)
+
+color ::= (ambientColor | diffuseColor | specularColor | transmissionFilter)
+
+ambientColor ::= (AMBIENT_COLOR_KEYWORD FLOAT FLOAT FLOAT)
+diffuseColor ::= (DIFFUSE_COLOR_KEYWORD FLOAT FLOAT FLOAT)
+specularColor ::= (SPECULAR_COLOR_KEYWORD FLOAT FLOAT FLOAT)
+transmissionFilter ::= (TRANSMISSION_FILTER_KEYWORD FLOAT FLOAT FLOAT)
+
+property ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity)
+
+illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE)
+dissolve ::= (DISSOLVE_KEYWORD FLOAT)
+specularExponent ::= (SPECULAR_EXPONENT_KEYWORD FLOAT)
+sharpness ::= (SHARPNESS_KEYWORD FLOAT)
+opticalDensity ::= (OPTICAL_DENSITY_KEYWORD FLOAT)
+
+map ::= (colorMap | scalarMap | bumpMap | reflectionMap)
+
+colorMap ::= (ambientColorMap | diffuseColorMap | specularColorMap)
+
+ambientColorMap ::= (AMBIENT_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE)
+diffuseColorMap ::= (DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE)
+specularColorMap ::= (SPECULAR_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE)
+
+scalarMap ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap)
+
+specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
+dissolveMap ::= (DISSOLVE_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
+displacementMap ::= (DISPLACEMENT_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
+stencilDecalMap ::= (STENCIL_DECAL_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
+
+bumpMap ::= (BUMP_MAP_KEYWORD bumpMapOptions TEXTURE_FILE)
+
+reflectionMap ::= (REFLECTION_MAP_KEYWORD reflectionMapOptions TEXTURE_FILE)
+
+colorMapOptions ::= (
+    blendUOption | blendVOption
+    | colorCorrectionOption | clampOption
+    | valueModifierOption
+    | offsetOption | scaleOption | turbulenceOption
+    | resolutionOption
+)*
+
+scalarMapOptions ::= (
+    blendUOption | blendVOption
+    | clampOption
+    | scalarChannelOption
+    | valueModifierOption
+    | offsetOption | scaleOption | turbulenceOption
+    | resolutionOption
+)*
+
+bumpMapOptions ::= (
+    blendUOption | blendVOption
+    | clampOption
+    | scalarChannelOption
+    | valueModifierOption
+    | offsetOption | scaleOption | turbulenceOption
+    | resolutionOption
+    | bumpMultiplier
+)*
+
+reflectionMapOptions ::= reflectionTypeOption + colorMapOptions
+
+blendUOption ::= (BLEND_U_OPTION_NAME FLAG)
+blendVOption ::= (BLEND_V_OPTION_NAME FLAG)
+colorCorrectionOption ::= (COLOR_CORRECTION_OPTION_NAME FLAG)
+clampOption ::= (CLAMP_OPTION_NAME FLAG)
+scalarChannelOption ::= (SCALAR_CHANNEL_OPTION_NAME SCALAR_CHANNEL)
+valueModifierOption ::= (VALUE_MODIFIER_OPTION_NAME FLOAT FLOAT)
+offsetOption ::= (OFFSET_OPTION_NAME FLOAT FLOAT FLOAT)
+scaleOption ::= (SCALE_OPTION_NAME FLOAT FLOAT FLOAT)
+turbulenceOption ::= (TURBULENCE_OPTION_NAME FLOAT FLOAT FLOAT)
+resolutionOption ::= (RESOLUTION_OPTION_NAME INTEGER)
+bumpMultiplier ::= (BUMP_MULTIPLIER_OPTION_NAME FLOAT)
+reflectionTypeOption ::= (REFLECTION_TYPE_OPTION_NAME REFLECTION_TYPE)

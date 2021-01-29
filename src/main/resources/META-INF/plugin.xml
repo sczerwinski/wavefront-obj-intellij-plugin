@@ -64,6 +64,9 @@
                 fieldName="INSTANCE"
                 language="Wavefront MTL"
                 extensions="mtl"/>
+        <lang.parserDefinition
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.parser.MtlParserDefinition"/>
 
     </extensions>
 

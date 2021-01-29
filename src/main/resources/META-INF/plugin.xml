@@ -67,6 +67,13 @@
         <lang.parserDefinition
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.parser.MtlParserDefinition"/>
+        <lang.syntaxHighlighter
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlSyntaxHighlighter"/>
+
+        <!-- Settings -->
+        <colorSettingsPage
+                implementation="it.czerwinski.intellij.wavefront.settings.MtlColorSettingsPage"/>
 
     </extensions>
 

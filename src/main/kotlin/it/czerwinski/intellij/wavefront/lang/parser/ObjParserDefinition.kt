@@ -40,7 +40,7 @@ class ObjParserDefinition : ParserDefinition {
 
     override fun getCommentTokens(): TokenSet = TokenSet.create(ObjTypes.COMMENT)
 
-    override fun getStringLiteralElements(): TokenSet = TokenSet.create(ObjTypes.STRING)
+    override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
     override fun createParser(project: Project?): PsiParser = ObjParser()
 

@@ -147,7 +147,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (GROUP_KEYWORD STRING) + item_*
+  // (GROUP_KEYWORD OBJECT_OR_GROUP_NAME) + item_*
   public static boolean group(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "group")) return false;
     if (!nextTokenIs(b, GROUP_KEYWORD)) return false;
@@ -159,7 +159,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (GROUP_KEYWORD STRING) +
+  // (GROUP_KEYWORD OBJECT_OR_GROUP_NAME) +
   private static boolean group_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "group_0")) return false;
     boolean r;
@@ -174,12 +174,12 @@ public class ObjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // GROUP_KEYWORD STRING
+  // GROUP_KEYWORD OBJECT_OR_GROUP_NAME
   private static boolean group_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "group_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, GROUP_KEYWORD, STRING);
+    r = consumeTokens(b, 0, GROUP_KEYWORD, OBJECT_OR_GROUP_NAME);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -326,7 +326,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (OBJECT_KEYWORD STRING) + item_*
+  // (OBJECT_KEYWORD OBJECT_OR_GROUP_NAME) + item_*
   public static boolean object(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object")) return false;
     if (!nextTokenIs(b, OBJECT_KEYWORD)) return false;
@@ -338,7 +338,7 @@ public class ObjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (OBJECT_KEYWORD STRING) +
+  // (OBJECT_KEYWORD OBJECT_OR_GROUP_NAME) +
   private static boolean object_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_0")) return false;
     boolean r;
@@ -353,12 +353,12 @@ public class ObjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // OBJECT_KEYWORD STRING
+  // OBJECT_KEYWORD OBJECT_OR_GROUP_NAME
   private static boolean object_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, OBJECT_KEYWORD, STRING);
+    r = consumeTokens(b, 0, OBJECT_KEYWORD, OBJECT_OR_GROUP_NAME);
     exit_section_(b, m, null, r);
     return r;
   }

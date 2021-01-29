@@ -27,7 +27,7 @@ abstract class ObjGroupingElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), ObjGroupingElement {
 
-    private val nameNode get() = node.findChildByType(ObjTypes.STRING)
+    private val nameNode get() = node.findChildByType(ObjTypes.OBJECT_OR_GROUP_NAME)
 
     override fun getName(): String? = nameIdentifier?.text
 

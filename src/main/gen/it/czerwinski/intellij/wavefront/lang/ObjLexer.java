@@ -39,7 +39,7 @@ class ObjLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
-  public static final int WAITING_STRING = 2;
+  public static final int WAITING_OBJECT_OR_GROUP_NAME = 2;
   public static final int WAITING_FLOAT = 4;
   public static final int WAITING_FACE_VERTEX = 6;
   public static final int WAITING_VERTEX_INDEX = 8;
@@ -166,20 +166,21 @@ class ObjLexer implements FlexLexer {
     "\25\10\1\42\1\43\1\44\1\11\1\43\1\45\27\43"+
     "\35\0\2\11\1\0\1\11\27\0\2\12\1\0\31\12"+
     "\10\0\1\46\1\47\32\0\1\50\41\0\1\51\15\0"+
-    "\2\24\1\0\32\24\1\25\1\11\1\24\1\25\27\24"+
-    "\1\0\2\11\1\0\1\26\30\0\2\11\1\0\1\27"+
-    "\54\0\1\31\1\32\4\0\1\32\23\0\1\52\4\0"+
-    "\1\53\1\52\25\0\1\52\1\0\3\32\1\53\1\52"+
-    "\1\0\1\32\1\0\2\11\1\0\1\33\54\0\3\35"+
-    "\3\0\1\35\1\0\2\11\1\0\1\36\54\0\3\37"+
-    "\3\0\1\37\1\0\2\11\1\0\1\40\41\0\1\54"+
-    "\21\0\2\43\1\0\32\43\1\44\1\11\1\43\1\44"+
-    "\27\43\1\0\2\11\1\0\1\45\42\0\1\55\43\0"+
-    "\1\56\34\0\1\57\3\60\2\0\1\57\1\60\25\0"+
-    "\3\61\3\0\1\61\12\0\1\42\34\0\1\62\37\0"+
-    "\1\63\41\0\3\60\3\0\1\60\23\0\1\52\1\0"+
-    "\3\61\1\0\1\52\1\0\1\61\20\0\1\64\23\0"+
-    "\1\65\44\0\1\66\25\0\1\67\20\0";
+    "\2\24\1\0\1\24\1\0\30\24\1\25\1\11\1\24"+
+    "\1\11\27\24\1\0\2\11\1\0\1\26\30\0\2\11"+
+    "\1\0\1\27\54\0\1\31\1\32\4\0\1\32\23\0"+
+    "\1\52\4\0\1\53\1\52\25\0\1\52\1\0\3\32"+
+    "\1\53\1\52\1\0\1\32\1\0\2\11\1\0\1\33"+
+    "\54\0\3\35\3\0\1\35\1\0\2\11\1\0\1\36"+
+    "\54\0\3\37\3\0\1\37\1\0\2\11\1\0\1\40"+
+    "\41\0\1\54\21\0\2\43\1\0\1\43\1\0\30\43"+
+    "\1\44\1\11\1\43\1\11\27\43\1\0\2\11\1\0"+
+    "\1\45\42\0\1\55\43\0\1\56\34\0\1\57\3\60"+
+    "\2\0\1\57\1\60\25\0\3\61\3\0\1\61\12\0"+
+    "\1\42\34\0\1\62\37\0\1\63\41\0\3\60\3\0"+
+    "\1\60\23\0\1\52\1\0\3\61\1\0\1\52\1\0"+
+    "\1\61\20\0\1\64\23\0\1\65\44\0\1\66\25\0"+
+    "\1\67\20\0";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[1176];
@@ -553,12 +554,12 @@ class ObjLexer implements FlexLexer {
             // fall through
           case 30: break;
           case 4: 
-            { yybegin(WAITING_STRING); return ObjTypes.OBJECT_KEYWORD;
+            { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return ObjTypes.OBJECT_KEYWORD;
             } 
             // fall through
           case 31: break;
           case 5: 
-            { yybegin(WAITING_STRING); return ObjTypes.GROUP_KEYWORD;
+            { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return ObjTypes.GROUP_KEYWORD;
             } 
             // fall through
           case 32: break;
@@ -588,12 +589,12 @@ class ObjLexer implements FlexLexer {
             // fall through
           case 37: break;
           case 11: 
-            { yybegin(YYINITIAL); return ObjTypes.STRING;
+            { yybegin(YYINITIAL); return ObjTypes.OBJECT_OR_GROUP_NAME;
             } 
             // fall through
           case 38: break;
           case 12: 
-            { yybegin(WAITING_STRING); return TokenType.WHITE_SPACE;
+            { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 39: break;

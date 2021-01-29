@@ -48,13 +48,15 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.MATERIAL_REFERENCE_KEYWORD ->
                 arrayOf(ATTR_KEYWORD)
 
-            ObjTypes.STRING ->
-                arrayOf(ATTR_STRING)
+            ObjTypes.OBJECT_OR_GROUP_NAME ->
+                arrayOf(ATTR_DECLARATION)
 
             ObjTypes.FLOAT,
-            ObjTypes.INDEX,
-            ObjTypes.FLAG ->
+            ObjTypes.INDEX ->
                 arrayOf(ATTR_NUMBER)
+
+            ObjTypes.FLAG ->
+                arrayOf(ATTR_CONSTANT)
 
             ObjTypes.VERTEX_INDEX_SEPARATOR ->
                 arrayOf(ATTR_OPERATOR)
@@ -76,10 +78,12 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             createTextAttributesKey("OBJ_OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN)
         internal val ATTR_KEYWORD: TextAttributesKey =
             createTextAttributesKey("OBJ_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
-        internal val ATTR_STRING: TextAttributesKey =
-            createTextAttributesKey("OBJ_STRING", DefaultLanguageHighlighterColors.STRING)
+        internal val ATTR_DECLARATION: TextAttributesKey =
+            createTextAttributesKey("OBJ_DECLARATION", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
         internal val ATTR_NUMBER: TextAttributesKey =
             createTextAttributesKey("OBJ_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
+        internal val ATTR_CONSTANT: TextAttributesKey =
+            createTextAttributesKey("MTL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT)
         internal val ATTR_REFERENCE: TextAttributesKey =
             createTextAttributesKey("OBJ_REFERENCE", DefaultLanguageHighlighterColors.IDENTIFIER)
         internal val ATTR_BAD_CHARACTER: TextAttributesKey =

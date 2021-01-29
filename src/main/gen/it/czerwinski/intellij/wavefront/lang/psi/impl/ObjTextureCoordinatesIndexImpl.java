@@ -20,6 +20,7 @@ public class ObjTextureCoordinatesIndexImpl extends ObjIndexElementImpl implemen
     visitor.visitTextureCoordinatesIndex(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);

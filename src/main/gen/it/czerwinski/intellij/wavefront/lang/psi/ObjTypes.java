@@ -35,10 +35,10 @@ public interface ObjTypes {
   IElementType MATERIAL_FILE_REF_KEYWORD = new ObjTokenType("MATERIAL_FILE_REF_KEYWORD");
   IElementType MATERIAL_REFERENCE_KEYWORD = new ObjTokenType("MATERIAL_REFERENCE_KEYWORD");
   IElementType OBJECT_KEYWORD = new ObjTokenType("OBJECT_KEYWORD");
+  IElementType OBJECT_OR_GROUP_NAME = new ObjTokenType("OBJECT_OR_GROUP_NAME");
   IElementType POINT_KEYWORD = new ObjTokenType("POINT_KEYWORD");
   IElementType REFERENCE = new ObjTokenType("REFERENCE");
   IElementType SMOOTH_SHADING_KEYWORD = new ObjTokenType("SMOOTH_SHADING_KEYWORD");
-  IElementType STRING = new ObjTokenType("STRING");
   IElementType TEXTURE_COORDINATES_KEYWORD = new ObjTokenType("TEXTURE_COORDINATES_KEYWORD");
   IElementType VERTEX_INDEX_SEPARATOR = new ObjTokenType("VERTEX_INDEX_SEPARATOR");
   IElementType VERTEX_KEYWORD = new ObjTokenType("VERTEX_KEYWORD");

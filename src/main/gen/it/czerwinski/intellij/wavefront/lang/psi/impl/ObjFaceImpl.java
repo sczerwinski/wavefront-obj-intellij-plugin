@@ -21,6 +21,7 @@ public class ObjFaceImpl extends ASTWrapperPsiElement implements ObjFace {
     visitor.visitFace(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);

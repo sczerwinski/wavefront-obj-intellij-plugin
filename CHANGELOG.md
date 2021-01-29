@@ -7,6 +7,9 @@
 - Support for drawing lines in 3D preview
 - Support for drawing points in 3D preview
 
+### Fixed
+- Replace usages deprecated in platform version 2020.3 (if replacement available)
+
 ## [0.1.5]
 ### Added
 - Dependabot integration

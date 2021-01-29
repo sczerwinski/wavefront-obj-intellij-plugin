@@ -26,6 +26,14 @@ private fun getIcon(path: String): Icon = IconLoader.getIcon(path, WavefrontObjB
 
 val MTL_FILE_ICON: Icon = getIcon("/icons/mtlFileIcon.svg")
 
+val MTL_ERROR_ICON: Icon = getIcon("/icons/mtlErrorIcon.svg")
+
+val MTL_MATERIAL_ICON: Icon = getIcon("/icons/mtlMaterialIcon.svg")
+
+val MTL_PROPERTY_ICON: Icon = getIcon("/icons/mtlPropertyIcon.svg")
+val MTL_TEXTURE_ICON: Icon = getIcon("/icons/mtlTextureIcon.svg")
+val MTL_OPTION_ICON: Icon = getIcon("/icons/mtlOptionIcon.svg")
+
 val OBJ_FILE_ICON: Icon = getIcon("/icons/objFileIcon.svg")
 
 val OBJ_ERROR_ICON: Icon = getIcon("/icons/objErrorIcon.svg")
@@ -49,4 +57,4 @@ val OBJ_SMOOTH_SHADING_ON_ICON: Icon = getIcon("/icons/objSmoothShadingOnIcon.sv
 val OBJ_SMOOTH_SHADING_OFF_ICON: Icon = getIcon("/icons/objSmoothShadingOffIcon.svg")
 
 val OBJ_MATERIAL_FILE_ICON: Icon = MTL_FILE_ICON
-val OBJ_MATERIAL_ICON: Icon = getIcon("/icons/objMaterialIcon.svg")
+val OBJ_MATERIAL_ICON: Icon = MTL_MATERIAL_ICON

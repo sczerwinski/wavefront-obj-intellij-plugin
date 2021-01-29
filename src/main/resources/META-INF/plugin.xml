@@ -70,6 +70,9 @@
         <lang.syntaxHighlighter
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlSyntaxHighlighter"/>
+        <lang.psiStructureViewFactory
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>
 
         <!-- Settings -->
         <colorSettingsPage

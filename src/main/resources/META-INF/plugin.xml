@@ -55,6 +55,18 @@
 
     </extensions>
 
+    <extensions defaultExtensionNs="com.intellij">
+
+        <!-- MTL File Type -->
+        <fileType
+                name="Wavefront MTL File"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFileType"
+                fieldName="INSTANCE"
+                language="Wavefront MTL"
+                extensions="mtl"/>
+
+    </extensions>
+
     <!-- Editor -->
     <extensions defaultExtensionNs="com.intellij">
         <fileEditorProvider

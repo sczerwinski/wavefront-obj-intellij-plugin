@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-@file:JvmName("ObjIcons")
+@file:JvmName("Icons")
 
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.openapi.util.IconLoader
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import javax.swing.Icon
 
-private fun getIcon(path: String): Icon = IconLoader.getIcon(path, ObjLanguage.javaClass)
+private fun getIcon(path: String): Icon = IconLoader.getIcon(path, WavefrontObjBundle.javaClass)
+
+val MTL_FILE_ICON: Icon = getIcon("/icons/mtlFileIcon.svg")
 
 val OBJ_FILE_ICON: Icon = getIcon("/icons/objFileIcon.svg")
 
@@ -45,5 +48,5 @@ val OBJ_FACE_VERTEX_ICON: Icon = getIcon("/icons/objFaceVertexIcon.svg")
 val OBJ_SMOOTH_SHADING_ON_ICON: Icon = getIcon("/icons/objSmoothShadingOnIcon.svg")
 val OBJ_SMOOTH_SHADING_OFF_ICON: Icon = getIcon("/icons/objSmoothShadingOffIcon.svg")
 
-val OBJ_MATERIAL_FILE_ICON: Icon = getIcon("/icons/objMaterialFileIcon.svg")
+val OBJ_MATERIAL_FILE_ICON: Icon = MTL_FILE_ICON
 val OBJ_MATERIAL_ICON: Icon = getIcon("/icons/objMaterialIcon.svg")

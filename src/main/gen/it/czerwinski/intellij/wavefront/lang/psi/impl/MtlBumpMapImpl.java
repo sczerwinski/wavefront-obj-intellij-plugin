@@ -29,8 +29,62 @@ public class MtlBumpMapImpl extends ASTWrapperPsiElement implements MtlBumpMap {
 
   @Override
   @NotNull
-  public MtlBumpMapOptions getBumpMapOptions() {
-    return findNotNullChildByClass(MtlBumpMapOptions.class);
+  public List<MtlBlendUOption> getBlendUOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlBlendUOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlBlendVOption> getBlendVOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlBlendVOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlBumpMultiplier> getBumpMultiplierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlBumpMultiplier.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlClampOption> getClampOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlClampOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlOffsetOption> getOffsetOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlOffsetOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlResolutionOption> getResolutionOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlResolutionOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlScalarChannelOption> getScalarChannelOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlScalarChannelOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlScaleOption> getScaleOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlScaleOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlTurbulenceOption> getTurbulenceOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlTurbulenceOption.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlValueModifierOption> getValueModifierOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlValueModifierOption.class);
   }
 
 }

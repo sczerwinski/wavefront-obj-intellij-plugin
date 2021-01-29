@@ -29,20 +29,110 @@ public class MtlMaterialImpl extends ASTWrapperPsiElement implements MtlMaterial
 
   @Override
   @NotNull
-  public List<MtlColor> getColorList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlColor.class);
+  public List<MtlAmbientColor> getAmbientColorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlAmbientColor.class);
   }
 
   @Override
   @NotNull
-  public List<MtlMap> getMapList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlMap.class);
+  public List<MtlAmbientColorMap> getAmbientColorMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlAmbientColorMap.class);
   }
 
   @Override
   @NotNull
-  public List<MtlProperty> getPropertyList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlProperty.class);
+  public List<MtlBumpMap> getBumpMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlBumpMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlDiffuseColor> getDiffuseColorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlDiffuseColor.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlDiffuseColorMap> getDiffuseColorMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlDiffuseColorMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlDisplacementMap> getDisplacementMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlDisplacementMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlDissolve> getDissolveList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlDissolve.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlDissolveMap> getDissolveMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlDissolveMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlIllumination> getIlluminationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlIllumination.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlOpticalDensity> getOpticalDensityList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlOpticalDensity.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlReflectionMap> getReflectionMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlReflectionMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlSharpness> getSharpnessList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlSharpness.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlSpecularColor> getSpecularColorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlSpecularColor.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlSpecularColorMap> getSpecularColorMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlSpecularColorMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlSpecularExponent> getSpecularExponentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlSpecularExponent.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlSpecularExponentMap> getSpecularExponentMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlSpecularExponentMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlStencilDecalMap> getStencilDecalMapList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlStencilDecalMap.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MtlTransmissionFilter> getTransmissionFilterList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlTransmissionFilter.class);
   }
 
 }

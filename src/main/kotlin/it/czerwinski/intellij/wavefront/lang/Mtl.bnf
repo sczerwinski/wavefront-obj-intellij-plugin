@@ -27,8 +27,6 @@
   elementTypeHolderClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTypes"
   elementTypeClass="it.czerwinski.intellij.wavefront.lang.psi.MtlElementType"
   tokenTypeClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTokenType"
-
-  psiImplUtilClass="it.czerwinski.intellij.wavefront.lang.psi.impl.MtlPsiImplUtil"
 }
 
 mtlFile ::= material*
@@ -36,18 +34,18 @@ mtlFile ::= material*
 material ::= (NEW_MATERIAL_KEYWORD MATERIAL_NAME) + item_*
 
 private item_ ::= (
-  color | property | map
+  color_ | property_ | map_
   | COMMENT | CRLF
 )
 
-color ::= (ambientColor | diffuseColor | specularColor | transmissionFilter)
+private color_ ::= (ambientColor | diffuseColor | specularColor | transmissionFilter)
 
 ambientColor ::= (AMBIENT_COLOR_KEYWORD FLOAT FLOAT FLOAT)
 diffuseColor ::= (DIFFUSE_COLOR_KEYWORD FLOAT FLOAT FLOAT)
 specularColor ::= (SPECULAR_COLOR_KEYWORD FLOAT FLOAT FLOAT)
 transmissionFilter ::= (TRANSMISSION_FILTER_KEYWORD FLOAT FLOAT FLOAT)
 
-property ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity)
+private property_ ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity)
 
 illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE)
 dissolve ::= (DISSOLVE_KEYWORD FLOAT)
@@ -55,26 +53,26 @@ specularExponent ::= (SPECULAR_EXPONENT_KEYWORD FLOAT)
 sharpness ::= (SHARPNESS_KEYWORD FLOAT)
 opticalDensity ::= (OPTICAL_DENSITY_KEYWORD FLOAT)
 
-map ::= (colorMap | scalarMap | bumpMap | reflectionMap)
+private map_ ::= (colorMap_ | scalarMap_ | bumpMap | reflectionMap)
 
-colorMap ::= (ambientColorMap | diffuseColorMap | specularColorMap)
+private colorMap_ ::= (ambientColorMap | diffuseColorMap | specularColorMap)
 
-ambientColorMap ::= (AMBIENT_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE)
-diffuseColorMap ::= (DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE)
-specularColorMap ::= (SPECULAR_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE)
+ambientColorMap ::= (AMBIENT_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE)
+diffuseColorMap ::= (DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE)
+specularColorMap ::= (SPECULAR_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE)
 
-scalarMap ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap)
+private scalarMap_ ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap)
 
-specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
-dissolveMap ::= (DISSOLVE_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
-displacementMap ::= (DISPLACEMENT_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
-stencilDecalMap ::= (STENCIL_DECAL_MAP_KEYWORD scalarMapOptions TEXTURE_FILE)
+specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
+dissolveMap ::= (DISSOLVE_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
+displacementMap ::= (DISPLACEMENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
+stencilDecalMap ::= (STENCIL_DECAL_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE)
 
-bumpMap ::= (BUMP_MAP_KEYWORD bumpMapOptions TEXTURE_FILE)
+bumpMap ::= (BUMP_MAP_KEYWORD bumpMapOptions_ TEXTURE_FILE)
 
-reflectionMap ::= (REFLECTION_MAP_KEYWORD reflectionMapOptions TEXTURE_FILE)
+reflectionMap ::= (REFLECTION_MAP_KEYWORD reflectionMapOptions_ TEXTURE_FILE)
 
-colorMapOptions ::= (
+private colorMapOptions_ ::= (
     blendUOption | blendVOption
     | colorCorrectionOption | clampOption
     | valueModifierOption
@@ -82,7 +80,7 @@ colorMapOptions ::= (
     | resolutionOption
 )*
 
-scalarMapOptions ::= (
+private scalarMapOptions_ ::= (
     blendUOption | blendVOption
     | clampOption
     | scalarChannelOption
@@ -91,7 +89,7 @@ scalarMapOptions ::= (
     | resolutionOption
 )*
 
-bumpMapOptions ::= (
+private bumpMapOptions_ ::= (
     blendUOption | blendVOption
     | clampOption
     | scalarChannelOption
@@ -101,7 +99,7 @@ bumpMapOptions ::= (
     | bumpMultiplier
 )*
 
-reflectionMapOptions ::= reflectionTypeOption + colorMapOptions
+private reflectionMapOptions_ ::= reflectionTypeOption + colorMapOptions_
 
 blendUOption ::= (BLEND_U_OPTION_NAME FLAG)
 blendVOption ::= (BLEND_V_OPTION_NAME FLAG)

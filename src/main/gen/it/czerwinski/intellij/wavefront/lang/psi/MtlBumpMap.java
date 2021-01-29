@@ -8,6 +8,33 @@ import com.intellij.psi.PsiElement;
 public interface MtlBumpMap extends PsiElement {
 
   @NotNull
-  MtlBumpMapOptions getBumpMapOptions();
+  List<MtlBlendUOption> getBlendUOptionList();
+
+  @NotNull
+  List<MtlBlendVOption> getBlendVOptionList();
+
+  @NotNull
+  List<MtlBumpMultiplier> getBumpMultiplierList();
+
+  @NotNull
+  List<MtlClampOption> getClampOptionList();
+
+  @NotNull
+  List<MtlOffsetOption> getOffsetOptionList();
+
+  @NotNull
+  List<MtlResolutionOption> getResolutionOptionList();
+
+  @NotNull
+  List<MtlScalarChannelOption> getScalarChannelOptionList();
+
+  @NotNull
+  List<MtlScaleOption> getScaleOptionList();
+
+  @NotNull
+  List<MtlTurbulenceOption> getTurbulenceOptionList();
+
+  @NotNull
+  List<MtlValueModifierOption> getValueModifierOptionList();
 
 }

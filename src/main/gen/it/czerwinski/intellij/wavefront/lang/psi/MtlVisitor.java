@@ -27,10 +27,6 @@ public class MtlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitBumpMapOptions(@NotNull MtlBumpMapOptions o) {
-    visitPsiElement(o);
-  }
-
   public void visitBumpMultiplier(@NotNull MtlBumpMultiplier o) {
     visitPsiElement(o);
   }
@@ -39,19 +35,7 @@ public class MtlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitColor(@NotNull MtlColor o) {
-    visitPsiElement(o);
-  }
-
   public void visitColorCorrectionOption(@NotNull MtlColorCorrectionOption o) {
-    visitPsiElement(o);
-  }
-
-  public void visitColorMap(@NotNull MtlColorMap o) {
-    visitPsiElement(o);
-  }
-
-  public void visitColorMapOptions(@NotNull MtlColorMapOptions o) {
     visitPsiElement(o);
   }
 
@@ -79,10 +63,6 @@ public class MtlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMap(@NotNull MtlMap o) {
-    visitPsiElement(o);
-  }
-
   public void visitMaterial(@NotNull MtlMaterial o) {
     visitPsiElement(o);
   }
@@ -95,15 +75,7 @@ public class MtlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitProperty(@NotNull MtlProperty o) {
-    visitPsiElement(o);
-  }
-
   public void visitReflectionMap(@NotNull MtlReflectionMap o) {
-    visitPsiElement(o);
-  }
-
-  public void visitReflectionMapOptions(@NotNull MtlReflectionMapOptions o) {
     visitPsiElement(o);
   }
 
@@ -116,14 +88,6 @@ public class MtlVisitor extends PsiElementVisitor {
   }
 
   public void visitScalarChannelOption(@NotNull MtlScalarChannelOption o) {
-    visitPsiElement(o);
-  }
-
-  public void visitScalarMap(@NotNull MtlScalarMap o) {
-    visitPsiElement(o);
-  }
-
-  public void visitScalarMapOptions(@NotNull MtlScalarMapOptions o) {
     visitPsiElement(o);
   }
 

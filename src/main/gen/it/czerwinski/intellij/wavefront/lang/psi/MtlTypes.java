@@ -13,31 +13,22 @@ public interface MtlTypes {
   IElementType BLEND_U_OPTION = new MtlElementType("BLEND_U_OPTION");
   IElementType BLEND_V_OPTION = new MtlElementType("BLEND_V_OPTION");
   IElementType BUMP_MAP = new MtlElementType("BUMP_MAP");
-  IElementType BUMP_MAP_OPTIONS = new MtlElementType("BUMP_MAP_OPTIONS");
   IElementType BUMP_MULTIPLIER = new MtlElementType("BUMP_MULTIPLIER");
   IElementType CLAMP_OPTION = new MtlElementType("CLAMP_OPTION");
-  IElementType COLOR = new MtlElementType("COLOR");
   IElementType COLOR_CORRECTION_OPTION = new MtlElementType("COLOR_CORRECTION_OPTION");
-  IElementType COLOR_MAP = new MtlElementType("COLOR_MAP");
-  IElementType COLOR_MAP_OPTIONS = new MtlElementType("COLOR_MAP_OPTIONS");
   IElementType DIFFUSE_COLOR = new MtlElementType("DIFFUSE_COLOR");
   IElementType DIFFUSE_COLOR_MAP = new MtlElementType("DIFFUSE_COLOR_MAP");
   IElementType DISPLACEMENT_MAP = new MtlElementType("DISPLACEMENT_MAP");
   IElementType DISSOLVE = new MtlElementType("DISSOLVE");
   IElementType DISSOLVE_MAP = new MtlElementType("DISSOLVE_MAP");
   IElementType ILLUMINATION = new MtlElementType("ILLUMINATION");
-  IElementType MAP = new MtlElementType("MAP");
   IElementType MATERIAL = new MtlElementType("MATERIAL");
   IElementType OFFSET_OPTION = new MtlElementType("OFFSET_OPTION");
   IElementType OPTICAL_DENSITY = new MtlElementType("OPTICAL_DENSITY");
-  IElementType PROPERTY = new MtlElementType("PROPERTY");
   IElementType REFLECTION_MAP = new MtlElementType("REFLECTION_MAP");
-  IElementType REFLECTION_MAP_OPTIONS = new MtlElementType("REFLECTION_MAP_OPTIONS");
   IElementType REFLECTION_TYPE_OPTION = new MtlElementType("REFLECTION_TYPE_OPTION");
   IElementType RESOLUTION_OPTION = new MtlElementType("RESOLUTION_OPTION");
   IElementType SCALAR_CHANNEL_OPTION = new MtlElementType("SCALAR_CHANNEL_OPTION");
-  IElementType SCALAR_MAP = new MtlElementType("SCALAR_MAP");
-  IElementType SCALAR_MAP_OPTIONS = new MtlElementType("SCALAR_MAP_OPTIONS");
   IElementType SCALE_OPTION = new MtlElementType("SCALE_OPTION");
   IElementType SHARPNESS = new MtlElementType("SHARPNESS");
   IElementType SPECULAR_COLOR = new MtlElementType("SPECULAR_COLOR");
@@ -109,26 +100,14 @@ public interface MtlTypes {
       else if (type == BUMP_MAP) {
         return new MtlBumpMapImpl(node);
       }
-      else if (type == BUMP_MAP_OPTIONS) {
-        return new MtlBumpMapOptionsImpl(node);
-      }
       else if (type == BUMP_MULTIPLIER) {
         return new MtlBumpMultiplierImpl(node);
       }
       else if (type == CLAMP_OPTION) {
         return new MtlClampOptionImpl(node);
       }
-      else if (type == COLOR) {
-        return new MtlColorImpl(node);
-      }
       else if (type == COLOR_CORRECTION_OPTION) {
         return new MtlColorCorrectionOptionImpl(node);
-      }
-      else if (type == COLOR_MAP) {
-        return new MtlColorMapImpl(node);
-      }
-      else if (type == COLOR_MAP_OPTIONS) {
-        return new MtlColorMapOptionsImpl(node);
       }
       else if (type == DIFFUSE_COLOR) {
         return new MtlDiffuseColorImpl(node);
@@ -148,9 +127,6 @@ public interface MtlTypes {
       else if (type == ILLUMINATION) {
         return new MtlIlluminationImpl(node);
       }
-      else if (type == MAP) {
-        return new MtlMapImpl(node);
-      }
       else if (type == MATERIAL) {
         return new MtlMaterialImpl(node);
       }
@@ -160,14 +136,8 @@ public interface MtlTypes {
       else if (type == OPTICAL_DENSITY) {
         return new MtlOpticalDensityImpl(node);
       }
-      else if (type == PROPERTY) {
-        return new MtlPropertyImpl(node);
-      }
       else if (type == REFLECTION_MAP) {
         return new MtlReflectionMapImpl(node);
-      }
-      else if (type == REFLECTION_MAP_OPTIONS) {
-        return new MtlReflectionMapOptionsImpl(node);
       }
       else if (type == REFLECTION_TYPE_OPTION) {
         return new MtlReflectionTypeOptionImpl(node);
@@ -177,12 +147,6 @@ public interface MtlTypes {
       }
       else if (type == SCALAR_CHANNEL_OPTION) {
         return new MtlScalarChannelOptionImpl(node);
-      }
-      else if (type == SCALAR_MAP) {
-        return new MtlScalarMapImpl(node);
-      }
-      else if (type == SCALAR_MAP_OPTIONS) {
-        return new MtlScalarMapOptionsImpl(node);
       }
       else if (type == SCALE_OPTION) {
         return new MtlScaleOptionImpl(node);

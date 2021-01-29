@@ -8,6 +8,33 @@ import com.intellij.psi.PsiElement;
 public interface MtlReflectionMap extends PsiElement {
 
   @NotNull
-  MtlReflectionMapOptions getReflectionMapOptions();
+  List<MtlBlendUOption> getBlendUOptionList();
+
+  @NotNull
+  List<MtlBlendVOption> getBlendVOptionList();
+
+  @NotNull
+  List<MtlClampOption> getClampOptionList();
+
+  @NotNull
+  List<MtlColorCorrectionOption> getColorCorrectionOptionList();
+
+  @NotNull
+  List<MtlOffsetOption> getOffsetOptionList();
+
+  @NotNull
+  List<MtlReflectionTypeOption> getReflectionTypeOptionList();
+
+  @NotNull
+  List<MtlResolutionOption> getResolutionOptionList();
+
+  @NotNull
+  List<MtlScaleOption> getScaleOptionList();
+
+  @NotNull
+  List<MtlTurbulenceOption> getTurbulenceOptionList();
+
+  @NotNull
+  List<MtlValueModifierOption> getValueModifierOptionList();
 
 }

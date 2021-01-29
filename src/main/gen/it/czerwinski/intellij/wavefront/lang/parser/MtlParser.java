@@ -48,14 +48,14 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // AMBIENT_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE
+  // AMBIENT_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE
   public static boolean ambientColorMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ambientColorMap")) return false;
     if (!nextTokenIs(b, AMBIENT_COLOR_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, AMBIENT_COLOR_MAP_KEYWORD);
-    r = r && colorMapOptions(b, l + 1);
+    r = r && colorMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, AMBIENT_COLOR_MAP, r);
     return r;
@@ -86,14 +86,14 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BUMP_MAP_KEYWORD bumpMapOptions TEXTURE_FILE
+  // BUMP_MAP_KEYWORD bumpMapOptions_ TEXTURE_FILE
   public static boolean bumpMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bumpMap")) return false;
     if (!nextTokenIs(b, BUMP_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, BUMP_MAP_KEYWORD);
-    r = r && bumpMapOptions(b, l + 1);
+    r = r && bumpMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, BUMP_MAP, r);
     return r;
@@ -109,15 +109,13 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | resolutionOption
   //     | bumpMultiplier
   // )*
-  public static boolean bumpMapOptions(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bumpMapOptions")) return false;
-    Marker m = enter_section_(b, l, _NONE_, BUMP_MAP_OPTIONS, "<bump map options>");
+  static boolean bumpMapOptions_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bumpMapOptions_")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!bumpMapOptions_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "bumpMapOptions", c)) break;
+      if (!bumpMapOptions__0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "bumpMapOptions_", c)) break;
     }
-    exit_section_(b, l, m, true, false, null);
     return true;
   }
 
@@ -128,8 +126,8 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
   //     | bumpMultiplier
-  private static boolean bumpMapOptions_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bumpMapOptions_0")) return false;
+  private static boolean bumpMapOptions__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bumpMapOptions__0")) return false;
     boolean r;
     r = blendUOption(b, l + 1);
     if (!r) r = blendVOption(b, l + 1);
@@ -169,20 +167,6 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ambientColor | diffuseColor | specularColor | transmissionFilter
-  public static boolean color(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "color")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, COLOR, "<color>");
-    r = ambientColor(b, l + 1);
-    if (!r) r = diffuseColor(b, l + 1);
-    if (!r) r = specularColor(b, l + 1);
-    if (!r) r = transmissionFilter(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
   // COLOR_CORRECTION_OPTION_NAME FLAG
   public static boolean colorCorrectionOption(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "colorCorrectionOption")) return false;
@@ -195,19 +179,6 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ambientColorMap | diffuseColorMap | specularColorMap
-  public static boolean colorMap(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "colorMap")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, COLOR_MAP, "<color map>");
-    r = ambientColorMap(b, l + 1);
-    if (!r) r = diffuseColorMap(b, l + 1);
-    if (!r) r = specularColorMap(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
   // (
   //     blendUOption | blendVOption
   //     | colorCorrectionOption | clampOption
@@ -215,15 +186,13 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
   // )*
-  public static boolean colorMapOptions(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "colorMapOptions")) return false;
-    Marker m = enter_section_(b, l, _NONE_, COLOR_MAP_OPTIONS, "<color map options>");
+  static boolean colorMapOptions_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "colorMapOptions_")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!colorMapOptions_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "colorMapOptions", c)) break;
+      if (!colorMapOptions__0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "colorMapOptions_", c)) break;
     }
-    exit_section_(b, l, m, true, false, null);
     return true;
   }
 
@@ -232,8 +201,8 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | valueModifierOption
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
-  private static boolean colorMapOptions_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "colorMapOptions_0")) return false;
+  private static boolean colorMapOptions__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "colorMapOptions__0")) return false;
     boolean r;
     r = blendUOption(b, l + 1);
     if (!r) r = blendVOption(b, l + 1);
@@ -244,6 +213,29 @@ public class MtlParser implements PsiParser, LightPsiParser {
     if (!r) r = scaleOption(b, l + 1);
     if (!r) r = turbulenceOption(b, l + 1);
     if (!r) r = resolutionOption(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ambientColorMap | diffuseColorMap | specularColorMap
+  static boolean colorMap_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "colorMap_")) return false;
+    boolean r;
+    r = ambientColorMap(b, l + 1);
+    if (!r) r = diffuseColorMap(b, l + 1);
+    if (!r) r = specularColorMap(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ambientColor | diffuseColor | specularColor | transmissionFilter
+  static boolean color_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "color_")) return false;
+    boolean r;
+    r = ambientColor(b, l + 1);
+    if (!r) r = diffuseColor(b, l + 1);
+    if (!r) r = specularColor(b, l + 1);
+    if (!r) r = transmissionFilter(b, l + 1);
     return r;
   }
 
@@ -260,28 +252,28 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE
+  // DIFFUSE_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE
   public static boolean diffuseColorMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "diffuseColorMap")) return false;
     if (!nextTokenIs(b, DIFFUSE_COLOR_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, DIFFUSE_COLOR_MAP_KEYWORD);
-    r = r && colorMapOptions(b, l + 1);
+    r = r && colorMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, DIFFUSE_COLOR_MAP, r);
     return r;
   }
 
   /* ********************************************************** */
-  // DISPLACEMENT_MAP_KEYWORD scalarMapOptions TEXTURE_FILE
+  // DISPLACEMENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE
   public static boolean displacementMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "displacementMap")) return false;
     if (!nextTokenIs(b, DISPLACEMENT_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, DISPLACEMENT_MAP_KEYWORD);
-    r = r && scalarMapOptions(b, l + 1);
+    r = r && scalarMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, DISPLACEMENT_MAP, r);
     return r;
@@ -300,14 +292,14 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DISSOLVE_MAP_KEYWORD scalarMapOptions TEXTURE_FILE
+  // DISSOLVE_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE
   public static boolean dissolveMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "dissolveMap")) return false;
     if (!nextTokenIs(b, DISSOLVE_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, DISSOLVE_MAP_KEYWORD);
-    r = r && scalarMapOptions(b, l + 1);
+    r = r && scalarMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, DISSOLVE_MAP, r);
     return r;
@@ -326,30 +318,28 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // color | property | map
+  // color_ | property_ | map_
   //   | COMMENT | CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    r = color(b, l + 1);
-    if (!r) r = property(b, l + 1);
-    if (!r) r = map(b, l + 1);
+    r = color_(b, l + 1);
+    if (!r) r = property_(b, l + 1);
+    if (!r) r = map_(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     return r;
   }
 
   /* ********************************************************** */
-  // colorMap | scalarMap | bumpMap | reflectionMap
-  public static boolean map(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map")) return false;
+  // colorMap_ | scalarMap_ | bumpMap | reflectionMap
+  static boolean map_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, MAP, "<map>");
-    r = colorMap(b, l + 1);
-    if (!r) r = scalarMap(b, l + 1);
+    r = colorMap_(b, l + 1);
+    if (!r) r = scalarMap_(b, l + 1);
     if (!r) r = bumpMap(b, l + 1);
     if (!r) r = reflectionMap(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -440,56 +430,54 @@ public class MtlParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // illumination | dissolve | specularExponent | sharpness | opticalDensity
-  public static boolean property(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property")) return false;
+  static boolean property_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "property_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
     r = illumination(b, l + 1);
     if (!r) r = dissolve(b, l + 1);
     if (!r) r = specularExponent(b, l + 1);
     if (!r) r = sharpness(b, l + 1);
     if (!r) r = opticalDensity(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // REFLECTION_MAP_KEYWORD reflectionMapOptions TEXTURE_FILE
+  // REFLECTION_MAP_KEYWORD reflectionMapOptions_ TEXTURE_FILE
   public static boolean reflectionMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "reflectionMap")) return false;
     if (!nextTokenIs(b, REFLECTION_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, REFLECTION_MAP_KEYWORD);
-    r = r && reflectionMapOptions(b, l + 1);
+    r = r && reflectionMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, REFLECTION_MAP, r);
     return r;
   }
 
   /* ********************************************************** */
-  // reflectionTypeOption + colorMapOptions
-  public static boolean reflectionMapOptions(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "reflectionMapOptions")) return false;
+  // reflectionTypeOption + colorMapOptions_
+  static boolean reflectionMapOptions_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "reflectionMapOptions_")) return false;
     if (!nextTokenIs(b, REFLECTION_TYPE_OPTION_NAME)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = reflectionMapOptions_0(b, l + 1);
-    r = r && colorMapOptions(b, l + 1);
-    exit_section_(b, m, REFLECTION_MAP_OPTIONS, r);
+    r = reflectionMapOptions__0(b, l + 1);
+    r = r && colorMapOptions_(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // reflectionTypeOption +
-  private static boolean reflectionMapOptions_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "reflectionMapOptions_0")) return false;
+  private static boolean reflectionMapOptions__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "reflectionMapOptions__0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = reflectionTypeOption(b, l + 1);
     while (r) {
       int c = current_position_(b);
       if (!reflectionTypeOption(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "reflectionMapOptions_0", c)) break;
+      if (!empty_element_parsed_guard_(b, "reflectionMapOptions__0", c)) break;
     }
     exit_section_(b, m, null, r);
     return r;
@@ -532,20 +520,6 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // specularExponentMap | dissolveMap | displacementMap | stencilDecalMap
-  public static boolean scalarMap(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "scalarMap")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SCALAR_MAP, "<scalar map>");
-    r = specularExponentMap(b, l + 1);
-    if (!r) r = dissolveMap(b, l + 1);
-    if (!r) r = displacementMap(b, l + 1);
-    if (!r) r = stencilDecalMap(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
   // (
   //     blendUOption | blendVOption
   //     | clampOption
@@ -554,15 +528,13 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
   // )*
-  public static boolean scalarMapOptions(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "scalarMapOptions")) return false;
-    Marker m = enter_section_(b, l, _NONE_, SCALAR_MAP_OPTIONS, "<scalar map options>");
+  static boolean scalarMapOptions_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "scalarMapOptions_")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!scalarMapOptions_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "scalarMapOptions", c)) break;
+      if (!scalarMapOptions__0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "scalarMapOptions_", c)) break;
     }
-    exit_section_(b, l, m, true, false, null);
     return true;
   }
 
@@ -572,8 +544,8 @@ public class MtlParser implements PsiParser, LightPsiParser {
   //     | valueModifierOption
   //     | offsetOption | scaleOption | turbulenceOption
   //     | resolutionOption
-  private static boolean scalarMapOptions_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "scalarMapOptions_0")) return false;
+  private static boolean scalarMapOptions__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "scalarMapOptions__0")) return false;
     boolean r;
     r = blendUOption(b, l + 1);
     if (!r) r = blendVOption(b, l + 1);
@@ -584,6 +556,18 @@ public class MtlParser implements PsiParser, LightPsiParser {
     if (!r) r = scaleOption(b, l + 1);
     if (!r) r = turbulenceOption(b, l + 1);
     if (!r) r = resolutionOption(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // specularExponentMap | dissolveMap | displacementMap | stencilDecalMap
+  static boolean scalarMap_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "scalarMap_")) return false;
+    boolean r;
+    r = specularExponentMap(b, l + 1);
+    if (!r) r = dissolveMap(b, l + 1);
+    if (!r) r = displacementMap(b, l + 1);
+    if (!r) r = stencilDecalMap(b, l + 1);
     return r;
   }
 
@@ -624,14 +608,14 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SPECULAR_COLOR_MAP_KEYWORD colorMapOptions TEXTURE_FILE
+  // SPECULAR_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE
   public static boolean specularColorMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "specularColorMap")) return false;
     if (!nextTokenIs(b, SPECULAR_COLOR_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, SPECULAR_COLOR_MAP_KEYWORD);
-    r = r && colorMapOptions(b, l + 1);
+    r = r && colorMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, SPECULAR_COLOR_MAP, r);
     return r;
@@ -650,28 +634,28 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions TEXTURE_FILE
+  // SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE
   public static boolean specularExponentMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "specularExponentMap")) return false;
     if (!nextTokenIs(b, SPECULAR_EXPONENT_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, SPECULAR_EXPONENT_MAP_KEYWORD);
-    r = r && scalarMapOptions(b, l + 1);
+    r = r && scalarMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, SPECULAR_EXPONENT_MAP, r);
     return r;
   }
 
   /* ********************************************************** */
-  // STENCIL_DECAL_MAP_KEYWORD scalarMapOptions TEXTURE_FILE
+  // STENCIL_DECAL_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE
   public static boolean stencilDecalMap(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "stencilDecalMap")) return false;
     if (!nextTokenIs(b, STENCIL_DECAL_MAP_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, STENCIL_DECAL_MAP_KEYWORD);
-    r = r && scalarMapOptions(b, l + 1);
+    r = r && scalarMapOptions_(b, l + 1);
     r = r && consumeToken(b, TEXTURE_FILE);
     exit_section_(b, m, STENCIL_DECAL_MAP, r);
     return r;

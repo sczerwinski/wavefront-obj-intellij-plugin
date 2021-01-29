@@ -8,6 +8,30 @@ import com.intellij.psi.PsiElement;
 public interface MtlSpecularExponentMap extends PsiElement {
 
   @NotNull
-  MtlScalarMapOptions getScalarMapOptions();
+  List<MtlBlendUOption> getBlendUOptionList();
+
+  @NotNull
+  List<MtlBlendVOption> getBlendVOptionList();
+
+  @NotNull
+  List<MtlClampOption> getClampOptionList();
+
+  @NotNull
+  List<MtlOffsetOption> getOffsetOptionList();
+
+  @NotNull
+  List<MtlResolutionOption> getResolutionOptionList();
+
+  @NotNull
+  List<MtlScalarChannelOption> getScalarChannelOptionList();
+
+  @NotNull
+  List<MtlScaleOption> getScaleOptionList();
+
+  @NotNull
+  List<MtlTurbulenceOption> getTurbulenceOptionList();
+
+  @NotNull
+  List<MtlValueModifierOption> getValueModifierOptionList();
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Slawomir Czerwinski
+ * Copyright 2020-2021 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,15 @@ import javax.swing.*;
 public class WavefrontObjIcons {
 
     @NotNull
-    public static final Icon X_UP_ACTION =
-            IconLoader.getIcon("/icons/editor_actions/xUp.svg");
+    public static final Icon X_UP_ACTION = getIcon("/icons/editor_actions/xUp.svg");
 
     @NotNull
-    public static final Icon Y_UP_ACTION =
-            IconLoader.getIcon("/icons/editor_actions/yUp.svg");
+    public static final Icon Y_UP_ACTION = getIcon("/icons/editor_actions/yUp.svg");
 
     @NotNull
-    public static final Icon Z_UP_ACTION =
-            IconLoader.getIcon("/icons/editor_actions/zUp.svg");
+    public static final Icon Z_UP_ACTION = getIcon("/icons/editor_actions/zUp.svg");
+
+    private static Icon getIcon(String path) {
+        return IconLoader.getIcon(path, WavefrontObjIcons.class);
+    }
 }

@@ -122,7 +122,7 @@ class ObjAnnotator : Annotator {
         element: ObjMaterialFileReference,
         holder: AnnotationHolder
     ) {
-        val materialFilenameNode = element.node.findChildByType(ObjTypes.REFERENCE)
+        val materialFilenameNode = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)
         if (materialFilenameNode != null && findMaterialFile(element) == null) {
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
@@ -135,7 +135,7 @@ class ObjAnnotator : Annotator {
         element: ObjMaterialReference,
         holder: AnnotationHolder
     ) {
-        val materialNameNode = element.node.findChildByType(ObjTypes.REFERENCE)
+        val materialNameNode = element.node.findChildByType(ObjTypes.MATERIAL_NAME)
         if (materialNameNode != null) {
             val materialFiles = findMaterialFiles(element.containingFile as ObjFile)
             val materials = materialFiles.flatMap { it.getChildrenOfType<MtlMaterial>() }

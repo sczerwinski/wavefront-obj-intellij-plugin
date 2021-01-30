@@ -32,12 +32,13 @@ public interface ObjTypes {
   IElementType GROUP_KEYWORD = new ObjTokenType("GROUP_KEYWORD");
   IElementType INDEX = new ObjTokenType("INDEX");
   IElementType LINE_KEYWORD = new ObjTokenType("LINE_KEYWORD");
+  IElementType MATERIAL_FILE_NAME = new ObjTokenType("MATERIAL_FILE_NAME");
   IElementType MATERIAL_FILE_REF_KEYWORD = new ObjTokenType("MATERIAL_FILE_REF_KEYWORD");
+  IElementType MATERIAL_NAME = new ObjTokenType("MATERIAL_NAME");
   IElementType MATERIAL_REFERENCE_KEYWORD = new ObjTokenType("MATERIAL_REFERENCE_KEYWORD");
   IElementType OBJECT_KEYWORD = new ObjTokenType("OBJECT_KEYWORD");
   IElementType OBJECT_OR_GROUP_NAME = new ObjTokenType("OBJECT_OR_GROUP_NAME");
   IElementType POINT_KEYWORD = new ObjTokenType("POINT_KEYWORD");
-  IElementType REFERENCE = new ObjTokenType("REFERENCE");
   IElementType SMOOTH_SHADING_KEYWORD = new ObjTokenType("SMOOTH_SHADING_KEYWORD");
   IElementType TEXTURE_COORDINATES_KEYWORD = new ObjTokenType("TEXTURE_COORDINATES_KEYWORD");
   IElementType VERTEX_INDEX_SEPARATOR = new ObjTokenType("VERTEX_INDEX_SEPARATOR");

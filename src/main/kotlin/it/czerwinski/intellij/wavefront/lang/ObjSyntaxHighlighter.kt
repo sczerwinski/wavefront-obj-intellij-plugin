@@ -61,7 +61,8 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.VERTEX_INDEX_SEPARATOR ->
                 arrayOf(ATTR_OPERATOR)
 
-            ObjTypes.REFERENCE ->
+            ObjTypes.MATERIAL_FILE_NAME,
+            ObjTypes.MATERIAL_NAME ->
                 arrayOf(ATTR_REFERENCE)
 
             TokenType.BAD_CHARACTER ->

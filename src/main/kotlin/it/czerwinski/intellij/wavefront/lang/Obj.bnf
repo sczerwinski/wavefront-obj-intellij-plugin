@@ -92,10 +92,10 @@ smoothShading ::= (SMOOTH_SHADING_KEYWORD FLAG) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjFlagElement"
 }
 
-materialFileReference ::= (MATERIAL_FILE_REF_KEYWORD REFERENCE) {
+materialFileReference ::= (MATERIAL_FILE_REF_KEYWORD MATERIAL_FILE_NAME) {
   methods = [getFilename]
 }
 
-materialReference ::= (MATERIAL_REFERENCE_KEYWORD REFERENCE) {
+materialReference ::= (MATERIAL_REFERENCE_KEYWORD MATERIAL_NAME) {
   methods = [getMaterialName]
 }

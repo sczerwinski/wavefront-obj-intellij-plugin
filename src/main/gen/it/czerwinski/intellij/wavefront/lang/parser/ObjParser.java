@@ -281,25 +281,25 @@ public class ObjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // MATERIAL_FILE_REF_KEYWORD REFERENCE
+  // MATERIAL_FILE_REF_KEYWORD MATERIAL_FILE_NAME
   public static boolean materialFileReference(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "materialFileReference")) return false;
     if (!nextTokenIs(b, MATERIAL_FILE_REF_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MATERIAL_FILE_REF_KEYWORD, REFERENCE);
+    r = consumeTokens(b, 0, MATERIAL_FILE_REF_KEYWORD, MATERIAL_FILE_NAME);
     exit_section_(b, m, MATERIAL_FILE_REFERENCE, r);
     return r;
   }
 
   /* ********************************************************** */
-  // MATERIAL_REFERENCE_KEYWORD REFERENCE
+  // MATERIAL_REFERENCE_KEYWORD MATERIAL_NAME
   public static boolean materialReference(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "materialReference")) return false;
     if (!nextTokenIs(b, MATERIAL_REFERENCE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MATERIAL_REFERENCE_KEYWORD, REFERENCE);
+    r = consumeTokens(b, 0, MATERIAL_REFERENCE_KEYWORD, MATERIAL_NAME);
     exit_section_(b, m, MATERIAL_REFERENCE, r);
     return r;
   }

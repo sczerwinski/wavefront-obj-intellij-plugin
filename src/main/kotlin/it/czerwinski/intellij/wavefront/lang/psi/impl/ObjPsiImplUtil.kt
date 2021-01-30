@@ -30,9 +30,9 @@ object ObjPsiImplUtil {
 
     @JvmStatic
     fun getFilename(element: ObjMaterialFileReference): String? =
-        element.node.findChildByType(ObjTypes.REFERENCE)?.text
+        element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)?.text
 
     @JvmStatic
     fun getMaterialName(element: ObjMaterialReference): String? =
-        element.node.findChildByType(ObjTypes.REFERENCE)?.text
+        element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.text
 }

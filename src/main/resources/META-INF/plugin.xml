@@ -103,6 +103,9 @@
         <lang.findUsagesProvider
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFindUsagesProvider"/>
+        <lang.foldingBuilder
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFoldingBuilder"/>
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>

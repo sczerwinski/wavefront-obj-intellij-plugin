@@ -344,7 +344,7 @@ public class MtlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (NEW_MATERIAL_KEYWORD MATERIAL_NAME) + item_*
+  // (NEW_MATERIAL_KEYWORD materialIdentifier) + item_*
   public static boolean material(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "material")) return false;
     if (!nextTokenIs(b, NEW_MATERIAL_KEYWORD)) return false;
@@ -356,7 +356,7 @@ public class MtlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (NEW_MATERIAL_KEYWORD MATERIAL_NAME) +
+  // (NEW_MATERIAL_KEYWORD materialIdentifier) +
   private static boolean material_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "material_0")) return false;
     boolean r;
@@ -371,12 +371,13 @@ public class MtlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // NEW_MATERIAL_KEYWORD MATERIAL_NAME
+  // NEW_MATERIAL_KEYWORD materialIdentifier
   private static boolean material_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "material_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, NEW_MATERIAL_KEYWORD, MATERIAL_NAME);
+    r = consumeToken(b, NEW_MATERIAL_KEYWORD);
+    r = r && materialIdentifier(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -390,6 +391,18 @@ public class MtlParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "material_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // MATERIAL_NAME
+  public static boolean materialIdentifier(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "materialIdentifier")) return false;
+    if (!nextTokenIs(b, MATERIAL_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, MATERIAL_NAME);
+    exit_section_(b, m, MATERIAL_IDENTIFIER, r);
+    return r;
   }
 
   /* ********************************************************** */

@@ -125,7 +125,7 @@ object MtlItemPresentationFactory {
     )
 
     private fun createPresentation(material: MtlMaterial): ItemPresentation = createPresentation(
-        presentableText = material.name ?: WavefrontObjBundle.message(
+        presentableText = material.getName() ?: WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.material"
         ),
         icon = MTL_MATERIAL_ICON

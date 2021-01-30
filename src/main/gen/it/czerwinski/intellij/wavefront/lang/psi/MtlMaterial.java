@@ -35,6 +35,9 @@ public interface MtlMaterial extends MtlMaterialElement {
   List<MtlIllumination> getIlluminationList();
 
   @NotNull
+  List<MtlMaterialIdentifier> getMaterialIdentifierList();
+
+  @NotNull
   List<MtlOpticalDensity> getOpticalDensityList();
 
   @NotNull

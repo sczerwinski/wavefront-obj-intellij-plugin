@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.wavefront.lang.psi.util
 
-import com.intellij.psi.PsiElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
 
-interface MtlMaterialElement : PsiElement {
-    fun getName(): String?
-}
+fun MtlFile.findMaterialIdentifiers(): List<MtlMaterialIdentifier> =
+    findMaterials().flatMap { material -> material.getChildrenOfType() }
+
+fun MtlFile.findMaterials(): List<MtlMaterial> = getChildrenOfType()

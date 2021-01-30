@@ -21,12 +21,11 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
-import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
 class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
@@ -62,7 +61,7 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.psi
         val files = findMaterialFiles(element.containingFile as ObjFile)
-        val materials = files.flatMap { file -> file.getChildrenOfType<MtlMaterial>() }
+        val materials = files.flatMap { file -> file.findMaterialIdentifiers() }
             .filter { material -> material.name == element.materialName }
         if (markedElement != null && materials.isNotEmpty()) {
             val marker = NavigationGutterIconBuilder.create(OBJ_MATERIAL_ICON)

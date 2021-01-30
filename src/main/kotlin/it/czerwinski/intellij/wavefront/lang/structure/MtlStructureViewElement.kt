@@ -21,6 +21,7 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
 
 class MtlStructureViewElement(
     private val element: NavigatablePsiElement
@@ -43,7 +44,9 @@ class MtlStructureViewElement(
         PsiTreeUtil.getChildrenOfTypeAsList(
             element,
             NavigatablePsiElement::class.java
-        ).map { element ->
+        ).filterNot { element ->
+            element is MtlMaterialIdentifier
+        }.map { element ->
             MtlStructureViewElement(element)
         }.toTypedArray()
 }

@@ -82,6 +82,12 @@ public class MtlMaterialImpl extends MtlMaterialElementImpl implements MtlMateri
 
   @Override
   @NotNull
+  public List<MtlMaterialIdentifier> getMaterialIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlMaterialIdentifier.class);
+  }
+
+  @Override
+  @NotNull
   public List<MtlOpticalDensity> getOpticalDensityList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MtlOpticalDensity.class);
   }

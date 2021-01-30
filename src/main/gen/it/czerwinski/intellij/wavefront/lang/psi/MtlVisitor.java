@@ -67,6 +67,10 @@ public class MtlVisitor extends PsiElementVisitor {
     visitMaterialElement(o);
   }
 
+  public void visitMaterialIdentifier(@NotNull MtlMaterialIdentifier o) {
+    visitMaterialIdentifierElement(o);
+  }
+
   public void visitOffsetOption(@NotNull MtlOffsetOption o) {
     visitFloatVectorValueElement(o);
   }
@@ -156,6 +160,10 @@ public class MtlVisitor extends PsiElementVisitor {
   }
 
   public void visitMaterialElement(@NotNull MtlMaterialElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMaterialIdentifierElement(@NotNull MtlMaterialIdentifierElement o) {
     visitPsiElement(o);
   }
 

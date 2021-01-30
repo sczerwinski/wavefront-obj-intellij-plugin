@@ -23,6 +23,7 @@ public interface MtlTypes {
   IElementType DISSOLVE_MAP = new MtlElementType("DISSOLVE_MAP");
   IElementType ILLUMINATION = new MtlElementType("ILLUMINATION");
   IElementType MATERIAL = new MtlElementType("MATERIAL");
+  IElementType MATERIAL_IDENTIFIER = new MtlElementType("MATERIAL_IDENTIFIER");
   IElementType OFFSET_OPTION = new MtlElementType("OFFSET_OPTION");
   IElementType OPTICAL_DENSITY = new MtlElementType("OPTICAL_DENSITY");
   IElementType REFLECTION_MAP = new MtlElementType("REFLECTION_MAP");
@@ -129,6 +130,9 @@ public interface MtlTypes {
       }
       else if (type == MATERIAL) {
         return new MtlMaterialImpl(node);
+      }
+      else if (type == MATERIAL_IDENTIFIER) {
+        return new MtlMaterialIdentifierImpl(node);
       }
       else if (type == OFFSET_OPTION) {
         return new MtlOffsetOptionImpl(node);

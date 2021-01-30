@@ -16,8 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiNameIdentifierOwner
 
-interface MtlMaterialElement : PsiElement {
-    fun getName(): String?
-}
+interface MtlMaterialIdentifierElement : PsiNameIdentifierOwner

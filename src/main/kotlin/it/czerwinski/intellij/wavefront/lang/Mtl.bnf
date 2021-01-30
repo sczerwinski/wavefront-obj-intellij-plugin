@@ -31,9 +31,14 @@
 
 mtlFile ::= material*
 
-material ::= (NEW_MATERIAL_KEYWORD MATERIAL_NAME) + item_* {
+material ::= (NEW_MATERIAL_KEYWORD materialIdentifier) + item_* {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlMaterialElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement"
+}
+
+materialIdentifier ::= MATERIAL_NAME {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlMaterialIdentifierElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement"
 }
 
 private item_ ::= (

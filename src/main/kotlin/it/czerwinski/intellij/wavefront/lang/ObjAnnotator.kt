@@ -21,7 +21,6 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
@@ -29,7 +28,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
-import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFile
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
@@ -138,7 +137,7 @@ class ObjAnnotator : Annotator {
         val materialNameNode = element.node.findChildByType(ObjTypes.MATERIAL_NAME)
         if (materialNameNode != null) {
             val materialFiles = findMaterialFiles(element.containingFile as ObjFile)
-            val materials = materialFiles.flatMap { it.getChildrenOfType<MtlMaterial>() }
+            val materials = materialFiles.flatMap { file -> file.findMaterialIdentifiers() }
             if (element.materialName !in materials.mapNotNull { it.name }) {
                 holder.newAnnotation(
                     HighlightSeverity.WARNING,

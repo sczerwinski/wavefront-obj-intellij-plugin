@@ -18,30 +18,14 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import com.intellij.psi.PsiElement
-import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
-import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 abstract class MtlMaterialElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), MtlMaterialElement {
 
-    private val nameNode get() = node.findChildByType(MtlTypes.MATERIAL_NAME)
-
-    override fun getName(): String? = nameIdentifier?.text
-
-    override fun setName(newName: String): PsiElement {
-        val oldNameNode = nameNode
-        if (oldNameNode != null) {
-            val mtlMaterial = MtlElementFactory.createMaterial(project, name = newName)
-            val newNameNode = mtlMaterial.nameIdentifier?.node
-            if (newNameNode != null) {
-                node.replaceChild(oldNameNode, newNameNode)
-            }
-        }
-        return this
-    }
-
-    override fun getNameIdentifier(): PsiElement? = nameNode?.psi
+    override fun getName(): String? =
+        getChildrenOfType<MtlMaterialIdentifier>().singleOrNull()?.name
 }

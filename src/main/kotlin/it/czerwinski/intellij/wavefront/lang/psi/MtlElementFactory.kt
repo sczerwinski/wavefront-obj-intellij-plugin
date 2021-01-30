@@ -19,12 +19,13 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import it.czerwinski.intellij.wavefront.lang.MtlFileType
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 object MtlElementFactory {
 
-    fun createMaterial(project: Project, name: String): MtlMaterial {
+    fun createMaterialIdentifier(project: Project, name: String): MtlMaterialIdentifier {
         val file = createFile(project, text = "newmtl $name")
-        return file.firstChild as MtlMaterial
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlMaterialIdentifier>().single()
     }
 
     private fun createFile(project: Project, text: String): MtlFile {

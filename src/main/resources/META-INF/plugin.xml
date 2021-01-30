@@ -30,6 +30,9 @@
         <codeInsight.lineMarkerProvider
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjLineMarkerProvider"/>
+        <completion.contributor
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjCompletionContributor"/>
         <lang.foldingBuilder
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFoldingBuilder"/>

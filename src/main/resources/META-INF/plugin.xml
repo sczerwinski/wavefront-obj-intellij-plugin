@@ -106,6 +106,8 @@
         <lang.foldingBuilder
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFoldingBuilder"/>
+        <gotoSymbolContributor
+                implementation="it.czerwinski.intellij.wavefront.lang.MtlChooseByNameContributor"/>
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>

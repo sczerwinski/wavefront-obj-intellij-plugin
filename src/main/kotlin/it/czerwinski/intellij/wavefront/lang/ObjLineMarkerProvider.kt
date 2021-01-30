@@ -25,6 +25,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
+import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
@@ -44,12 +45,13 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
         element: ObjMaterialFileReference,
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
+        val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)?.psi
         val files = findMaterialFiles(element)
-        if (files.isNotEmpty()) {
+        if (markedElement != null && files.isNotEmpty()) {
             val marker = NavigationGutterIconBuilder.create(OBJ_MATERIAL_FILE_ICON)
                 .setTargets(files)
                 .setTooltipText(WavefrontObjBundle.message("fileTypes.obj.marker.mtlFile"))
-                .createLineMarkerInfo(element)
+                .createLineMarkerInfo(markedElement)
             result.add(marker)
         }
     }
@@ -58,14 +60,15 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
         element: ObjMaterialReference,
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
+        val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.psi
         val files = findMaterialFiles(element.containingFile as ObjFile)
         val materials = files.flatMap { file -> file.getChildrenOfType<MtlMaterial>() }
             .filter { material -> material.name == element.materialName }
-        if (materials.isNotEmpty()) {
+        if (markedElement != null && materials.isNotEmpty()) {
             val marker = NavigationGutterIconBuilder.create(OBJ_MATERIAL_ICON)
                 .setTargets(materials)
                 .setTooltipText(WavefrontObjBundle.message("fileTypes.obj.marker.materials"))
-                .createLineMarkerInfo(element)
+                .createLineMarkerInfo(markedElement)
             result.add(marker)
         }
     }

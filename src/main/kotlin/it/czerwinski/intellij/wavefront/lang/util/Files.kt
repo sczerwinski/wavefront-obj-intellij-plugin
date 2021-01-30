@@ -33,11 +33,12 @@ import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 fun findTextureFile(element: MtlTextureElement): PsiFile? =
     findTextureFiles(element).firstOrNull()
 
-fun findTextureFiles(element: MtlTextureElement): List<PsiFile> {
-    val filename = element.textureFilename ?: return emptyList()
-    return FilenameIndex.getFilesByName(element.project, filename, GlobalSearchScope.allScope(element.project))
+fun findTextureFiles(element: MtlTextureElement): List<PsiFile> =
+    element.textureFilename?.let { findTextureFiles(element.project, it) }.orEmpty()
+
+fun findTextureFiles(project: Project, filename: String): List<PsiFile> =
+    FilenameIndex.getFilesByName(project, filename, GlobalSearchScope.allScope(project))
         .toList()
-}
 
 fun findMaterialFile(element: ObjMaterialFileReference): MtlFile? =
     findMaterialFiles(element).firstOrNull()

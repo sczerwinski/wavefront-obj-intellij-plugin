@@ -28,6 +28,16 @@ object ObjElementFactory {
         return (file.firstChild as ObjObject).getChildrenOfType<ObjObjectOrGroupIdentifier>().single()
     }
 
+    fun createMaterialFileReference(project: Project, filename: String): ObjMaterialFileReference {
+        val file = createFile(project, text = "mtllib $filename")
+        return file.firstChild as ObjMaterialFileReference
+    }
+
+    fun createMaterialReference(project: Project, name: String): ObjMaterialReference {
+        val file = createFile(project, text = "usemtl $name")
+        return file.firstChild as ObjMaterialReference
+    }
+
     private fun createFile(project: Project, text: String): ObjFile {
         val name = "temp.obj"
         return PsiFileFactory.getInstance(project)

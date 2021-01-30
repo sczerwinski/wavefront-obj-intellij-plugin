@@ -28,6 +28,11 @@ object MtlElementFactory {
         return (file.firstChild as MtlMaterial).getChildrenOfType<MtlMaterialIdentifier>().single()
     }
 
+    fun createTextureElement(project: Project, name: String): MtlTextureElement {
+        val file = createFile(project, text = "newmtl temp\n\tbump $name")
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlTextureElement>().single()
+    }
+
     private fun createFile(project: Project, text: String): MtlFile {
         val name = "temp.mtl"
         return PsiFileFactory.getInstance(project)

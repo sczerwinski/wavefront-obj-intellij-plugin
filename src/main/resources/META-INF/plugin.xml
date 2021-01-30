@@ -30,6 +30,18 @@
         <codeInsight.lineMarkerProvider
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjLineMarkerProvider"/>
+        <lang.elementManipulator
+                forClass="it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.ObjMaterialFileReferenceManipulator"/>
+        <lang.elementManipulator
+                forClass="it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.ObjMaterialReferenceManipulator"/>
+        <psi.referenceContributor
+                language="Wavefront OBJ"
+                implementation="it.czerwinski.intellij.wavefront.lang.ObjReferenceContributor"/>
+        <lang.refactoringSupport
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjRefactoringSupportProvider"/>
         <lang.foldingBuilder
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFoldingBuilder"/>
@@ -79,6 +91,15 @@
         <codeInsight.lineMarkerProvider
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlLineMarkerProvider"/>
+        <lang.elementManipulator
+                forClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.MtlTextureElementManipulator"/>
+        <psi.referenceContributor
+                language="Wavefront MTL"
+                implementation="it.czerwinski.intellij.wavefront.lang.MtlReferenceContributor"/>
+        <lang.refactoringSupport
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlRefactoringSupportProvider"/>
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>

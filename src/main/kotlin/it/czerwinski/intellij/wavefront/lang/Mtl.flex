@@ -93,6 +93,8 @@ TEXTURE_FILE_NAME=[^\ \t\r\n\f]+
 %state WAITING_OPTION_OR_TEXTURE
 %state WAITING_FLOAT_OR_OPTION_OR_TEXTURE
 
+%state INVALID
+
 %%
 
 <YYINITIAL> {COMMENT_LINE} { yybegin(YYINITIAL); return MtlTypes.COMMENT; }
@@ -175,4 +177,4 @@ TEXTURE_FILE_NAME=[^\ \t\r\n\f]+
 
 ({CRLF}|{WHITE_SPACE})+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-. { return TokenType.BAD_CHARACTER; }
+. { yybegin(INVALID); return TokenType.BAD_CHARACTER; }

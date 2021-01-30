@@ -69,6 +69,8 @@ REFERENCE=[^\ \t\r\n\f]+
 %state WAITING_MATERIAL_FILE_NAME
 %state WAITING_MATERIAL_NAME
 
+%state INVALID
+
 %%
 
 <YYINITIAL> {COMMENT_LINE} { yybegin(YYINITIAL); return ObjTypes.COMMENT; }
@@ -113,4 +115,4 @@ REFERENCE=[^\ \t\r\n\f]+
 
 ({CRLF}|{WHITE_SPACE})+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-. { return TokenType.BAD_CHARACTER; }
+. { yybegin(INVALID); return TokenType.BAD_CHARACTER; }

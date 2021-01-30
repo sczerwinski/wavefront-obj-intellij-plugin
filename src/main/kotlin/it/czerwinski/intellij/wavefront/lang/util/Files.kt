@@ -30,15 +30,21 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
-fun findTextureFile(element: MtlTextureElement): PsiFile? {
-    val filename = element.textureFilename ?: return null
+fun findTextureFile(element: MtlTextureElement): PsiFile? =
+    findTextureFiles(element).firstOrNull()
+
+fun findTextureFiles(element: MtlTextureElement): List<PsiFile> {
+    val filename = element.textureFilename ?: return emptyList()
     return FilenameIndex.getFilesByName(element.project, filename, GlobalSearchScope.allScope(element.project))
-        .firstOrNull()
+        .toList()
 }
 
 fun findMaterialFile(element: ObjMaterialFileReference): MtlFile? =
+    findMaterialFiles(element).firstOrNull()
+
+fun findMaterialFiles(element: ObjMaterialFileReference): List<MtlFile> =
     findMaterialFiles(element.project)
-        .firstOrNull { file -> file.name == element.filename }
+        .filter { file -> file.name == element.filename }
 
 fun findMaterialFiles(project: Project): List<MtlFile> =
     FileTypeIndex.getFiles(MtlFileType, GlobalSearchScope.allScope(project))

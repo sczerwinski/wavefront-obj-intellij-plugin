@@ -27,6 +27,9 @@
         <annotator
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjAnnotator"/>
+        <codeInsight.lineMarkerProvider
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjLineMarkerProvider"/>
         <lang.foldingBuilder
                 language="Wavefront OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFoldingBuilder"/>
@@ -73,6 +76,9 @@
         <annotator
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlAnnotator"/>
+        <codeInsight.lineMarkerProvider
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlLineMarkerProvider"/>
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>

@@ -16,8 +16,10 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
+import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 
 interface MtlTextureElement : PsiElement {
+    val textureFilenameNode: ASTNode?
     val textureFilename: String?
 }

@@ -70,6 +70,9 @@
         <lang.syntaxHighlighter
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlSyntaxHighlighter"/>
+        <annotator
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlAnnotator"/>
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>

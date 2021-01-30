@@ -21,12 +21,17 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
+import it.czerwinski.intellij.wavefront.lang.util.findMaterialFile
+import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
 class ObjAnnotator : Annotator {
 
@@ -118,15 +123,11 @@ class ObjAnnotator : Annotator {
         holder: AnnotationHolder
     ) {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.REFERENCE)
-        if (materialFilenameNode != null) {
-            if (!materialFilenameNode.text.endsWith(suffix = ".mtl")) {
-                holder.newAnnotation(
-                    HighlightSeverity.WARNING,
-                    WavefrontObjBundle.message(
-                        "fileTypes.obj.annotation.warning.mtlFileExtension"
-                    )
-                ).range(materialFilenameNode).create()
-            }
+        if (materialFilenameNode != null && findMaterialFile(element) == null) {
+            holder.newAnnotation(
+                HighlightSeverity.WARNING,
+                WavefrontObjBundle.message("fileTypes.obj.annotation.warning.mtlFileNotFound")
+            ).range(materialFilenameNode).create()
         }
     }
 
@@ -136,12 +137,14 @@ class ObjAnnotator : Annotator {
     ) {
         val materialNameNode = element.node.findChildByType(ObjTypes.REFERENCE)
         if (materialNameNode != null) {
-            holder.newAnnotation(
-                HighlightSeverity.WEAK_WARNING,
-                WavefrontObjBundle.message(
-                    "fileTypes.obj.annotation.warning.cannotValidateMaterial"
-                )
-            ).range(materialNameNode).create()
+            val materialFiles = findMaterialFiles(element.containingFile as ObjFile)
+            val materials = materialFiles.flatMap { it.getChildrenOfType<MtlMaterial>() }
+            if (element.materialName !in materials.mapNotNull { it.name }) {
+                holder.newAnnotation(
+                    HighlightSeverity.WARNING,
+                    WavefrontObjBundle.message("fileTypes.obj.annotation.warning.materialNotFound")
+                ).range(materialNameNode).create()
+            }
         }
     }
 }

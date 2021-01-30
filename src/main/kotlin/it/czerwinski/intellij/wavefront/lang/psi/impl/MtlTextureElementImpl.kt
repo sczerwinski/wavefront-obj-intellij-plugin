@@ -25,7 +25,8 @@ abstract class MtlTextureElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), MtlTextureElement {
 
-    private val textureFilenameNode get() = node.findChildByType(MtlTypes.TEXTURE_FILE)
+    override val textureFilenameNode: ASTNode?
+        get() = node.findChildByType(MtlTypes.TEXTURE_FILE)
 
     override val textureFilename: String?
         get() = textureFilenameNode?.text

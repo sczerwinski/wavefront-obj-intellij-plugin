@@ -100,6 +100,9 @@
         <lang.refactoringSupport
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlRefactoringSupportProvider"/>
+        <lang.findUsagesProvider
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFindUsagesProvider"/>
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>

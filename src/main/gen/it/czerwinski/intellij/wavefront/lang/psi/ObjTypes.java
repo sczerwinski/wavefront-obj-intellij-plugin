@@ -15,6 +15,7 @@ public interface ObjTypes {
   IElementType MATERIAL_FILE_REFERENCE = new ObjElementType("MATERIAL_FILE_REFERENCE");
   IElementType MATERIAL_REFERENCE = new ObjElementType("MATERIAL_REFERENCE");
   IElementType OBJECT = new ObjElementType("OBJECT");
+  IElementType OBJECT_OR_GROUP_IDENTIFIER = new ObjElementType("OBJECT_OR_GROUP_IDENTIFIER");
   IElementType POINT = new ObjElementType("POINT");
   IElementType SMOOTH_SHADING = new ObjElementType("SMOOTH_SHADING");
   IElementType TEXTURE_COORDINATES = new ObjElementType("TEXTURE_COORDINATES");
@@ -68,6 +69,9 @@ public interface ObjTypes {
       }
       else if (type == OBJECT) {
         return new ObjObjectImpl(node);
+      }
+      else if (type == OBJECT_OR_GROUP_IDENTIFIER) {
+        return new ObjObjectOrGroupIdentifierImpl(node);
       }
       else if (type == POINT) {
         return new ObjPointImpl(node);

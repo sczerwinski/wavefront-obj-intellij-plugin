@@ -52,6 +52,12 @@ public class ObjGroupImpl extends ObjGroupingElementImpl implements ObjGroup {
 
   @Override
   @NotNull
+  public List<ObjObjectOrGroupIdentifier> getObjectOrGroupIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjObjectOrGroupIdentifier.class);
+  }
+
+  @Override
+  @NotNull
   public List<ObjPoint> getPointList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjPoint.class);
   }

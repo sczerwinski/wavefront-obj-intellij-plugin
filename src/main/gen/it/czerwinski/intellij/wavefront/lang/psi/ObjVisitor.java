@@ -35,6 +35,10 @@ public class ObjVisitor extends PsiElementVisitor {
     visitGroupingElement(o);
   }
 
+  public void visitObjectOrGroupIdentifier(@NotNull ObjObjectOrGroupIdentifier o) {
+    visitObjectOrGroupIdentifierElement(o);
+  }
+
   public void visitPoint(@NotNull ObjPoint o) {
     visitPsiElement(o);
   }
@@ -76,6 +80,10 @@ public class ObjVisitor extends PsiElementVisitor {
   }
 
   public void visitIndexElement(@NotNull ObjIndexElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjectOrGroupIdentifierElement(@NotNull ObjObjectOrGroupIdentifierElement o) {
     visitPsiElement(o);
   }
 

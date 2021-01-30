@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi.impl
+package it.czerwinski.intellij.wavefront.lang.psi
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement
-import com.intellij.lang.ASTNode
-import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
-import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
-import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
+import com.intellij.psi.PsiNameIdentifierOwner
 
-abstract class ObjGroupingElementImpl(
-    node: ASTNode
-) : ASTWrapperPsiElement(node), ObjGroupingElement {
-
-    override fun getName(): String? =
-        getChildrenOfType<ObjObjectOrGroupIdentifier>().singleOrNull()?.name
-}
+interface ObjObjectOrGroupIdentifierElement : PsiNameIdentifierOwner

@@ -101,14 +101,14 @@ object ObjItemPresentationFactory {
     )
 
     private fun createPresentation(obj: ObjObject): ItemPresentation = createPresentation(
-        presentableText = obj.name ?: WavefrontObjBundle.message(
+        presentableText = obj.getName() ?: WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.object"
         ),
         icon = OBJ_OBJECT_ICON
     )
 
     private fun createPresentation(group: ObjGroup): ItemPresentation = createPresentation(
-        presentableText = group.name ?: WavefrontObjBundle.message(
+        presentableText = group.getName() ?: WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.group"
         ),
         icon = OBJ_GROUP_ICON

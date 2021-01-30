@@ -16,6 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-import com.intellij.psi.PsiNameIdentifierOwner
+import com.intellij.psi.PsiElement
 
-interface ObjGroupingElement : PsiNameIdentifierOwner
+interface ObjGroupingElement : PsiElement {
+    fun getName(): String?
+}

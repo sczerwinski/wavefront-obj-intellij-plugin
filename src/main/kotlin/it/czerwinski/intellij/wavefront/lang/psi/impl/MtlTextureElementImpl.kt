@@ -18,6 +18,8 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 
@@ -30,4 +32,7 @@ abstract class MtlTextureElementImpl(
 
     override val textureFilename: String?
         get() = textureFilenameNode?.text
+
+    override fun getReferences(): Array<PsiReference> =
+        ReferenceProvidersRegistry.getReferencesFromProviders(this)
 }

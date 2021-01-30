@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static it.czerwinski.intellij.wavefront.lang.psi.ObjTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import it.czerwinski.intellij.wavefront.lang.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class ObjMaterialFileReferenceImpl extends ASTWrapperPsiElement implements ObjMaterialFileReference {
 
@@ -31,6 +32,12 @@ public class ObjMaterialFileReferenceImpl extends ASTWrapperPsiElement implement
   @Nullable
   public String getFilename() {
     return ObjPsiImplUtil.getFilename(this);
+  }
+
+  @Override
+  @NotNull
+  public PsiReference[] getReferences() {
+    return ObjPsiImplUtil.getReferences(this);
   }
 
 }

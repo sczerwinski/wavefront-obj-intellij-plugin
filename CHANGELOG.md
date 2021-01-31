@@ -14,7 +14,7 @@
 ### Fixed
 
 ### Security
-## [0.2]
+## [0.2.0]
 ### Added
 - Support for drawing lines in 3D preview
 - Support for drawing points in 3D preview

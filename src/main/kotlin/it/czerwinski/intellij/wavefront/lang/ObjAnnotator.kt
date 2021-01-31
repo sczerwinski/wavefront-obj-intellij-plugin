@@ -32,6 +32,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMaterialQuickFix
+import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMtlFileQuickFix
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFile
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
@@ -126,10 +127,13 @@ class ObjAnnotator : Annotator {
     ) {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)
         if (materialFilenameNode != null && findMaterialFile(element) == null) {
+            val materialFilename = materialFilenameNode.text
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
                 WavefrontObjBundle.message("fileTypes.obj.annotation.warning.mtlFileNotFound")
-            ).range(materialFilenameNode).create()
+            ).range(materialFilenameNode)
+                .withFix(ObjCreateMtlFileQuickFix(element.containingFile.containingDirectory, materialFilename))
+                .create()
         }
     }
 

@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang
+package it.czerwinski.intellij.wavefront.lang.psi
 
-import com.intellij.lang.Commenter
+import com.intellij.psi.tree.IElementType
+import it.czerwinski.intellij.wavefront.lang.MtlLanguage
+import org.jetbrains.annotations.NonNls
 
-class ObjCommenter : Commenter {
+class MtlTokenType(
+    @NonNls debugName: String
+) : IElementType(debugName, MtlLanguage) {
 
-    override fun getLineCommentPrefix(): String? = LINE_COMMENT_PREFIX
-
-    override fun getBlockCommentSuffix(): String? = null
-
-    override fun getBlockCommentPrefix(): String? = null
-
-    override fun getCommentedBlockCommentPrefix(): String? = null
-
-    override fun getCommentedBlockCommentSuffix(): String? = null
-
-    companion object {
-        private const val LINE_COMMENT_PREFIX = "#"
-    }
+    override fun toString(): String = "MtlTokenType.${super.toString()}"
 }

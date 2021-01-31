@@ -20,6 +20,7 @@ public class ObjGroupImpl extends ObjGroupingElementImpl implements ObjGroup {
     visitor.visitGroup(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);
@@ -47,6 +48,12 @@ public class ObjGroupImpl extends ObjGroupingElementImpl implements ObjGroup {
   @NotNull
   public List<ObjMaterialReference> getMaterialReferenceList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjMaterialReference.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ObjObjectOrGroupIdentifier> getObjectOrGroupIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ObjObjectOrGroupIdentifier.class);
   }
 
   @Override

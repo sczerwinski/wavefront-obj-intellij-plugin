@@ -20,6 +20,7 @@ public class ObjVertexNormalIndexImpl extends ObjIndexElementImpl implements Obj
     visitor.visitVertexNormalIndex(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);

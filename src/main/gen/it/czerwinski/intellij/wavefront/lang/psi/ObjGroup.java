@@ -20,6 +20,9 @@ public interface ObjGroup extends ObjGroupingElement {
   List<ObjMaterialReference> getMaterialReferenceList();
 
   @NotNull
+  List<ObjObjectOrGroupIdentifier> getObjectOrGroupIdentifierList();
+
+  @NotNull
   List<ObjPoint> getPointList();
 
   @NotNull

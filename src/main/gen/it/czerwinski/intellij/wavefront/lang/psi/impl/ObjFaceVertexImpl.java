@@ -21,6 +21,7 @@ public class ObjFaceVertexImpl extends ASTWrapperPsiElement implements ObjFaceVe
     visitor.visitFaceVertex(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);

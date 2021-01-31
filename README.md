@@ -8,6 +8,7 @@
 Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
 
 - OBJ file format syntax
+- MTL file format syntax
 - 3D preview of OBJ files
 <!-- Plugin description end -->
 
@@ -15,18 +16,9 @@ Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.
 
 ### Supported features
 
-- OBJ file format:
-  - `v` – vertices,
-  - `vt` – texture coordinates,
-  - `vn` – normals,
-  - `f` – faces,
-  - `l` – lines,
-  - `p` – points,
-  - `s` – smooth shading flagg (`1`/`off`),
-  - `o` – objects,
-  - `g` – groups,
-  - `mtllib` – references to MTL file (without navigation or validation),
-  - `usemtl` – references to materials (without navigation or validation).
+- OBJ file format,
+- MTL file format,
+- navigation between OBJ and MTL files,
 - 3D preview of OBJ file:
   - text only, preview only, or split,
   - selection of up axis,
@@ -37,8 +29,6 @@ Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.
 The following features are already under consideration, so please refrain from requesting them in
 issue tracker.
 
-- MTL file format,
-- navigation between OBJ and MTL files,
 - 3D preview improvements:
   - additional shading models: flat and Phong,
   - textures,

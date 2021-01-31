@@ -19,12 +19,23 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import it.czerwinski.intellij.wavefront.lang.ObjFileType
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 object ObjElementFactory {
 
-    fun createObject(project: Project, name: String): ObjObject {
+    fun createObjectOrGroupIdentifier(project: Project, name: String): ObjObjectOrGroupIdentifier {
         val file = createFile(project, text = "o $name")
-        return file.firstChild as ObjObject
+        return (file.firstChild as ObjObject).getChildrenOfType<ObjObjectOrGroupIdentifier>().single()
+    }
+
+    fun createMaterialFileReference(project: Project, filename: String): ObjMaterialFileReference {
+        val file = createFile(project, text = "mtllib $filename")
+        return file.firstChild as ObjMaterialFileReference
+    }
+
+    fun createMaterialReference(project: Project, name: String): ObjMaterialReference {
+        val file = createFile(project, text = "usemtl $name")
+        return file.firstChild as ObjMaterialReference
     }
 
     private fun createFile(project: Project, text: String): ObjFile {

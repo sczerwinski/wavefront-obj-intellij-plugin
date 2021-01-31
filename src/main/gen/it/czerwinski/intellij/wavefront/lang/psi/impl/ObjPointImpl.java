@@ -21,6 +21,7 @@ public class ObjPointImpl extends ASTWrapperPsiElement implements ObjPoint {
     visitor.visitPoint(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ObjVisitor) accept((ObjVisitor)visitor);
     else super.accept(visitor);

@@ -4,10 +4,14 @@ package it.czerwinski.intellij.wavefront.lang.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 
 public interface ObjMaterialReference extends PsiElement {
 
   @Nullable
   String getMaterialName();
+
+  @NotNull
+  PsiReference[] getReferences();
 
 }

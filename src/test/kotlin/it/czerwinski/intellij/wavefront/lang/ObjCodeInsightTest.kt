@@ -47,7 +47,7 @@ class ObjCodeInsightTest : LightObjCodeInsightFixtureTestCase() {
         myFixture.configureByText(ObjFileType, "<caret>f 1/2/3 4/5/6 7/8/9")
         val commentAction = CommentByLineCommentAction()
         commentAction.actionPerformedImpl(project, editor)
-        myFixture.checkResult("#f 1/2/3 4/5/6 7/8/9")
+        myFixture.checkResult("# f 1/2/3 4/5/6 7/8/9")
         commentAction.actionPerformedImpl(project, editor)
         myFixture.checkResult("f 1/2/3 4/5/6 7/8/9")
     }

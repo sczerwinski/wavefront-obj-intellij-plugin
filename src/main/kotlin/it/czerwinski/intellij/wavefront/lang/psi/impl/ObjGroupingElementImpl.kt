@@ -18,30 +18,14 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import com.intellij.psi.PsiElement
-import it.czerwinski.intellij.wavefront.lang.psi.ObjElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
-import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
+import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 abstract class ObjGroupingElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), ObjGroupingElement {
 
-    private val nameNode get() = node.findChildByType(ObjTypes.STRING)
-
-    override fun getName(): String? = nameIdentifier?.text
-
-    override fun setName(newName: String): PsiElement {
-        val oldNameNode = nameNode
-        if (oldNameNode != null) {
-            val objObject = ObjElementFactory.createObject(project, name = newName)
-            val newNameNode = objObject.nameIdentifier?.node
-            if (newNameNode != null) {
-                node.replaceChild(oldNameNode, newNameNode)
-            }
-        }
-        return this
-    }
-
-    override fun getNameIdentifier(): PsiElement? = nameNode?.psi
+    override fun getName(): String? =
+        getChildrenOfType<ObjObjectOrGroupIdentifier>().singleOrNull()?.name
 }

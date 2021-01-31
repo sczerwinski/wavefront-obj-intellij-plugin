@@ -6,9 +6,21 @@
 ### Added
 - Support for drawing lines in 3D preview
 - Support for drawing points in 3D preview
+- Support for MTL files:
+  - Syntax highlighting
+  - Structure tree view
+  - Code formatting
+  - Code commenting
+- Navigation between OBJ and MTL files:
+  - Code completion
+  - References
+  - Usages
+  - Renaming
+  - Quick fixes
 
 ### Fixed
 - Replace usages deprecated in platform version 2020.3 (if replacement available)
+- Fix errors after typing long keywords
 
 ## [0.1.5]
 ### Added

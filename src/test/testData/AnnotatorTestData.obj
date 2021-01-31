@@ -1,5 +1,4 @@
-mtllib tetrahedron.mtl
-mtllib <warning descr="Suspicious filename. Material are typically defined in .mtl files.">tetrahedron.txt</warning>
+mtllib <warning descr="MTL file not found">tetrahedron.mtl</warning>
 
 v 1.0 1.0 1.0
 v 2.0 2.0 2.0
@@ -11,7 +10,7 @@ vt 1.0 1.0
 
 vn 0.5 0.5 0.5
 
-usemtl <weak_warning descr="Cannot validate material name (.mtl files not supported yet)">Marble</weak_warning>
+usemtl <warning descr="Material not found">Marble</warning>
 
 f 1 2 3
 f 1 2 <error descr="Unresolved vertex: 4">4</error>

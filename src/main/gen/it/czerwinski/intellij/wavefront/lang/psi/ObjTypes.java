@@ -15,6 +15,7 @@ public interface ObjTypes {
   IElementType MATERIAL_FILE_REFERENCE = new ObjElementType("MATERIAL_FILE_REFERENCE");
   IElementType MATERIAL_REFERENCE = new ObjElementType("MATERIAL_REFERENCE");
   IElementType OBJECT = new ObjElementType("OBJECT");
+  IElementType OBJECT_OR_GROUP_IDENTIFIER = new ObjElementType("OBJECT_OR_GROUP_IDENTIFIER");
   IElementType POINT = new ObjElementType("POINT");
   IElementType SMOOTH_SHADING = new ObjElementType("SMOOTH_SHADING");
   IElementType TEXTURE_COORDINATES = new ObjElementType("TEXTURE_COORDINATES");
@@ -32,13 +33,14 @@ public interface ObjTypes {
   IElementType GROUP_KEYWORD = new ObjTokenType("GROUP_KEYWORD");
   IElementType INDEX = new ObjTokenType("INDEX");
   IElementType LINE_KEYWORD = new ObjTokenType("LINE_KEYWORD");
+  IElementType MATERIAL_FILE_NAME = new ObjTokenType("MATERIAL_FILE_NAME");
   IElementType MATERIAL_FILE_REF_KEYWORD = new ObjTokenType("MATERIAL_FILE_REF_KEYWORD");
+  IElementType MATERIAL_NAME = new ObjTokenType("MATERIAL_NAME");
   IElementType MATERIAL_REFERENCE_KEYWORD = new ObjTokenType("MATERIAL_REFERENCE_KEYWORD");
   IElementType OBJECT_KEYWORD = new ObjTokenType("OBJECT_KEYWORD");
+  IElementType OBJECT_OR_GROUP_NAME = new ObjTokenType("OBJECT_OR_GROUP_NAME");
   IElementType POINT_KEYWORD = new ObjTokenType("POINT_KEYWORD");
-  IElementType REFERENCE = new ObjTokenType("REFERENCE");
   IElementType SMOOTH_SHADING_KEYWORD = new ObjTokenType("SMOOTH_SHADING_KEYWORD");
-  IElementType STRING = new ObjTokenType("STRING");
   IElementType TEXTURE_COORDINATES_KEYWORD = new ObjTokenType("TEXTURE_COORDINATES_KEYWORD");
   IElementType VERTEX_INDEX_SEPARATOR = new ObjTokenType("VERTEX_INDEX_SEPARATOR");
   IElementType VERTEX_KEYWORD = new ObjTokenType("VERTEX_KEYWORD");
@@ -67,6 +69,9 @@ public interface ObjTypes {
       }
       else if (type == OBJECT) {
         return new ObjObjectImpl(node);
+      }
+      else if (type == OBJECT_OR_GROUP_IDENTIFIER) {
+        return new ObjObjectOrGroupIdentifierImpl(node);
       }
       else if (type == POINT) {
         return new ObjPointImpl(node);

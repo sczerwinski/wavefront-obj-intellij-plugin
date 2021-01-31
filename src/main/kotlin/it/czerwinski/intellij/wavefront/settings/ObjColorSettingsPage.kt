@@ -89,12 +89,16 @@ class ObjColorSettingsPage : ColorSettingsPage {
             ObjSyntaxHighlighter.ATTR_OPERATOR
         ),
         AttributesDescriptor(
-            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.string"),
-            ObjSyntaxHighlighter.ATTR_STRING
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.declaration"),
+            ObjSyntaxHighlighter.ATTR_DECLARATION
         ),
         AttributesDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.number"),
             ObjSyntaxHighlighter.ATTR_NUMBER
+        ),
+        AttributesDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.constant"),
+            ObjSyntaxHighlighter.ATTR_CONSTANT
         ),
         AttributesDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.attribute.reference"),

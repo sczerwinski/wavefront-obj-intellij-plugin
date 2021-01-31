@@ -30,7 +30,7 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
     override fun createModel(element: PsiElement, settings: CodeStyleSettings): FormattingModel =
         FormattingModelProvider.createFormattingModelForPsiFile(
             element.containingFile,
-            ObjBlock(
+            WavefrontBlock(
                 node = element.node,
                 spacingBuilder = createSpaceBuilder(settings)
             ),
@@ -50,8 +50,8 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
             .before(ObjTypes.SMOOTH_SHADING_KEYWORD).none()
             .before(ObjTypes.MATERIAL_FILE_REF_KEYWORD).none()
             .before(ObjTypes.MATERIAL_REFERENCE_KEYWORD).none()
-            .between(ObjTypes.OBJECT_KEYWORD, ObjTypes.STRING).spaces(1)
-            .between(ObjTypes.GROUP_KEYWORD, ObjTypes.STRING).spaces(1)
+            .between(ObjTypes.OBJECT_KEYWORD, ObjTypes.OBJECT_OR_GROUP_IDENTIFIER).spaces(1)
+            .between(ObjTypes.GROUP_KEYWORD, ObjTypes.OBJECT_OR_GROUP_IDENTIFIER).spaces(1)
             .between(ObjTypes.VERTEX_KEYWORD, ObjTypes.FLOAT).spaces(1)
             .between(ObjTypes.TEXTURE_COORDINATES_KEYWORD, ObjTypes.FLOAT).spaces(1)
             .between(ObjTypes.VERTEX_NORMAL_KEYWORD, ObjTypes.FLOAT).spaces(1)
@@ -59,12 +59,14 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
             .between(ObjTypes.LINE_KEYWORD, ObjTypes.VERTEX_INDEX).spaces(1)
             .between(ObjTypes.POINT_KEYWORD, ObjTypes.VERTEX_INDEX).spaces(1)
             .between(ObjTypes.SMOOTH_SHADING_KEYWORD, ObjTypes.FLAG).spaces(1)
-            .between(ObjTypes.MATERIAL_FILE_REF_KEYWORD, ObjTypes.REFERENCE).spaces(1)
-            .between(ObjTypes.MATERIAL_REFERENCE_KEYWORD, ObjTypes.REFERENCE).spaces(1)
-            .after(ObjTypes.STRING).none()
+            .between(ObjTypes.MATERIAL_FILE_REF_KEYWORD, ObjTypes.MATERIAL_FILE_NAME).spaces(1)
+            .between(ObjTypes.MATERIAL_REFERENCE_KEYWORD, ObjTypes.MATERIAL_NAME).spaces(1)
+            .after(ObjTypes.OBJECT_OR_GROUP_NAME).none()
+            .after(ObjTypes.OBJECT_OR_GROUP_IDENTIFIER).none()
             .between(ObjTypes.FLOAT, ObjTypes.FLOAT).spaces(1)
             .between(ObjTypes.FACE_VERTEX, ObjTypes.FACE_VERTEX).spaces(1)
             .around(ObjTypes.VERTEX_INDEX_SEPARATOR).none()
             .after(ObjTypes.FLAG).none()
-            .after(ObjTypes.REFERENCE).none()
+            .after(ObjTypes.MATERIAL_FILE_NAME).none()
+            .after(ObjTypes.MATERIAL_NAME).none()
 }

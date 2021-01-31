@@ -20,6 +20,7 @@
 ### Fixed
 - Update signature of overridden method `RelatedItemLineMarkerProvider.collectNavigationMarkers(...)`
 - Replace deprecated method `FormattingModelBuilder.createModel(...)`
+- Replace deprecated extension function `max()` with `maxOrNull()`
 
 ### Security
 ## [0.3.0]

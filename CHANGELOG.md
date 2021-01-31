@@ -17,6 +17,7 @@
 - Remove support for platform version `202.*`
 
 ### Fixed
+- Update signature of overridden method `RelatedItemLineMarkerProvider.collectNavigationMarkers(...)`
 
 ### Security
 ## [0.3.0]

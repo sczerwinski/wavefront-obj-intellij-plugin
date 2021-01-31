@@ -30,7 +30,7 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
     override fun createModel(element: PsiElement, settings: CodeStyleSettings): FormattingModel =
         FormattingModelProvider.createFormattingModelForPsiFile(
             element.containingFile,
-            ObjBlock(
+            WavefrontBlock(
                 node = element.node,
                 spacingBuilder = createSpaceBuilder(settings)
             ),

@@ -111,6 +111,9 @@
         <lang.psiStructureViewFactory
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>
+        <lang.formatter
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.MtlFormattingModelBuilder"/>
 
         <!-- Settings -->
         <colorSettingsPage

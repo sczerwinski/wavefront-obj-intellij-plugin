@@ -28,7 +28,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.formatter.common.AbstractBlock
 import com.intellij.psi.tree.TokenSet
 
-class ObjBlock(
+class WavefrontBlock(
     node: ASTNode,
     wrap: Wrap? = Wrap.createWrap(WrapType.NONE, false),
     alignment: Alignment? = Alignment.createAlignment(),
@@ -40,7 +40,7 @@ class ObjBlock(
             .asSequence()
             .filterNot { child -> child.elementType === TokenType.WHITE_SPACE }
             .map { child ->
-                ObjBlock(
+                WavefrontBlock(
                     node = child,
                     spacingBuilder = spacingBuilder
                 )

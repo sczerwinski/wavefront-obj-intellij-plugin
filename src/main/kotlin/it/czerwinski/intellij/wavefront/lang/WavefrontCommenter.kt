@@ -18,7 +18,7 @@ package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.lang.Commenter
 
-class ObjCommenter : Commenter {
+class WavefrontCommenter : Commenter {
 
     override fun getLineCommentPrefix(): String? = LINE_COMMENT_PREFIX
 
@@ -31,6 +31,6 @@ class ObjCommenter : Commenter {
     override fun getCommentedBlockCommentSuffix(): String? = null
 
     companion object {
-        private const val LINE_COMMENT_PREFIX = "#"
+        private const val LINE_COMMENT_PREFIX = "# "
     }
 }

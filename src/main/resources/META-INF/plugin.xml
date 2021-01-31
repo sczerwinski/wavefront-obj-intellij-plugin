@@ -53,7 +53,7 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.ObjFormattingModelBuilder"/>
         <lang.commenter
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjCommenter"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
         <spellchecker.support
                 language="Wavefront OBJ"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
@@ -114,6 +114,9 @@
         <lang.formatter
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.MtlFormattingModelBuilder"/>
+        <lang.commenter
+                language="Wavefront MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
 
         <!-- Settings -->
         <colorSettingsPage

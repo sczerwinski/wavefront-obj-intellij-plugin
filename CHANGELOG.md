@@ -4,12 +4,17 @@
 
 ## [Unreleased]
 ### Added
+- Support for platform version `211.*`
 
 ### Changed
+- Update platform version to `2020.3`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
 
 ### Deprecated
 
 ### Removed
+- Remove support for platform version `201.*`
+- Remove support for platform version `202.*`
 
 ### Fixed
 

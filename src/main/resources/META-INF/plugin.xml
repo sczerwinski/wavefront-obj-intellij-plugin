@@ -117,6 +117,9 @@
         <lang.commenter
                 language="Wavefront MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
+        <spellchecker.support
+                language="Wavefront MTL"
+                implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
 
         <!-- Settings -->
         <colorSettingsPage

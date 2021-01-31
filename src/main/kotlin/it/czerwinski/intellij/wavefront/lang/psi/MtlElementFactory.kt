@@ -17,20 +17,34 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import it.czerwinski.intellij.wavefront.lang.MtlFileType
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 object MtlElementFactory {
 
-    fun createMaterialIdentifier(project: Project, name: String): MtlMaterialIdentifier {
+    fun createMaterial(project: Project, name: String): MtlMaterial {
         val file = createFile(project, text = "newmtl $name")
-        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlMaterialIdentifier>().single()
+        return (file.firstChild as MtlMaterial)
     }
+
+    fun createMaterialIdentifier(project: Project, name: String): MtlMaterialIdentifier =
+        createMaterial(project, name).getChildrenOfType<MtlMaterialIdentifier>().single()
 
     fun createTextureElement(project: Project, name: String): MtlTextureElement {
         val file = createFile(project, text = "newmtl temp\n\tbump $name")
         return (file.firstChild as MtlMaterial).getChildrenOfType<MtlTextureElement>().single()
+    }
+
+    fun createCRLF(project: Project): PsiElement {
+        val file = createFile(project, text = "\n")
+        return file.firstChild
+    }
+
+    fun createTODO(project: Project): PsiElement {
+        val file = createFile(project, text = "# TODO")
+        return file.firstChild
     }
 
     private fun createFile(project: Project, text: String): MtlFile {

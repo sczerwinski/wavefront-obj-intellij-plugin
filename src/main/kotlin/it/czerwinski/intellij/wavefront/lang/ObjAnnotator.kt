@@ -16,6 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.lang
 
+import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.lang.annotation.AnnotationBuilder
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
@@ -29,6 +31,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
+import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMaterialQuickFix
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFile
 import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
@@ -136,14 +139,24 @@ class ObjAnnotator : Annotator {
     ) {
         val materialNameNode = element.node.findChildByType(ObjTypes.MATERIAL_NAME)
         if (materialNameNode != null) {
+            val materialName = element.materialName
             val materialFiles = findMaterialFiles(element.containingFile as ObjFile)
             val materials = materialFiles.flatMap { file -> file.findMaterialIdentifiers() }
-            if (element.materialName !in materials.mapNotNull { it.name }) {
+            if (!materialName.isNullOrBlank() && materialName !in materials.mapNotNull { it.name }) {
                 holder.newAnnotation(
                     HighlightSeverity.WARNING,
                     WavefrontObjBundle.message("fileTypes.obj.annotation.warning.materialNotFound")
-                ).range(materialNameNode).create()
+                ).range(materialNameNode)
+                    .withFixes(materialFiles.map { file -> ObjCreateMaterialQuickFix(file, materialName) })
+                    .create()
             }
         }
+    }
+
+    private fun AnnotationBuilder.withFixes(fixes: Iterable<IntentionAction>): AnnotationBuilder {
+        for (fix in fixes) {
+            withFix(fix)
+        }
+        return this
     }
 }

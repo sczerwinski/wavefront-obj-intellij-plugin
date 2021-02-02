@@ -3,17 +3,9 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
+- Separate color settings attribute key for OBJ and MTL constants
 
-### Security
 ## [0.2.0]
 ### Added
 - Support for drawing lines in 3D preview

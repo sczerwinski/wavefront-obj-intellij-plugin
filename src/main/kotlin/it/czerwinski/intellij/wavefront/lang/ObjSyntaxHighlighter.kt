@@ -84,7 +84,7 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
         internal val ATTR_NUMBER: TextAttributesKey =
             createTextAttributesKey("OBJ_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         internal val ATTR_CONSTANT: TextAttributesKey =
-            createTextAttributesKey("MTL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT)
+            createTextAttributesKey("OBJ_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT)
         internal val ATTR_REFERENCE: TextAttributesKey =
             createTextAttributesKey("OBJ_REFERENCE", DefaultLanguageHighlighterColors.IDENTIFIER)
         internal val ATTR_BAD_CHARACTER: TextAttributesKey =

@@ -3,6 +3,9 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+- Color settings for OBJ 3D preview colors for faces, lines and points.
+
 ### Fixed
 - Separate color settings attribute key for OBJ and MTL constants
 

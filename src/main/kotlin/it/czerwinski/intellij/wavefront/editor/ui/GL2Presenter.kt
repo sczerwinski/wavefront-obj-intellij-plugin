@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.ui
 
+import com.intellij.openapi.editor.colors.ColorKey
 import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.jogamp.opengl.GL
 import com.jogamp.opengl.GL2
@@ -28,6 +29,7 @@ import it.czerwinski.intellij.wavefront.editor.gl.glLines
 import it.czerwinski.intellij.wavefront.editor.gl.glPoints
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import java.awt.Color
 
 class GL2Presenter(
     animator: GLAnimatorControl,
@@ -78,12 +80,22 @@ class GL2Presenter(
         glEnable(GL2.GL_LIGHTING)
         glEnable(GL2.GL_LIGHT0)
 
-        glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT, AMBIENT_COLOR, 0)
-        glMaterialfv(GL.GL_FRONT, GL2.GL_DIFFUSE, DIFFUSE_COLOR, 0)
-        glMaterialfv(GL.GL_FRONT, GL2.GL_SPECULAR, SPECULAR_COLOR, 0)
+        glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT, getColorComponents(COLOR_FACE, AMBIENT_FACTOR), 0)
+        glMaterialfv(GL.GL_FRONT, GL2.GL_DIFFUSE, getColorComponents(COLOR_FACE, DIFFUSE_FACTOR), 0)
+        glMaterialfv(GL.GL_FRONT, GL2.GL_SPECULAR, getColorComponents(COLOR_FACE, SPECULAR_FACTOR), 0)
         glMaterialf(GL.GL_FRONT, GL2.GL_SHININESS, SHININESS)
 
         glPointSize(2f)
+    }
+
+    private fun getColorComponents(colorKey: ColorKey, factor: Float = 1f): FloatArray {
+        val output = FloatArray(size = COLOR_COMPONENTS_SIZE)
+        val color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: Color.GRAY
+        color.getRGBComponents(output)
+        for (index in output.indices) {
+            output[index] = output[index] * factor
+        }
+        return output
     }
 
     override fun GLAutoDrawable?.runInGLContext(block: GL2.() -> Unit) {
@@ -117,7 +129,9 @@ class GL2Presenter(
         model?.let { model ->
             glFaces(model)
             glDisable(GL2.GL_LIGHTING)
+            glColor4fv(getColorComponents(COLOR_LINE), 0)
             glLines(model)
+            glColor4fv(getColorComponents(COLOR_POINT), 0)
             glPoints(model)
             glEnable(GL2.GL_LIGHTING)
         }
@@ -151,9 +165,15 @@ class GL2Presenter(
         private const val CENTER_Y = 0f
         private const val CENTER_Z = 0f
 
-        private val AMBIENT_COLOR = floatArrayOf(.7f, .7f, .7f, 1f)
-        private val DIFFUSE_COLOR = floatArrayOf(.9f, .9f, .9f, 1f)
-        private val SPECULAR_COLOR = floatArrayOf(1f, 1f, 1f, 1f)
+        internal val COLOR_FACE: ColorKey = ColorKey.createColorKey("OBJ_3D_FACE", Color.LIGHT_GRAY)
+        internal val COLOR_LINE: ColorKey = ColorKey.createColorKey("OBJ_3D_LINE", Color.GRAY)
+        internal val COLOR_POINT: ColorKey = ColorKey.createColorKey("OBJ_3D_POINT", Color.GRAY)
+
+        private const val COLOR_COMPONENTS_SIZE = 4
+
+        private const val AMBIENT_FACTOR = .7f
+        private const val DIFFUSE_FACTOR = .9f
+        private const val SPECULAR_FACTOR = 1f
         private const val SHININESS = 128f
 
         private val LIGHT_POSITION =

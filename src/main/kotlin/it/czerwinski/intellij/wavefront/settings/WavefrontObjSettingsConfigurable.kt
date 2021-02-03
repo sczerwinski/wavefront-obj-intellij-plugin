@@ -17,15 +17,18 @@
 package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.options.Configurable
+import com.intellij.openapi.options.SearchableConfigurable
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
 
-class WavefrontObjSettingsConfigurable : Configurable {
+class WavefrontObjSettingsConfigurable : SearchableConfigurable {
 
     private lateinit var component: WavefrontObjSettingsComponent
+
+    private val settings = WavefrontObjSettingsState.getInstance()
+
+    override fun getId(): String = "Settings.WavefrontObj"
 
     @Nls(capitalization = Nls.Capitalization.Title)
     override fun getDisplayName(): String =
@@ -33,34 +36,24 @@ class WavefrontObjSettingsConfigurable : Configurable {
 
     override fun createComponent(): JComponent? {
         component = WavefrontObjSettingsComponent()
-        return component.mainPanel
+        return component.getComponent()
     }
 
     override fun getPreferredFocusedComponent(): JComponent =
         component.getPreferredFocusedComponent()
 
     override fun isModified(): Boolean {
-        val settings = WavefrontObjSettingsState.getInstance()
-        return settings == null ||
-            component.isPreviewDisabled != settings.isPreviewDisabled ||
-            component.defaultEditorLayout != settings.defaultEditorLayout ||
-            component.isVerticalSplit != settings.isVerticalSplit
+        return ::component.isInitialized && settings != component.wavefrontObjSettings
     }
 
     override fun apply() {
-        val settings = WavefrontObjSettingsState.getInstance()
-        settings?.isPreviewDisabled = component.isPreviewDisabled
-        settings?.defaultEditorLayout = component.defaultEditorLayout
-        settings?.isVerticalSplit = component.isVerticalSplit
+        component.validateForm()
         ApplicationManager.getApplication().messageBus
             .syncPublisher(WavefrontObjSettingsState.SettingsChangedListener.TOPIC)
-            .settingsChanged(settings)
+            .settingsChanged(settings?.setFrom(component.wavefrontObjSettings))
     }
 
     override fun reset() {
-        val settings = WavefrontObjSettingsState.getInstance()
-        component.isPreviewDisabled = settings?.isPreviewDisabled ?: false
-        component.defaultEditorLayout = settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
-        component.isVerticalSplit = settings?.isVerticalSplit ?: false
+        component.wavefrontObjSettings = settings ?: WavefrontObjSettingsState.DEFAULT
     }
 }

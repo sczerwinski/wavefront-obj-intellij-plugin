@@ -22,6 +22,7 @@ import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.ui.GL2Presenter
 import it.czerwinski.intellij.wavefront.lang.OBJ_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter
 import javax.swing.Icon
@@ -114,7 +115,23 @@ class ObjColorSettingsPage : ColorSettingsPage {
         )
     )
 
-    override fun getColorDescriptors(): Array<ColorDescriptor> = ColorDescriptor.EMPTY_ARRAY
+    override fun getColorDescriptors(): Array<ColorDescriptor> = arrayOf(
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.face"),
+            GL2Presenter.COLOR_FACE,
+            ColorDescriptor.Kind.FOREGROUND
+        ),
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.line"),
+            GL2Presenter.COLOR_LINE,
+            ColorDescriptor.Kind.FOREGROUND
+        ),
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.point"),
+            GL2Presenter.COLOR_POINT,
+            ColorDescriptor.Kind.FOREGROUND
+        )
+    )
 
     override fun getDisplayName(): String =
         WavefrontObjBundle.message("settings.fileTypes.obj.name")

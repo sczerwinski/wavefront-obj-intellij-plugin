@@ -36,6 +36,7 @@ import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
+import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import java.awt.BorderLayout
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
@@ -76,6 +77,9 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private val cameraModel: AtomicReference<GLCameraModel> =
         AtomicReference(GLCameraModelFactory.createDefault())
 
+    private val settings: AtomicReference<ObjPreviewFileEditorSettingsState> =
+        AtomicReference(ObjPreviewFileEditorSettingsState())
+
     init {
         invokeLater(modalityState, ::attachPlaceholder)
     }
@@ -100,6 +104,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             presenter = GL2Presenter(animator, ::showError)
             presenter.updateModel(model)
             presenter.updateCameraModel(cameraModel.get())
+            presenter.updateSettings(settings.get())
             canvas.addGLEventListener(presenter)
 
             canvas.addMouseWheelListener(ZoomingMouseWheelListener())
@@ -182,6 +187,16 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     fun updateUpVector(upVector: UpVector) {
         updateCameraModel { oldCameraModel ->
             oldCameraModel.copy(upVector = upVector)
+        }
+    }
+
+    fun updateGLPresenterSettings(newSettings: ObjPreviewFileEditorSettingsState) {
+        if (newSettings != settings.getAndSet(newSettings)) {
+            invokeLater(modalityState) {
+                if (::presenter.isInitialized) {
+                    presenter.updateSettings(settings.get())
+                }
+            }
         }
     }
 

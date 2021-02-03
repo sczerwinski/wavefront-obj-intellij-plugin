@@ -4,16 +4,15 @@
 
 ## [Unreleased]
 ### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
+- Color settings for OBJ 3D preview colors for faces, lines and points.
+- Settings for the 3D preview:
+  - Default up vector
+  - Line width
+  - Point size
 
 ### Fixed
+- Separate color settings attribute key for OBJ and MTL constants
 
-### Security
 ## [0.2.0]
 ### Added
 - Support for drawing lines in 3D preview

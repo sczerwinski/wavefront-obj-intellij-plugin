@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("TooManyFunctions")
-
 package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.actionSystem.ActionGroup
@@ -36,6 +34,7 @@ import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
 import it.czerwinski.intellij.wavefront.editor.ui.EditorWithToolbar
 import it.czerwinski.intellij.wavefront.editor.ui.GLPanelWrapper
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
+import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import java.beans.PropertyChangeListener
 import javax.swing.JComponent
 
@@ -50,7 +49,7 @@ class ObjPreviewFileEditor(
 
     private val _component: JComponent by lazy { createComponent() }
 
-    var upVector: UpVector = UpVector.Z_UP
+    var upVector: UpVector = UpVector.DEFAULT
         private set
 
     init {
@@ -116,6 +115,11 @@ class ObjPreviewFileEditor(
         glPanel.updateUpVector(upVector)
         actionToolbar.updateActionsImmediately()
         component.repaint()
+    }
+
+    fun triggerSettingsChange(settings: ObjPreviewFileEditorSettingsState) {
+        glPanel.updateGLPresenterSettings(settings)
+        triggerUpVectorChange(settings.defaultUpVector)
     }
 
     companion object {

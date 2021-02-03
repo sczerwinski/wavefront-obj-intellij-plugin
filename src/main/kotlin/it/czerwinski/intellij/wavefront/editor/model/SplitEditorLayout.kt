@@ -21,6 +21,10 @@ enum class SplitEditorLayout(
     val isShowingPreviewEditor: Boolean
 ) {
     TEXT(isShowingTextEditor = true, isShowingPreviewEditor = false),
-    PREVIEW(isShowingTextEditor = false, isShowingPreviewEditor = true),
-    SPLIT(isShowingTextEditor = true, isShowingPreviewEditor = true);
+    SPLIT(isShowingTextEditor = true, isShowingPreviewEditor = true),
+    PREVIEW(isShowingTextEditor = false, isShowingPreviewEditor = true);
+
+    companion object {
+        val DEFAULT = TEXT
+    }
 }

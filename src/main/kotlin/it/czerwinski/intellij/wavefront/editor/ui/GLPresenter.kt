@@ -22,8 +22,10 @@ import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLEventListener
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 
 interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
     fun updateModel(newModel: GLModel?)
     fun updateCameraModel(newCameraModel: GLCameraModel)
+    fun updateSettings(newSettings: ObjPreviewFileEditorSettingsState)
 }

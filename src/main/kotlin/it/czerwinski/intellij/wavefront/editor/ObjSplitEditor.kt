@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("TooManyFunctions")
-
 package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.ide.structureView.StructureViewBuilder
@@ -41,6 +39,7 @@ import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import it.czerwinski.intellij.wavefront.editor.ui.EditorSplitter
 import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
 import it.czerwinski.intellij.wavefront.editor.ui.EditorWithToolbar
+import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 import java.beans.PropertyChangeListener
 import javax.swing.JComponent
@@ -62,7 +61,7 @@ class ObjSplitEditor(
     private val _component: JComponent by lazy { createComponent() }
 
     var splitEditorLayout: SplitEditorLayout =
-        settingsState?.defaultEditorLayout ?: SplitEditorLayout.TEXT
+        settingsState?.defaultEditorLayout ?: SplitEditorLayout.DEFAULT
         private set
 
     init {
@@ -70,6 +69,9 @@ class ObjSplitEditor(
 
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
+        previewEditor.triggerSettingsChange(
+            settings = settingsState?.objPreviewFileEditorSettings ?: ObjPreviewFileEditorSettingsState.DEFAULT
+        )
 
         ApplicationManager.getApplication().messageBus.connect(this).subscribe(
             WavefrontObjSettingsState.SettingsChangedListener.TOPIC,
@@ -77,8 +79,10 @@ class ObjSplitEditor(
                 override fun settingsChanged(settings: WavefrontObjSettingsState?) {
                     splitter.orientation = settings?.isVerticalSplit ?: false
                     triggerSplitEditorLayoutChange(
-                        if (settings?.isPreviewDisabled == true) SplitEditorLayout.TEXT
-                        else settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
+                        splitEditorLayout = settings?.defaultEditorLayout ?: SplitEditorLayout.DEFAULT
+                    )
+                    previewEditor.triggerSettingsChange(
+                        settings = settings?.objPreviewFileEditorSettings ?: ObjPreviewFileEditorSettingsState.DEFAULT
                     )
                 }
             }

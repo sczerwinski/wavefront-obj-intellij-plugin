@@ -69,6 +69,10 @@ file format and editor.
 
   <kbd>Preferences</kbd> > <kbd>Editor</kbd> > <kbd>Color Scheme</kbd> > <kbd>Wavefront OBJ</kbd>
 
+- To change Wavefront MTL editor color scheme, use:
+
+  <kbd>Preferences</kbd> > <kbd>Editor</kbd> > <kbd>Color Scheme</kbd> > <kbd>Wavefront MTL</kbd>
+
 - To change plugin configuration, use
 
   <kbd>Preferences</kbd> > <kbd>Languages & Frameworks</kbd> > <kbd>Wavefront OBJ</kbd>

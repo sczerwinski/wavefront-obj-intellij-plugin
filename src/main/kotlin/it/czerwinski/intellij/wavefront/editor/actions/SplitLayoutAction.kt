@@ -24,22 +24,15 @@ import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.DumbAware
 import it.czerwinski.intellij.wavefront.editor.ObjSplitEditor
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
-import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 
 abstract class SplitLayoutAction(
     private val splitLayout: SplitEditorLayout
 ) : AnAction(), DumbAware, Toggleable {
 
-    private val isPreviewDisabled: Boolean
-        get() = WavefrontObjSettingsState.getInstance()?.isPreviewDisabled == true
-
     override fun update(event: AnActionEvent) {
         val editor = findObjSplitEditor(event)
 
-        event.presentation.apply {
-            isEnabled = editor != null
-            isVisible = !isPreviewDisabled
-        }
+        event.presentation.isEnabled = editor != null
 
         if (editor != null) {
             Toggleable.setSelected(event.presentation, editor.splitEditorLayout === splitLayout)

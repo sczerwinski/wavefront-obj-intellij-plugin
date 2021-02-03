@@ -24,4 +24,8 @@ enum class UpVector(
     X_UP(x = 1f, y = 0f, z = 0f),
     Y_UP(x = 0f, y = 1f, z = 0f),
     Z_UP(x = 0f, y = 0f, z = 1f);
+
+    companion object {
+        val DEFAULT = Z_UP
+    }
 }

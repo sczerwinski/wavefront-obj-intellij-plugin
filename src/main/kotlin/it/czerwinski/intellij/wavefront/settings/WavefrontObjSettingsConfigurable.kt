@@ -33,7 +33,7 @@ class WavefrontObjSettingsConfigurable : Configurable {
 
     override fun createComponent(): JComponent? {
         component = WavefrontObjSettingsComponent()
-        return component.mainPanel
+        return component.getComponent()
     }
 
     override fun getPreferredFocusedComponent(): JComponent =

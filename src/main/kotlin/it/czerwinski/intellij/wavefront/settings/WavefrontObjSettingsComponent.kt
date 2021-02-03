@@ -16,31 +16,28 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.openapi.ui.ComboBox
+import com.intellij.ui.EnumComboBoxModel
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.layout.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
 import javax.swing.JComponent
 import javax.swing.JPanel
 
 class WavefrontObjSettingsComponent {
 
-    val mainPanel: JPanel
+    private val mainPanel: JPanel
 
     private val previewDisabledCheckBox = JBCheckBox(
         WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.disabled")
     )
 
-    private val layoutTextRadioButton = JBRadioButton(
-        WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.text")
-    )
-    private val layoutSplitRadioButton = JBRadioButton(
-        WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")
-    )
-    private val layoutPreviewRadioButton = JBRadioButton(
-        WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.preview")
-    )
+    private val layoutComboBox = ComboBox(EnumComboBoxModel(SplitEditorLayout::class.java)).apply {
+        renderer = SplitEditorLayoutListCellRenderer()
+    }
 
     private val horizontalSplitRadioButton = JBRadioButton(
         WavefrontObjBundle.message("settings.editor.fileTypes.obj.split.horizontal")
@@ -56,16 +53,9 @@ class WavefrontObjSettingsComponent {
         }
 
     var defaultEditorLayout: SplitEditorLayout
-        get() = when {
-            layoutTextRadioButton.isSelected -> SplitEditorLayout.TEXT
-            layoutSplitRadioButton.isSelected -> SplitEditorLayout.SPLIT
-            layoutPreviewRadioButton.isSelected -> SplitEditorLayout.PREVIEW
-            else -> SplitEditorLayout.TEXT
-        }
+        get() = layoutComboBox.selectedItem as? SplitEditorLayout ?: SplitEditorLayout.DEFAULT
         set(value) {
-            layoutTextRadioButton.isSelected = value == SplitEditorLayout.TEXT
-            layoutSplitRadioButton.isSelected = value == SplitEditorLayout.SPLIT
-            layoutPreviewRadioButton.isSelected = value == SplitEditorLayout.PREVIEW
+            layoutComboBox.selectedItem = value
         }
 
     var isVerticalSplit: Boolean
@@ -86,11 +76,7 @@ class WavefrontObjSettingsComponent {
                         visible = !previewDisabledCheckBox.isSelected
                         subRowsVisible = visible
                     }
-                    buttonGroup {
-                        row { layoutTextRadioButton() }
-                        row { layoutSplitRadioButton() }
-                        row { layoutPreviewRadioButton() }
-                    }
+                    layoutComboBox()
                 }
                 row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split")) {
                     previewDisabledCheckBox.addChangeListener {
@@ -106,5 +92,7 @@ class WavefrontObjSettingsComponent {
         }
     }
 
-    fun getPreferredFocusedComponent(): JComponent = horizontalSplitRadioButton
+    fun getComponent(): JComponent = mainPanel
+
+    fun getPreferredFocusedComponent(): JComponent = layoutComboBox
 }

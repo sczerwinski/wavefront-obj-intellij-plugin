@@ -18,18 +18,18 @@ package it.czerwinski.intellij.wavefront.settings.ui
 
 import com.intellij.ui.SimpleListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
 @Suppress("FunctionName")
-fun SplitEditorLayoutListCellRenderer(): SimpleListCellRenderer<SplitEditorLayout> =
+fun UpVectorListCellRenderer(): SimpleListCellRenderer<UpVector> =
     SimpleListCellRenderer.create("") { value ->
         when (value) {
-            SplitEditorLayout.TEXT ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default.text")
-            SplitEditorLayout.SPLIT ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default.split")
-            SplitEditorLayout.PREVIEW ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default.preview")
+            UpVector.X_UP ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector.x")
+            UpVector.Y_UP ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector.y")
+            UpVector.Z_UP ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector.z")
             else ->
                 null
         }

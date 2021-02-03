@@ -16,83 +16,131 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.EnumComboBoxModel
-import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBRadioButton
+import com.intellij.ui.components.JBTextField
 import com.intellij.ui.layout.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
+import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class WavefrontObjSettingsComponent {
+class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPreviewFileEditorSettingsState.Holder {
 
-    private val mainPanel: JPanel
+    private lateinit var defaultUpVector: ComboBox<UpVector>
+    private lateinit var lineWidthInput: JBTextField
+    private lateinit var pointSizeInput: JBTextField
+    private lateinit var defaultEditorLayout: ComboBox<SplitEditorLayout>
+    private lateinit var verticalSplitCheckBox: JBRadioButton
+    private lateinit var horizontalSplitCheckBox: JBRadioButton
 
-    private val previewDisabledCheckBox = JBCheckBox(
-        WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.disabled")
-    )
-
-    private val layoutComboBox = ComboBox(EnumComboBoxModel(SplitEditorLayout::class.java)).apply {
-        renderer = SplitEditorLayoutListCellRenderer()
-    }
-
-    private val horizontalSplitRadioButton = JBRadioButton(
-        WavefrontObjBundle.message("settings.editor.fileTypes.obj.split.horizontal")
-    )
-    private val verticalSplitRadioButton = JBRadioButton(
-        WavefrontObjBundle.message("settings.editor.fileTypes.obj.split.vertical")
-    )
-
-    var isPreviewDisabled: Boolean
-        get() = previewDisabledCheckBox.isSelected
-        set(value) {
-            previewDisabledCheckBox.isSelected = value
-        }
-
-    var defaultEditorLayout: SplitEditorLayout
-        get() = layoutComboBox.selectedItem as? SplitEditorLayout ?: SplitEditorLayout.DEFAULT
-        set(value) {
-            layoutComboBox.selectedItem = value
-        }
-
-    var isVerticalSplit: Boolean
-        get() = verticalSplitRadioButton.isSelected
-        set(value) {
-            horizontalSplitRadioButton.isSelected = !value
-            verticalSplitRadioButton.isSelected = value
-        }
-
-    init {
-        mainPanel = panel {
-            titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
-                row {
-                    previewDisabledCheckBox()
-                }
-                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout")) {
-                    previewDisabledCheckBox.addChangeListener {
-                        visible = !previewDisabledCheckBox.isSelected
-                        subRowsVisible = visible
+    private val mainPanel: JPanel = panel {
+        titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
+                defaultEditorLayout = comboBox(
+                    EnumComboBoxModel(SplitEditorLayout::class.java),
+                    getter = { SplitEditorLayout.DEFAULT },
+                    setter = { },
+                    SplitEditorLayoutListCellRenderer()
+                ).component
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {
+                buttonGroup {
+                    row {
+                        horizontalSplitCheckBox = radioButton(
+                            WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split.horizontal")
+                        ).component
                     }
-                    layoutComboBox()
-                }
-                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.split")) {
-                    previewDisabledCheckBox.addChangeListener {
-                        visible = !previewDisabledCheckBox.isSelected
-                        subRowsVisible = visible
-                    }
-                    buttonGroup {
-                        row { horizontalSplitRadioButton() }
-                        row { verticalSplitRadioButton() }
+                    row {
+                        verticalSplitCheckBox = radioButton(
+                            WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split.vertical")
+                        ).component
                     }
                 }
             }
         }
+        titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector")) {
+                defaultUpVector = comboBox(
+                    EnumComboBoxModel(UpVector::class.java),
+                    getter = { UpVector.DEFAULT },
+                    setter = { },
+                    UpVectorListCellRenderer()
+                ).component
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
+                lineWidthInput = textField(
+                    getter = { ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH.toString() },
+                    setter = { }
+                ).withValidationOnInput {
+                    val value = it.text.toFloatOrNull()
+                    if (value == null) error(getLineWidthErrorMessage(it.text))
+                    else null
+                }.component
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
+                pointSizeInput = textField(
+                    getter = { ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE.toString() },
+                    setter = { }
+                ).withValidationOnInput {
+                    val value = it.text.toFloatOrNull()
+                    if (value == null) error(getPointSizeErrorMessage(it.text))
+                    else null
+                }.component
+            }
+        }
     }
+
+    override var wavefrontObjSettings: WavefrontObjSettingsState
+        get() = WavefrontObjSettingsState(
+            objPreviewFileEditorSettings = objPreviewFileEditorSettings,
+            defaultEditorLayout = defaultEditorLayout.selectedItem as? SplitEditorLayout ?: SplitEditorLayout.DEFAULT,
+            isVerticalSplit = verticalSplitCheckBox.isSelected
+        )
+        set(value) {
+            objPreviewFileEditorSettings = value.objPreviewFileEditorSettings
+            defaultEditorLayout.selectedItem = value.defaultEditorLayout
+            verticalSplitCheckBox.isSelected = value.isVerticalSplit
+            horizontalSplitCheckBox.isSelected = value.isHorizontalSplit
+        }
+
+    override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState
+        get() = ObjPreviewFileEditorSettingsState(
+            defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
+            lineWidth = lineWidthInput.text.toFloatOrNull() ?: ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
+            pointSize = pointSizeInput.text.toFloatOrNull() ?: ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE
+        )
+        set(value) {
+            defaultUpVector.selectedItem = value.defaultUpVector
+            lineWidthInput.text = value.lineWidth.toString()
+            pointSizeInput.text = value.pointSize.toString()
+        }
 
     fun getComponent(): JComponent = mainPanel
 
-    fun getPreferredFocusedComponent(): JComponent = layoutComboBox
+    fun getPreferredFocusedComponent(): JComponent = defaultUpVector
+
+    fun validateForm() {
+        if (lineWidthInput.text.toFloatOrNull() == null) {
+            throw ConfigurationException(getLineWidthErrorMessage(lineWidthInput.text))
+        }
+        if (pointSizeInput.text.toFloatOrNull() == null) {
+            throw ConfigurationException(getPointSizeErrorMessage(pointSizeInput.text))
+        }
+    }
+
+    private fun getLineWidthErrorMessage(value: String): String = WavefrontObjBundle.message(
+        "settings.editor.fileTypes.obj.preview.lineWidth.error",
+        value
+    )
+
+    private fun getPointSizeErrorMessage(value: String): String = WavefrontObjBundle.message(
+        "settings.editor.fileTypes.obj.preview.pointSize.error",
+        value
+    )
 }

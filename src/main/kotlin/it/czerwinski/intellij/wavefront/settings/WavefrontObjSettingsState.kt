@@ -23,22 +23,23 @@ import com.intellij.openapi.components.Storage
 import com.intellij.util.messages.Topic
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Attribute
+import com.intellij.util.xmlb.annotations.Property
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 
 @State(
     name = "it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState",
     storages = [Storage("wavefrontObjSettings.xml")]
 )
-class WavefrontObjSettingsState : PersistentStateComponent<WavefrontObjSettingsState> {
+data class WavefrontObjSettingsState(
+    @field:Property override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState =
+        ObjPreviewFileEditorSettingsState.DEFAULT,
+    @field:Attribute var defaultEditorLayout: SplitEditorLayout = SplitEditorLayout.DEFAULT,
+    @field:Attribute var isVerticalSplit: Boolean = false
+) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewFileEditorSettingsState.Holder {
 
-    @field:Attribute
-    var isPreviewDisabled: Boolean = false
-
-    @field:Attribute
-    var defaultEditorLayout: SplitEditorLayout = SplitEditorLayout.DEFAULT
-
-    @field:Attribute
-    var isVerticalSplit: Boolean = false
+    var isHorizontalSplit: Boolean
+        get() = !isVerticalSplit
+        set(value) { isVerticalSplit = !value }
 
     override fun getState(): WavefrontObjSettingsState = this
 
@@ -46,10 +47,24 @@ class WavefrontObjSettingsState : PersistentStateComponent<WavefrontObjSettingsS
         XmlSerializerUtil.copyBean(state, this)
     }
 
+    fun setFrom(other: WavefrontObjSettingsState): WavefrontObjSettingsState {
+        objPreviewFileEditorSettings = other.objPreviewFileEditorSettings
+        defaultEditorLayout = other.defaultEditorLayout
+        isVerticalSplit = other.isVerticalSplit
+        return this
+    }
+
     companion object {
+
+        val DEFAULT = WavefrontObjSettingsState()
+
         fun getInstance(): WavefrontObjSettingsState? {
             return ServiceManager.getService(WavefrontObjSettingsState::class.java)
         }
+    }
+
+    interface Holder {
+        var wavefrontObjSettings: WavefrontObjSettingsState
     }
 
     interface SettingsChangedListener {

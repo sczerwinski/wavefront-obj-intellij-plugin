@@ -29,6 +29,7 @@ import it.czerwinski.intellij.wavefront.editor.gl.glLines
 import it.czerwinski.intellij.wavefront.editor.gl.glPoints
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import java.awt.Color
 
 class GL2Presenter(
@@ -44,6 +45,8 @@ class GL2Presenter(
 
     private var cameraModel: GLCameraModel? = null
 
+    private var settings: ObjPreviewFileEditorSettingsState = ObjPreviewFileEditorSettingsState()
+
     private val background get() =
         EditorColorsManager.getInstance().globalScheme.defaultBackground
 
@@ -56,6 +59,11 @@ class GL2Presenter(
 
     override fun updateCameraModel(newCameraModel: GLCameraModel) {
         cameraModel = newCameraModel
+        if (isStarted && isPaused) resume()
+    }
+
+    override fun updateSettings(newSettings: ObjPreviewFileEditorSettingsState) {
+        settings = newSettings
         if (isStarted && isPaused) resume()
     }
 
@@ -84,8 +92,6 @@ class GL2Presenter(
         glMaterialfv(GL.GL_FRONT, GL2.GL_DIFFUSE, getColorComponents(COLOR_FACE, DIFFUSE_FACTOR), 0)
         glMaterialfv(GL.GL_FRONT, GL2.GL_SPECULAR, getColorComponents(COLOR_FACE, SPECULAR_FACTOR), 0)
         glMaterialf(GL.GL_FRONT, GL2.GL_SHININESS, SHININESS)
-
-        glPointSize(2f)
     }
 
     private fun getColorComponents(colorKey: ColorKey, factor: Float = 1f): FloatArray {
@@ -124,6 +130,8 @@ class GL2Presenter(
     override fun display(drawable: GLAutoDrawable?) = drawable.runInGLContext {
         glClearColor(background)
         glClear(GL2.GL_COLOR_BUFFER_BIT or GL2.GL_DEPTH_BUFFER_BIT)
+        glLineWidth(settings.lineWidth)
+        glPointSize(settings.pointSize)
         updateProjectionMatrix()
         updateModelViewMatrix()
         model?.let { model ->
@@ -173,7 +181,7 @@ class GL2Presenter(
 
         private const val AMBIENT_FACTOR = .7f
         private const val DIFFUSE_FACTOR = .9f
-        private const val SPECULAR_FACTOR = 1f
+        private const val SPECULAR_FACTOR = 0f
         private const val SHININESS = 128f
 
         private val LIGHT_POSITION =

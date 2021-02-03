@@ -35,7 +35,7 @@ class WavefrontObjSettingsState : PersistentStateComponent<WavefrontObjSettingsS
     var isPreviewDisabled: Boolean = false
 
     @field:Attribute
-    var defaultEditorLayout: SplitEditorLayout = SplitEditorLayout.TEXT
+    var defaultEditorLayout: SplitEditorLayout = SplitEditorLayout.DEFAULT
 
     @field:Attribute
     var isVerticalSplit: Boolean = false

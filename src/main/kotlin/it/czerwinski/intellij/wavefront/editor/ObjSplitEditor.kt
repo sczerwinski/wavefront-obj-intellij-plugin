@@ -62,7 +62,7 @@ class ObjSplitEditor(
     private val _component: JComponent by lazy { createComponent() }
 
     var splitEditorLayout: SplitEditorLayout =
-        settingsState?.defaultEditorLayout ?: SplitEditorLayout.TEXT
+        settingsState?.defaultEditorLayout ?: SplitEditorLayout.DEFAULT
         private set
 
     init {
@@ -78,7 +78,7 @@ class ObjSplitEditor(
                     splitter.orientation = settings?.isVerticalSplit ?: false
                     triggerSplitEditorLayoutChange(
                         if (settings?.isPreviewDisabled == true) SplitEditorLayout.TEXT
-                        else settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
+                        else settings?.defaultEditorLayout ?: SplitEditorLayout.DEFAULT
                     )
                 }
             }

@@ -60,7 +60,7 @@ class WavefrontObjSettingsConfigurable : Configurable {
     override fun reset() {
         val settings = WavefrontObjSettingsState.getInstance()
         component.isPreviewDisabled = settings?.isPreviewDisabled ?: false
-        component.defaultEditorLayout = settings?.defaultEditorLayout ?: SplitEditorLayout.TEXT
+        component.defaultEditorLayout = settings?.defaultEditorLayout ?: SplitEditorLayout.DEFAULT
         component.isVerticalSplit = settings?.isVerticalSplit ?: false
     }
 }

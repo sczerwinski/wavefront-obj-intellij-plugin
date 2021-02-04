@@ -19,8 +19,11 @@ package it.czerwinski.intellij.wavefront.settings
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.EnumComboBoxModel
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.components.JBTextField
+import com.intellij.ui.layout.Cell
+import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
@@ -33,6 +36,11 @@ import javax.swing.JPanel
 class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPreviewFileEditorSettingsState.Holder {
 
     private lateinit var defaultUpVector: ComboBox<UpVector>
+    private lateinit var showAxesCheckBox: JBCheckBox
+    private lateinit var axisLineWidthInput: JBTextField
+    private lateinit var showGridCheckBox: JBCheckBox
+    private lateinit var showFineGridCheckBox: JBCheckBox
+    private lateinit var gridLineWidthInput: JBTextField
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
     private lateinit var defaultEditorLayout: ComboBox<SplitEditorLayout>
@@ -73,25 +81,50 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                     UpVectorListCellRenderer()
                 ).component
             }
+            row {
+                showAxesCheckBox = checkBox(
+                    WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showAxes")
+                ).component
+                showAxesCheckBox.addChangeListener {
+                    subRowsEnabled = showAxesCheckBox.isSelected
+                }
+                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLineWidth")) {
+                    axisLineWidthInput = floatTextField(
+                        defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+                        errorMessage = { getLineWidthErrorMessage(it) }
+                    ).component
+                }
+            }
+            row {
+                showGridCheckBox = checkBox(
+                    WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showGrid")
+                ).component
+                showGridCheckBox.addChangeListener {
+                    subRowsEnabled = showGridCheckBox.isSelected
+                }
+                row {
+                    showFineGridCheckBox = checkBox(
+                        WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showFineGrid")
+                    ).component
+                }
+                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.gridLineWidth")) {
+                    gridLineWidthInput = floatTextField(
+                        defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_GRID_LINE_WIDTH,
+                        errorMessage = { getLineWidthErrorMessage(it) }
+                    ).component
+                }
+            }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
-                lineWidthInput = textField(
-                    getter = { ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH.toString() },
-                    setter = { }
-                ).withValidationOnInput {
-                    val value = it.text.toFloatOrNull()
-                    if (value == null) error(getLineWidthErrorMessage(it.text))
-                    else null
-                }.component
+                lineWidthInput = floatTextField(
+                    defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
+                    errorMessage = { getLineWidthErrorMessage(it) }
+                ).component
             }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
-                pointSizeInput = textField(
-                    getter = { ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE.toString() },
-                    setter = { }
-                ).withValidationOnInput {
-                    val value = it.text.toFloatOrNull()
-                    if (value == null) error(getPointSizeErrorMessage(it.text))
-                    else null
-                }.component
+                pointSizeInput = floatTextField(
+                    defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE,
+                    errorMessage = { getPointSizeErrorMessage(it) }
+                ).component
             }
         }
     }
@@ -112,26 +145,55 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
     override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState
         get() = ObjPreviewFileEditorSettingsState(
             defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
-            lineWidth = lineWidthInput.text.toFloatOrNull() ?: ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
-            pointSize = pointSizeInput.text.toFloatOrNull() ?: ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE
+            showAxes = showAxesCheckBox.isSelected,
+            axisLineWidth = axisLineWidthInput.text.toFloatOrNull()
+                ?: ObjPreviewFileEditorSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+            showGrid = showGridCheckBox.isSelected,
+            showFineGrid = showFineGridCheckBox.isSelected,
+            gridLineWidth = gridLineWidthInput.text.toFloatOrNull()
+                ?: ObjPreviewFileEditorSettingsState.DEFAULT_GRID_LINE_WIDTH,
+            lineWidth = lineWidthInput.text.toFloatOrNull()
+                ?: ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
+            pointSize = pointSizeInput.text.toFloatOrNull()
+                ?: ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE
         )
         set(value) {
             defaultUpVector.selectedItem = value.defaultUpVector
+            showAxesCheckBox.isSelected = value.showAxes
+            axisLineWidthInput.text = value.axisLineWidth.toString()
+            showGridCheckBox.isSelected = value.showGrid
+            showFineGridCheckBox.isSelected = value.showFineGrid
+            gridLineWidthInput.text = value.gridLineWidth.toString()
             lineWidthInput.text = value.lineWidth.toString()
             pointSizeInput.text = value.pointSize.toString()
         }
+
+    private fun Cell.floatTextField(
+        defaultValue: Float,
+        errorMessage: (String) -> String
+    ): CellBuilder<JBTextField> = textField(
+        getter = { defaultValue.toString() },
+        setter = { },
+        columns = FLOAT_INPUT_COLUMNS
+    ).withValidationOnInput {
+        val value = it.text.toFloatOrNull()
+        if (value == null) error(errorMessage)
+        else null
+    }
 
     fun getComponent(): JComponent = mainPanel
 
     fun getPreferredFocusedComponent(): JComponent = defaultUpVector
 
     fun validateForm() {
-        if (lineWidthInput.text.toFloatOrNull() == null) {
-            throw ConfigurationException(getLineWidthErrorMessage(lineWidthInput.text))
+        val errorMessage = when {
+            axisLineWidthInput.text.toFloatOrNull() == null -> getLineWidthErrorMessage(axisLineWidthInput.text)
+            gridLineWidthInput.text.toFloatOrNull() == null -> getLineWidthErrorMessage(gridLineWidthInput.text)
+            lineWidthInput.text.toFloatOrNull() == null -> getLineWidthErrorMessage(lineWidthInput.text)
+            pointSizeInput.text.toFloatOrNull() == null -> getPointSizeErrorMessage(pointSizeInput.text)
+            else -> null
         }
-        if (pointSizeInput.text.toFloatOrNull() == null) {
-            throw ConfigurationException(getPointSizeErrorMessage(pointSizeInput.text))
-        }
+        if (errorMessage != null) throw ConfigurationException(errorMessage)
     }
 
     private fun getLineWidthErrorMessage(value: String): String = WavefrontObjBundle.message(
@@ -143,4 +205,8 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
         "settings.editor.fileTypes.obj.preview.pointSize.error",
         value
     )
+
+    companion object {
+        private const val FLOAT_INPUT_COLUMNS = 5
+    }
 }

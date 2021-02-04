@@ -47,9 +47,17 @@ class ObjPreviewFileEditor(
 
     private val actionToolbar: ActionToolbar by lazy { createActionToolbar() }
 
+    private val additionalActionToolbar: ActionToolbar by lazy { createAdditionalActionToolbar() }
+
     private val _component: JComponent by lazy { createComponent() }
 
     var upVector: UpVector = UpVector.DEFAULT
+        private set
+
+    var isShowingAxes: Boolean = ObjPreviewFileEditorSettingsState.DEFAULT_SHOW_AXES
+        private set
+
+    var isShowingGrid: Boolean = ObjPreviewFileEditorSettingsState.DEFAULT_SHOW_GRID
         private set
 
     init {
@@ -76,14 +84,34 @@ class ObjPreviewFileEditor(
         return toolbar
     }
 
-    private fun createComponent(): JComponent {
-        return EditorWithToolbar(
-            toolbarComponent = EditorToolbarHeader(rightActionToolbar = actionToolbar),
-            editorComponent = glPanel
+    private fun createAdditionalActionToolbar(): ActionToolbar {
+        val actionManager = ActionManager.getInstance()
+
+        check(actionManager.isGroup(ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID)) {
+            "Actions group not found: $ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID"
+        }
+
+        val group = actionManager.getAction(ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID) as ActionGroup
+        val toolbar = actionManager.createActionToolbar(
+            ActionPlaces.EDITOR_TOOLBAR,
+            group,
+            true
         )
+        toolbar.setTargetComponent(glPanel)
+        toolbar.setReservePlaceAutoPopupIcon(false)
+        return toolbar
     }
 
+    private fun createComponent(): JComponent = EditorWithToolbar(
+        toolbarComponent = EditorToolbarHeader(
+            leftActionToolbar = actionToolbar,
+            rightActionToolbar = additionalActionToolbar
+        ),
+        editorComponent = glPanel
+    )
+
     fun initPreview() {
+        additionalActionToolbar.updateActionsImmediately()
         glPanel.initPreview()
     }
 
@@ -117,12 +145,49 @@ class ObjPreviewFileEditor(
         component.repaint()
     }
 
+    fun toggleAxes() {
+        triggerAxesChange(!isShowingAxes)
+    }
+
+    private fun triggerAxesChange(showAxes: Boolean) {
+        isShowingAxes = showAxes
+        glPanel.updateAxes(showAxes)
+        actionToolbar.updateActionsImmediately()
+        component.repaint()
+    }
+
+    fun toggleGrid() {
+        triggerGridChange(!isShowingGrid)
+    }
+
+    private fun triggerGridChange(showGrid: Boolean) {
+        isShowingGrid = showGrid
+        glPanel.updateGrid(showGrid)
+        actionToolbar.updateActionsImmediately()
+        component.repaint()
+    }
+
     fun triggerSettingsChange(settings: ObjPreviewFileEditorSettingsState) {
         glPanel.updateGLPresenterSettings(settings)
         triggerUpVectorChange(settings.defaultUpVector)
+        triggerAxesChange(settings.showAxes)
+        triggerGridChange(settings.showGrid)
+    }
+
+    fun zoomIn() {
+        glPanel.zoomIn()
+    }
+
+    fun zoomOut() {
+        glPanel.zoomOut()
+    }
+
+    fun zoomFit() {
+        glPanel.zoomFit()
     }
 
     companion object {
         private const val TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.Toolbar"
+        private const val ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.AdditionalToolbar"
     }
 }

@@ -17,30 +17,17 @@
 package it.czerwinski.intellij.wavefront.editor.actions
 
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.project.DumbAware
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
-abstract class UpVectorAction(
-    private val upVector: UpVector
-) : ObjPreviewFileEditorAction(), DumbAware, Toggleable {
+class ZoomInAction : ObjPreviewFileEditorAction(), DumbAware {
 
     override fun update(event: AnActionEvent) {
         val editor = findObjPreviewFileEditor(event)
 
         event.presentation.isEnabled = editor != null
-
-        if (editor != null) {
-            Toggleable.setSelected(event.presentation, editor.upVector === upVector)
-        }
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
-
-        if (editor != null) {
-            editor.triggerUpVectorChange(upVector)
-            Toggleable.setSelected(event.presentation, true)
-        }
+        findObjPreviewFileEditor(event)?.zoomIn()
     }
 }

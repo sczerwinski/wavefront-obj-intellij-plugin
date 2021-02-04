@@ -9,6 +9,9 @@
   - Default up vector
   - Line width
   - Point size
+- Showing axes and grid on the 3D preview (both toggleable)
+- Zoom actions on 3D preview toolbar
+- Settings action on 3D preview toolbar
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.1`
@@ -19,6 +22,7 @@
 ### Fixed
 - Separate color settings attribute key for OBJ and MTL constants
 - JogAmp bug on macOS causing IDE crash when showing 3D preview (fixed by using JogAmp snapshot dependencies v2.4)
+- Limit initial camera distance for very small objects
 
 ## [0.2.0]
 ### Added

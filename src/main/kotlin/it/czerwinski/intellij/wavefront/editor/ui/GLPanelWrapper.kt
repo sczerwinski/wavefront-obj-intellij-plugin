@@ -42,6 +42,7 @@ import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.awt.event.MouseWheelListener
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextArea
@@ -77,6 +78,12 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private val cameraModel: AtomicReference<GLCameraModel> =
         AtomicReference(GLCameraModelFactory.createDefault())
 
+    private val showAxis: AtomicBoolean = AtomicBoolean(false)
+
+    private val showGrid: AtomicBoolean = AtomicBoolean(false)
+
+    private val gridRotation: AtomicInteger = AtomicInteger(0)
+
     private val settings: AtomicReference<ObjPreviewFileEditorSettingsState> =
         AtomicReference(ObjPreviewFileEditorSettingsState())
 
@@ -103,8 +110,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
             presenter = GL2Presenter(animator, ::showError)
             presenter.updateModel(model)
-            presenter.updateCameraModel(cameraModel.get())
-            presenter.updateSettings(settings.get())
+            updatePresenter()
             canvas.addGLEventListener(presenter)
 
             canvas.addMouseWheelListener(ZoomingMouseWheelListener())
@@ -140,6 +146,17 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         throw UnsupportedOperationException("Could not find any supported GL profile")
     }
 
+    private fun updatePresenter() {
+        invokeLater(modalityState) {
+            if (::presenter.isInitialized) {
+                presenter.updateCameraModel(cameraModel.get())
+                presenter.updateAxes(this.showAxis.get())
+                presenter.updateGrid(showGrid.get(), gridRotation.get())
+                presenter.updateSettings(settings.get())
+            }
+        }
+    }
+
     private fun showError(exception: Throwable) {
         if (::presenter.isInitialized) {
             presenter.stop()
@@ -165,8 +182,9 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         model = objFile?.let(GLModelFactory::create)
         updateCameraModel { oldCameraModel ->
             oldCameraModel.copy(
-                distance = oldCameraModel.distance.coerceAtLeast(
-                    minimumValue = modelSize * DEFAULT_DISTANCE_FACTOR
+                distance = oldCameraModel.distance.coerceIn(
+                    minimumValue = modelSize * DEFAULT_DISTANCE_FACTOR,
+                    maximumValue = modelSize * MAX_DISTANCE_FACTOR
                 )
             )
         }
@@ -175,28 +193,63 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private fun updateCameraModel(transform: (GLCameraModel) -> GLCameraModel) {
         cameraModel.getAndUpdate { oldCameraModel ->
             val newCameraModel = transform(oldCameraModel)
-            invokeLater(modalityState) {
-                if (::presenter.isInitialized) {
-                    presenter.updateCameraModel(cameraModel.get())
-                }
-            }
+            updatePresenter()
             return@getAndUpdate newCameraModel
         }
     }
 
     fun updateUpVector(upVector: UpVector) {
+        gridRotation.set(upVector.ordinal + 1)
         updateCameraModel { oldCameraModel ->
             oldCameraModel.copy(upVector = upVector)
         }
     }
 
+    fun updateAxes(showAxis: Boolean) {
+        this.showAxis.set(showAxis)
+        updatePresenter()
+    }
+
+    fun updateGrid(showGrid: Boolean) {
+        this.showGrid.set(showGrid)
+        updatePresenter()
+    }
+
     fun updateGLPresenterSettings(newSettings: ObjPreviewFileEditorSettingsState) {
         if (newSettings != settings.getAndSet(newSettings)) {
-            invokeLater(modalityState) {
-                if (::presenter.isInitialized) {
-                    presenter.updateSettings(settings.get())
-                }
+            updatePresenter()
+        }
+    }
+
+    fun zoomIn() {
+        zoomBy(-ZOOM_PRECISION)
+    }
+
+    private fun zoomBy(zoomAmount: Float) {
+        if (zoomAmount != 0f) {
+            updateCameraModel { oldCameraModel ->
+                oldCameraModel.zoomed(zoomAmount)
             }
+        }
+    }
+
+    private fun GLCameraModel.zoomed(zoomAmount: Float): GLCameraModel {
+        val newDistance = distance * FloatUtil.pow(ZOOM_BASE, zoomAmount)
+        return copy(
+            distance = newDistance.coerceIn(
+                minimumValue = modelSize * MIN_DISTANCE_FACTOR,
+                maximumValue = modelSize * MAX_DISTANCE_FACTOR
+            )
+        )
+    }
+
+    fun zoomOut() {
+        zoomBy(ZOOM_PRECISION)
+    }
+
+    fun zoomFit() {
+        updateCameraModel { oldCameraModel ->
+            oldCameraModel.copy(distance = modelSize * DEFAULT_DISTANCE_FACTOR)
         }
     }
 
@@ -209,23 +262,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     inner class ZoomingMouseWheelListener : MouseWheelListener {
 
         override fun mouseWheelMoved(event: MouseWheelEvent?) {
-            val scrollAmount = ZOOM_PRECISION * (event?.wheelRotation ?: 0)
-
-            if (scrollAmount != 0f) {
-                updateCameraModel { oldCameraModel ->
-                    oldCameraModel.zoomed(scrollAmount)
-                }
-            }
-        }
-
-        private fun GLCameraModel.zoomed(zoomAmount: Float): GLCameraModel {
-            val newDistance = distance * FloatUtil.pow(ZOOM_BASE, zoomAmount)
-            return copy(
-                distance = newDistance.coerceIn(
-                    minimumValue = modelSize * MIN_DISTANCE_FACTOR,
-                    maximumValue = modelSize * MAX_DISTANCE_FACTOR
-                )
-            )
+            zoomBy(zoomAmount = ZOOM_PRECISION * (event?.wheelRotation ?: 0))
         }
     }
 

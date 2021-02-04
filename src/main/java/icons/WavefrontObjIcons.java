@@ -24,6 +24,12 @@ import javax.swing.*;
 public class WavefrontObjIcons {
 
     @NotNull
+    public static final Icon TOGGLE_AXES_ACTION = getIcon("/icons/editor_actions/axes.svg");
+
+    @NotNull
+    public static final Icon TOGGLE_GRID_ACTION = getIcon("/icons/editor_actions/grid.svg");
+
+    @NotNull
     public static final Icon X_UP_ACTION = getIcon("/icons/editor_actions/xUp.svg");
 
     @NotNull

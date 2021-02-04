@@ -19,7 +19,7 @@ package it.czerwinski.intellij.wavefront.editor.model
 object GLCameraModelFactory {
 
     private const val DISTANCE = 5f
-    private const val ANGLE = -30f
+    private const val ANGLE = 150f
     private const val ELEVATION = 30f
     private const val FOV = 50f
 

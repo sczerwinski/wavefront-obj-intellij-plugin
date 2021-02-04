@@ -130,6 +130,26 @@ class ObjColorSettingsPage : ColorSettingsPage {
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.point"),
             GL2Presenter.COLOR_POINT,
             ColorDescriptor.Kind.FOREGROUND
+        ),
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisX"),
+            GL2Presenter.COLOR_AXIS_X,
+            ColorDescriptor.Kind.FOREGROUND
+        ),
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisY"),
+            GL2Presenter.COLOR_AXIS_Y,
+            ColorDescriptor.Kind.FOREGROUND
+        ),
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisZ"),
+            GL2Presenter.COLOR_AXIS_Z,
+            ColorDescriptor.Kind.FOREGROUND
+        ),
+        ColorDescriptor(
+            WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.grid"),
+            GL2Presenter.COLOR_GRID,
+            ColorDescriptor.Kind.FOREGROUND
         )
     )
 

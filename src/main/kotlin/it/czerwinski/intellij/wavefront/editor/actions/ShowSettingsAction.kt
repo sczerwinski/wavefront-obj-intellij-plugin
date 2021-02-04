@@ -16,31 +16,19 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.Toggleable
-import com.intellij.openapi.project.DumbAware
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import com.intellij.openapi.options.ShowSettingsUtil
+import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsConfigurable
 
-abstract class UpVectorAction(
-    private val upVector: UpVector
-) : ObjPreviewFileEditorAction(), DumbAware, Toggleable {
+class ShowSettingsAction : AnAction() {
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
-
-        event.presentation.isEnabled = editor != null
-
-        if (editor != null) {
-            Toggleable.setSelected(event.presentation, editor.upVector === upVector)
-        }
+        event.presentation.isEnabled = true
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
-
-        if (editor != null) {
-            editor.triggerUpVectorChange(upVector)
-            Toggleable.setSelected(event.presentation, true)
-        }
+        ShowSettingsUtil.getInstance()
+            .showSettingsDialog(getEventProject(event), WavefrontObjSettingsConfigurable::class.java)
     }
 }

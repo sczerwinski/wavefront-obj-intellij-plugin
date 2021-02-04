@@ -168,6 +168,36 @@
                     id="it.czerwinski.intellij.wavefront.editor.actions.ZUpVectorAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ZUpVectorAction"
                     icon="WavefrontObjIcons.Z_UP_ACTION"/>
+            <separator/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ToggleAxesAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ToggleAxesAction"
+                    icon="WavefrontObjIcons.TOGGLE_AXES_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ToggleGridAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ToggleGridAction"
+                    icon="WavefrontObjIcons.TOGGLE_GRID_ACTION"/>
+            <separator/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
+                    icon="AllIcons.General.ZoomIn"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
+                    icon="AllIcons.General.ZoomOut"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
+                    icon="AllIcons.General.FitContent"/>
+        </group>
+        <group
+                id="ObjPreviewFileEditor.AdditionalToolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
+                    icon="AllIcons.General.Settings"/>
         </group>
     </actions>
 

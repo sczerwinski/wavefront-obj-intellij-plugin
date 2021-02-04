@@ -35,6 +35,19 @@ issue tracker.
   - highlighting selected element,
   - applying materials from MTL files.
 
+## Supported operating systems
+
+3D preview is supported for:
+- Windows:
+  - i586
+  - AMD64
+- macOS
+- Linux:
+  - i586
+  - AMD64
+  - ARMv6hf
+  - AArch64
+
 ## Installation
 
 - Using IDE built-in plugin system:

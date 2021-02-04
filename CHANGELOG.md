@@ -9,6 +9,7 @@
   - Default up vector
   - Line width
   - Point size
+- Showing axes and grid on the 3D preview (both toggleable)
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.1`

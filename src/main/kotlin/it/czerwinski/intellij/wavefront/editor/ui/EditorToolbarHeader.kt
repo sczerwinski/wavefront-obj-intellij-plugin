@@ -18,7 +18,9 @@ package it.czerwinski.intellij.wavefront.editor.ui
 
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.editor.impl.EditorHeaderComponent
-import java.awt.BorderLayout
+import com.intellij.util.ui.JBUI
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 
 class EditorToolbarHeader(
     leftActionToolbar: ActionToolbar? = null,
@@ -30,12 +32,19 @@ class EditorToolbarHeader(
             "No toolbar set for EditorToolbarHeader"
         }
 
-        layout = BorderLayout()
+        layout = GridBagLayout()
 
-        leftActionToolbar?.component?.let { add(it, BorderLayout.BEFORE_LINE_BEGINS) }
-        rightActionToolbar?.component?.let { add(it, BorderLayout.AFTER_LINE_ENDS) }
+        leftActionToolbar?.component?.let {
+            add(it, constraints(index = 0, anchor = GridBagConstraints.WEST, fill = GridBagConstraints.HORIZONTAL))
+        }
+        rightActionToolbar?.component?.let {
+            add(it, constraints(index = 1, anchor = GridBagConstraints.EAST, fill = GridBagConstraints.NONE))
+        }
 
         leftActionToolbar?.updateActionsImmediately()
         rightActionToolbar?.updateActionsImmediately()
     }
+
+    private fun constraints(index: Int, anchor: Int, fill: Int): GridBagConstraints =
+        GridBagConstraints(index, 0, 1, 1, 1.0, 0.0, anchor, fill, JBUI.emptyInsets(), 0, 0)
 }

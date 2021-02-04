@@ -21,6 +21,11 @@ import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
 data class ObjPreviewFileEditorSettingsState(
     @field:Attribute var defaultUpVector: UpVector = UpVector.DEFAULT,
+    @field:Attribute var showAxes: Boolean = DEFAULT_SHOW_AXES,
+    @field:Attribute var axisLineWidth: Float = DEFAULT_AXIS_LINE_WIDTH,
+    @field:Attribute var showGrid: Boolean = DEFAULT_SHOW_GRID,
+    @field:Attribute var showFineGrid: Boolean = DEFAULT_SHOW_FINE_GRID,
+    @field:Attribute var gridLineWidth: Float = DEFAULT_GRID_LINE_WIDTH,
     @field:Attribute var lineWidth: Float = DEFAULT_LINE_WIDTH,
     @field:Attribute var pointSize: Float = DEFAULT_POINT_SIZE,
 ) {
@@ -28,6 +33,11 @@ data class ObjPreviewFileEditorSettingsState(
     companion object {
         val DEFAULT = ObjPreviewFileEditorSettingsState()
 
+        const val DEFAULT_SHOW_AXES = true
+        const val DEFAULT_AXIS_LINE_WIDTH = 3f
+        const val DEFAULT_SHOW_GRID = true
+        const val DEFAULT_SHOW_FINE_GRID = false
+        const val DEFAULT_GRID_LINE_WIDTH = 1f
         const val DEFAULT_LINE_WIDTH = 1f
         const val DEFAULT_POINT_SIZE = 3f
     }

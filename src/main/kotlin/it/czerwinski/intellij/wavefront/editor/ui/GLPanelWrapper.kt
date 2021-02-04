@@ -42,6 +42,7 @@ import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.awt.event.MouseWheelListener
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextArea
@@ -77,6 +78,12 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private val cameraModel: AtomicReference<GLCameraModel> =
         AtomicReference(GLCameraModelFactory.createDefault())
 
+    private val showAxis: AtomicBoolean = AtomicBoolean(false)
+
+    private val showGrid: AtomicBoolean = AtomicBoolean(false)
+
+    private val gridRotation: AtomicInteger = AtomicInteger(0)
+
     private val settings: AtomicReference<ObjPreviewFileEditorSettingsState> =
         AtomicReference(ObjPreviewFileEditorSettingsState())
 
@@ -103,8 +110,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
             presenter = GL2Presenter(animator, ::showError)
             presenter.updateModel(model)
-            presenter.updateCameraModel(cameraModel.get())
-            presenter.updateSettings(settings.get())
+            updatePresenter()
             canvas.addGLEventListener(presenter)
 
             canvas.addMouseWheelListener(ZoomingMouseWheelListener())
@@ -138,6 +144,17 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             }
         }
         throw UnsupportedOperationException("Could not find any supported GL profile")
+    }
+
+    private fun updatePresenter() {
+        invokeLater(modalityState) {
+            if (::presenter.isInitialized) {
+                presenter.updateCameraModel(cameraModel.get())
+                presenter.updateAxes(this.showAxis.get())
+                presenter.updateGrid(showGrid.get(), gridRotation.get())
+                presenter.updateSettings(settings.get())
+            }
+        }
     }
 
     private fun showError(exception: Throwable) {
@@ -175,28 +192,31 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private fun updateCameraModel(transform: (GLCameraModel) -> GLCameraModel) {
         cameraModel.getAndUpdate { oldCameraModel ->
             val newCameraModel = transform(oldCameraModel)
-            invokeLater(modalityState) {
-                if (::presenter.isInitialized) {
-                    presenter.updateCameraModel(cameraModel.get())
-                }
-            }
+            updatePresenter()
             return@getAndUpdate newCameraModel
         }
     }
 
     fun updateUpVector(upVector: UpVector) {
+        gridRotation.set(upVector.ordinal + 1)
         updateCameraModel { oldCameraModel ->
             oldCameraModel.copy(upVector = upVector)
         }
     }
 
+    fun updateAxes(showAxis: Boolean) {
+        this.showAxis.set(showAxis)
+        updatePresenter()
+    }
+
+    fun updateGrid(showGrid: Boolean) {
+        this.showGrid.set(showGrid)
+        updatePresenter()
+    }
+
     fun updateGLPresenterSettings(newSettings: ObjPreviewFileEditorSettingsState) {
         if (newSettings != settings.getAndSet(newSettings)) {
-            invokeLater(modalityState) {
-                if (::presenter.isInitialized) {
-                    presenter.updateSettings(settings.get())
-                }
-            }
+            updatePresenter()
         }
     }
 

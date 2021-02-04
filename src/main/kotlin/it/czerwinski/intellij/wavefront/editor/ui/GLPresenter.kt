@@ -27,5 +27,7 @@ import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsSta
 interface GLPresenter<T : GL> : GLEventListener, GLAnimatorControl, GLContext<T>, Disposable {
     fun updateModel(newModel: GLModel?)
     fun updateCameraModel(newCameraModel: GLCameraModel)
+    fun updateAxes(newShowAxes: Boolean)
+    fun updateGrid(newShowGrid: Boolean, newGridRotation: Int)
     fun updateSettings(newSettings: ObjPreviewFileEditorSettingsState)
 }

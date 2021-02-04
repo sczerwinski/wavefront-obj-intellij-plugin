@@ -52,6 +52,12 @@ class ObjPreviewFileEditor(
     var upVector: UpVector = UpVector.DEFAULT
         private set
 
+    var isShowingAxes: Boolean = ObjPreviewFileEditorSettingsState.DEFAULT_SHOW_AXES
+        private set
+
+    var isShowingGrid: Boolean = ObjPreviewFileEditorSettingsState.DEFAULT_SHOW_GRID
+        private set
+
     init {
         glPanel.updateObjFile(
             PsiManager.getInstance(project).findFile(virtualFile) as? ObjFile
@@ -78,7 +84,7 @@ class ObjPreviewFileEditor(
 
     private fun createComponent(): JComponent {
         return EditorWithToolbar(
-            toolbarComponent = EditorToolbarHeader(rightActionToolbar = actionToolbar),
+            toolbarComponent = EditorToolbarHeader(leftActionToolbar = actionToolbar),
             editorComponent = glPanel
         )
     }
@@ -117,9 +123,33 @@ class ObjPreviewFileEditor(
         component.repaint()
     }
 
+    fun toggleAxes() {
+        triggerAxesChange(!isShowingAxes)
+    }
+
+    private fun triggerAxesChange(showAxes: Boolean) {
+        isShowingAxes = showAxes
+        glPanel.updateAxes(showAxes)
+        actionToolbar.updateActionsImmediately()
+        component.repaint()
+    }
+
+    fun toggleGrid() {
+        triggerGridChange(!isShowingGrid)
+    }
+
+    private fun triggerGridChange(showGrid: Boolean) {
+        isShowingGrid = showGrid
+        glPanel.updateGrid(showGrid)
+        actionToolbar.updateActionsImmediately()
+        component.repaint()
+    }
+
     fun triggerSettingsChange(settings: ObjPreviewFileEditorSettingsState) {
         glPanel.updateGLPresenterSettings(settings)
         triggerUpVectorChange(settings.defaultUpVector)
+        triggerAxesChange(settings.showAxes)
+        triggerGridChange(settings.showGrid)
     }
 
     companion object {

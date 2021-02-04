@@ -40,8 +40,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    api("org.jogamp.jogl:jogl-all-main:2.3.2")
-    api("org.jogamp.gluegen:gluegen-rt-main:2.3.2")
+    api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.15.0")
 }
 

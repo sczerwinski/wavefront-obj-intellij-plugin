@@ -10,6 +10,12 @@
   - Line width
   - Point size
 
+### Changed
+- Upgrade Gradle Wrapper to `6.8.1`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.30`
+- `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.2`
+
 ### Fixed
 - Separate color settings attribute key for OBJ and MTL constants
 - JogAmp bug on macOS causing IDE crash when showing 3D preview (fixed by using JogAmp snapshot dependencies v2.4)

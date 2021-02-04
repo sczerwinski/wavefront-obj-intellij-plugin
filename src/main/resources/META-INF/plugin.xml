@@ -177,6 +177,19 @@
                     id="it.czerwinski.intellij.wavefront.editor.actions.ToggleGridAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ToggleGridAction"
                     icon="WavefrontObjIcons.TOGGLE_GRID_ACTION"/>
+            <separator/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
+                    icon="AllIcons.General.ZoomIn"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
+                    icon="AllIcons.General.ZoomOut"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
+                    icon="AllIcons.General.FitContent"/>
         </group>
     </actions>
 

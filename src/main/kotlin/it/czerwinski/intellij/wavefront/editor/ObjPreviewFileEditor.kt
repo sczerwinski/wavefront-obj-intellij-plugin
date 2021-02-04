@@ -152,6 +152,18 @@ class ObjPreviewFileEditor(
         triggerGridChange(settings.showGrid)
     }
 
+    fun zoomIn() {
+        glPanel.zoomIn()
+    }
+
+    fun zoomOut() {
+        glPanel.zoomOut()
+    }
+
+    fun zoomFit() {
+        glPanel.zoomFit()
+    }
+
     companion object {
         private const val TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.Toolbar"
     }

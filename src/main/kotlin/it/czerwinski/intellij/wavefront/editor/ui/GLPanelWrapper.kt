@@ -221,6 +221,38 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         }
     }
 
+    fun zoomIn() {
+        zoomBy(-ZOOM_PRECISION)
+    }
+
+    private fun zoomBy(zoomAmount: Float) {
+        if (zoomAmount != 0f) {
+            updateCameraModel { oldCameraModel ->
+                oldCameraModel.zoomed(zoomAmount)
+            }
+        }
+    }
+
+    private fun GLCameraModel.zoomed(zoomAmount: Float): GLCameraModel {
+        val newDistance = distance * FloatUtil.pow(ZOOM_BASE, zoomAmount)
+        return copy(
+            distance = newDistance.coerceIn(
+                minimumValue = modelSize * MIN_DISTANCE_FACTOR,
+                maximumValue = modelSize * MAX_DISTANCE_FACTOR
+            )
+        )
+    }
+
+    fun zoomOut() {
+        zoomBy(ZOOM_PRECISION)
+    }
+
+    fun zoomFit() {
+        updateCameraModel { oldCameraModel ->
+            oldCameraModel.copy(distance = modelSize * DEFAULT_DISTANCE_FACTOR)
+        }
+    }
+
     override fun dispose() {
         if (::presenter.isInitialized) {
             Disposer.dispose(presenter)
@@ -230,23 +262,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     inner class ZoomingMouseWheelListener : MouseWheelListener {
 
         override fun mouseWheelMoved(event: MouseWheelEvent?) {
-            val scrollAmount = ZOOM_PRECISION * (event?.wheelRotation ?: 0)
-
-            if (scrollAmount != 0f) {
-                updateCameraModel { oldCameraModel ->
-                    oldCameraModel.zoomed(scrollAmount)
-                }
-            }
-        }
-
-        private fun GLCameraModel.zoomed(zoomAmount: Float): GLCameraModel {
-            val newDistance = distance * FloatUtil.pow(ZOOM_BASE, zoomAmount)
-            return copy(
-                distance = newDistance.coerceIn(
-                    minimumValue = modelSize * MIN_DISTANCE_FACTOR,
-                    maximumValue = modelSize * MAX_DISTANCE_FACTOR
-                )
-            )
+            zoomBy(zoomAmount = ZOOM_PRECISION * (event?.wheelRotation ?: 0))
         }
     }
 

@@ -47,6 +47,8 @@ class ObjPreviewFileEditor(
 
     private val actionToolbar: ActionToolbar by lazy { createActionToolbar() }
 
+    private val additionalActionToolbar: ActionToolbar by lazy { createAdditionalActionToolbar() }
+
     private val _component: JComponent by lazy { createComponent() }
 
     var upVector: UpVector = UpVector.DEFAULT
@@ -82,14 +84,34 @@ class ObjPreviewFileEditor(
         return toolbar
     }
 
-    private fun createComponent(): JComponent {
-        return EditorWithToolbar(
-            toolbarComponent = EditorToolbarHeader(leftActionToolbar = actionToolbar),
-            editorComponent = glPanel
+    private fun createAdditionalActionToolbar(): ActionToolbar {
+        val actionManager = ActionManager.getInstance()
+
+        check(actionManager.isGroup(ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID)) {
+            "Actions group not found: $ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID"
+        }
+
+        val group = actionManager.getAction(ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID) as ActionGroup
+        val toolbar = actionManager.createActionToolbar(
+            ActionPlaces.EDITOR_TOOLBAR,
+            group,
+            true
         )
+        toolbar.setTargetComponent(glPanel)
+        toolbar.setReservePlaceAutoPopupIcon(false)
+        return toolbar
     }
 
+    private fun createComponent(): JComponent = EditorWithToolbar(
+        toolbarComponent = EditorToolbarHeader(
+            leftActionToolbar = actionToolbar,
+            rightActionToolbar = additionalActionToolbar
+        ),
+        editorComponent = glPanel
+    )
+
     fun initPreview() {
+        additionalActionToolbar.updateActionsImmediately()
         glPanel.initPreview()
     }
 
@@ -166,5 +188,6 @@ class ObjPreviewFileEditor(
 
     companion object {
         private const val TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.Toolbar"
+        private const val ADDITIONAL_TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.AdditionalToolbar"
     }
 }

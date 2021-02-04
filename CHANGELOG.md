@@ -11,6 +11,7 @@
   - Point size
 - Showing axes and grid on the 3D preview (both toggleable)
 - Zoom actions on 3D preview toolbar
+- Settings action on 3D preview toolbar
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.1`

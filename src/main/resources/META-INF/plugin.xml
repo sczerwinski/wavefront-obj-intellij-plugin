@@ -191,6 +191,14 @@
                     class="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
                     icon="AllIcons.General.FitContent"/>
         </group>
+        <group
+                id="ObjPreviewFileEditor.AdditionalToolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
+                    icon="AllIcons.General.Settings"/>
+        </group>
     </actions>
 
 </idea-plugin>

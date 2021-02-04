@@ -76,7 +76,8 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
                 lineWidthInput = textField(
                     getter = { ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH.toString() },
-                    setter = { }
+                    setter = { },
+                    columns = FLOAT_INPUT_COLUMNS
                 ).withValidationOnInput {
                     val value = it.text.toFloatOrNull()
                     if (value == null) error(getLineWidthErrorMessage(it.text))
@@ -86,7 +87,8 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
                 pointSizeInput = textField(
                     getter = { ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE.toString() },
-                    setter = { }
+                    setter = { },
+                    columns = FLOAT_INPUT_COLUMNS
                 ).withValidationOnInput {
                     val value = it.text.toFloatOrNull()
                     if (value == null) error(getPointSizeErrorMessage(it.text))
@@ -143,4 +145,8 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
         "settings.editor.fileTypes.obj.preview.pointSize.error",
         value
     )
+
+    companion object {
+        private const val FLOAT_INPUT_COLUMNS = 5
+    }
 }

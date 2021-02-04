@@ -182,8 +182,9 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         model = objFile?.let(GLModelFactory::create)
         updateCameraModel { oldCameraModel ->
             oldCameraModel.copy(
-                distance = oldCameraModel.distance.coerceAtLeast(
-                    minimumValue = modelSize * DEFAULT_DISTANCE_FACTOR
+                distance = oldCameraModel.distance.coerceIn(
+                    minimumValue = modelSize * DEFAULT_DISTANCE_FACTOR,
+                    maximumValue = modelSize * MAX_DISTANCE_FACTOR
                 )
             )
         }

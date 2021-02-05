@@ -21,34 +21,34 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.util.containers.ContainerUtil
 
-class ObjCodeInsightTest : CodeInsightFixtureTestCase() {
+class MtlCodeInsightTest : CodeInsightFixtureTestCase() {
 
-    override val testDataPath: String = "src/test/testData/obj"
+    override val testDataPath: String = "src/test/testData/mtl"
 
     fun testAnnotator() {
-        myFixture.configureByFiles("AnnotatorTestData.obj")
+        myFixture.configureByFiles("AnnotatorTestData.mtl")
         myFixture.checkHighlighting(true, false, true)
     }
 
     fun testFormatter() {
-        myFixture.configureByFile("FormatterTestDataBefore.obj")
+        myFixture.configureByFile("FormatterTestDataBefore.mtl")
         WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
             CodeStyleManager.getInstance(project)
                 .reformatText(file, ContainerUtil.newArrayList(file.textRange))
         }
-        myFixture.checkResultByFile("FormatterTestDataExpected.obj")
+        myFixture.checkResultByFile("FormatterTestDataExpected.mtl")
     }
 
     fun testFolding() {
-        myFixture.testFolding("$testDataPath/FoldingTestData.obj")
+        myFixture.testFolding("$testDataPath/FoldingTestData.mtl")
     }
 
     fun testCommenter() {
-        myFixture.configureByText(ObjFileType, "<caret>f 1/2/3 4/5/6 7/8/9")
+        myFixture.configureByText(MtlFileType, "<caret>newmtl Marble")
         val commentAction = CommentByLineCommentAction()
         commentAction.actionPerformedImpl(project, editor)
-        myFixture.checkResult("# f 1/2/3 4/5/6 7/8/9")
+        myFixture.checkResult("# newmtl Marble")
         commentAction.actionPerformedImpl(project, editor)
-        myFixture.checkResult("f 1/2/3 4/5/6 7/8/9")
+        myFixture.checkResult("newmtl Marble")
     }
 }

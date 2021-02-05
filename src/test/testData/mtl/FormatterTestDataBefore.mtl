@@ -1,0 +1,23 @@
+# MTL File: 'tetrahedron.mtl'
+newmtl    Marble
+
+Ka   0.5   0.5    0.5
+Kd   0.9    0.9   0.9
+Ks  1   1   1
+Tf   0   0    0
+illum   2
+d    0.6600
+Ns   32
+sharpness   60
+Ni   1.19713
+
+map_Ka      -blendu    off     -blendv   off    -cc   off      -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t 0 0 0 -texres    1024   marble_ambient.jpg
+map_Kd -blendu off -blendv off -cc off -clamp     on   -mm    0   1   -o    0   0   0   -s 1 1 1 -t 0 0 0 -texres 1024 marble_diffuse.jpg
+map_Ks -blendu off -blendv off -cc off -clamp on -mm 0 1 -o 0 0 0 -s     1    1    1    -t 0 0 0 -texres 1024 marble_specular.jpg
+map_Ns -blendu off -blendv off -imfchan r -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t 0 0 0    -texres    1024       marble_exponent.jpg
+map_d -blendu off -blendv off -imfchan r -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t    0    0   0    -texres 1024 marble_dissolve.jpg
+disp -blendu off -blendv off -imfchan r -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t 0 0 0 -texres 1024 marble_displacement.jpg
+decal -blendu off -blendv off -imfchan r -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t 0 0 0 -texres 1024 marble_decal.jpg
+bump     -bm     1     -blendu off -blendv off     -imfchan    r       -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t 0 0 0 -texres 1024 marble_bump.jpg
+
+refl     -type     sphere      -blendu off -blendv off -cc off -clamp on -mm 0 1 -o 0 0 0 -s 1 1 1 -t 0 0 0 -texres 1024 sky.jpg

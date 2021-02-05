@@ -31,7 +31,7 @@ import com.intellij.testFramework.fixtures.TempDirTestFixture
 import com.intellij.testFramework.fixtures.impl.LightTempDirTestFixtureImpl
 import java.io.File
 
-abstract class LightObjCodeInsightFixtureTestCase : UsefulTestCase() {
+abstract class CodeInsightFixtureTestCase : UsefulTestCase() {
 
     private var _myFixture: CodeInsightTestFixture? = null
 

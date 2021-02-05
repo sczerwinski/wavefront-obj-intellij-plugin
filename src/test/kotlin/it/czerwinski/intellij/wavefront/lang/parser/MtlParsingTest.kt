@@ -18,13 +18,13 @@ package it.czerwinski.intellij.wavefront.lang.parser
 
 import com.intellij.testFramework.ParsingTestCase
 
-class ObjParsingTest : ParsingTestCase(
+class MtlParsingTest : ParsingTestCase(
     "",
-    "obj",
-    ObjParserDefinition()
+    "mtl",
+    MtlParserDefinition()
 ) {
 
-    override fun getTestDataPath(): String = "src/test/testData/obj"
+    override fun getTestDataPath(): String = "src/test/testData/mtl"
 
     override fun skipSpaces(): Boolean = false
 

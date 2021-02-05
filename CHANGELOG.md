@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.2.1]
+### Added
 - Color settings for OBJ 3D preview colors for faces, lines and points.
 - Settings for the 3D preview:
   - Default up vector

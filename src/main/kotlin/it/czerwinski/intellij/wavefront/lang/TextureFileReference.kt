@@ -16,8 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.lang
 
-import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementResolveResult
@@ -29,8 +27,7 @@ import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.ResolveResult
 import com.intellij.util.ProcessingContext
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
-import it.czerwinski.intellij.wavefront.lang.util.findTextureFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFiles
 
 class TextureFileReference(
     element: PsiElement,
@@ -50,15 +47,7 @@ class TextureFileReference(
     override fun resolve(): PsiElement? =
         findMatchingMtlFiles().singleOrNull()
 
-    override fun getVariants(): Array<Any> {
-        return findMaterialFiles(myElement.project)
-            .map { file ->
-                LookupElementBuilder.create(file)
-                    .withIcon(MTL_TEXTURE_ICON)
-                    .withTypeText(file.containingDirectory?.name, AllIcons.Nodes.Folder, false)
-            }
-            .toTypedArray()
-    }
+    override fun getVariants(): Array<Any> = emptyArray()
 
     object Provider : PsiReferenceProvider() {
 

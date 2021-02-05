@@ -24,6 +24,7 @@
 - JogAmp bug on macOS causing IDE crash when showing 3D preview (fixed by using JogAmp snapshot dependencies v2.4)
 - Limit initial camera distance for very small objects
 - Refresh the 3D preview after the OBJ file edited
+- Use relative paths in MTL file references
 
 ## [0.2.0]
 ### Added

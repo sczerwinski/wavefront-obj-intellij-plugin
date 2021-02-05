@@ -14,49 +14,35 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.util
+package it.czerwinski.intellij.wavefront.lang.psi.util
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FileTypeIndex
-import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import it.czerwinski.intellij.wavefront.lang.MtlFileType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
-import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
-import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
-fun findTextureFile(element: MtlTextureElement): PsiFile? =
-    findTextureFiles(element).firstOrNull()
+fun findMtlFile(element: ObjMaterialFileReference): MtlFile? =
+    findMtlFile(element.containingFile, element.filename.orEmpty())
 
-fun findTextureFiles(element: MtlTextureElement): List<PsiFile> =
-    element.textureFilename?.let { findTextureFiles(element.project, it) }.orEmpty()
+fun findMtlFile(sourceFile: PsiFile?, filePath: String): MtlFile? =
+    sourceFile?.let { file ->
+        findRelativeFile(file, filePath)
+    } as? MtlFile
 
-fun findTextureFiles(project: Project, filename: String): List<PsiFile> =
-    FilenameIndex.getFilesByName(project, filename, GlobalSearchScope.allScope(project))
-        .toList()
-
-fun findMaterialFile(element: ObjMaterialFileReference): MtlFile? =
-    findMaterialFiles(element).firstOrNull()
-
-fun findMaterialFiles(element: ObjMaterialFileReference): List<MtlFile> =
-    findMaterialFiles(element.project)
-        .filter { file -> file.name == element.filename }
-
-fun findMaterialFiles(project: Project): List<MtlFile> =
+fun findAllMtlFiles(project: Project): List<MtlFile> =
     FileTypeIndex.getFiles(MtlFileType, GlobalSearchScope.allScope(project))
         .mapNotNull { virtualFile -> PsiManager.getInstance(project).findFile(virtualFile) }
         .filterIsInstance<MtlFile>()
 
-fun findMaterialFiles(objFile: ObjFile): List<MtlFile> {
-    val materialFiles = findMaterialFiles(objFile.project)
+fun findReferencedMtlFiles(objFile: ObjFile): List<MtlFile> {
     val materialFileReferences = objFile.getChildrenOfType<ObjMaterialFileReference>() +
         objFile.getChildrenOfType<ObjGroupingElement>()
             .flatMap { it.getChildrenOfType<ObjMaterialFileReference>() }
-    val materialFileNames = materialFileReferences.mapNotNull { fileReference -> fileReference.filename }
-    return materialFiles.filter { file -> file.name in materialFileNames }
+    return materialFileReferences.mapNotNull { element -> findMtlFile(element) }
 }

@@ -26,7 +26,8 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMtlFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.findReferencedMtlFiles
 
 class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
@@ -45,10 +46,10 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)?.psi
-        val files = findMaterialFiles(element)
-        if (markedElement != null && files.isNotEmpty()) {
+        val file = findMtlFile(element)
+        if (markedElement != null && file != null) {
             val marker = NavigationGutterIconBuilder.create(OBJ_MATERIAL_FILE_ICON)
-                .setTargets(files)
+                .setTargets(file)
                 .setTooltipText(WavefrontObjBundle.message("fileTypes.obj.marker.mtlFile"))
                 .createLineMarkerInfo(markedElement)
             result.add(marker)
@@ -60,7 +61,7 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.psi
-        val files = findMaterialFiles(element.containingFile as ObjFile)
+        val files = findReferencedMtlFiles(element.containingFile as ObjFile)
         val materials = files.flatMap { file -> file.findMaterialIdentifiers() }
             .filter { material -> material.name == element.materialName }
         if (markedElement != null && materials.isNotEmpty()) {

@@ -27,14 +27,19 @@ import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativePath
 
 class ObjCreateMaterialQuickFix(
+    private val objFile: PsiFile,
     private val mtlFile: MtlFile,
     private val name: String
 ) : BaseIntentionAction() {
 
-    override fun getText(): String =
-        WavefrontObjBundle.getMessage("fileTypes.mtl.quickfix.createMaterial", name, mtlFile.name)
+    override fun getText(): String = WavefrontObjBundle.getMessage(
+        "fileTypes.mtl.quickfix.createMaterial",
+        name,
+        findRelativePath(objFile, mtlFile) ?: mtlFile.virtualFile.path
+    )
 
     override fun getFamilyName(): String =
         WavefrontObjBundle.getMessage("fileTypes.mtl.quickfix.createMaterial.family")

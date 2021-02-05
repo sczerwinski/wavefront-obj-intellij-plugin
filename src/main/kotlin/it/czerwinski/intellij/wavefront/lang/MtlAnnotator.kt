@@ -22,7 +22,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
-import it.czerwinski.intellij.wavefront.lang.util.findTextureFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFile
 
 class MtlAnnotator : Annotator {
 

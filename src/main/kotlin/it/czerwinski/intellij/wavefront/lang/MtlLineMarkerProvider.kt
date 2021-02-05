@@ -23,7 +23,7 @@ import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
-import it.czerwinski.intellij.wavefront.lang.util.findTextureFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFiles
 
 class MtlLineMarkerProvider : RelatedItemLineMarkerProvider() {
 

@@ -24,6 +24,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.psi.util.createRelativeFile
 
 class ObjCreateMtlFileQuickFix(
     private val dir: PsiDirectory,
@@ -51,7 +52,7 @@ class ObjCreateMtlFileQuickFix(
     }
 
     private fun createMtlFile() {
-        val file = dir.createFile(filename)
-        file.navigate(true)
+        val file = createRelativeFile(dir, filename)
+        file?.navigate(true)
     }
 }

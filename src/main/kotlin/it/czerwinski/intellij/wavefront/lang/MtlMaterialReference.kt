@@ -30,14 +30,15 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findReferencedMtlFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativePath
 
 class MtlMaterialReference(
     element: PsiElement,
     textRange: TextRange
 ) : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference {
 
-    private val objFile = element.containingFile as? ObjFile
+    private val objFile = element.containingFile.originalFile as? ObjFile
     private val materialName = element.text.substring(textRange.startOffset, textRange.endOffset)
 
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> =
@@ -50,7 +51,7 @@ class MtlMaterialReference(
             .filter { material -> material.name == materialName }
 
     private fun findAvailableMaterials(): List<MtlMaterialIdentifier> =
-        objFile?.let(::findMaterialFiles)
+        objFile?.let(::findReferencedMtlFiles)
             ?.flatMap { mtlFile -> mtlFile.findMaterialIdentifiers() }
             .orEmpty()
 
@@ -60,9 +61,11 @@ class MtlMaterialReference(
     override fun getVariants(): Array<Any> {
         return findAvailableMaterials()
             .map { material ->
+                val typeText: String? = findRelativePath(element.containingFile.originalFile, material.containingFile)
+                    ?: material.containingFile?.name
                 LookupElementBuilder.create(material)
                     .withIcon(MTL_MATERIAL_ICON)
-                    .withTypeText(material.containingFile?.name, MTL_FILE_ICON, false)
+                    .withTypeText(typeText, MTL_FILE_ICON, false)
             }
             .toTypedArray()
     }

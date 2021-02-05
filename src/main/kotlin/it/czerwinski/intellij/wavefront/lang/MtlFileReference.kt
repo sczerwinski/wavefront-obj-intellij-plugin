@@ -18,46 +18,49 @@ package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementResolveResult
-import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.PsiReferenceProvider
-import com.intellij.psi.ResolveResult
 import com.intellij.util.ProcessingContext
-import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findAllMtlFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMtlFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativePath
 
 class MtlFileReference(
     element: PsiElement,
     textRange: TextRange
-) : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference {
+) : PsiReferenceBase<PsiElement>(element, textRange) {
 
     private val filename = element.text.substring(textRange.startOffset, textRange.endOffset)
 
-    override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> =
-        findMatchingMtlFiles()
-            .map(::PsiElementResolveResult)
-            .toTypedArray()
-
-    private fun findMatchingMtlFiles(): List<MtlFile> =
-        findMaterialFiles(myElement.project)
-            .filter { file -> file.name == filename }
-
     override fun resolve(): PsiElement? =
-        findMatchingMtlFiles().singleOrNull()
+        findMtlFile(myElement.containingFile, filename)
 
-    override fun getVariants(): Array<Any> {
-        return findMaterialFiles(myElement.project)
+    override fun getVariants(): Array<Any> =
+        findAllMtlFiles(myElement.project)
             .map { file ->
-                LookupElementBuilder.create(file)
+                val root = ProjectFileIndex.SERVICE.getInstance(myElement.project)
+                    .getContentRootForFile(file.virtualFile)
+                val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
+                    ?: file.containingDirectory?.name
+                val text = findRelativePath(myElement.containingFile.originalFile, file)
+                    ?: file.name
+                LookupElementBuilder.create(text)
                     .withIcon(MTL_FILE_ICON)
-                    .withTypeText(file.containingDirectory?.name, AllIcons.Nodes.Folder, false)
+                    .withTypeText(typeText, AllIcons.Nodes.Folder, false)
             }
             .toTypedArray()
+
+    override fun handleElementRename(newElementName: String): PsiElement =
+        super.handleElementRename(filename.replaceAfterLast(PATH_DELIMITER, newElementName, newElementName))
+
+    companion object {
+        private const val PATH_DELIMITER = '/'
     }
 
     object Provider : PsiReferenceProvider() {

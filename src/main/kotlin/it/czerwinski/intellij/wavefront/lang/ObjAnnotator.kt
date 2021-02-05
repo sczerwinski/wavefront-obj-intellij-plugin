@@ -31,10 +31,10 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMtlFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.findReferencedMtlFiles
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMaterialQuickFix
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMtlFileQuickFix
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFile
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
 class ObjAnnotator : Annotator {
 
@@ -126,7 +126,7 @@ class ObjAnnotator : Annotator {
         holder: AnnotationHolder
     ) {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)
-        if (materialFilenameNode != null && findMaterialFile(element) == null) {
+        if (materialFilenameNode != null && findMtlFile(element) == null) {
             val materialFilename = materialFilenameNode.text
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
@@ -144,14 +144,18 @@ class ObjAnnotator : Annotator {
         val materialNameNode = element.node.findChildByType(ObjTypes.MATERIAL_NAME)
         if (materialNameNode != null) {
             val materialName = element.materialName
-            val materialFiles = findMaterialFiles(element.containingFile as ObjFile)
+            val materialFiles = findReferencedMtlFiles(element.containingFile as ObjFile)
             val materials = materialFiles.flatMap { file -> file.findMaterialIdentifiers() }
             if (!materialName.isNullOrBlank() && materialName !in materials.mapNotNull { it.name }) {
                 holder.newAnnotation(
                     HighlightSeverity.WARNING,
                     WavefrontObjBundle.message("fileTypes.obj.annotation.warning.materialNotFound")
                 ).range(materialNameNode)
-                    .withFixes(materialFiles.map { file -> ObjCreateMaterialQuickFix(file, materialName) })
+                    .withFixes(
+                        materialFiles.map { file ->
+                            ObjCreateMaterialQuickFix(element.containingFile, file, materialName)
+                        }
+                    )
                     .create()
             }
         }

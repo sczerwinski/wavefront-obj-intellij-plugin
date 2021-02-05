@@ -19,14 +19,14 @@ package it.czerwinski.intellij.wavefront.lang
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.project.Project
+import it.czerwinski.intellij.wavefront.lang.psi.util.findAllMtlFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterials
-import it.czerwinski.intellij.wavefront.lang.util.findMaterialFiles
 
 class MtlChooseByNameContributor : ChooseByNameContributor {
 
     override fun getNames(project: Project?, includeNonProjectItems: Boolean): Array<String> =
-        project?.let(::findMaterialFiles)
+        project?.let(::findAllMtlFiles)
             ?.flatMap { file -> file.findMaterials() }
             ?.mapNotNull { material -> material.getName()?.takeIf(String::isNotBlank) }
             .orEmpty()
@@ -38,7 +38,7 @@ class MtlChooseByNameContributor : ChooseByNameContributor {
         project: Project?,
         includeNonProjectItems: Boolean
     ): Array<NavigationItem> =
-        project?.let(::findMaterialFiles)
+        project?.let(::findAllMtlFiles)
             ?.flatMap { file -> file.findMaterialIdentifiers() }
             ?.filter { material -> material.name == name }
             ?.map { it as NavigationItem }

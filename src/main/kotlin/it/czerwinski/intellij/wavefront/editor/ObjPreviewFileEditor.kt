@@ -28,6 +28,8 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiTreeChangeAdapter
+import com.intellij.psi.PsiTreeChangeEvent
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
@@ -61,9 +63,12 @@ class ObjPreviewFileEditor(
         private set
 
     init {
-        glPanel.updateObjFile(
-            PsiManager.getInstance(project).findFile(virtualFile) as? ObjFile
-        )
+        val objFile = PsiManager.getInstance(project).findFile(virtualFile) as? ObjFile
+        glPanel.updateObjFile(objFile)
+        objFile?.let {
+            PsiManager.getInstance(objFile.project)
+                .addPsiTreeChangeListener(MyPsiTreeChangeListener(objFile))
+        }
     }
 
     private fun createActionToolbar(): ActionToolbar {
@@ -184,6 +189,39 @@ class ObjPreviewFileEditor(
 
     fun zoomFit() {
         glPanel.zoomFit()
+    }
+
+    private inner class MyPsiTreeChangeListener(private val file: ObjFile) : PsiTreeChangeAdapter() {
+
+        override fun childAdded(event: PsiTreeChangeEvent) {
+            psiTreeChanged(event)
+        }
+
+        private fun psiTreeChanged(event: PsiTreeChangeEvent) {
+            if (event.file == file) {
+                glPanel.updateObjFile(file)
+            }
+        }
+
+        override fun childRemoved(event: PsiTreeChangeEvent) {
+            psiTreeChanged(event)
+        }
+
+        override fun childReplaced(event: PsiTreeChangeEvent) {
+            psiTreeChanged(event)
+        }
+
+        override fun childrenChanged(event: PsiTreeChangeEvent) {
+            psiTreeChanged(event)
+        }
+
+        override fun childMoved(event: PsiTreeChangeEvent) {
+            psiTreeChanged(event)
+        }
+
+        override fun propertyChanged(event: PsiTreeChangeEvent) {
+            psiTreeChanged(event)
+        }
     }
 
     companion object {

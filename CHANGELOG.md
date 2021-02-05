@@ -23,6 +23,7 @@
 - Separate color settings attribute key for OBJ and MTL constants
 - JogAmp bug on macOS causing IDE crash when showing 3D preview (fixed by using JogAmp snapshot dependencies v2.4)
 - Limit initial camera distance for very small objects
+- Refresh the 3D preview after the OBJ file edited
 
 ## [0.2.0]
 ### Added

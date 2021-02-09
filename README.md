@@ -76,6 +76,11 @@ file format and editor.
 - Hold mouse left button on the 3D preview and move to pan the camera.
 - Use mouse wheel to zoom in/out.
 
+### MTL File Type And Editor
+
+After installation, `.mtl` file extension will be automatically associated with Wavefront MTL
+file format and editor.
+
 ### Settings
 
 - To change Wavefront OBJ editor color scheme, use:

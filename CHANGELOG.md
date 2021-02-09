@@ -3,17 +3,12 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
+- Upgrade Gradle Wrapper to `6.8.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.changelog` to `1.1.1`
+- Update `changelog` Gradle plugin configuration
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.2.1]
 ### Added
 - Color settings for OBJ 3D preview colors for faces, lines and points.

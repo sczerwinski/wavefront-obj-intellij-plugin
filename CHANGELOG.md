@@ -7,6 +7,7 @@
 - Upgrade Gradle Wrapper to `6.8.2`
 - Dependencies:
   - Upgrade `org.jetbrains.changelog` to `1.1.1`
+  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.0.0`
 - Update `changelog` Gradle plugin configuration
 
 ## [0.2.1]

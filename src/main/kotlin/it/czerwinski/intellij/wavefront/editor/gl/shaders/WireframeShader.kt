@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
-import graphics.glimpse.types.Angle
+import graphics.glimpse.shaders.annotations.Attribute
+import graphics.glimpse.shaders.annotations.AttributeRole
+import graphics.glimpse.shaders.annotations.ShaderParams
+import graphics.glimpse.shaders.annotations.Uniform
 import graphics.glimpse.types.Mat4
-import graphics.glimpse.types.Vec3
-import graphics.glimpse.types.rotationX
-import graphics.glimpse.types.rotationY
+import graphics.glimpse.types.Vec4
 
-enum class UpVector(
-    val vector: Vec3,
-    val gridModelMatrix: Mat4
-) {
-    X_UP(vector = Vec3.unitX, gridModelMatrix = rotationY(Angle.rightAngle)),
-    Y_UP(vector = Vec3.unitY, gridModelMatrix = rotationX(Angle.rightAngle)),
-    Z_UP(vector = Vec3.unitZ, gridModelMatrix = Mat4.identity);
+@ShaderParams(
+    attributes = [
+        Attribute(name = "aPos", role = AttributeRole.POSITIONS, vectorSize = 3),
+    ]
+)
+data class WireframeShader(
 
-    companion object {
-        val DEFAULT = Z_UP
-    }
-}
+    @Uniform(name = "uMVPMat")
+    val mvpMatrix: Mat4,
+
+    @Uniform(name = "uPointSize")
+    val pointSize: Float = 1f,
+
+    @Uniform(name = "uColor")
+    val color: Vec4,
+)

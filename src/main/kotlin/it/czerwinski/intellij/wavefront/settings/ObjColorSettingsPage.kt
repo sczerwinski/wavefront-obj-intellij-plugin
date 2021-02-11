@@ -22,7 +22,7 @@ import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.ui.GL2Presenter
+import it.czerwinski.intellij.wavefront.editor.gl.PreviewScene
 import it.czerwinski.intellij.wavefront.lang.OBJ_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter
 import javax.swing.Icon
@@ -118,37 +118,37 @@ class ObjColorSettingsPage : ColorSettingsPage {
     override fun getColorDescriptors(): Array<ColorDescriptor> = arrayOf(
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.face"),
-            GL2Presenter.COLOR_FACE,
+            PreviewScene.Colors.COLOR_FACE,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.line"),
-            GL2Presenter.COLOR_LINE,
+            PreviewScene.Colors.COLOR_LINE,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.point"),
-            GL2Presenter.COLOR_POINT,
+            PreviewScene.Colors.COLOR_POINT,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisX"),
-            GL2Presenter.COLOR_AXIS_X,
+            PreviewScene.Colors.COLOR_AXIS_X,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisY"),
-            GL2Presenter.COLOR_AXIS_Y,
+            PreviewScene.Colors.COLOR_AXIS_Y,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisZ"),
-            GL2Presenter.COLOR_AXIS_Z,
+            PreviewScene.Colors.COLOR_AXIS_Z,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.grid"),
-            GL2Presenter.COLOR_GRID,
+            PreviewScene.Colors.COLOR_GRID,
             ColorDescriptor.Kind.FOREGROUND
         )
     )

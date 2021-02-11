@@ -20,16 +20,14 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
-import com.intellij.openapi.util.Disposer
 import com.jetbrains.rd.util.AtomicReference
 import com.jetbrains.rd.util.string.printToString
-import com.jogamp.opengl.GLCapabilities
-import com.jogamp.opengl.GLException
-import com.jogamp.opengl.GLProfile
-import com.jogamp.opengl.awt.GLJPanel
 import com.jogamp.opengl.math.FloatUtil
 import com.jogamp.opengl.util.FPSAnimator
+import graphics.glimpse.types.Angle
+import graphics.glimpse.ui.GlimpsePanel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.gl.PreviewScene
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
@@ -60,14 +58,14 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     private val modalityState get() = ModalityState.stateForComponent(this)
 
-    private lateinit var presenter: GLPresenter<*>
+    private lateinit var scene: PreviewScene
 
     private var model: GLModel? = null
         set(value) {
             field = value
             invokeLater(modalityState) {
-                if (::presenter.isInitialized) {
-                    presenter.updateModel(value)
+                if (::scene.isInitialized) {
+                    scene.updateModel(value)
                 }
             }
         }
@@ -105,13 +103,13 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     private fun attachJPanel() {
         try {
-            val canvas = GLJPanel(getGLCapabilities())
+            val canvas = GlimpsePanel()
             val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
 
-            presenter = GL2Presenter(animator, ::showError)
-            presenter.updateModel(model)
+            scene = PreviewScene(animator)
+            scene.updateModel(model)
             updatePresenter()
-            canvas.addGLEventListener(presenter)
+            canvas.setCallback(scene)
 
             canvas.addMouseWheelListener(ZoomingMouseWheelListener())
             val panningMouseInputListener = PanningMouseInputListener()
@@ -122,45 +120,26 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             remove(placeholder)
             invalidate()
 
-            presenter.start()
+            scene.start()
         } catch (expected: Throwable) {
             showError(expected)
         }
     }
 
-    private fun getGLCapabilities(): GLCapabilities {
-        val supportedProfiles = listOf(
-            GLProfile.GL2ES1,
-            GLProfile.GLES1,
-            GLProfile.GL3bc,
-            GLProfile.GL4bc,
-            null,
-        )
-        for (profileName in supportedProfiles) {
-            try {
-                val profile = GLProfile.get(profileName)
-                return GLCapabilities(profile)
-            } catch (ignored: GLException) {
-            }
-        }
-        throw UnsupportedOperationException("Could not find any supported GL profile")
-    }
-
     private fun updatePresenter() {
         invokeLater(modalityState) {
-            if (::presenter.isInitialized) {
-                presenter.updateCameraModel(cameraModel.get())
-                presenter.updateAxes(this.showAxis.get())
-                presenter.updateGrid(showGrid.get(), gridRotation.get())
-                presenter.updateSettings(settings.get())
+            if (::scene.isInitialized) {
+                scene.updateCameraModel(cameraModel.get())
+                scene.updateAxes(this.showAxis.get())
+                scene.updateGrid(showGrid.get())
+                scene.updateSettings(settings.get())
             }
         }
     }
 
     private fun showError(exception: Throwable) {
-        if (::presenter.isInitialized) {
-            presenter.stop()
-            Disposer.dispose(presenter)
+        if (::scene.isInitialized) {
+            scene.stop()
         }
         removeAll()
         add(
@@ -254,8 +233,8 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     }
 
     override fun dispose() {
-        if (::presenter.isInitialized) {
-            Disposer.dispose(presenter)
+        if (::scene.isInitialized) {
+            scene.stop()
         }
     }
 
@@ -302,16 +281,16 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         }
 
         private fun GLCameraModel.panned(
-            panningAngle: Float,
-            panningElevation: Float
+            panningLongitude: Float,
+            panningLatitude: Float
         ): GLCameraModel {
-            val newAngle = angle + panningAngle
-            val newElevation = elevation + panningElevation
+            val newLongitude = longitude + Angle.fromDeg(panningLongitude)
+            val newLatitude = latitude + Angle.fromDeg(panningLatitude)
             return copy(
-                angle = newAngle % FULL_ANGLE,
-                elevation = newElevation.coerceIn(
-                    minimumValue = MIN_ELEVATION,
-                    maximumValue = MAX_ELEVATION
+                longitude = newLongitude % Angle.fullAngle,
+                latitude = newLatitude.coerceIn(
+                    minimumValue = minLatitude,
+                    maximumValue = maxLatitude
                 )
             )
         }
@@ -331,8 +310,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
         private const val PAN_PRECISION = .5f
 
-        private const val FULL_ANGLE = 360f
-        private const val MIN_ELEVATION = -89f
-        private const val MAX_ELEVATION = 89f
+        private val minLatitude = Angle.fromDeg(deg = -89f)
+        private val maxLatitude = Angle.fromDeg(deg = 89f)
     }
 }

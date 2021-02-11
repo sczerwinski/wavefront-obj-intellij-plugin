@@ -16,18 +16,20 @@
 
 package it.czerwinski.intellij.wavefront.editor.model
 
+import graphics.glimpse.types.Angle
+
 object GLCameraModelFactory {
 
     private const val DISTANCE = 5f
-    private const val ANGLE = 150f
-    private const val ELEVATION = 30f
-    private const val FOV = 50f
+    private val longitude = Angle.fromDeg(deg = 150f)
+    private val latitude = Angle.fromDeg(deg = 30f)
+    private val fov = Angle.fromDeg(deg = 50f)
 
     fun createDefault(): GLCameraModel = GLCameraModel(
         distance = DISTANCE,
-        angle = ANGLE,
-        elevation = ELEVATION,
-        fov = FOV,
+        longitude = longitude,
+        latitude = latitude,
+        fov = fov,
         upVector = UpVector.Z_UP
     )
 }

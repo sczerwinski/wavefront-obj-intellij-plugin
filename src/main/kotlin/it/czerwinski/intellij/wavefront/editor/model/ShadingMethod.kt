@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.gl
+package it.czerwinski.intellij.wavefront.editor.model
 
-import com.jogamp.opengl.GL2
-import java.awt.Color
-
-private const val COLOR_CHANNEL_MAX = 255f
-
-fun GL2.glClearColor(color: Color) {
-    glClearColor(
-        color.red.toFloatColorChannel(),
-        color.green.toFloatColorChannel(),
-        color.blue.toFloatColorChannel(),
-        color.alpha.toFloatColorChannel()
-    )
+enum class ShadingMethod {
+    WIREFRAME,
+    SOLID,
 }
-
-private fun Int.toFloatColorChannel(): Float = this / COLOR_CHANNEL_MAX

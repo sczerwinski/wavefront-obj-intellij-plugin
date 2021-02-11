@@ -8,6 +8,8 @@ plugins {
     id("java")
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.4.30"
+    // Kapt annotation processing
+    kotlin("kapt") version "1.4.30"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.6.5"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -39,9 +41,17 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
+    api("graphics.glimpse:glimpse-core:1.0.0-BETA1")
+    api("graphics.glimpse:glimpse-ui:1.0.0-BETA1")
+    kapt("graphics.glimpse:glimpse-processor-java:1.0.0-BETA1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.15.0")
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 // Configure gradle-intellij-plugin plugin.

@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
-import com.jogamp.opengl.GL
-import com.jogamp.opengl.GLAutoDrawable
+import graphics.glimpse.shaders.ShaderType
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import java.util.Locale
 
-interface GLContext<T : GL> {
+object ShaderResources {
 
-    fun GLAutoDrawable?.runInGLContext(block: T.() -> Unit)
+    private val <E : Enum<E>> Enum<E>.lowerCaseName
+        get() = name.toLowerCase(Locale.ENGLISH)
+
+    fun getShaderSource(shadingMethod: ShadingMethod, shaderType: ShaderType): String =
+        javaClass.getResourceAsStream(
+            "/shaders/${shadingMethod.lowerCaseName}_${shaderType.lowerCaseName}.glsl"
+        ).use { inputStream -> inputStream.bufferedReader().readText() }
 }

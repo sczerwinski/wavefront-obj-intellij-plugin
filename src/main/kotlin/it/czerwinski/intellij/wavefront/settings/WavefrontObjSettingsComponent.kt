@@ -16,8 +16,10 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.ui.ContextHelpLabel
 import com.intellij.ui.EnumComboBoxModel
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBRadioButton
@@ -30,6 +32,7 @@ import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
+import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -73,7 +76,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
             }
         }
         titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector")) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector"), separated = true) {
                 defaultUpVector = comboBox(
                     EnumComboBoxModel(UpVector::class.java),
                     getter = { UpVector.DEFAULT },
@@ -81,7 +84,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                     UpVectorListCellRenderer()
                 ).component
             }
-            row {
+            row(separated = true) {
                 showAxesCheckBox = checkBox(
                     WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showAxes")
                 ).component
@@ -89,13 +92,20 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                     subRowsEnabled = showAxesCheckBox.isSelected
                 }
                 row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLineWidth")) {
-                    axisLineWidthInput = floatTextField(
-                        defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_AXIS_LINE_WIDTH,
-                        errorMessage = { getLineWidthErrorMessage(it) }
-                    ).component
+                    cell {
+                        axisLineWidthInput = floatTextField(
+                            defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+                            errorMessage = { getLineWidthErrorMessage(it) }
+                        ).component
+                        contextHelpLabel(
+                            description = WavefrontObjBundle.message(
+                                "settings.editor.fileTypes.obj.preview.lineWidth.help"
+                            )
+                        )
+                    }
                 }
             }
-            row {
+            row(separated = true) {
                 showGridCheckBox = checkBox(
                     WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showGrid")
                 ).component
@@ -108,17 +118,31 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                     ).component
                 }
                 row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.gridLineWidth")) {
-                    gridLineWidthInput = floatTextField(
-                        defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_GRID_LINE_WIDTH,
-                        errorMessage = { getLineWidthErrorMessage(it) }
-                    ).component
+                    cell {
+                        gridLineWidthInput = floatTextField(
+                            defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_GRID_LINE_WIDTH,
+                            errorMessage = { getLineWidthErrorMessage(it) }
+                        ).component
+                        contextHelpLabel(
+                            description = WavefrontObjBundle.message(
+                                "settings.editor.fileTypes.obj.preview.lineWidth.help"
+                            )
+                        )
+                    }
                 }
             }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
-                lineWidthInput = floatTextField(
-                    defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
-                    errorMessage = { getLineWidthErrorMessage(it) }
-                ).component
+                cell {
+                    lineWidthInput = floatTextField(
+                        defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
+                        errorMessage = { getLineWidthErrorMessage(it) }
+                    ).component
+                    contextHelpLabel(
+                        description = WavefrontObjBundle.message(
+                            "settings.editor.fileTypes.obj.preview.lineWidth.help"
+                        )
+                    )
+                }
             }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
                 pointSizeInput = floatTextField(
@@ -180,6 +204,15 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
         if (value == null) error(errorMessage)
         else null
     }
+
+    private fun Cell.contextHelpLabel(
+        label: String? = null,
+        description: String,
+        icon: Icon? = AllIcons.General.ContextHelp
+    ): CellBuilder<ContextHelpLabel> =
+        ContextHelpLabel(label.orEmpty(), description)
+            .apply { this.icon = icon }
+            .invoke()
 
     fun getComponent(): JComponent = mainPanel
 

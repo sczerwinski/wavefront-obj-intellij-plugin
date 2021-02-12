@@ -31,14 +31,12 @@ import graphics.glimpse.buffers.toFloatBufferData
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
-import graphics.glimpse.meshes.MeshDataBuilder
 import graphics.glimpse.shaders.Program
 import graphics.glimpse.shaders.Shader
 import graphics.glimpse.shaders.ShaderType
 import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
-import graphics.glimpse.types.Vec2
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
 import graphics.glimpse.types.scale
@@ -46,6 +44,8 @@ import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.LinesMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
+import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.meshes.WireframeFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.ShaderResources
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShaderProgramExecutor
@@ -74,6 +74,8 @@ class PreviewScene(
     private var cameraModel: GLCameraModel? = null
     private var camera: TargetCamera = TargetCamera(eye = Vec3.unitX, target = Vec3.nullVector)
     private var lens: PerspectiveLens = PerspectiveLens(Angle.rightAngle, aspect = 1f, near = 1f, far = 2f)
+
+    private var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
 
     private val upVector: UpVector
         get() = cameraModel?.upVector ?: UpVector.DEFAULT
@@ -115,6 +117,12 @@ class PreviewScene(
             camera = TargetCamera(Vec3(x, y, z), Vec3.nullVector, upVector.vector)
             lens = PerspectiveLens(fovY(aspect), aspect, near, far)
         }
+        requestRender()
+    }
+
+    fun updateShadingMethod(newShadingMethod: ShadingMethod) {
+        shadingMethod = newShadingMethod
+        modelChanged.set(true)
         requestRender()
     }
 
@@ -208,7 +216,7 @@ class PreviewScene(
 
     private fun renderModel(gl: GlimpseAdapter) {
         if (modelChanged.getAndSet(false)) recreateModelMeshes(gl)
-        facesMesh?.let { renderFaces(gl, it) }
+        facesMesh?.let { renderFaces(gl, it, shadingMethod) }
         linesMesh?.let { renderLines(gl, it) }
         pointsMesh?.let { renderPoints(gl, it) }
     }
@@ -227,31 +235,11 @@ class PreviewScene(
     }
 
     private fun createFacesMesh(model: GLModel, gl: GlimpseAdapter) {
-        val meshDataBuilder = MeshDataBuilder()
-        for (vertex in model.vertices) {
-            meshDataBuilder.addVertex(vertex.coordinates.map { it ?: 0f })
+        val facesMeshFactory = when (shadingMethod) {
+            ShadingMethod.WIREFRAME -> WireframeFacesMeshFactory
+            ShadingMethod.SOLID -> SolidFacesMeshFactory
         }
-        for (texCoord in model.textureCoordinates) {
-            meshDataBuilder.addTextureCoordinates(texCoord.coordinates.map { it ?: 0f })
-        }
-        for (normal in model.vertexNormals) {
-            meshDataBuilder.addNormal(normal.coordinates.map { it ?: 0f })
-        }
-        meshDataBuilder.addTextureCoordinates(Vec2(x = 0f, y = 0f))
-        meshDataBuilder.addNormal(Vec3.nullVector)
-        for (face in model.faces) {
-            meshDataBuilder.addFace(
-                face.faceVertexList.map { faceVertex ->
-                    MeshDataBuilder.FaceVertex(
-                        positionIndex = (faceVertex.vertexIndex.value ?: 1) - 1,
-                        texCoordIndex = (faceVertex.textureCoordinatesIndex?.value ?: 1) - 1,
-                        normalIndex = (faceVertex.vertexNormalIndex?.value ?: 1) - 1
-                    )
-                }
-            )
-        }
-        val meshData = meshDataBuilder.buildArrayMeshData()
-        facesMesh = Mesh.Factory.newInstance(gl).createMesh(meshData)
+        facesMesh = facesMeshFactory.create(gl, model)
     }
 
     private fun createLinesMesh(model: GLModel, gl: GlimpseAdapter) {
@@ -277,21 +265,36 @@ class PreviewScene(
         )
     }
 
-    private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh) {
-        solidProgram.use(gl)
-        solidShaderProgramExecutor.applyParams(
-            gl,
-            SolidShader(
-                projectionMatrix = lens.projectionMatrix,
-                viewMatrix = camera.viewMatrix,
-                modelMatrix = Mat4.identity,
-                normalMatrix = Mat3.identity,
-                cameraPosition = camera.eye,
-                upVector = upVector.vector,
-                color = Colors.asVec3(Colors.COLOR_FACE)
-            )
-        )
-        solidShaderProgramExecutor.drawMesh(gl, facesMesh)
+    private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod) {
+        when (shadingMethod) {
+            ShadingMethod.WIREFRAME -> {
+                wireframeProgram.use(gl)
+                wireframeShaderProgramExecutor.applyParams(
+                    gl,
+                    WireframeShader(
+                        mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                        color = Colors.asVec4(Colors.COLOR_FACE)
+                    )
+                )
+                wireframeShaderProgramExecutor.drawMesh(gl, facesMesh)
+            }
+            ShadingMethod.SOLID -> {
+                solidProgram.use(gl)
+                solidShaderProgramExecutor.applyParams(
+                    gl,
+                    SolidShader(
+                        projectionMatrix = lens.projectionMatrix,
+                        viewMatrix = camera.viewMatrix,
+                        modelMatrix = Mat4.identity,
+                        normalMatrix = Mat3.identity,
+                        cameraPosition = camera.eye,
+                        upVector = upVector.vector,
+                        color = Colors.asVec3(Colors.COLOR_FACE)
+                    )
+                )
+                solidShaderProgramExecutor.drawMesh(gl, facesMesh)
+            }
+        }
     }
 
     private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh) {

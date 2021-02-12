@@ -32,6 +32,7 @@ import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModelFactory
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
@@ -76,6 +77,9 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private val cameraModel: AtomicReference<GLCameraModel> =
         AtomicReference(GLCameraModelFactory.createDefault())
 
+    private val shadingMethod: AtomicReference<ShadingMethod> =
+        AtomicReference(ShadingMethod.DEFAULT)
+
     private val showAxis: AtomicBoolean = AtomicBoolean(false)
 
     private val showGrid: AtomicBoolean = AtomicBoolean(false)
@@ -108,7 +112,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
             scene = PreviewScene(animator)
             scene.updateModel(model)
-            updatePresenter()
+            updateScene()
             canvas.setCallback(scene)
 
             canvas.addMouseWheelListener(ZoomingMouseWheelListener())
@@ -126,10 +130,11 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         }
     }
 
-    private fun updatePresenter() {
+    private fun updateScene() {
         invokeLater(modalityState) {
             if (::scene.isInitialized) {
                 scene.updateCameraModel(cameraModel.get())
+                scene.updateShadingMethod(shadingMethod.get())
                 scene.updateAxes(this.showAxis.get())
                 scene.updateGrid(showGrid.get())
                 scene.updateSettings(settings.get())
@@ -172,8 +177,14 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private fun updateCameraModel(transform: (GLCameraModel) -> GLCameraModel) {
         cameraModel.getAndUpdate { oldCameraModel ->
             val newCameraModel = transform(oldCameraModel)
-            updatePresenter()
+            updateScene()
             return@getAndUpdate newCameraModel
+        }
+    }
+
+    fun updateShadingMethod(newShadingMethod: ShadingMethod) {
+        if (newShadingMethod != shadingMethod.getAndSet(newShadingMethod)) {
+            updateScene()
         }
     }
 
@@ -186,17 +197,17 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     fun updateAxes(showAxis: Boolean) {
         this.showAxis.set(showAxis)
-        updatePresenter()
+        updateScene()
     }
 
     fun updateGrid(showGrid: Boolean) {
         this.showGrid.set(showGrid)
-        updatePresenter()
+        updateScene()
     }
 
-    fun updateGLPresenterSettings(newSettings: ObjPreviewFileEditorSettingsState) {
+    fun updateSceneSettings(newSettings: ObjPreviewFileEditorSettingsState) {
         if (newSettings != settings.getAndSet(newSettings)) {
-            updatePresenter()
+            updateScene()
         }
     }
 

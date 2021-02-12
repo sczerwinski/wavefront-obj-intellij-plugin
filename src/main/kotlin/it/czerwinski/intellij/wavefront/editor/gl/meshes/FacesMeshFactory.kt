@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.editor.gl.meshes
 
-enum class ShadingMethod {
-    WIREFRAME,
-    SOLID;
+import graphics.glimpse.GlimpseAdapter
+import graphics.glimpse.meshes.Mesh
+import it.czerwinski.intellij.wavefront.editor.model.GLModel
 
-    companion object {
-        val DEFAULT = SOLID
-    }
+interface FacesMeshFactory {
+    fun create(gl: GlimpseAdapter, model: GLModel): Mesh
 }

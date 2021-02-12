@@ -3,6 +3,9 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+- Wireframe shading in preview
+
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.2`
 - Dependencies:

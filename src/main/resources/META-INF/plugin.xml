@@ -157,6 +157,15 @@
                 id="ObjPreviewFileEditor.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
             <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.WireframeShadingMethodAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.WireframeShadingMethodAction"
+                    icon="WavefrontObjIcons.WIREFRAME_MODE_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.SolidShadingMethodAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.SolidShadingMethodAction"
+                    icon="WavefrontObjIcons.SOLID_MODE_ACTION"/>
+            <separator/>
+            <action
                     id="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
                     icon="WavefrontObjIcons.X_UP_ACTION"/>

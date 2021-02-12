@@ -31,6 +31,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
 import it.czerwinski.intellij.wavefront.editor.ui.EditorWithToolbar
@@ -52,6 +53,9 @@ class ObjPreviewFileEditor(
     private val additionalActionToolbar: ActionToolbar by lazy { createAdditionalActionToolbar() }
 
     private val _component: JComponent by lazy { createComponent() }
+
+    var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
+        private set
 
     var upVector: UpVector = UpVector.DEFAULT
         private set
@@ -143,6 +147,13 @@ class ObjPreviewFileEditor(
         Disposer.dispose(glPanel)
     }
 
+    fun triggerShadingMethodChange(shadingMethod: ShadingMethod) {
+        this.shadingMethod = shadingMethod
+        glPanel.updateShadingMethod(shadingMethod)
+        actionToolbar.updateActionsImmediately()
+        component.repaint()
+    }
+
     fun triggerUpVectorChange(upVector: UpVector) {
         this.upVector = upVector
         glPanel.updateUpVector(upVector)
@@ -173,7 +184,7 @@ class ObjPreviewFileEditor(
     }
 
     fun triggerSettingsChange(settings: ObjPreviewFileEditorSettingsState) {
-        glPanel.updateGLPresenterSettings(settings)
+        glPanel.updateSceneSettings(settings)
         triggerUpVectorChange(settings.defaultUpVector)
         triggerAxesChange(settings.showAxes)
         triggerGridChange(settings.showGrid)

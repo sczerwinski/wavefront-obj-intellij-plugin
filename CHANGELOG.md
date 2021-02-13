@@ -14,6 +14,9 @@
 - Update `changelog` Gradle plugin configuration
 - Migrate to GLES 2.0 with [Glimpse][https://glimpse.graphics/]
 
+### Fixed
+- Provide list of available texture files to texture file reference
+
 ## [0.2.1]
 ### Added
 - Color settings for OBJ 3D preview colors for faces, lines and points.

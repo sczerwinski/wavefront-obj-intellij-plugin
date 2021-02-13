@@ -16,7 +16,11 @@
 
 package it.czerwinski.intellij.wavefront.lang
 
+import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.icons.AllIcons
+import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementResolveResult
 import com.intellij.psi.PsiFile
@@ -27,6 +31,7 @@ import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.ResolveResult
 import com.intellij.util.ProcessingContext
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
+import it.czerwinski.intellij.wavefront.lang.psi.util.findAllTextureFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFiles
 
 class TextureFileReference(
@@ -47,7 +52,18 @@ class TextureFileReference(
     override fun resolve(): PsiElement? =
         findMatchingMtlFiles().singleOrNull()
 
-    override fun getVariants(): Array<Any> = emptyArray()
+    override fun getVariants(): Array<Any> =
+        findAllTextureFiles(myElement.project)
+            .map { file ->
+                val root = ProjectFileIndex.SERVICE.getInstance(myElement.project)
+                    .getContentRootForFile(file.virtualFile)
+                val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
+                    ?: file.containingDirectory?.name
+                LookupElementBuilder.create(file.name)
+                    .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
+                    .withTypeText(typeText, AllIcons.Nodes.Folder, false)
+            }
+            .toTypedArray()
 
     object Provider : PsiReferenceProvider() {
 

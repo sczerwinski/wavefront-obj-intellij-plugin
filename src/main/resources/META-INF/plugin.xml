@@ -208,6 +208,12 @@
                     class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
                     icon="AllIcons.General.Settings"/>
         </group>
+        <action
+                id="it.czerwinski.intellij.wavefront.editor.actions.GenerateNormalmapAction"
+                class="it.czerwinski.intellij.wavefront.editor.actions.GenerateNormalmapAction">
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <add-to-group group-id="EditorPopupMenu3"/>
+        </action>
     </actions>
 
 </idea-plugin>

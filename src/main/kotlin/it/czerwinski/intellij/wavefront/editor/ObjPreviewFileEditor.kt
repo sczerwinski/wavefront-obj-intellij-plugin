@@ -71,7 +71,7 @@ class ObjPreviewFileEditor(
         glPanel.updateObjFile(objFile)
         objFile?.let {
             PsiManager.getInstance(objFile.project)
-                .addPsiTreeChangeListener(MyPsiTreeChangeListener(objFile))
+                .addPsiTreeChangeListener(MyPsiTreeChangeListener(objFile), this)
         }
     }
 

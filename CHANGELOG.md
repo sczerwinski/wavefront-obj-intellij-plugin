@@ -21,6 +21,7 @@
 - Update signature of overridden method `RelatedItemLineMarkerProvider.collectNavigationMarkers(...)`
 - Replace deprecated method `FormattingModelBuilder.createModel(...)`
 - Replace deprecated extension function `max()` with `maxOrNull()`
+- Replace deprecated method `PsiManager.addPsiTreeChangeListener(...)`
 
 ### Security
 ## [0.3.0]

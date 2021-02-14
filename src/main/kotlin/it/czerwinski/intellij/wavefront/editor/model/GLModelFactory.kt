@@ -17,9 +17,6 @@
 package it.czerwinski.intellij.wavefront.editor.model
 
 import com.intellij.psi.PsiElement
-import com.intellij.util.ProcessingContext
-import it.czerwinski.intellij.wavefront.lang.MtlMaterialReference
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
@@ -45,18 +42,7 @@ object GLModelFactory {
         val points = mutableListOf<ObjPoint>()
 
         fun finalizeMaterialPart() {
-            val reference = materialReference?.let {
-                MtlMaterialReference.Provider.getReferencesByElement(it, ProcessingContext())
-            }
-            materialParts.add(
-                GLModel.MaterialPart(
-                    materialReference,
-                    reference?.first()?.resolve()?.parent as? MtlMaterial,
-                    faces.toList(),
-                    lines.toList(),
-                    points.toList()
-                )
-            )
+            materialParts.add(GLModel.MaterialPart(materialReference, faces.toList(), lines.toList(), points.toList()))
             faces.clear()
             lines.clear()
             points.clear()

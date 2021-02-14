@@ -22,7 +22,6 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.jogamp.opengl.util.texture.TextureIO
-import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 
 private val textureFilesExtensions = listOf(
     TextureIO.DDS,
@@ -37,19 +36,13 @@ private val textureFilesExtensions = listOf(
     TextureIO.PPM
 )
 
-fun findTextureFile(element: MtlTextureElement): PsiFile? =
-    findTextureFiles(element).firstOrNull()
-
-fun findTextureFiles(element: MtlTextureElement): List<PsiFile> =
-    element.textureFilename?.let { findTextureFiles(element.project, it) }.orEmpty()
-
-fun findTextureFiles(project: Project, filename: String): List<PsiFile> =
-    FilenameIndex.getFilesByName(project, filename, GlobalSearchScope.allScope(project))
-        .toList()
-
-fun findAllTextureFiles(project: Project): List<PsiFile> =
+fun Project.findAllTextureFiles(): List<PsiFile> =
     textureFilesExtensions.flatMap { extension ->
-        FilenameIndex.getAllFilesByExt(project, extension, GlobalSearchScope.allScope(project))
+        FilenameIndex.getAllFilesByExt(this, extension, GlobalSearchScope.allScope(this))
     }.mapNotNull { virtualFile ->
-        PsiManager.getInstance(project).findFile(virtualFile)
+        PsiManager.getInstance(this).findFile(virtualFile)
     }
+
+fun Project.findMatchingTextureFiles(filename: String): List<PsiFile> =
+    FilenameIndex.getFilesByName(this, filename, GlobalSearchScope.allScope(this))
+        .toList()

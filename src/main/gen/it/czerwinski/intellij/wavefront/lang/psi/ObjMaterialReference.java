@@ -11,6 +11,9 @@ public interface ObjMaterialReference extends PsiElement {
   @Nullable
   String getMaterialName();
 
+  @Nullable
+  MtlMaterial getMaterial();
+
   @NotNull
   PsiReference[] getReferences();
 

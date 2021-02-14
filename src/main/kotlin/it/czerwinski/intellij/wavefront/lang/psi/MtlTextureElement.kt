@@ -17,9 +17,14 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.lang.ASTNode
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 
 interface MtlTextureElement : PsiElement {
     val textureFilenameNode: ASTNode?
     val textureFilename: String?
+    val textureVirtualFile: VirtualFile? get() = textureFile?.virtualFile
+    val textureFile: PsiFile? get() = textureFiles.firstOrNull()
+    val textureFiles: List<PsiFile>
 }

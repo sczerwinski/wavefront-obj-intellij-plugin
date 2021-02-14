@@ -19,14 +19,44 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
+import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.lang.ObjFileType
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
+import it.czerwinski.intellij.wavefront.lang.psi.util.countChildrenOfType
+import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativeFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 class ObjFile(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, ObjLanguage) {
 
+    private val verticesCount
+        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
+
+    private val textureCoordinatesCount
+        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
+
+    private val vertexNormalsCount
+        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
+
+    val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
+
+    val objectLikeElements: List<PsiElement> get() = listOf(this) + groupingElements
+
+    val materialFileReferences: List<ObjMaterialFileReference>
+        get() = objectLikeElements.flatMap { it.getChildrenOfType() }
+
+    val referencedMtlFiles: List<MtlFile> get() = materialFileReferences.mapNotNull { element -> element.mtlFile }
+
     override fun getFileType(): FileType = ObjFileType
+
+    fun checkVertexExists(index: Int): Boolean = index in 1..verticesCount
+
+    fun checkTextureCoordinatesExist(index: Int): Boolean = index in 1..textureCoordinatesCount
+
+    fun checkVertexNormalExists(index: Int): Boolean = index in 1..vertexNormalsCount
+
+    fun findMtlFile(filePath: String): MtlFile? = findRelativeFile(this, filePath) as? MtlFile
 
     override fun toString(): String = "Wavefront OBJ File"
 }

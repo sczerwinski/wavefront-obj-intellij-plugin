@@ -32,7 +32,7 @@ import com.intellij.psi.ResolveResult
 import com.intellij.util.ProcessingContext
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllTextureFiles
-import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureFiles
 
 class TextureFileReference(
     element: PsiElement,
@@ -47,13 +47,14 @@ class TextureFileReference(
             .toTypedArray()
 
     private fun findMatchingMtlFiles(): List<PsiFile> =
-        findTextureFiles(myElement.project, filename)
+        myElement.project.findMatchingTextureFiles(filename)
 
     override fun resolve(): PsiElement? =
         findMatchingMtlFiles().singleOrNull()
 
     override fun getVariants(): Array<Any> =
-        findAllTextureFiles(myElement.project)
+        myElement.project
+            .findAllTextureFiles()
             .map { file ->
                 val root = ProjectFileIndex.SERVICE.getInstance(myElement.project)
                     .getContentRootForFile(file.virtualFile)

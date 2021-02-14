@@ -16,8 +16,32 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
+import java.awt.Color
 
 interface MtlMaterialElement : PsiElement {
+
+    val ambientColor: Color?
+    val diffuseColor: Color?
+    val specularColor: Color?
+    val transmissionFilter: Color?
+
+    val illumination: MtlIlluminationValueElement.Illumination?
+    val dissolve: Float?
+    val specularExponent: Float?
+    val sharpness: Float?
+    val opticalDensity: Float?
+
+    val ambientColorMap: VirtualFile?
+    val diffuseColorMap: VirtualFile?
+    val specularColorMap: VirtualFile?
+    val specularExponentMap: VirtualFile?
+    val dissolveMap: VirtualFile?
+    val displacementMap: VirtualFile?
+    val stencilDecalMap: VirtualFile?
+    val bumpMap: VirtualFile?
+    val reflectionMap: VirtualFile?
+
     fun getName(): String?
 }

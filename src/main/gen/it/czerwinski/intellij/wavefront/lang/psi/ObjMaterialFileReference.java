@@ -11,6 +11,9 @@ public interface ObjMaterialFileReference extends PsiElement {
   @Nullable
   String getFilename();
 
+  @Nullable
+  MtlFile getMtlFile();
+
   @NotNull
   PsiReference[] getReferences();
 

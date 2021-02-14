@@ -27,6 +27,8 @@ abstract class MtlIlluminationValueElementImpl(
 
     private val valueNode get() = node.findChildByType(MtlTypes.ILLUMINATION_VALUE)
 
-    override val value: Int?
-        get() = valueNode?.text?.toIntOrNull()
+    override val value: MtlIlluminationValueElement.Illumination?
+        get() = valueNode?.text?.toIntOrNull()?.let { ordinal ->
+            enumValues<MtlIlluminationValueElement.Illumination>().getOrNull(ordinal)
+        }
 }

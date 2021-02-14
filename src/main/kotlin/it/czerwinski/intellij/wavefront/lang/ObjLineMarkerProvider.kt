@@ -21,13 +21,10 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMtlFile
-import it.czerwinski.intellij.wavefront.lang.psi.util.findReferencedMtlFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
 
 class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
@@ -46,7 +43,7 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)?.psi
-        val file = findMtlFile(element)
+        val file = element.mtlFile
         if (markedElement != null && file != null) {
             val marker = NavigationGutterIconBuilder.create(OBJ_MATERIAL_FILE_ICON)
                 .setTargets(file)
@@ -61,8 +58,8 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.psi
-        val files = findReferencedMtlFiles(element.containingFile as ObjFile)
-        val materials = files.flatMap { file -> file.findMaterialIdentifiers() }
+        val files = element.containingObjFile?.referencedMtlFiles.orEmpty()
+        val materials = files.flatMap { file -> file.materialIdentifiers }
             .filter { material -> material.name == element.materialName }
         if (markedElement != null && materials.isNotEmpty()) {
             val marker = NavigationGutterIconBuilder.create(OBJ_MATERIAL_ICON)

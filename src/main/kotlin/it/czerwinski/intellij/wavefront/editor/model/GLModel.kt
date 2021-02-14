@@ -47,11 +47,11 @@ data class GLModel(
 
     data class MaterialPart(
         val materialReference: ObjMaterialReference?,
-        val material: MtlMaterial?,
         val faces: List<ObjFace>,
         val lines: List<ObjLine>,
         val points: List<ObjPoint>
     ) {
         val isEmpty: Boolean get() = faces.isEmpty() && lines.isEmpty() && points.isEmpty()
+        val material: MtlMaterial? = materialReference?.material
     }
 }

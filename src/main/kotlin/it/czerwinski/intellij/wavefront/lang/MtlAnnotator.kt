@@ -22,7 +22,6 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
-import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFile
 
 class MtlAnnotator : Annotator {
 
@@ -37,7 +36,7 @@ class MtlAnnotator : Annotator {
 
     private fun annotateTextureFileReference(element: MtlTextureElement, holder: AnnotationHolder) {
         val textureFilenameNode = element.textureFilenameNode
-        if (textureFilenameNode != null && findTextureFile(element) == null) {
+        if (textureFilenameNode != null && element.textureFile == null) {
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
                 WavefrontObjBundle.message("fileTypes.mtl.annotation.error.textureFileNotFound")

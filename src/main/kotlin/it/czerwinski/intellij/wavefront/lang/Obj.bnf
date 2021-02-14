@@ -98,9 +98,9 @@ smoothShading ::= (SMOOTH_SHADING_KEYWORD FLAG) {
 }
 
 materialFileReference ::= (MATERIAL_FILE_REF_KEYWORD MATERIAL_FILE_NAME) {
-  methods = [getFilename getReferences]
+  methods = [getFilename getMtlFile getReferences]
 }
 
 materialReference ::= (MATERIAL_REFERENCE_KEYWORD MATERIAL_NAME) {
-  methods = [getMaterialName getReferences]
+  methods = [getMaterialName getMaterial getReferences]
 }

@@ -25,7 +25,7 @@ import it.czerwinski.intellij.wavefront.editor.model.GLModel
 
 object SolidFacesMeshFactory : FacesMeshFactory {
 
-    override fun create(gl: GlimpseAdapter, model: GLModel): Mesh {
+    override fun create(gl: GlimpseAdapter, model: GLModel, materialPart: GLModel.MaterialPart): Mesh {
         val meshDataBuilder = MeshDataBuilder()
         for (vertex in model.vertices) {
             meshDataBuilder.addVertex(vertex.coordinates.map { it ?: 0f })
@@ -38,7 +38,7 @@ object SolidFacesMeshFactory : FacesMeshFactory {
         }
         meshDataBuilder.addTextureCoordinates(Vec2(x = 0f, y = 0f))
         meshDataBuilder.addNormal(Vec3.nullVector)
-        for (face in model.faces) {
+        for (face in materialPart.faces) {
             meshDataBuilder.addFace(
                 face.faceVertexList.map { faceVertex ->
                     MeshDataBuilder.FaceVertex(

@@ -16,48 +16,42 @@
 
 package it.czerwinski.intellij.wavefront.editor.model
 
+import com.intellij.psi.PsiElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
-import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
+import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
-import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
-import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
-import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import kotlin.math.abs
 
 data class GLModel(
     val vertices: List<ObjVertex>,
     val textureCoordinates: List<ObjTextureCoordinates>,
     val vertexNormals: List<ObjVertexNormal>,
-    val faces: List<ObjFace>,
-    val lines: List<ObjLine>,
-    val points: List<ObjPoint>
+    val groupingElements: List<GroupingElement>
 ) {
 
-    val size: Float
-        get() = vertices.flatMap { vertex ->
-            vertex.coordinates.filterNotNull().map { abs(it) }
-        }.max() ?: 0f
+    val size: Float get() = vertices.flatMap { vertex ->
+        vertex.coordinates.filterNotNull().map { abs(it) }
+    }.max() ?: 0f
 
-    val triangles get() = faces.filter { it.type === ObjFaceType.TRIANGLE }
-    val quads get() = faces.filter { it.type === ObjFaceType.QUAD }
-    val polygons get() = faces.filter { it.type === ObjFaceType.POLYGON }
+    data class GroupingElement(
+        val psiElement: PsiElement,
+        val materialParts: List<MaterialPart>
+    ) {
+        val isEmpty: Boolean get() = materialParts.isEmpty()
+    }
 
-    fun vertexAtIndex(
-        vertexIndex: ObjVertexIndex
-    ): ObjVertex? =
-        vertexIndex.value?.minus(1)?.let { vertices.getOrNull(it) }
-
-    fun textureCoordinatesAtIndex(
-        textureCoordinatesIndex: ObjTextureCoordinatesIndex?
-    ): ObjTextureCoordinates? =
-        textureCoordinatesIndex?.value?.minus(1)?.let { textureCoordinates.getOrNull(it) }
-
-    fun vertexNormalAtIndex(
-        vertexNormalIndex: ObjVertexNormalIndex?
-    ): ObjVertexNormal? =
-        vertexNormalIndex?.value?.minus(1)?.let { vertexNormals.getOrNull(it) }
+    data class MaterialPart(
+        val materialReference: ObjMaterialReference?,
+        val material: MtlMaterial?,
+        val faces: List<ObjFace>,
+        val lines: List<ObjLine>,
+        val points: List<ObjPoint>
+    ) {
+        val isEmpty: Boolean get() = faces.isEmpty() && lines.isEmpty() && points.isEmpty()
+    }
 }

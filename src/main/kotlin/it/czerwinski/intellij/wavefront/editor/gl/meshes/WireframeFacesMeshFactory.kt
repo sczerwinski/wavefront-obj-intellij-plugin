@@ -26,8 +26,8 @@ object WireframeFacesMeshFactory : FacesMeshFactory {
 
     private const val VERTICES_PER_LINE = 2
 
-    override fun create(gl: GlimpseAdapter, model: GLModel): Mesh {
-        val lines = model.faces.flatMap { face ->
+    override fun create(gl: GlimpseAdapter, model: GLModel, materialPart: GLModel.MaterialPart): Mesh {
+        val lines = materialPart.faces.flatMap { face ->
             (face.faceVertexList + face.faceVertexList.first())
                 .zipWithNext()
                 .map { (v1, v2) ->

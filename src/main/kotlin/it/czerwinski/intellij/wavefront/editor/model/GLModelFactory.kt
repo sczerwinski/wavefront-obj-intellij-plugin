@@ -16,56 +16,82 @@
 
 package it.czerwinski.intellij.wavefront.editor.model
 
-import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiElement
+import com.intellij.util.ProcessingContext
+import it.czerwinski.intellij.wavefront.lang.MtlMaterialReference
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
+import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
-import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 object GLModelFactory {
 
-    fun create(objFile: ObjFile): GLModel =
-        GLModel(
-            vertices = getAllVertices(objFile),
-            textureCoordinates = getAllTextureCoordinates(objFile),
-            vertexNormals = getAllVertexNormals(objFile),
-            faces = getAllFaces(objFile),
-            lines = getAllLines(objFile),
-            points = getAllPoints(objFile)
-        )
+    fun create(objFile: ObjFile): GLModel {
+        val vertices = mutableListOf<ObjVertex>()
+        val textureCoordinates = mutableListOf<ObjTextureCoordinates>()
+        val normals = mutableListOf<ObjVertexNormal>()
+        val groupingElements = mutableListOf<GLModel.GroupingElement>()
 
-    private fun getAllVertices(file: PsiFile): List<ObjVertex> =
-        file.getChildrenOfType<ObjVertex>() +
-            file.getChildrenOfType<ObjGroupingElement>()
-                .flatMap { it.getChildrenOfType<ObjVertex>() }
+        var materialReference: ObjMaterialReference? = null
+        val materialParts = mutableListOf<GLModel.MaterialPart>()
+        val faces = mutableListOf<ObjFace>()
+        val lines = mutableListOf<ObjLine>()
+        val points = mutableListOf<ObjPoint>()
 
-    private fun getAllTextureCoordinates(file: PsiFile): List<ObjTextureCoordinates> =
-        file.getChildrenOfType<ObjTextureCoordinates>() +
-            file.getChildrenOfType<ObjGroupingElement>()
-                .flatMap { it.getChildrenOfType<ObjTextureCoordinates>() }
+        fun finalizeMaterialPart() {
+            val reference = materialReference?.let {
+                MtlMaterialReference.Provider.getReferencesByElement(it, ProcessingContext())
+            }
+            materialParts.add(
+                GLModel.MaterialPart(
+                    materialReference,
+                    reference?.first()?.resolve()?.parent as? MtlMaterial,
+                    faces.toList(),
+                    lines.toList(),
+                    points.toList()
+                )
+            )
+            faces.clear()
+            lines.clear()
+            points.clear()
+        }
 
-    private fun getAllVertexNormals(file: PsiFile): List<ObjVertexNormal> =
-        file.getChildrenOfType<ObjVertexNormal>() +
-            file.getChildrenOfType<ObjGroupingElement>()
-                .flatMap { it.getChildrenOfType<ObjVertexNormal>() }
+        fun finalizeGroupingElement(parent: PsiElement) {
+            finalizeMaterialPart()
+            groupingElements.add(GLModel.GroupingElement(parent, materialParts.filterNot { it.isEmpty }))
+            materialParts.clear()
+        }
 
-    private fun getAllFaces(file: PsiFile): List<ObjFace> =
-        file.getChildrenOfType<ObjFace>() +
-            file.getChildrenOfType<ObjGroupingElement>()
-                .flatMap { it.getChildrenOfType<ObjFace>() }
+        fun processElement(parent: PsiElement) {
+            for (element in parent.children) {
+                when (element) {
+                    is ObjVertex -> vertices.add(element)
+                    is ObjTextureCoordinates -> textureCoordinates.add(element)
+                    is ObjVertexNormal -> normals.add(element)
+                    is ObjFace -> faces.add(element)
+                    is ObjLine -> lines.add(element)
+                    is ObjPoint -> points.add(element)
+                    is ObjMaterialReference -> {
+                        finalizeMaterialPart()
+                        materialReference = element
+                    }
+                    is ObjGroupingElement -> {
+                        finalizeGroupingElement(parent)
+                        processElement(element)
+                    }
+                }
+            }
+            finalizeGroupingElement(parent)
+        }
 
-    private fun getAllLines(file: PsiFile): List<ObjLine> =
-        file.getChildrenOfType<ObjLine>() +
-            file.getChildrenOfType<ObjGroupingElement>()
-                .flatMap { it.getChildrenOfType<ObjLine>() }
+        processElement(objFile)
 
-    private fun getAllPoints(file: PsiFile): List<ObjPoint> =
-        file.getChildrenOfType<ObjPoint>() +
-            file.getChildrenOfType<ObjGroupingElement>()
-                .flatMap { it.getChildrenOfType<ObjPoint>() }
+        return GLModel(vertices, textureCoordinates, normals, groupingElements.filterNot { it.isEmpty })
+    }
 }

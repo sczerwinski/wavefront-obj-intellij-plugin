@@ -27,8 +27,8 @@ class MtlFile(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, MtlLanguage) {
 
-    val materialIdentifiers: List<MtlMaterialIdentifier> =
-        materials.flatMap { material -> material.getChildrenOfType() }
+    val materialIdentifiers: List<MtlMaterialIdentifier>
+        get() = materials.flatMap { material -> material.getChildrenOfType() }
 
     val materials: List<MtlMaterial> get() = getChildrenOfType()
 

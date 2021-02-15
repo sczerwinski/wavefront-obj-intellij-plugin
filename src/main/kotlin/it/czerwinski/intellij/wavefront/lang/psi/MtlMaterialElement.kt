@@ -37,10 +37,13 @@ interface MtlMaterialElement : PsiElement {
     val diffuseColorMap: VirtualFile?
     val specularColorMap: VirtualFile?
     val specularExponentMap: VirtualFile?
+    val specularExponentBase: Float?
+    val specularExponentGain: Float?
     val dissolveMap: VirtualFile?
     val displacementMap: VirtualFile?
     val stencilDecalMap: VirtualFile?
     val bumpMap: VirtualFile?
+    val bumpMapMultiplier: Float?
     val reflectionMap: VirtualFile?
 
     fun getName(): String?

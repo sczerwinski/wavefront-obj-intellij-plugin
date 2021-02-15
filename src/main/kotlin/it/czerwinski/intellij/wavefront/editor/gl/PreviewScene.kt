@@ -16,10 +16,13 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.colors.ColorKey
 import com.intellij.openapi.editor.colors.EditorColorsManager
+import com.intellij.openapi.vfs.VirtualFile
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLException
+import com.jogamp.opengl.GLProfile
 import graphics.glimpse.BlendingFactorFunction
 import graphics.glimpse.ClearableBufferType
 import graphics.glimpse.DepthTestFunction
@@ -34,6 +37,11 @@ import graphics.glimpse.meshes.Mesh
 import graphics.glimpse.shaders.Program
 import graphics.glimpse.shaders.Shader
 import graphics.glimpse.shaders.ShaderType
+import graphics.glimpse.textures.Texture
+import graphics.glimpse.textures.TextureMagFilter
+import graphics.glimpse.textures.TextureMinFilter
+import graphics.glimpse.textures.TextureType
+import graphics.glimpse.textures.TextureWrap
 import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
@@ -53,18 +61,24 @@ import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShaderProgramExecutor
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShaderProgramExecutor
+import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
+import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesStore
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PreviewScene(
+    private val profile: GLProfile,
     animatorControl: GLAnimatorControl
 ) : GlimpseCallback,
     GLAnimatorControl by animatorControl {
+
+    private val logger: Logger = Logger.getInstance(javaClass)
 
     private var width: Int = 1
     private var height: Int = 1
@@ -98,6 +112,11 @@ class PreviewScene(
     private lateinit var materialProgram: Program
     private lateinit var materialShaderProgramExecutor: MaterialShaderProgramExecutor
 
+    private val texturesStore = TexturesStore()
+
+    private lateinit var missingTexture: Texture
+    private lateinit var missingNormalmap: Texture
+
     private val facesMeshes = mutableListOf<Mesh>()
     private val linesMeshes = mutableListOf<Mesh>()
     private val pointsMeshes = mutableListOf<Mesh>()
@@ -110,6 +129,13 @@ class PreviewScene(
     fun updateModel(newModel: GLModel?) {
         model = newModel
         modelChanged.set(true)
+        model?.materials?.forEach { material ->
+            material?.ambientColorMap?.let { file -> texturesStore.prepare(profile, file) }
+            material?.diffuseColorMap?.let { file -> texturesStore.prepare(profile, file) }
+            material?.specularColorMap?.let { file -> texturesStore.prepare(profile, file) }
+            material?.specularExponentMap?.let { file -> texturesStore.prepare(profile, file) }
+            material?.bumpMap?.let { file -> texturesStore.prepare(profile, file) }
+        }
         requestRender()
     }
 
@@ -162,6 +188,7 @@ class PreviewScene(
         gl.glEnableProgramPointSize()
 
         createShaders(gl)
+        createMissingTextures(gl)
         createMeshes(gl)
     }
 
@@ -189,6 +216,19 @@ class PreviewScene(
 
     private fun Shader.Factory.createShader(shadingMethod: ShadingMethod, shaderType: ShaderType): Shader =
         createShader(type = shaderType, source = ShaderResources.getShaderSource(shadingMethod, shaderType))
+
+    private fun createMissingTextures(gl: GlimpseAdapter) {
+        val textures = Texture.Builder.getInstance(gl)
+            .addTexture(TextureResources.missingTextureImageSource)
+            .addTexture(TextureResources.missingNormalmapImageSource)
+            .generateMipmaps()
+            .build()
+        missingTexture = textures.first()
+        missingNormalmap = textures.last()
+
+        gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
+        gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR_MIPMAP_LINEAR, TextureMagFilter.LINEAR)
+    }
 
     private fun createMeshes(gl: GlimpseAdapter) {
         gridMesh = GridMeshFactory.createGrid(gl)
@@ -294,56 +334,78 @@ class PreviewScene(
 
     private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod, index: Int) {
         when (shadingMethod) {
-            ShadingMethod.WIREFRAME -> {
-                wireframeProgram.use(gl)
-                wireframeShaderProgramExecutor.applyParams(
-                    gl,
-                    WireframeShader(
-                        mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
-                        color = Colors.asVec4(Colors.COLOR_FACE)
-                    )
-                )
-                wireframeShaderProgramExecutor.drawMesh(gl, facesMesh)
-            }
-            ShadingMethod.SOLID -> {
-                solidProgram.use(gl)
-                solidShaderProgramExecutor.applyParams(
-                    gl,
-                    SolidShader(
-                        projectionMatrix = lens.projectionMatrix,
-                        viewMatrix = camera.viewMatrix,
-                        modelMatrix = Mat4.identity,
-                        normalMatrix = Mat3.identity,
-                        cameraPosition = camera.eye,
-                        upVector = upVector.vector,
-                        color = Colors.asVec3(Colors.COLOR_FACE)
-                    )
-                )
-                solidShaderProgramExecutor.drawMesh(gl, facesMesh)
-            }
-            ShadingMethod.MATERIAL -> {
-                materialProgram.use(gl)
-                materialShaderProgramExecutor.applyParams(
-                    gl,
-                    MaterialShader(
-                        projectionMatrix = lens.projectionMatrix,
-                        viewMatrix = camera.viewMatrix,
-                        modelMatrix = Mat4.identity,
-                        normalMatrix = Mat3.identity,
-                        cameraPosition = camera.eye,
-                        upVector = upVector.vector,
-                        ambientColor = Vec3(
-                            color = model?.materials?.getOrNull(index)?.let { it.ambientColor ?: it.diffuseColor }
-                                ?: Color.WHITE
-                        ),
-                        diffuseColor = Vec3(model?.materials?.getOrNull(index)?.diffuseColor ?: Color.WHITE),
-                        specularColor = Vec3(model?.materials?.getOrNull(index)?.specularColor ?: Color.BLACK),
-                        specularExponent = model?.materials?.getOrNull(index)?.specularExponent ?: 1f
-                    )
-                )
-                materialShaderProgramExecutor.drawMesh(gl, facesMesh)
-            }
+            ShadingMethod.WIREFRAME -> renderFacesWireframe(gl, facesMesh)
+            ShadingMethod.SOLID -> renderFacesSolid(gl, facesMesh)
+            ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh, index)
         }
+    }
+
+    private fun renderFacesWireframe(gl: GlimpseAdapter, facesMesh: Mesh) {
+        wireframeProgram.use(gl)
+        wireframeShaderProgramExecutor.applyParams(
+            gl,
+            WireframeShader(
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                color = Colors.asVec4(Colors.COLOR_FACE)
+            )
+        )
+        wireframeShaderProgramExecutor.drawMesh(gl, facesMesh)
+    }
+
+    private fun renderFacesSolid(gl: GlimpseAdapter, facesMesh: Mesh) {
+        solidProgram.use(gl)
+        solidShaderProgramExecutor.applyParams(
+            gl,
+            SolidShader(
+                projectionMatrix = lens.projectionMatrix,
+                viewMatrix = camera.viewMatrix,
+                modelMatrix = Mat4.identity,
+                normalMatrix = Mat3.identity,
+                cameraPosition = camera.eye,
+                upVector = upVector.vector,
+                color = Colors.asVec3(Colors.COLOR_FACE)
+            )
+        )
+        solidShaderProgramExecutor.drawMesh(gl, facesMesh)
+    }
+
+    @Suppress("ComplexMethod")
+    private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
+        val material: MtlMaterial? = model?.materials?.getOrNull(index)
+        val ambientTexture = material?.ambientColorMap?.getTexture(gl)
+        val diffuseTexture = material?.diffuseColorMap?.getTexture(gl)
+        materialProgram.use(gl)
+        materialShaderProgramExecutor.applyParams(
+            gl,
+            MaterialShader(
+                projectionMatrix = lens.projectionMatrix,
+                viewMatrix = camera.viewMatrix,
+                modelMatrix = Mat4.identity,
+                normalMatrix = Mat3.identity,
+                cameraPosition = camera.eye,
+                upVector = upVector.vector,
+                ambientColor = Vec3(color = material?.let { it.ambientColor ?: it.diffuseColor } ?: Color.WHITE),
+                diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
+                specularColor = Vec3(color = material?.specularColor ?: Color.WHITE),
+                specularExponent = material?.specularExponent ?: 1f,
+                ambientTexture = ambientTexture ?: diffuseTexture ?: missingTexture,
+                diffuseTexture = diffuseTexture ?: missingTexture,
+                specularTexture = material?.specularColorMap?.getTexture(gl) ?: missingTexture,
+                specularExponentTexture = material?.specularExponentMap?.getTexture(gl) ?: missingTexture,
+                specularExponentBase = material?.specularExponentBase ?: 0f,
+                specularExponentGain = material?.specularExponentGain ?: 1f,
+                normalmapTexture = material?.bumpMap?.getTexture(gl) ?: missingNormalmap,
+                normalmapMultiplier = material?.bumpMapMultiplier ?: 1f
+            )
+        )
+        materialShaderProgramExecutor.drawMesh(gl, facesMesh)
+    }
+
+    private fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
+        texturesStore[gl, this]
+    } catch (exception: GLException) {
+        logger.error("Error getting texture: '$name'", exception)
+        null
     }
 
     private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh) {
@@ -428,6 +490,9 @@ class PreviewScene(
             fineGridMesh.dispose(gl)
             axisMesh.dispose(gl)
             axisConeMesh.dispose(gl)
+            texturesStore.dispose(gl)
+            missingTexture.dispose(gl)
+            missingNormalmap.dispose(gl)
             wireframeShaderProgramExecutor.dispose()
             solidShaderProgramExecutor.dispose()
             materialShaderProgramExecutor.dispose()

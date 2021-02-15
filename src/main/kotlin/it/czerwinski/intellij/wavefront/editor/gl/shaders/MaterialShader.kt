@@ -20,6 +20,7 @@ import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
+import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
@@ -27,6 +28,7 @@ import graphics.glimpse.types.Vec3
 @ShaderParams(
     attributes = [
         Attribute(name = "aPos", role = AttributeRole.POSITIONS, vectorSize = 3),
+        Attribute(name = "aTexCoord", role = AttributeRole.TEX_COORDS, vectorSize = 2),
         Attribute(name = "aNormal", role = AttributeRole.NORMALS, vectorSize = 3),
         Attribute(name = "aTangent", role = AttributeRole.TANGENTS, vectorSize = 3),
     ]
@@ -62,4 +64,28 @@ data class MaterialShader(
 
     @Uniform(name = "uSpecExp")
     val specularExponent: Float,
+
+    @Uniform(name = "uAmbTex")
+    val ambientTexture: Texture,
+
+    @Uniform(name = "uDiffTex")
+    val diffuseTexture: Texture,
+
+    @Uniform(name = "uSpecTex")
+    val specularTexture: Texture,
+
+    @Uniform(name = "uSpecExpTex")
+    val specularExponentTexture: Texture,
+
+    @Uniform(name = "uSpecExpBase")
+    val specularExponentBase: Float,
+
+    @Uniform(name = "uSpecExpGain")
+    val specularExponentGain: Float,
+
+    @Uniform(name = "uNormalTex")
+    val normalmapTexture: Texture,
+
+    @Uniform(name = "uBumpMult")
+    val normalmapMultiplier: Float,
 )

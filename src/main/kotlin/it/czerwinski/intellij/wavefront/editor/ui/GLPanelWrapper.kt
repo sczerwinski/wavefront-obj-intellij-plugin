@@ -20,6 +20,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.progress.util.BackgroundTaskUtil.executeOnPooledThread
 import com.jetbrains.rd.util.AtomicReference
 import com.jetbrains.rd.util.string.printToString
 import com.jogamp.opengl.math.FloatUtil
@@ -64,7 +65,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     private var model: GLModel? = null
         set(value) {
             field = value
-            invokeLater(modalityState) {
+            executeOnPooledThread(this) {
                 if (::scene.isInitialized) {
                     scene.updateModel(value)
                 }
@@ -101,7 +102,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
 
     fun initPreview() {
         if (initPreviewTriggered.compareAndSet(false, true)) {
-            invokeLater(modalityState, ::attachJPanel)
+            executeOnPooledThread(this, ::attachJPanel)
         }
     }
 
@@ -110,7 +111,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             val canvas = GlimpsePanel()
             val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
 
-            scene = PreviewScene(animator)
+            scene = PreviewScene(canvas.glProfile, animator)
             scene.updateModel(model)
             updateScene()
             canvas.setCallback(scene)

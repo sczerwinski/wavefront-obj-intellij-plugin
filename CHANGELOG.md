@@ -13,7 +13,7 @@
   - Upgrade `org.jetbrains.changelog` to `1.1.2`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.0.0`
 - Update `changelog` Gradle plugin configuration
-- Migrate to GLES 2.0 with [Glimpse][https://glimpse.graphics/]
+- Migrate to GLES 2.0 with [Glimpse](https://glimpse.graphics/)
 
 ### Fixed
 - Provide list of available texture files to texture file reference

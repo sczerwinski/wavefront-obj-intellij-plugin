@@ -24,10 +24,13 @@ import javax.swing.*;
 public class WavefrontObjIcons {
 
     @NotNull
-    public static final Icon WIREFRAME_MODE_ACTION = getIcon("/icons/editor_actions/wireframeShading.svg");
+    public static final Icon WIREFRAME_SHADING_ACTION = getIcon("/icons/editor_actions/wireframeShading.svg");
 
     @NotNull
-    public static final Icon SOLID_MODE_ACTION = getIcon("/icons/editor_actions/solidShading.svg");
+    public static final Icon SOLID_SHADING_ACTION = getIcon("/icons/editor_actions/solidShading.svg");
+
+    @NotNull
+    public static final Icon MATERIAL_SHADING_ACTION = getIcon("/icons/editor_actions/materialShading.svg");
 
     @NotNull
     public static final Icon TOGGLE_AXES_ACTION = getIcon("/icons/editor_actions/axes.svg");

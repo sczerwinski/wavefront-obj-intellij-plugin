@@ -21,5 +21,5 @@ import graphics.glimpse.meshes.Mesh
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 
 interface FacesMeshFactory {
-    fun create(gl: GlimpseAdapter, model: GLModel): Mesh
+    fun create(gl: GlimpseAdapter, model: GLModel, materialPart: GLModel.MaterialPart): Mesh
 }

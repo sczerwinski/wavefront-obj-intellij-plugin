@@ -17,32 +17,13 @@
 package it.czerwinski.intellij.wavefront.lang.psi.util
 
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FileTypeIndex
 import com.intellij.psi.search.GlobalSearchScope
 import it.czerwinski.intellij.wavefront.lang.MtlFileType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
-import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
-import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
-import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 
-fun findMtlFile(element: ObjMaterialFileReference): MtlFile? =
-    findMtlFile(element.containingFile, element.filename.orEmpty())
-
-fun findMtlFile(sourceFile: PsiFile?, filePath: String): MtlFile? =
-    sourceFile?.let { file ->
-        findRelativeFile(file, filePath)
-    } as? MtlFile
-
-fun findAllMtlFiles(project: Project): List<MtlFile> =
-    FileTypeIndex.getFiles(MtlFileType, GlobalSearchScope.allScope(project))
-        .mapNotNull { virtualFile -> PsiManager.getInstance(project).findFile(virtualFile) }
+fun Project.findAllMtlFiles(): List<MtlFile> =
+    FileTypeIndex.getFiles(MtlFileType, GlobalSearchScope.allScope(this))
+        .mapNotNull { virtualFile -> PsiManager.getInstance(this).findFile(virtualFile) }
         .filterIsInstance<MtlFile>()
-
-fun findReferencedMtlFiles(objFile: ObjFile): List<MtlFile> {
-    val materialFileReferences = objFile.getChildrenOfType<ObjMaterialFileReference>() +
-        objFile.getChildrenOfType<ObjGroupingElement>()
-            .flatMap { it.getChildrenOfType<ObjMaterialFileReference>() }
-    return materialFileReferences.mapNotNull { element -> findMtlFile(element) }
-}

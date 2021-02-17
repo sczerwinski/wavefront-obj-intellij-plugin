@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi.util
+package it.czerwinski.intellij.wavefront.editor.actions
 
-import com.intellij.psi.PsiElement
-import com.intellij.psi.util.PsiTreeUtil
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-inline fun <reified T : PsiElement> PsiElement.getChildrenOfType(): List<T> =
-    PsiTreeUtil.getChildrenOfType(this, T::class.java)?.filterNotNull().orEmpty()
-
-inline fun <reified T : PsiElement> PsiElement.countChildrenOfType(): Int =
-    PsiTreeUtil.countChildrenOfType(this, T::class.java)
+class MaterialShadingMethodAction : ShadingMethodAction(ShadingMethod.MATERIAL)

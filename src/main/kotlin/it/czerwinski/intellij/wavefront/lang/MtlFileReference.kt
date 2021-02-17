@@ -27,8 +27,8 @@ import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.util.ProcessingContext
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
+import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllMtlFiles
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativePath
 
 class MtlFileReference(
@@ -38,11 +38,11 @@ class MtlFileReference(
 
     private val filename = element.text.substring(textRange.startOffset, textRange.endOffset)
 
-    override fun resolve(): PsiElement? =
-        findMtlFile(myElement.containingFile, filename)
+    override fun resolve(): PsiElement? = myElement.containingObjFile?.findMtlFile(filename)
 
     override fun getVariants(): Array<Any> =
-        findAllMtlFiles(myElement.project)
+        myElement.project
+            .findAllMtlFiles()
             .map { file ->
                 val root = ProjectFileIndex.SERVICE.getInstance(myElement.project)
                     .getContentRootForFile(file.virtualFile)

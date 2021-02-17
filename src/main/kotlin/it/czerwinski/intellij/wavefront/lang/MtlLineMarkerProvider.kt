@@ -23,7 +23,6 @@ import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
-import it.czerwinski.intellij.wavefront.lang.psi.util.findTextureFiles
 
 class MtlLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
@@ -41,7 +40,7 @@ class MtlLineMarkerProvider : RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
     ) {
         val markedElement = element.node.findChildByType(MtlTypes.TEXTURE_FILE)?.psi
-        val files = findTextureFiles(element)
+        val files = element.textureFiles
         if (markedElement != null && files.isNotEmpty()) {
             val marker = NavigationGutterIconBuilder.create(MTL_TEXTURE_ICON)
                 .setTargets(files)

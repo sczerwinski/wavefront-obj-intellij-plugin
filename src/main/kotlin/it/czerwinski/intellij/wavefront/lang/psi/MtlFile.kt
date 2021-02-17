@@ -21,10 +21,16 @@ import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
 import it.czerwinski.intellij.wavefront.lang.MtlFileType
 import it.czerwinski.intellij.wavefront.lang.MtlLanguage
+import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 class MtlFile(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, MtlLanguage) {
+
+    val materialIdentifiers: List<MtlMaterialIdentifier>
+        get() = materials.flatMap { material -> material.getChildrenOfType() }
+
+    val materials: List<MtlMaterial> get() = getChildrenOfType()
 
     override fun getFileType(): FileType = MtlFileType
 

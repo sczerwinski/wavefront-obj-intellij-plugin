@@ -29,8 +29,6 @@ import com.intellij.util.ProcessingContext
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
-import it.czerwinski.intellij.wavefront.lang.psi.util.findReferencedMtlFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativePath
 
 class MtlMaterialReference(
@@ -51,24 +49,23 @@ class MtlMaterialReference(
             .filter { material -> material.name == materialName }
 
     private fun findAvailableMaterials(): List<MtlMaterialIdentifier> =
-        objFile?.let(::findReferencedMtlFiles)
-            ?.flatMap { mtlFile -> mtlFile.findMaterialIdentifiers() }
+        objFile?.referencedMtlFiles
+            ?.flatMap { mtlFile -> mtlFile.materialIdentifiers }
             .orEmpty()
 
     override fun resolve(): PsiElement? =
         findMatchingMaterials().singleOrNull()
 
-    override fun getVariants(): Array<Any> {
-        return findAvailableMaterials()
+    override fun getVariants(): Array<Any> =
+        findAvailableMaterials()
             .map { material ->
-                val typeText: String? = findRelativePath(element.containingFile.originalFile, material.containingFile)
+                val typeText: String? = findRelativePath(myElement.containingFile.originalFile, material.containingFile)
                     ?: material.containingFile?.name
                 LookupElementBuilder.create(material)
                     .withIcon(MTL_MATERIAL_ICON)
                     .withTypeText(typeText, MTL_FILE_ICON, false)
             }
             .toTypedArray()
-    }
 
     object Provider : PsiReferenceProvider() {
 

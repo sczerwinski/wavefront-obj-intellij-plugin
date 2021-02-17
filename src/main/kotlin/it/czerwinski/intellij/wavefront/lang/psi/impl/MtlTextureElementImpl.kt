@@ -18,10 +18,12 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureFiles
 
 abstract class MtlTextureElementImpl(
     node: ASTNode
@@ -32,6 +34,9 @@ abstract class MtlTextureElementImpl(
 
     override val textureFilename: String?
         get() = textureFilenameNode?.text
+
+    override val textureFiles: List<PsiFile>
+        get() = textureFilename?.let { filename -> project.findMatchingTextureFiles(filename) }.orEmpty()
 
     override fun getReferences(): Array<PsiReference> =
         ReferenceProvidersRegistry.getReferencesFromProviders(this)

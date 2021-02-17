@@ -19,11 +19,14 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
+import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
+import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
 
 object ObjPsiImplUtil {
 
@@ -36,8 +39,24 @@ object ObjPsiImplUtil {
         element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)?.text
 
     @JvmStatic
+    fun getMtlFile(element: ObjMaterialFileReference): MtlFile? =
+        element.containingObjFile?.let { sourceFile ->
+            getFilename(element)?.let { filename ->
+                sourceFile.findMtlFile(filename)
+            }
+        }
+
+    @JvmStatic
     fun getMaterialName(element: ObjMaterialReference): String? =
         element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.text
+
+    @JvmStatic
+    fun getMaterial(element: ObjMaterialReference): MtlMaterial? =
+        element.containingObjFile?.let { sourceFile ->
+            sourceFile.referencedMtlFiles
+                .flatMap { mtlFile -> mtlFile.materials }
+                .firstOrNull { material -> material.getName() == element.materialName }
+        }
 
     @JvmStatic
     fun getReferences(element: PsiElement): Array<PsiReference> =

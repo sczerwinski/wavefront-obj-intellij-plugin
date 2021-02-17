@@ -46,6 +46,8 @@ import it.czerwinski.intellij.wavefront.editor.gl.meshes.LinesMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.WireframeFacesMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShaderProgramExecutor
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.ShaderResources
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShaderProgramExecutor
@@ -93,9 +95,13 @@ class PreviewScene(
     private lateinit var solidProgram: Program
     private lateinit var solidShaderProgramExecutor: SolidShaderProgramExecutor
 
-    private var facesMesh: Mesh? = null
-    private var linesMesh: Mesh? = null
-    private var pointsMesh: Mesh? = null
+    private lateinit var materialProgram: Program
+    private lateinit var materialShaderProgramExecutor: MaterialShaderProgramExecutor
+
+    private val facesMeshes = mutableListOf<Mesh>()
+    private val linesMeshes = mutableListOf<Mesh>()
+    private val pointsMeshes = mutableListOf<Mesh>()
+
     private lateinit var gridMesh: Mesh
     private lateinit var fineGridMesh: Mesh
     private lateinit var axisMesh: Mesh
@@ -165,9 +171,11 @@ class PreviewScene(
 
         wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
         solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
+        materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
 
         wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
         solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
+        materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
     }
 
     private fun createProgram(
@@ -216,56 +224,75 @@ class PreviewScene(
 
     private fun renderModel(gl: GlimpseAdapter) {
         if (modelChanged.getAndSet(false)) recreateModelMeshes(gl)
-        facesMesh?.let { renderFaces(gl, it, shadingMethod) }
-        linesMesh?.let { renderLines(gl, it) }
-        pointsMesh?.let { renderPoints(gl, it) }
+        facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
+        linesMeshes.forEach { renderLines(gl, it) }
+        pointsMeshes.forEach { renderPoints(gl, it) }
     }
 
     private fun recreateModelMeshes(gl: GlimpseAdapter) {
-        facesMesh?.dispose(gl)
-        facesMesh = null
-        linesMesh?.dispose(gl)
-        linesMesh = null
-        pointsMesh?.dispose(gl)
-        pointsMesh = null
+        (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
+        facesMeshes.clear()
+        linesMeshes.clear()
+        pointsMeshes.clear()
         val model = this.model ?: return
-        createFacesMesh(model, gl)
-        createLinesMesh(model, gl)
-        createPointsMesh(model, gl)
+        createFacesMeshes(model, gl)
+        createLinesMeshes(model, gl)
+        createPointsMeshes(model, gl)
     }
 
-    private fun createFacesMesh(model: GLModel, gl: GlimpseAdapter) {
+    private fun createFacesMeshes(model: GLModel, gl: GlimpseAdapter) {
         val facesMeshFactory = when (shadingMethod) {
             ShadingMethod.WIREFRAME -> WireframeFacesMeshFactory
             ShadingMethod.SOLID -> SolidFacesMeshFactory
+            ShadingMethod.MATERIAL -> SolidFacesMeshFactory
         }
-        facesMesh = facesMeshFactory.create(gl, model)
-    }
-
-    private fun createLinesMesh(model: GLModel, gl: GlimpseAdapter) {
-        val linesPositionsData = model.lines.flatMap { line ->
-            line.vertexIndexList.zipWithNext().flatMap { (index1, index2) ->
-                model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                    model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
+        facesMeshes.addAll(
+            model.groupingElements.flatMap { element ->
+                element.materialParts.map { part ->
+                    facesMeshFactory.create(gl, model, part)
+                }
             }
-        }.toFloatBufferData()
-        linesMesh = LinesMesh(
-            vertexCount = model.lines.sumBy { line -> (line.vertexIndexList.size - 1) * 2 },
-            buffers = Buffer.Factory.newInstance(gl).createArrayBuffers(linesPositionsData)
         )
     }
 
-    private fun createPointsMesh(model: GLModel, gl: GlimpseAdapter) {
-        val pointsPositionsData = model.points.flatMap { point ->
-            model.vertices[(point.vertexIndex.value ?: 1) - 1].coordinates.map { it ?: 0f }
-        }.toFloatBufferData()
-        pointsMesh = PointsMesh(
-            vertexCount = model.points.size,
-            buffers = Buffer.Factory.newInstance(gl).createArrayBuffers(pointsPositionsData)
+    private fun createLinesMeshes(model: GLModel, gl: GlimpseAdapter) {
+        val bufferFactory = Buffer.Factory.newInstance(gl)
+        linesMeshes.addAll(
+            model.groupingElements.flatMap { element ->
+                element.materialParts.map { part ->
+                    val linesPositionsData = part.lines.flatMap { line ->
+                        line.vertexIndexList.zipWithNext().flatMap { (index1, index2) ->
+                            model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
+                                model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                        }
+                    }.toFloatBufferData()
+                    LinesMesh(
+                        vertexCount = part.lines.sumBy { line -> (line.vertexIndexList.size - 1) * 2 },
+                        buffers = bufferFactory.createArrayBuffers(linesPositionsData)
+                    )
+                }
+            }
         )
     }
 
-    private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod) {
+    private fun createPointsMeshes(model: GLModel, gl: GlimpseAdapter) {
+        val bufferFactory = Buffer.Factory.newInstance(gl)
+        pointsMeshes.addAll(
+            model.groupingElements.flatMap { element ->
+                element.materialParts.map { part ->
+                    val pointsPositionsData = part.points.flatMap { point ->
+                        model.vertices[(point.vertexIndex.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                    }.toFloatBufferData()
+                    PointsMesh(
+                        vertexCount = part.points.size,
+                        buffers = bufferFactory.createArrayBuffers(pointsPositionsData)
+                    )
+                }
+            }
+        )
+    }
+
+    private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod, index: Int) {
         when (shadingMethod) {
             ShadingMethod.WIREFRAME -> {
                 wireframeProgram.use(gl)
@@ -293,6 +320,28 @@ class PreviewScene(
                     )
                 )
                 solidShaderProgramExecutor.drawMesh(gl, facesMesh)
+            }
+            ShadingMethod.MATERIAL -> {
+                materialProgram.use(gl)
+                materialShaderProgramExecutor.applyParams(
+                    gl,
+                    MaterialShader(
+                        projectionMatrix = lens.projectionMatrix,
+                        viewMatrix = camera.viewMatrix,
+                        modelMatrix = Mat4.identity,
+                        normalMatrix = Mat3.identity,
+                        cameraPosition = camera.eye,
+                        upVector = upVector.vector,
+                        ambientColor = Vec3(
+                            color = model?.materials?.getOrNull(index)?.let { it.ambientColor ?: it.diffuseColor }
+                                ?: Color.WHITE
+                        ),
+                        diffuseColor = Vec3(model?.materials?.getOrNull(index)?.diffuseColor ?: Color.WHITE),
+                        specularColor = Vec3(model?.materials?.getOrNull(index)?.specularColor ?: Color.BLACK),
+                        specularExponent = model?.materials?.getOrNull(index)?.specularExponent ?: 1f
+                    )
+                )
+                materialShaderProgramExecutor.drawMesh(gl, facesMesh)
             }
         }
     }
@@ -374,15 +423,17 @@ class PreviewScene(
 
     override fun onDestroy(gl: GlimpseAdapter) {
         try {
-            facesMesh?.dispose(gl)
+            (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
             gridMesh.dispose(gl)
             fineGridMesh.dispose(gl)
             axisMesh.dispose(gl)
             axisConeMesh.dispose(gl)
             wireframeShaderProgramExecutor.dispose()
             solidShaderProgramExecutor.dispose()
+            materialShaderProgramExecutor.dispose()
             wireframeProgram.dispose(gl)
             solidProgram.dispose(gl)
+            materialProgram.dispose(gl)
         } catch (ignored: GLException) {
         }
     }

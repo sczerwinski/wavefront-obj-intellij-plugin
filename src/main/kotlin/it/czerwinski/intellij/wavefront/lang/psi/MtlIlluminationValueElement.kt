@@ -19,5 +19,19 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.psi.PsiElement
 
 interface MtlIlluminationValueElement : PsiElement {
-    val value: Int?
+    val value: Illumination?
+
+    enum class Illumination {
+        COLOR,
+        COLOR_WITH_AMBIENT,
+        HIGHLIGHT,
+        REFLECTION_RAYTRACE,
+        GLASS_RAYTRACE,
+        FRESNEL_RAYTRACE,
+        REFRACTION_RAYTRACE,
+        REFRACTION_FRESNEL_RAYTRACE,
+        REFLECTION,
+        GLASS,
+        SHADOWS
+    }
 }

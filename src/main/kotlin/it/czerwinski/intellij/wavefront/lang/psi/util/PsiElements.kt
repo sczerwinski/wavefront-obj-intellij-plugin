@@ -16,11 +16,14 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi.util
 
-import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
+import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 
-fun MtlFile.findMaterialIdentifiers(): List<MtlMaterialIdentifier> =
-    findMaterials().flatMap { material -> material.getChildrenOfType() }
+val PsiElement.containingObjFile: ObjFile? get() = containingFile as? ObjFile
 
-fun MtlFile.findMaterials(): List<MtlMaterial> = getChildrenOfType()
+inline fun <reified T : PsiElement> PsiElement.getChildrenOfType(): List<T> =
+    PsiTreeUtil.getChildrenOfType(this, T::class.java)?.filterNotNull().orEmpty()
+
+inline fun <reified T : PsiElement> PsiElement.countChildrenOfType(): Int =
+    PsiTreeUtil.countChildrenOfType(this, T::class.java)

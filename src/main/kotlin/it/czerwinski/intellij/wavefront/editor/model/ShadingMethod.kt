@@ -18,7 +18,8 @@ package it.czerwinski.intellij.wavefront.editor.model
 
 enum class ShadingMethod {
     WIREFRAME,
-    SOLID;
+    SOLID,
+    MATERIAL;
 
     companion object {
         val DEFAULT = SOLID

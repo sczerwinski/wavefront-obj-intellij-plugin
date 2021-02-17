@@ -23,16 +23,13 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMaterialIdentifiers
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMtlFile
-import it.czerwinski.intellij.wavefront.lang.psi.util.findReferencedMtlFiles
+import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMaterialQuickFix
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMtlFileQuickFix
 
@@ -59,7 +56,7 @@ class ObjAnnotator : Annotator {
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            if (!checkVertexExists(element.containingFile, index)) {
+            if (element.containingObjFile?.checkVertexExists(index) != true) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
@@ -79,7 +76,7 @@ class ObjAnnotator : Annotator {
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            if (!checkTextureCoordinatesExist(element.containingFile, index)) {
+            if (element.containingObjFile?.checkTextureCoordinatesExist(index) != true) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
@@ -99,7 +96,7 @@ class ObjAnnotator : Annotator {
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            if (!checkVertexNormalExists(element.containingFile, index)) {
+            if (element.containingObjFile?.checkVertexNormalExists(index) != true) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
@@ -126,7 +123,7 @@ class ObjAnnotator : Annotator {
         holder: AnnotationHolder
     ) {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)
-        if (materialFilenameNode != null && findMtlFile(element) == null) {
+        if (materialFilenameNode != null && element.mtlFile == null) {
             val materialFilename = materialFilenameNode.text
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
@@ -144,8 +141,8 @@ class ObjAnnotator : Annotator {
         val materialNameNode = element.node.findChildByType(ObjTypes.MATERIAL_NAME)
         if (materialNameNode != null) {
             val materialName = element.materialName
-            val materialFiles = findReferencedMtlFiles(element.containingFile as ObjFile)
-            val materials = materialFiles.flatMap { file -> file.findMaterialIdentifiers() }
+            val materialFiles = element.containingObjFile?.referencedMtlFiles.orEmpty()
+            val materials = materialFiles.flatMap { file -> file.materialIdentifiers }
             if (!materialName.isNullOrBlank() && materialName !in materials.mapNotNull { it.name }) {
                 holder.newAnnotation(
                     HighlightSeverity.WARNING,

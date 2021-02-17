@@ -4,7 +4,8 @@
 
 ## [Unreleased]
 ### Added
-- Wireframe shading in preview
+- Wireframe shading in the 3D preview
+- Material shading in the 3D preview (material colors)
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.2`

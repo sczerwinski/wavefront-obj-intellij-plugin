@@ -35,6 +35,12 @@ public class ObjMaterialFileReferenceImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
+  @Nullable
+  public MtlFile getMtlFile() {
+    return ObjPsiImplUtil.getMtlFile(this);
+  }
+
+  @Override
   @NotNull
   public PsiReference[] getReferences() {
     return ObjPsiImplUtil.getReferences(this);

@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.editor.actions
 
-enum class ShadingMethod {
-    WIREFRAME,
-    SOLID,
-    MATERIAL;
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-    companion object {
-        val DEFAULT = SOLID
-    }
-}
+class MaterialShadingMethodAction : ShadingMethodAction(ShadingMethod.MATERIAL)

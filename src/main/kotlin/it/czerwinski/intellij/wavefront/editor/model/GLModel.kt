@@ -38,6 +38,13 @@ data class GLModel(
         vertex.coordinates.filterNotNull().map { abs(it) }
     }.max() ?: 0f
 
+    val materials: List<MtlMaterial?>
+        get() = groupingElements.flatMap { groupingElement ->
+            groupingElement.materialParts.map { materialPart ->
+                materialPart.material
+            }
+        }
+
     data class GroupingElement(
         val psiElement: PsiElement,
         val materialParts: List<MaterialPart>

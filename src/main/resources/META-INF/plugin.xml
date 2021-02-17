@@ -159,11 +159,15 @@
             <action
                     id="it.czerwinski.intellij.wavefront.editor.actions.WireframeShadingMethodAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.WireframeShadingMethodAction"
-                    icon="WavefrontObjIcons.WIREFRAME_MODE_ACTION"/>
+                    icon="WavefrontObjIcons.WIREFRAME_SHADING_ACTION"/>
             <action
                     id="it.czerwinski.intellij.wavefront.editor.actions.SolidShadingMethodAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.SolidShadingMethodAction"
-                    icon="WavefrontObjIcons.SOLID_MODE_ACTION"/>
+                    icon="WavefrontObjIcons.SOLID_SHADING_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.MaterialShadingMethodAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.MaterialShadingMethodAction"
+                    icon="WavefrontObjIcons.MATERIAL_SHADING_ACTION"/>
             <separator/>
             <action
                     id="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"

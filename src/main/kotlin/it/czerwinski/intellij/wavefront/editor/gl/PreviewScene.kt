@@ -46,6 +46,8 @@ import it.czerwinski.intellij.wavefront.editor.gl.meshes.LinesMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.WireframeFacesMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShaderProgramExecutor
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.ShaderResources
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShaderProgramExecutor
@@ -92,6 +94,9 @@ class PreviewScene(
 
     private lateinit var solidProgram: Program
     private lateinit var solidShaderProgramExecutor: SolidShaderProgramExecutor
+
+    private lateinit var materialProgram: Program
+    private lateinit var materialShaderProgramExecutor: MaterialShaderProgramExecutor
 
     private val facesMeshes = mutableListOf<Mesh>()
     private val linesMeshes = mutableListOf<Mesh>()
@@ -166,9 +171,11 @@ class PreviewScene(
 
         wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
         solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
+        materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
 
         wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
         solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
+        materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
     }
 
     private fun createProgram(
@@ -237,6 +244,7 @@ class PreviewScene(
         val facesMeshFactory = when (shadingMethod) {
             ShadingMethod.WIREFRAME -> WireframeFacesMeshFactory
             ShadingMethod.SOLID -> SolidFacesMeshFactory
+            ShadingMethod.MATERIAL -> SolidFacesMeshFactory
         }
         facesMeshes.addAll(
             model.groupingElements.flatMap { element ->
@@ -312,6 +320,28 @@ class PreviewScene(
                     )
                 )
                 solidShaderProgramExecutor.drawMesh(gl, facesMesh)
+            }
+            ShadingMethod.MATERIAL -> {
+                materialProgram.use(gl)
+                materialShaderProgramExecutor.applyParams(
+                    gl,
+                    MaterialShader(
+                        projectionMatrix = lens.projectionMatrix,
+                        viewMatrix = camera.viewMatrix,
+                        modelMatrix = Mat4.identity,
+                        normalMatrix = Mat3.identity,
+                        cameraPosition = camera.eye,
+                        upVector = upVector.vector,
+                        ambientColor = Vec3(
+                            color = model?.materials?.getOrNull(index)?.let { it.ambientColor ?: it.diffuseColor }
+                                ?: Color.WHITE
+                        ),
+                        diffuseColor = Vec3(model?.materials?.getOrNull(index)?.diffuseColor ?: Color.WHITE),
+                        specularColor = Vec3(model?.materials?.getOrNull(index)?.specularColor ?: Color.BLACK),
+                        specularExponent = model?.materials?.getOrNull(index)?.specularExponent ?: 1f
+                    )
+                )
+                materialShaderProgramExecutor.drawMesh(gl, facesMesh)
             }
         }
     }
@@ -400,8 +430,10 @@ class PreviewScene(
             axisConeMesh.dispose(gl)
             wireframeShaderProgramExecutor.dispose()
             solidShaderProgramExecutor.dispose()
+            materialShaderProgramExecutor.dispose()
             wireframeProgram.dispose(gl)
             solidProgram.dispose(gl)
+            materialProgram.dispose(gl)
         } catch (ignored: GLException) {
         }
     }

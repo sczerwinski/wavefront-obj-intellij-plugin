@@ -67,6 +67,13 @@ jobs:
       - name: Run Linters and Test
         run: ./gradlew check
 
+      # Upload detekt results
+      - name: Upload Detekt Report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ${{ github.workspace }}/build/reports/detekt.sarif.json
+          checkout_path: ${{ github.workspace }}
+
       # Run verifyPlugin Gradle task
       - name: Verify Plugin
         run: ./gradlew verifyPlugin

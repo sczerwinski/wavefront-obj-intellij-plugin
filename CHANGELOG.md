@@ -9,6 +9,9 @@
 ### Changed
 - Dependencies:
   - Upgrade `kapt` to `1.4.32`
+- GitHub Actions:
+  - Upgrade `actions/upload-artifact` to `v2.2.3`
+  - Upgrade `actions/setup-java` to `v2`
 - Update platform version to `2020.3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
 - Update Java version to `11`

@@ -28,7 +28,7 @@ class MtlLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     override fun collectNavigationMarkers(
         element: PsiElement,
-        result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
+        result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
     ) {
         when (element) {
             is MtlTextureElement -> collectTextureFileMarkers(element, result)
@@ -37,7 +37,7 @@ class MtlLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     private fun collectTextureFileMarkers(
         element: MtlTextureElement,
-        result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
+        result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
     ) {
         val markedElement = element.node.findChildByType(MtlTypes.TEXTURE_FILE)?.psi
         val files = element.textureFiles

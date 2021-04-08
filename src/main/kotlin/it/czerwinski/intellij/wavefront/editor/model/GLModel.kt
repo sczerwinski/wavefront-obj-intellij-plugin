@@ -36,7 +36,7 @@ data class GLModel(
 
     val size: Float get() = vertices.flatMap { vertex ->
         vertex.coordinates.filterNotNull().map { abs(it) }
-    }.max() ?: 0f
+    }.maxOrNull() ?: 0f
 
     val materials: List<MtlMaterial?>
         get() = groupingElements.flatMap { groupingElement ->

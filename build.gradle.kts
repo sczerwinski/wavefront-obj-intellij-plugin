@@ -11,7 +11,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.4.32"
     // Kapt annotation processing
-    kotlin("kapt") version "1.4.30"
+    kotlin("kapt") version "1.4.32"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.7.2"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -80,18 +80,18 @@ detekt {
 }
 
 tasks {
-    // Set the compatibility versions to 1.8
+    // Build for Java 11
     withType<JavaCompile> {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
         sourceSets["main"].java.srcDirs("src/main/gen")
     }
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
 
     withType<Detekt> {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 
     patchPluginXml {

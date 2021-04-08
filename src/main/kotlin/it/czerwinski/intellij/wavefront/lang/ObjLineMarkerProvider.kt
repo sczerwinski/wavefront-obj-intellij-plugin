@@ -30,7 +30,7 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     override fun collectNavigationMarkers(
         element: PsiElement,
-        result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
+        result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
     ) {
         when (element) {
             is ObjMaterialFileReference -> collectMaterialFileMarkers(element, result)
@@ -40,7 +40,7 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     private fun collectMaterialFileMarkers(
         element: ObjMaterialFileReference,
-        result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
+        result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)?.psi
         val file = element.mtlFile
@@ -55,7 +55,7 @@ class ObjLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     private fun collectMaterialMarkers(
         element: ObjMaterialReference,
-        result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>
+        result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
     ) {
         val markedElement = element.node.findChildByType(ObjTypes.MATERIAL_NAME)?.psi
         val files = element.containingObjFile?.referencedMtlFiles.orEmpty()

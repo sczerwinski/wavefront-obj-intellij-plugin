@@ -16,25 +16,25 @@
 
 package it.czerwinski.intellij.wavefront.lang.formatting
 
+import com.intellij.formatting.FormattingContext
 import com.intellij.formatting.FormattingModel
 import com.intellij.formatting.FormattingModelBuilder
 import com.intellij.formatting.FormattingModelProvider
 import com.intellij.formatting.SpacingBuilder
-import com.intellij.psi.PsiElement
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 
 class ObjFormattingModelBuilder : FormattingModelBuilder {
 
-    override fun createModel(element: PsiElement, settings: CodeStyleSettings): FormattingModel =
+    override fun createModel(formattingContext: FormattingContext): FormattingModel =
         FormattingModelProvider.createFormattingModelForPsiFile(
-            element.containingFile,
+            formattingContext.psiElement.containingFile,
             WavefrontBlock(
-                node = element.node,
-                spacingBuilder = createSpaceBuilder(settings)
+                node = formattingContext.psiElement.node,
+                spacingBuilder = createSpaceBuilder(formattingContext.codeStyleSettings)
             ),
-            settings
+            formattingContext.codeStyleSettings
         )
 
     private fun createSpaceBuilder(settings: CodeStyleSettings): SpacingBuilder =

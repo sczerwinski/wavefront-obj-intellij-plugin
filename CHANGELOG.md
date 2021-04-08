@@ -22,6 +22,7 @@
 - GitHub Actions:
   - Upgrade `actions/upload-artifact` to `v2.2.2`
   - Upgrade `actions/cache` to `v2.1.4`
+- `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.3`
 - Update `changelog` Gradle plugin configuration
 - Migrate to GLES 2.0 with [Glimpse](https://glimpse.graphics/)
 

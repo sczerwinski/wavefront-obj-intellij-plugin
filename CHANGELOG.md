@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.3.0]
+### Added
 - Wireframe shading in the 3D preview
 - Material shading in the 3D preview (material colors)
 - Build configuration:

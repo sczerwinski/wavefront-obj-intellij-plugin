@@ -22,6 +22,7 @@
 - Replace deprecated method `FormattingModelBuilder.createModel(...)`
 - Replace deprecated extension function `max()` with `maxOrNull()`
 - Replace deprecated method `PsiManager.addPsiTreeChangeListener(...)`
+- Run `FilenameIndex.getFilesByName(...)` inside `runReadAction { ... }`
 
 ### Security
 ## [0.3.0]

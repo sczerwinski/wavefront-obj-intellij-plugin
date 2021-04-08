@@ -21,19 +21,8 @@ Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.
 - navigation between OBJ and MTL files,
 - 3D preview of OBJ file:
   - text only, preview only, or split,
-  - selection of up axis,
-  - Gouraud shading model.
-
-### Planned features
-
-The following features are already under consideration, so please refrain from requesting them in
-issue tracker.
-
-- 3D preview improvements:
-  - additional shading models: flat and Phong,
-  - textures,
-  - highlighting selected element,
-  - applying materials from MTL files.
+  - shader model selection: wireframe, solid, material,
+  - selection of up axis.
 
 ## Supported operating systems
 

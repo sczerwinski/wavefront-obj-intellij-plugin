@@ -16,8 +16,6 @@
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
 - Update Java version to `11`
 
-### Deprecated
-
 ### Removed
 - Remove support for platform version `201.*`
 - Remove support for platform version `202.*`
@@ -29,7 +27,6 @@
 - Replace deprecated method `PsiManager.addPsiTreeChangeListener(...)`
 - Run `FilenameIndex.getFilesByName(...)` inside `runReadAction { ... }`
 
-### Security
 ## [0.3.0]
 ### Added
 - Wireframe shading in the 3D preview

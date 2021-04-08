@@ -6,18 +6,28 @@
 ### Added
 - Wireframe shading in the 3D preview
 - Material shading in the 3D preview (material colors)
+- Build configuration:
+  - `properties` shorthand function for accessing `gradle.properties` in a cleaner way
+  - Dependabot check for GitHub Actions used in workflow files
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.3`
 - Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.32`
   - Upgrade `org.jetbrains.intellij` to `0.7.2`
   - Upgrade `org.jetbrains.changelog` to `1.1.2`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.16.0`
+  - Upgrade `detekt-formatting` to `1.16.0`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.0.0`
+- GitHub Actions:
+  - Upgrade `actions/upload-artifact` to `v2.2.2`
+  - Upgrade `actions/cache` to `v2.1.4`
 - Update `changelog` Gradle plugin configuration
 - Migrate to GLES 2.0 with [Glimpse](https://glimpse.graphics/)
 
 ### Fixed
 - Provide list of available texture files to texture file reference
+- Fix `README.md` file resolution in the `build.gradle.kts`
 
 ## [0.2.1]
 ### Added

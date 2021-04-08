@@ -158,6 +158,7 @@ object ObjItemPresentationFactory {
         )
     }
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(line: ObjLine): ItemPresentation = createPresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.line"
@@ -165,6 +166,7 @@ object ObjItemPresentationFactory {
         icon = OBJ_LINE_ICON
     )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(point: ObjPoint): ItemPresentation = createPresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.point"
@@ -172,6 +174,7 @@ object ObjItemPresentationFactory {
         icon = OBJ_POINT_ICON
     )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(faceVertex: ObjFaceVertex): ItemPresentation = createPresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.faceVertex"

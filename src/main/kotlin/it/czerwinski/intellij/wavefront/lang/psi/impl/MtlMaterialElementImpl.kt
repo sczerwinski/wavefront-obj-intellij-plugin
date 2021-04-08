@@ -52,6 +52,12 @@ abstract class MtlMaterialElementImpl(
         get() = material?.specularColorMapList?.firstOrNull()?.textureVirtualFile
     override val specularExponentMap: VirtualFile?
         get() = material?.specularExponentMapList?.firstOrNull()?.textureVirtualFile
+    override val specularExponentBase: Float?
+        get() = material?.specularExponentMapList?.firstOrNull()?.valueModifierOptionList
+            ?.firstOrNull()?.values?.getOrNull(0)
+    override val specularExponentGain: Float?
+        get() = material?.specularExponentMapList?.firstOrNull()?.valueModifierOptionList
+            ?.firstOrNull()?.values?.getOrNull(1)
     override val dissolveMap: VirtualFile?
         get() = material?.dissolveMapList?.firstOrNull()?.textureVirtualFile
     override val displacementMap: VirtualFile?
@@ -60,6 +66,8 @@ abstract class MtlMaterialElementImpl(
         get() = material?.stencilDecalMapList?.firstOrNull()?.textureVirtualFile
     override val bumpMap: VirtualFile?
         get() = material?.bumpMapList?.firstOrNull()?.textureVirtualFile
+    override val bumpMapMultiplier: Float?
+        get() = material?.bumpMapList?.firstOrNull()?.bumpMultiplierOptionList?.firstOrNull()?.value
     override val reflectionMap: VirtualFile?
         get() = material?.reflectionMapList?.firstOrNull()?.textureVirtualFile
 

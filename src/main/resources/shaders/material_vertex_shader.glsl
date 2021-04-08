@@ -11,12 +11,14 @@ uniform vec3 uCameraPos;
 uniform vec3 uUpVector;
 
 attribute vec3 aPos;
+attribute vec2 aTexCoord;
 attribute vec3 aNormal;
 attribute vec3 aTangent;
 
 varying vec3 vPosTan;
 varying vec3 vCameraPosTan;
 varying vec3 vLightPosTan;
+varying vec2 vTexCoord;
 
 void main() {
     vec4 pos = vec4(aPos, 1.0);
@@ -39,6 +41,8 @@ void main() {
     vec3 leftVector = cross(cameraDir, upVector);
     vCameraPosTan = tbnMat * cameraDir * 10.0;
     vLightPosTan = tbnMat * ((cameraDir + leftVector + upVector) * 10.0);
+
+    vTexCoord = aTexCoord;
 
     gl_Position = uProjMat * uViewMat * uModelMat * pos;
 }

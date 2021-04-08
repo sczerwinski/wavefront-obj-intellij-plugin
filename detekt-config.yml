@@ -3,8 +3,8 @@
 
 complexity:
   TooManyFunctions:
-    thresholdInFiles: 30
-    thresholdInClasses: 30
+    thresholdInFiles: 40
+    thresholdInClasses: 40
 
 formatting:
   Indentation:

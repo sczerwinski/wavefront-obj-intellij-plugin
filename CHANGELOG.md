@@ -8,8 +8,9 @@
 - Material shading in the 3D preview (material colors)
 
 ### Changed
-- Upgrade Gradle Wrapper to `6.8.2`
+- Upgrade Gradle Wrapper to `6.8.3`
 - Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `0.7.2`
   - Upgrade `org.jetbrains.changelog` to `1.1.2`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.0.0`
 - Update `changelog` Gradle plugin configuration

@@ -52,11 +52,11 @@ class ObjAnnotator : Annotator {
         element: ObjVertexIndex,
         holder: AnnotationHolder
     ) {
-        val index = parseIndex(element)
+        val index = element.value
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            if (element.containingObjFile?.checkVertexExists(index) != true) {
+            if (element.containingObjFile?.checkVertexExists(element) != true) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
@@ -72,11 +72,11 @@ class ObjAnnotator : Annotator {
         element: ObjTextureCoordinatesIndex,
         holder: AnnotationHolder
     ) {
-        val index = parseIndex(element)
+        val index = element.value
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            if (element.containingObjFile?.checkTextureCoordinatesExist(index) != true) {
+            if (element.containingObjFile?.checkTextureCoordinatesExist(element) != true) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
@@ -92,11 +92,11 @@ class ObjAnnotator : Annotator {
         element: ObjVertexNormalIndex,
         holder: AnnotationHolder
     ) {
-        val index = parseIndex(element)
+        val index = element.value
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
         } else {
-            if (element.containingObjFile?.checkVertexNormalExists(index) != true) {
+            if (element.containingObjFile?.checkVertexNormalExists(element) != true) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
                     WavefrontObjBundle.message(
@@ -107,9 +107,6 @@ class ObjAnnotator : Annotator {
             }
         }
     }
-
-    private fun parseIndex(element: PsiElement): Int? =
-        element.text.toIntOrNull()
 
     private fun AnnotationHolder.createInvalidIndexAnnotation(element: PsiElement) {
         newAnnotation(

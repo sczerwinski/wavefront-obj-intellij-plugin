@@ -23,6 +23,7 @@ import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.lang.ObjFileType
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import it.czerwinski.intellij.wavefront.lang.psi.util.countChildrenOfType
+import it.czerwinski.intellij.wavefront.lang.psi.util.countChildrenOfTypeBefore
 import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativeFile
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
@@ -50,11 +51,32 @@ class ObjFile(
 
     override fun getFileType(): FileType = ObjFileType
 
-    fun checkVertexExists(index: Int): Boolean = index in 1..verticesCount
+    fun checkVertexExists(indexElement: ObjIndexElement): Boolean =
+        checkReferenceExists(indexElement, verticesCount)
 
-    fun checkTextureCoordinatesExist(index: Int): Boolean = index in 1..textureCoordinatesCount
+    private fun checkReferenceExists(indexElement: ObjIndexElement, max: Int): Boolean {
+        val index = indexElement.value ?: 0
+        return when {
+            index > 0 -> index in 1..max
+            index < 0 -> -index in 1..indexElement.countReferencesBefore
+            else -> false
+        }
+    }
 
-    fun checkVertexNormalExists(index: Int): Boolean = index in 1..vertexNormalsCount
+    fun checkTextureCoordinatesExist(indexElement: ObjIndexElement): Boolean =
+        checkReferenceExists(indexElement, textureCoordinatesCount)
+
+    fun checkVertexNormalExists(indexElement: ObjIndexElement): Boolean =
+        checkReferenceExists(indexElement, vertexNormalsCount)
+
+    fun countVerticesBefore(element: PsiElement): Int =
+        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertex>(element) }
+
+    fun countTextureCoordinatesBefore(element: PsiElement): Int =
+        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjTextureCoordinates>(element) }
+
+    fun countVertexNormalsBefore(element: PsiElement): Int =
+        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertexNormal>(element) }
 
     fun findMtlFile(filePath: String): MtlFile? = findRelativeFile(this, filePath) as? MtlFile
 

@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.lang.psi.util
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.startOffset
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 
 val PsiElement.containingObjFile: ObjFile? get() = containingFile as? ObjFile
@@ -27,3 +28,8 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfType(): List<T> =
 
 inline fun <reified T : PsiElement> PsiElement.countChildrenOfType(): Int =
     PsiTreeUtil.countChildrenOfType(this, T::class.java)
+
+inline fun <reified T : PsiElement> PsiElement.countChildrenOfTypeBefore(element: PsiElement): Int =
+    getChildrenOfType<T>()
+        .filter { child -> child.startOffset < element.startOffset }
+        .size

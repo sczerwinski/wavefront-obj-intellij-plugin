@@ -36,4 +36,13 @@ abstract class ObjIndexElementImpl(
         is ObjVertexNormalIndex -> containingObjFile?.countVertexNormalsBefore(this) ?: 0
         else -> 0
     }
+
+    override fun asListIndex(): Int {
+        val objIndex = value ?: 0
+        return when {
+            objIndex > 0 -> objIndex - 1
+            objIndex < 0 -> countReferencesBefore + objIndex
+            else -> 0
+        }
+    }
 }

@@ -35,7 +35,7 @@ object WireframeFacesMeshFactory : FacesMeshFactory {
                 }
         }.distinct()
         val positionsData = lines.flatMap { (index1, index2) ->
-            (model.vertices[(index1.value ?: 1) - 1].coordinates + model.vertices[(index2.value ?: 1) - 1].coordinates)
+            (model.vertices[index1.asListIndex()].coordinates + model.vertices[index2.asListIndex()].coordinates)
                 .map { it ?: 0f }
         }.toFloatBufferData()
         val bufferFactory = Buffer.Factory.newInstance(gl)

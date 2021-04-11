@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.3.2]
+### Added
 - Support for relative indices in OBJ files (#95)
 - Refresh action in 3D preview
 - Setting for default shading method in 3D preview

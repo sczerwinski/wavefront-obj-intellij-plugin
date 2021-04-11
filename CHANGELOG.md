@@ -6,6 +6,7 @@
 ### Added
 - Support for relative indices in OBJ files (#95)
 - Refresh action in 3D preview
+- Setting for default shading method in 3D preview
 
 ### Changed
 - Use standard IDE error icons

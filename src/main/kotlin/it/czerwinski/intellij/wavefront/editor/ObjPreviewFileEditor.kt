@@ -185,6 +185,7 @@ class ObjPreviewFileEditor(
 
     fun triggerSettingsChange(settings: ObjPreviewFileEditorSettingsState) {
         glPanel.updateSceneSettings(settings)
+        triggerShadingMethodChange(settings.defaultShadingMethod)
         triggerUpVectorChange(settings.defaultUpVector)
         triggerAxesChange(settings.showAxes)
         triggerGridChange(settings.showGrid)

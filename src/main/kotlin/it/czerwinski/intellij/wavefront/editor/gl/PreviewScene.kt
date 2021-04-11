@@ -16,12 +16,10 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.colors.ColorKey
 import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.jogamp.opengl.GLAnimatorControl
-import com.jogamp.opengl.GLException
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.BlendingFactorFunction
 import graphics.glimpse.ClearableBufferType
@@ -48,6 +46,7 @@ import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
 import graphics.glimpse.types.scale
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.LinesMesh
@@ -67,6 +66,7 @@ import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.editor.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import java.awt.Color
@@ -74,11 +74,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class PreviewScene(
     private val profile: GLProfile,
-    animatorControl: GLAnimatorControl
+    animatorControl: GLAnimatorControl,
+    private val errorLog: ErrorLog
 ) : GlimpseCallback,
     GLAnimatorControl by animatorControl {
-
-    private val logger: Logger = Logger.getInstance(javaClass)
 
     private var width: Int = 1
     private var height: Int = 1
@@ -130,13 +129,24 @@ class PreviewScene(
         model = newModel
         modelChanged.set(true)
         model?.materials?.forEach { material ->
-            material?.ambientColorMap?.let { file -> texturesStore.prepare(profile, file) }
-            material?.diffuseColorMap?.let { file -> texturesStore.prepare(profile, file) }
-            material?.specularColorMap?.let { file -> texturesStore.prepare(profile, file) }
-            material?.specularExponentMap?.let { file -> texturesStore.prepare(profile, file) }
-            material?.bumpMap?.let { file -> texturesStore.prepare(profile, file) }
+            material?.ambientColorMap?.let(::prepareTexture)
+            material?.diffuseColorMap?.let(::prepareTexture)
+            material?.specularColorMap?.let(::prepareTexture)
+            material?.specularExponentMap?.let(::prepareTexture)
+            material?.bumpMap?.let(::prepareTexture)
         }
         requestRender()
+    }
+
+    private fun prepareTexture(file: VirtualFile) {
+        try {
+            texturesStore.prepare(profile, file)
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.prepareTexture.error", file.name),
+                expected
+            )
+        }
     }
 
     fun updateCameraModel(newCameraModel: GLCameraModel) {
@@ -193,16 +203,23 @@ class PreviewScene(
     }
 
     private fun createShaders(gl: GlimpseAdapter) {
-        val shaderFactory = Shader.Factory.newInstance(gl)
-        val programBuilder = Program.Builder.newInstance(gl)
+        try {
+            val shaderFactory = Shader.Factory.newInstance(gl)
+            val programBuilder = Program.Builder.newInstance(gl)
 
-        wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
-        solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
-        materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
+            wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
+            solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
+            materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
 
-        wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
-        solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
-        materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
+            wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
+            solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
+            materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createShaders.error"),
+                expected
+            )
+        }
     }
 
     private fun createProgram(
@@ -218,48 +235,80 @@ class PreviewScene(
         createShader(type = shaderType, source = ShaderResources.getShaderSource(shadingMethod, shaderType))
 
     private fun createMissingTextures(gl: GlimpseAdapter) {
-        val textures = Texture.Builder.getInstance(gl)
-            .addTexture(TextureResources.missingTextureImageSource)
-            .addTexture(TextureResources.missingNormalmapImageSource)
-            .generateMipmaps()
-            .build()
-        missingTexture = textures.first()
-        missingNormalmap = textures.last()
+        try {
+            val textures = Texture.Builder.getInstance(gl)
+                .addTexture(TextureResources.missingTextureImageSource)
+                .addTexture(TextureResources.missingNormalmapImageSource)
+                .generateMipmaps()
+                .build()
+            missingTexture = textures.first()
+            missingNormalmap = textures.last()
 
-        gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
-        gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR_MIPMAP_LINEAR, TextureMagFilter.LINEAR)
+            gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
+            gl.glTexParameterFilter(
+                TextureType.TEXTURE_2D,
+                TextureMinFilter.LINEAR_MIPMAP_LINEAR,
+                TextureMagFilter.LINEAR
+            )
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createMissingTextures.error"),
+                expected
+            )
+        }
     }
 
     private fun createMeshes(gl: GlimpseAdapter) {
-        gridMesh = GridMeshFactory.createGrid(gl)
-        fineGridMesh = GridMeshFactory.createFineGrid(gl)
-        axisMesh = AxisMeshFactory.createAxis(gl)
-        axisConeMesh = AxisMeshFactory.createAxisCone(gl)
-        if (model != null) {
-            recreateModelMeshes(gl)
+        try {
+            gridMesh = GridMeshFactory.createGrid(gl)
+            fineGridMesh = GridMeshFactory.createFineGrid(gl)
+            axisMesh = AxisMeshFactory.createAxis(gl)
+            axisConeMesh = AxisMeshFactory.createAxisCone(gl)
+            if (model != null) {
+                recreateModelMeshes(gl)
+            }
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createMeshes.error"),
+                expected
+            )
         }
     }
 
     override fun onResize(gl: GlimpseAdapter, x: Int, y: Int, width: Int, height: Int) {
-        this.width = width
-        this.height = height
+        try {
+            this.width = width
+            this.height = height
 
-        if (width == 0 || height == 0) return
+            if (width == 0 || height == 0) return
 
-        aspect = width.toFloat() / height.toFloat()
-        gl.glViewport(width = width, height = height)
+            aspect = width.toFloat() / height.toFloat()
+            gl.glViewport(width = width, height = height)
 
-        cameraModel?.let { recalculateCamera(it) }
+            cameraModel?.let { recalculateCamera(it) }
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.onResize.error"),
+                expected
+            )
+        }
     }
 
     override fun onRender(gl: GlimpseAdapter) {
-        gl.glClearColor(Vec3(background))
-        gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
-        gl.glCullFace(FaceCullingMode.BACK)
-        renderModel(gl)
-        if (showAxes) renderAxes(gl)
-        if (showGrid) renderGrid(gl)
-        if (isStarted) pause()
+        try {
+            gl.glClearColor(Vec3(background))
+            gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
+            gl.glCullFace(FaceCullingMode.BACK)
+            renderModel(gl)
+            if (showAxes) renderAxes(gl)
+            if (showGrid) renderGrid(gl)
+            if (isStarted) pause()
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.onRender.error"),
+                expected
+            )
+        }
     }
 
     private fun renderModel(gl: GlimpseAdapter) {
@@ -403,8 +452,11 @@ class PreviewScene(
 
     private fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
         texturesStore[gl, this]
-    } catch (exception: GLException) {
-        logger.error("Error getting texture: '$name'", exception)
+    } catch (expected: Throwable) {
+        errorLog.addError(
+            WavefrontObjBundle.message("editor.fileTypes.obj.preview.getTexture.error", name),
+            expected
+        )
         null
     }
 
@@ -499,7 +551,7 @@ class PreviewScene(
             wireframeProgram.dispose(gl)
             solidProgram.dispose(gl)
             materialProgram.dispose(gl)
-        } catch (ignored: GLException) {
+        } catch (ignored: Throwable) {
         }
     }
 

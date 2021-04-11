@@ -8,6 +8,7 @@
 
 ### Changed
 - Use standard IDE error icons
+- Display 3D preview errors below the preview (#112)
 
 ## [0.3.1]
 ### Added

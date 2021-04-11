@@ -55,16 +55,14 @@ class ObjAnnotator : Annotator {
         val index = element.value
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
-        } else {
-            if (element.containingObjFile?.checkVertexExists(element) != true) {
-                holder.newAnnotation(
-                    HighlightSeverity.ERROR,
-                    WavefrontObjBundle.message(
-                        "fileTypes.obj.annotation.error.vertexNotFound",
-                        index
-                    )
-                ).range(element).create()
-            }
+        } else if (!element.isValidIndex()) {
+            holder.newAnnotation(
+                HighlightSeverity.ERROR,
+                WavefrontObjBundle.message(
+                    "fileTypes.obj.annotation.error.vertexNotFound",
+                    index
+                )
+            ).range(element).create()
         }
     }
 
@@ -75,16 +73,14 @@ class ObjAnnotator : Annotator {
         val index = element.value
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
-        } else {
-            if (element.containingObjFile?.checkTextureCoordinatesExist(element) != true) {
-                holder.newAnnotation(
-                    HighlightSeverity.ERROR,
-                    WavefrontObjBundle.message(
-                        "fileTypes.obj.annotation.error.textureCoordinatesNotFound",
-                        index
-                    )
-                ).range(element).create()
-            }
+        } else if (!element.isValidIndex()) {
+            holder.newAnnotation(
+                HighlightSeverity.ERROR,
+                WavefrontObjBundle.message(
+                    "fileTypes.obj.annotation.error.textureCoordinatesNotFound",
+                    index
+                )
+            ).range(element).create()
         }
     }
 
@@ -95,16 +91,14 @@ class ObjAnnotator : Annotator {
         val index = element.value
         if (index == null) {
             holder.createInvalidIndexAnnotation(element)
-        } else {
-            if (element.containingObjFile?.checkVertexNormalExists(element) != true) {
-                holder.newAnnotation(
-                    HighlightSeverity.ERROR,
-                    WavefrontObjBundle.message(
-                        "fileTypes.obj.annotation.error.vertexNormalNotFound",
-                        index
-                    )
-                ).range(element).create()
-            }
+        } else if (!element.isValidIndex()) {
+            holder.newAnnotation(
+                HighlightSeverity.ERROR,
+                WavefrontObjBundle.message(
+                    "fileTypes.obj.annotation.error.vertexNormalNotFound",
+                    index
+                )
+            ).range(element).create()
         }
     }
 

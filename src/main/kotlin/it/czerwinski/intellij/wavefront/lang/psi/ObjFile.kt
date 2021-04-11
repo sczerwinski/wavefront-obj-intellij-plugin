@@ -31,14 +31,9 @@ class ObjFile(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, ObjLanguage) {
 
-    private val verticesCount
-        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
-
-    private val textureCoordinatesCount
-        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
-
-    private val vertexNormalsCount
-        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
+    val verticesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
+    val textureCoordinatesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
+    val vertexNormalsCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
 
     val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
 
@@ -50,24 +45,6 @@ class ObjFile(
     val referencedMtlFiles: List<MtlFile> get() = materialFileReferences.mapNotNull { element -> element.mtlFile }
 
     override fun getFileType(): FileType = ObjFileType
-
-    fun checkVertexExists(indexElement: ObjIndexElement): Boolean =
-        checkReferenceExists(indexElement, verticesCount)
-
-    private fun checkReferenceExists(indexElement: ObjIndexElement, max: Int): Boolean {
-        val index = indexElement.value ?: 0
-        return when {
-            index > 0 -> index in 1..max
-            index < 0 -> -index in 1..indexElement.countReferencesBefore
-            else -> false
-        }
-    }
-
-    fun checkTextureCoordinatesExist(indexElement: ObjIndexElement): Boolean =
-        checkReferenceExists(indexElement, textureCoordinatesCount)
-
-    fun checkVertexNormalExists(indexElement: ObjIndexElement): Boolean =
-        checkReferenceExists(indexElement, vertexNormalsCount)
 
     fun countVerticesBefore(element: PsiElement): Int =
         objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertex>(element) }

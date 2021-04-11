@@ -37,6 +37,25 @@ abstract class ObjIndexElementImpl(
         else -> 0
     }
 
+    private val maxIndex: Int get() = when (this) {
+        is ObjVertexIndex -> containingObjFile?.verticesCount ?: 0
+        is ObjTextureCoordinatesIndex -> containingObjFile?.textureCoordinatesCount ?: 0
+        is ObjVertexNormalIndex -> containingObjFile?.vertexNormalsCount ?: 0
+        else -> 0
+    }
+
+    override fun isValidIndex(): Boolean {
+        val objIndex = value ?: 0
+        return when {
+            objIndex > 0 -> isValidAbsoluteIndex(objIndex)
+            objIndex < 0 -> isValidRelativeIndex(objIndex)
+            else -> false
+        }
+    }
+
+    private fun isValidAbsoluteIndex(objIndex: Int): Boolean = objIndex in 1..maxIndex
+    private fun isValidRelativeIndex(objIndex: Int): Boolean = -objIndex in 1..countReferencesBefore
+
     override fun asListIndex(): Int {
         val objIndex = value ?: 0
         return when {

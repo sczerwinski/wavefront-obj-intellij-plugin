@@ -28,8 +28,10 @@ import com.intellij.ui.layout.Cell
 import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
 import javax.swing.Icon
@@ -38,6 +40,7 @@ import javax.swing.JPanel
 
 class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPreviewFileEditorSettingsState.Holder {
 
+    private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
     private lateinit var defaultUpVector: ComboBox<UpVector>
     private lateinit var showAxesCheckBox: JBCheckBox
     private lateinit var axisLineWidthInput: JBTextField
@@ -76,6 +79,14 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
             }
         }
         titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod")) {
+                defaultShadingMethod = comboBox(
+                    EnumComboBoxModel(ShadingMethod::class.java),
+                    getter = { ShadingMethod.DEFAULT },
+                    setter = { },
+                    ShadingMethodListCellRenderer()
+                ).component
+            }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector"), separated = true) {
                 defaultUpVector = comboBox(
                     EnumComboBoxModel(UpVector::class.java),
@@ -168,6 +179,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
 
     override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState
         get() = ObjPreviewFileEditorSettingsState(
+            defaultShadingMethod = defaultShadingMethod.selectedItem as? ShadingMethod ?: ShadingMethod.DEFAULT,
             defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull()
@@ -182,6 +194,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                 ?: ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE
         )
         set(value) {
+            defaultShadingMethod.selectedItem = value.defaultShadingMethod
             defaultUpVector.selectedItem = value.defaultUpVector
             showAxesCheckBox.isSelected = value.showAxes
             axisLineWidthInput.text = value.axisLineWidth.toString()
@@ -216,7 +229,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
 
     fun getComponent(): JComponent = mainPanel
 
-    fun getPreferredFocusedComponent(): JComponent = defaultUpVector
+    fun getPreferredFocusedComponent(): JComponent = defaultShadingMethod
 
     fun validateForm() {
         val errorMessage = when {

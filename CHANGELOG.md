@@ -6,6 +6,10 @@
 ### Added
 - Support for relative indices in OBJ files (#95)
 
+### Changed
+- Use standard IDE error icons
+- Display 3D preview errors below the preview (#112)
+
 ## [0.3.1]
 ### Added
 - Support for platform version `211.*`

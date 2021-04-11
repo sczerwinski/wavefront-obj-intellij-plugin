@@ -22,7 +22,6 @@ import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.progress.util.BackgroundTaskUtil.executeOnPooledThread
 import com.jetbrains.rd.util.AtomicReference
-import com.jetbrains.rd.util.string.printToString
 import com.jogamp.opengl.math.FloatUtil
 import com.jogamp.opengl.util.FPSAnimator
 import graphics.glimpse.types.Angle
@@ -37,19 +36,16 @@ import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
-import java.awt.BorderLayout
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.awt.event.MouseWheelListener
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTextArea
 import javax.swing.SwingConstants
 import javax.swing.event.MouseInputAdapter
 
-class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
+class GLPanelWrapper : ErrorLogSplitter(), Disposable {
 
     private val initPreviewTriggered = AtomicBoolean(false)
 
@@ -95,8 +91,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
     }
 
     private fun attachPlaceholder() {
-        removeAll()
-        add(placeholder, BorderLayout.CENTER)
+        component = placeholder
         invalidate()
     }
 
@@ -111,7 +106,7 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             val canvas = GlimpsePanel()
             val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
 
-            scene = PreviewScene(canvas.glProfile, animator)
+            scene = PreviewScene(canvas.glProfile, animator, this)
             scene.updateModel(model)
             updateScene()
             canvas.setCallback(scene)
@@ -121,13 +116,12 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
             canvas.addMouseListener(panningMouseInputListener)
             canvas.addMouseMotionListener(panningMouseInputListener)
 
-            add(canvas, BorderLayout.CENTER)
-            remove(placeholder)
+            component = canvas
             invalidate()
 
             scene.start()
         } catch (expected: Throwable) {
-            showError(expected)
+            addError(WavefrontObjBundle.message("editor.fileTypes.obj.preview.error"), expected)
         }
     }
 
@@ -143,23 +137,8 @@ class GLPanelWrapper : JPanel(BorderLayout()), Disposable {
         }
     }
 
-    private fun showError(exception: Throwable) {
-        if (::scene.isInitialized) {
-            scene.stop()
-        }
-        removeAll()
-        add(
-            JLabel(WavefrontObjBundle.message("editor.fileTypes.obj.preview.error")),
-            BorderLayout.BEFORE_FIRST_LINE
-        )
-        add(
-            JTextArea(exception.printToString()),
-            BorderLayout.CENTER
-        )
-        invalidate()
-    }
-
     fun updateObjFile(objFile: ObjFile?) {
+        clearErrors()
         runReadAction { createModel(objFile) }
     }
 

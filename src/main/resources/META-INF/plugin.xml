@@ -203,6 +203,11 @@
                     id="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
                     icon="AllIcons.General.FitContent"/>
+            <separator/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.RefreshAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.RefreshAction"
+                    icon="AllIcons.Actions.Refresh"/>
         </group>
         <group
                 id="ObjPreviewFileEditor.AdditionalToolbar"

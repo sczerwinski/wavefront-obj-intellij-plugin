@@ -202,6 +202,10 @@ class ObjPreviewFileEditor(
         glPanel.zoomFit()
     }
 
+    fun refresh() {
+        glPanel.refresh()
+    }
+
     private inner class MyPsiTreeChangeListener(private val file: ObjFile) : PsiTreeChangeAdapter() {
 
         override fun childAdded(event: PsiTreeChangeEvent) {

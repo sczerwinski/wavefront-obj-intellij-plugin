@@ -87,7 +87,7 @@ class GLPanelWrapper : ErrorLogSplitter(), Disposable {
         AtomicReference(ObjPreviewFileEditorSettingsState())
 
     init {
-        invokeLater(modalityState, ::attachPlaceholder)
+        attachPlaceholder()
     }
 
     private fun attachPlaceholder() {
@@ -97,11 +97,11 @@ class GLPanelWrapper : ErrorLogSplitter(), Disposable {
 
     fun initPreview() {
         if (initPreviewTriggered.compareAndSet(false, true)) {
-            executeOnPooledThread(this, ::attachJPanel)
+            executeOnPooledThread(this, ::attachCanvas)
         }
     }
 
-    private fun attachJPanel() {
+    private fun attachCanvas() {
         try {
             val canvas = GlimpsePanel()
             val animator = FPSAnimator(canvas, DEFAULT_FPS_LIMIT)
@@ -122,7 +122,14 @@ class GLPanelWrapper : ErrorLogSplitter(), Disposable {
             scene.start()
         } catch (expected: Throwable) {
             addError(WavefrontObjBundle.message("editor.fileTypes.obj.preview.error"), expected)
+            detachCanvas()
         }
+    }
+
+    private fun detachCanvas() {
+        if (::scene.isInitialized) scene.stop()
+        attachPlaceholder()
+        initPreviewTriggered.set(false)
     }
 
     private fun updateScene() {
@@ -221,6 +228,12 @@ class GLPanelWrapper : ErrorLogSplitter(), Disposable {
         updateCameraModel { oldCameraModel ->
             oldCameraModel.copy(distance = modelSize * DEFAULT_DISTANCE_FACTOR)
         }
+    }
+
+    fun refresh() {
+        detachCanvas()
+        clearErrors()
+        initPreview()
     }
 
     override fun dispose() {

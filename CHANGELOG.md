@@ -6,6 +6,9 @@
 ### Added
 - Support for relative indices in OBJ files (#95)
 
+### Changed
+- Use standard IDE error icons
+
 ## [0.3.1]
 ### Added
 - Support for platform version `211.*`

@@ -18,12 +18,12 @@
 
 package it.czerwinski.intellij.wavefront.lang.structure
 
+import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import com.intellij.util.ui.ColorIcon
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.MTL_ERROR_ICON
 import it.czerwinski.intellij.wavefront.lang.MTL_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.MTL_MATERIAL_ICON
 import it.czerwinski.intellij.wavefront.lang.MTL_OPTION_ICON
@@ -142,7 +142,7 @@ object MtlItemPresentationFactory {
         createPresentation(
             presentableText = presentableText,
             locationString = color.colorString.orEmpty(),
-            icon = color.color?.let { ColorIcon(ICON_SIZE, COLOR_SIZE, it, true) } ?: MTL_ERROR_ICON
+            icon = color.color?.let { ColorIcon(ICON_SIZE, COLOR_SIZE, it, true) } ?: AllIcons.General.Error
         )
 
     private fun createPresentation(color: MtlDiffuseColor): ItemPresentation = createColorPresentation(
@@ -390,7 +390,7 @@ object MtlItemPresentationFactory {
             errorMessage
         ),
         locationString = elementText,
-        icon = MTL_ERROR_ICON
+        icon = AllIcons.General.Error
     )
 
     private fun createPresentation(

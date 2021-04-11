@@ -20,4 +20,7 @@ import com.intellij.psi.PsiElement
 
 interface ObjIndexElement : PsiElement {
     val value: Int?
+    val countReferencesBefore: Int
+    fun isValidIndex(): Boolean
+    fun asListIndex(): Int
 }

@@ -42,9 +42,9 @@ object SolidFacesMeshFactory : FacesMeshFactory {
             meshDataBuilder.addFace(
                 face.faceVertexList.map { faceVertex ->
                     MeshDataBuilder.FaceVertex(
-                        positionIndex = (faceVertex.vertexIndex.value ?: 1) - 1,
-                        texCoordIndex = (faceVertex.textureCoordinatesIndex?.value ?: 1) - 1,
-                        normalIndex = (faceVertex.vertexNormalIndex?.value ?: 1) - 1
+                        positionIndex = faceVertex.vertexIndex.asListIndex(),
+                        texCoordIndex = faceVertex.textureCoordinatesIndex?.asListIndex() ?: 0,
+                        normalIndex = faceVertex.vertexNormalIndex?.asListIndex() ?: 0
                     )
                 }
             )

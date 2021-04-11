@@ -23,6 +23,7 @@ import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.lang.ObjFileType
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import it.czerwinski.intellij.wavefront.lang.psi.util.countChildrenOfType
+import it.czerwinski.intellij.wavefront.lang.psi.util.countChildrenOfTypeBefore
 import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativeFile
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
@@ -30,14 +31,9 @@ class ObjFile(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, ObjLanguage) {
 
-    private val verticesCount
-        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
-
-    private val textureCoordinatesCount
-        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
-
-    private val vertexNormalsCount
-        get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
+    val verticesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
+    val textureCoordinatesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
+    val vertexNormalsCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
 
     val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
 
@@ -50,11 +46,14 @@ class ObjFile(
 
     override fun getFileType(): FileType = ObjFileType
 
-    fun checkVertexExists(index: Int): Boolean = index in 1..verticesCount
+    fun countVerticesBefore(element: PsiElement): Int =
+        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertex>(element) }
 
-    fun checkTextureCoordinatesExist(index: Int): Boolean = index in 1..textureCoordinatesCount
+    fun countTextureCoordinatesBefore(element: PsiElement): Int =
+        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjTextureCoordinates>(element) }
 
-    fun checkVertexNormalExists(index: Int): Boolean = index in 1..vertexNormalsCount
+    fun countVertexNormalsBefore(element: PsiElement): Int =
+        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertexNormal>(element) }
 
     fun findMtlFile(filePath: String): MtlFile? = findRelativeFile(this, filePath) as? MtlFile
 

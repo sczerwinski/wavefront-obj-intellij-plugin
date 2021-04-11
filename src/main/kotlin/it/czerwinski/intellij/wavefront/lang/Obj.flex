@@ -57,7 +57,7 @@ MATERIAL_REFERENCE_KEYWORD="usemtl"
 
 OBJECT_OR_GROUP_NAME=[^\ \t\r\n\f]+
 FLOAT="-"?((0)|([1-9][\d]*))("."[\d]+)?([Ee][+-]?[\d]+)?
-INDEX=([1-9][\d]*)
+INDEX=-?([1-9][\d]*)
 FLAG=(1)|(off)
 REFERENCE=[^\ \t\r\n\f]+
 

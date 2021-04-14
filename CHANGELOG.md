@@ -5,6 +5,8 @@
 ## [Unreleased]
 ### Changed
 - Upgrade Gradle Wrapper to `7.0`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v2.1.5`
 
 ## [0.3.2]
 ### Added

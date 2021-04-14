@@ -3,17 +3,9 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
+- Upgrade Gradle Wrapper to `7.0`
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.3.2]
 ### Added
 - Support for relative indices in OBJ files (#95)

@@ -7,6 +7,9 @@
 - Upgrade Gradle Wrapper to `7.0.2`
 - GitHub Actions:
   - Upgrade `actions/cache` to `v2.1.5`
+  - Upgrade `actions/checkout` to `v2.3.4`
+  - Upgrade `actions/upload-release-asset` to `v1.0.2`
+  - Upgrade `actions/create-release` to `v1.1.4`
 
 ## [0.3.2]
 ### Added

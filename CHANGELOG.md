@@ -5,6 +5,10 @@
 ## [Unreleased]
 ### Changed
 - Upgrade Gradle Wrapper to `7.0.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.0`
+  - Upgrade `kapt` to `1.5.0`
+  - Upgrade `org.jetbrains.intellij` to `0.7.3`
 - GitHub Actions:
   - Upgrade `actions/cache` to `v2.1.5`
   - Upgrade `actions/checkout` to `v2.3.4`

@@ -4,17 +4,20 @@
 
 ## [Unreleased]
 ### Changed
+- Remove reference to the `jcenter()` from Gradle configuration file
 - Upgrade Gradle Wrapper to `7.0.2`
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.0`
-  - Upgrade `kapt` to `1.5.0`
-  - Upgrade `org.jetbrains.intellij` to `0.7.3`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.10`
+  - Upgrade `kapt` to `1.5.10`
+  - Upgrade `org.jetbrains.intellij` to `1.0`
+  - Upgrade `detekt-formatting` to `1.17.1`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`
 - GitHub Actions:
-  - Upgrade `actions/cache` to `v2.1.5`
+  - Upgrade `actions/cache` to `v2.1.6`
   - Upgrade `actions/checkout` to `v2.3.4`
   - Upgrade `actions/upload-release-asset` to `v1.0.2`
   - Upgrade `actions/create-release` to `v1.1.4`
-- `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.2`
 
 ## [0.3.2]
 ### Added

@@ -13,7 +13,7 @@
   - Upgrade `detekt-formatting` to `1.17.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`
 - GitHub Actions:
-  - Upgrade `actions/cache` to `v2.1.5`
+  - Upgrade `actions/cache` to `v2.1.6`
   - Upgrade `actions/checkout` to `v2.3.4`
   - Upgrade `actions/upload-release-asset` to `v1.0.2`
   - Upgrade `actions/create-release` to `v1.1.4`

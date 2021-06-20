@@ -5,7 +5,7 @@
 ## [Unreleased]
 ### Changed
 - Remove reference to the `jcenter()` from Gradle configuration file
-- Upgrade Gradle Wrapper to `7.0.2`
+- Upgrade Gradle Wrapper to `7.1`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.10`
   - Upgrade `kapt` to `1.5.10`

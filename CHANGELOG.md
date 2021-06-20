@@ -13,11 +13,13 @@
   - Upgrade `detekt-formatting` to `1.17.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`
 - GitHub Actions:
+  - Upgrade `gradle/wrapper-validation-action` to `v1.0.4`
   - Upgrade `actions/cache` to `v2.1.6`
   - Upgrade `actions/checkout` to `v2.3.4`
   - Upgrade `actions/upload-release-asset` to `v1.0.2`
   - Upgrade `actions/create-release` to `v1.1.4`
-- `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.2`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`
+- Trigger GitHub Actions `Build` workflows only on pushes to `main` branch or pull request to avoid duplicated checks
 
 ## [0.3.2]
 ### Added

@@ -16,6 +16,7 @@
   - Upgrade `gradle/wrapper-validation-action` to `v1.0.4`
   - Upgrade `actions/cache` to `v2.1.6`
   - Upgrade `actions/checkout` to `v2.3.4`
+  - Upgrade `actions/upload-artifact` to `v2.2.4`
   - Upgrade `actions/upload-release-asset` to `v1.0.2`
   - Upgrade `actions/create-release` to `v1.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`

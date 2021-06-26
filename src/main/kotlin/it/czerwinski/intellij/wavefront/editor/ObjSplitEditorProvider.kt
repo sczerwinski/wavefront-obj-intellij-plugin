@@ -16,57 +16,39 @@
 
 package it.czerwinski.intellij.wavefront.editor
 
-import com.intellij.openapi.fileEditor.AsyncFileEditorProvider
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorPolicy
-import com.intellij.openapi.fileEditor.FileEditorProvider
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import it.czerwinski.intellij.common.editor.SplitEditorProvider
 
-class ObjSplitEditorProvider : AsyncFileEditorProvider, DumbAware {
+/**
+ * Wavefront OBJ split editor provider.
+ */
+class ObjSplitEditorProvider :
+    SplitEditorProvider(
+        textEditorProvider = PsiAwareTextEditorProvider(),
+        previewEditorProvider = ObjPreviewFileEditorProvider()
+    ),
+    DumbAware {
 
-    private val textEditorProvider = PsiAwareTextEditorProvider()
-    private val previewEditorProvider = ObjPreviewFileEditorProvider()
-
-    override fun accept(project: Project, file: VirtualFile): Boolean =
-        textEditorProvider.accept(project, file) && previewEditorProvider.accept(project, file)
-
-    override fun createEditor(project: Project, file: VirtualFile): FileEditor =
-        createEditorAsync(project, file).build()
-
-    override fun createEditorAsync(
-        project: Project,
-        file: VirtualFile
-    ): AsyncFileEditorProvider.Builder {
-        val textEditorBuilder: AsyncFileEditorProvider.Builder =
-            getAsyncFileEditorBuilder(textEditorProvider, project, file)
-        val previewEditorBuilder: AsyncFileEditorProvider.Builder =
-            getAsyncFileEditorBuilder(previewEditorProvider, project, file)
-
-        return object : AsyncFileEditorProvider.Builder() {
-            override fun build(): FileEditor = ObjSplitEditor(
-                textEditor = textEditorBuilder.build() as TextEditor,
-                previewEditor = previewEditorBuilder.build() as ObjPreviewFileEditor
-            )
-        }
-    }
+    override fun createAsyncEditorBuilder(project: Project, file: VirtualFile): Builder = Builder(project, file)
 
     override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.HIDE_DEFAULT_EDITOR
 
     override fun getEditorTypeId(): String = "wavefront-obj-split-editor"
 
-    companion object {
-        private fun getAsyncFileEditorBuilder(
-            provider: FileEditorProvider,
-            project: Project,
-            file: VirtualFile
-        ): AsyncFileEditorProvider.Builder =
-            if (provider is AsyncFileEditorProvider) provider.createEditorAsync(project, file)
-            else object : AsyncFileEditorProvider.Builder() {
-                override fun build(): FileEditor = provider.createEditor(project, file)
-            }
+    /**
+     * Concrete builder of Wavefront OBJ split editor.
+     */
+    class Builder(project: Project, file: VirtualFile) : SplitEditorProvider.Builder(project, file) {
+
+        override fun build(): FileEditor =
+            ObjSplitEditor(
+                textEditor = buildTextEditor(),
+                previewEditor = buildPreviewEditor() as ObjPreviewFileEditor
+            )
     }
 }

@@ -30,11 +30,11 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
+import it.czerwinski.intellij.common.ui.EditorToolbarHeader
+import it.czerwinski.intellij.common.ui.EditorWithToolbar
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
-import it.czerwinski.intellij.wavefront.editor.ui.EditorToolbarHeader
-import it.czerwinski.intellij.wavefront.editor.ui.EditorWithToolbar
 import it.czerwinski.intellij.wavefront.editor.ui.GLPanelWrapper
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState

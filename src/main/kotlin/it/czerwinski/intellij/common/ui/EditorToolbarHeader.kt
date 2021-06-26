@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.common.ui
 
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.editor.impl.EditorHeaderComponent
@@ -22,6 +22,9 @@ import com.intellij.util.ui.JBUI
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 
+/**
+ * Toolbar header for a file editor.
+ */
 class EditorToolbarHeader(
     leftActionToolbar: ActionToolbar? = null,
     rightActionToolbar: ActionToolbar? = null

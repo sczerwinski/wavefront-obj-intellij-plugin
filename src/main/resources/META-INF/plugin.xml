@@ -135,21 +135,21 @@
 
     <actions>
         <group
-                id="ObjSplitEditor.Toolbar"
+                id="SplitEditor.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.TextOnlySplitLayoutAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.TextOnlySplitLayoutAction"
+                    id="it.czerwinski.intellij.common.actions.SplitLayoutAction.TextOnly"
+                    class="it.czerwinski.intellij.common.actions.SplitLayoutAction$TextOnly"
                     icon="AllIcons.General.LayoutEditorOnly">
             </action>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.TextAndPreviewSplitLayoutAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.TextAndPreviewSplitLayoutAction"
+                    id="it.czerwinski.intellij.common.actions.SplitLayoutAction.TextAndPreview"
+                    class="it.czerwinski.intellij.common.actions.SplitLayoutAction$TextAndPreview"
                     icon="AllIcons.General.LayoutEditorPreview">
             </action>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.PreviewOnlySplitLayoutAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.PreviewOnlySplitLayoutAction"
+                    id="it.czerwinski.intellij.common.actions.SplitLayoutAction.PreviewOnly"
+                    class="it.czerwinski.intellij.common.actions.SplitLayoutAction$PreviewOnly"
                     icon="AllIcons.General.LayoutPreviewOnly">
             </action>
         </group>

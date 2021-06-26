@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.common.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -22,11 +22,13 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.DumbAware
-import it.czerwinski.intellij.wavefront.editor.ObjSplitEditor
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.common.editor.SplitEditor
 
-abstract class SplitLayoutAction(
-    private val splitLayout: SplitEditorLayout
+/**
+ * An action for split editor layout selection.
+ */
+sealed class SplitLayoutAction(
+    private val splitLayout: SplitEditor.Layout
 ) : AnAction(), DumbAware, Toggleable {
 
     override fun update(event: AnActionEvent) {
@@ -35,7 +37,7 @@ abstract class SplitLayoutAction(
         event.presentation.isEnabled = editor != null
 
         if (editor != null) {
-            Toggleable.setSelected(event.presentation, editor.splitEditorLayout === splitLayout)
+            Toggleable.setSelected(event.presentation, editor.layout === splitLayout)
         }
     }
 
@@ -43,18 +45,33 @@ abstract class SplitLayoutAction(
         val editor = findObjSplitEditor(event)
 
         if (editor != null) {
-            editor.triggerSplitEditorLayoutChange(splitLayout)
+            editor.triggerLayoutChange(splitLayout)
             Toggleable.setSelected(event.presentation, true)
         }
     }
 
     companion object {
 
-        private fun findObjSplitEditor(event: AnActionEvent): ObjSplitEditor? =
+        private fun findObjSplitEditor(event: AnActionEvent): SplitEditor<*>? =
             findObjSplitEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
-        private fun findObjSplitEditor(editor: FileEditor?): ObjSplitEditor? =
-            if (editor is ObjSplitEditor) editor
-            else ObjSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
+        private fun findObjSplitEditor(editor: FileEditor?): SplitEditor<*>? =
+            if (editor is SplitEditor<*>) editor
+            else SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
     }
+
+    /**
+     * An action for selecting text layout.
+     */
+    class TextOnly : SplitLayoutAction(SplitEditor.Layout.TEXT)
+
+    /**
+     * An action for selecting text and preview layout.
+     */
+    class TextAndPreview : SplitLayoutAction(SplitEditor.Layout.SPLIT)
+
+    /**
+     * An action for selecting preview layout.
+     */
+    class PreviewOnly : SplitLayoutAction(SplitEditor.Layout.PREVIEW)
 }

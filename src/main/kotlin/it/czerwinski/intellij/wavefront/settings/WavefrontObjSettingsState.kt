@@ -24,7 +24,7 @@ import com.intellij.util.messages.Topic
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Attribute
 import com.intellij.util.xmlb.annotations.Property
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import it.czerwinski.intellij.common.editor.SplitEditor
 
 @State(
     name = "it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState",
@@ -33,7 +33,7 @@ import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 data class WavefrontObjSettingsState(
     @field:Property override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState =
         ObjPreviewFileEditorSettingsState.DEFAULT,
-    @field:Attribute var defaultEditorLayout: SplitEditorLayout = SplitEditorLayout.DEFAULT,
+    @field:Attribute var defaultEditorLayout: SplitEditor.Layout = SplitEditor.Layout.DEFAULT,
     @field:Attribute var isVerticalSplit: Boolean = false
 ) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewFileEditorSettingsState.Holder {
 

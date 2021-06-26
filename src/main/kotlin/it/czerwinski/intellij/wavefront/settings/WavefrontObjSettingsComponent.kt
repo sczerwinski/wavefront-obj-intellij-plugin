@@ -27,9 +27,9 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.ui.layout.Cell
 import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.panel
+import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
@@ -49,7 +49,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
     private lateinit var gridLineWidthInput: JBTextField
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
-    private lateinit var defaultEditorLayout: ComboBox<SplitEditorLayout>
+    private lateinit var defaultEditorLayout: ComboBox<SplitEditor.Layout>
     private lateinit var verticalSplitCheckBox: JBRadioButton
     private lateinit var horizontalSplitCheckBox: JBRadioButton
 
@@ -57,8 +57,8 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
         titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
                 defaultEditorLayout = comboBox(
-                    EnumComboBoxModel(SplitEditorLayout::class.java),
-                    getter = { SplitEditorLayout.DEFAULT },
+                    EnumComboBoxModel(SplitEditor.Layout::class.java),
+                    getter = { SplitEditor.Layout.DEFAULT },
                     setter = { },
                     SplitEditorLayoutListCellRenderer()
                 ).component
@@ -167,7 +167,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
     override var wavefrontObjSettings: WavefrontObjSettingsState
         get() = WavefrontObjSettingsState(
             objPreviewFileEditorSettings = objPreviewFileEditorSettings,
-            defaultEditorLayout = defaultEditorLayout.selectedItem as? SplitEditorLayout ?: SplitEditorLayout.DEFAULT,
+            defaultEditorLayout = defaultEditorLayout.selectedItem as? SplitEditor.Layout ?: SplitEditor.Layout.DEFAULT,
             isVerticalSplit = verticalSplitCheckBox.isSelected
         )
         set(value) {

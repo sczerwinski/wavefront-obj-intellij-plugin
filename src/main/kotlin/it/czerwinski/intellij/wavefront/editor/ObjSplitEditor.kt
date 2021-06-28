@@ -19,6 +19,7 @@ package it.czerwinski.intellij.wavefront.editor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.TextEditor
 import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.SplitEditorComponent
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
@@ -32,9 +33,12 @@ class ObjSplitEditor(
     textEditor: TextEditor,
     previewEditor: ObjPreviewFileEditor
 ) : SplitEditor<ObjPreviewFileEditor>(textEditor, previewEditor),
-    WavefrontObjSettingsState.SettingsChangedListener {
+    WavefrontObjSettingsState.SettingsChangedListener,
+    SplitEditorComponent.EditorsVisibilityListener {
 
     init {
+        myComponent.addEditorsVisibilityListener(this)
+
         settingsChanged(WavefrontObjSettingsState.getInstance())
 
         ApplicationManager.getApplication().messageBus
@@ -50,8 +54,8 @@ class ObjSplitEditor(
         )
     }
 
-    override fun onEditorsVisibilityChanged() {
-        if (layout.isShowingPreviewEditor) {
+    override fun editorsVisibilityChanged(isShowingTextEditor: Boolean, isShowingPreviewEditor: Boolean) {
+        if (isShowingPreviewEditor) {
             previewEditor.initPreview()
         }
     }

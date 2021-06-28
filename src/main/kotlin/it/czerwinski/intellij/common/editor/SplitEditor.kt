@@ -16,20 +16,12 @@
 
 package it.czerwinski.intellij.common.editor
 
-import com.intellij.openapi.actionSystem.ActionGroup
-import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.ActionPlaces
-import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.wm.IdeFocusManager
-import com.intellij.ui.JBSplitter
-import it.czerwinski.intellij.common.ui.EditorSplitter
-import it.czerwinski.intellij.common.ui.EditorToolbarHeader
-import it.czerwinski.intellij.common.ui.EditorWithToolbar
 import javax.swing.JComponent
 
 /**
@@ -45,12 +37,7 @@ abstract class SplitEditor<P : FileEditor>(
     previewEditor: P
 ) : TextAndPreviewEditor<P>(textEditor, previewEditor) {
 
-    private val myTextEditorComponent get() = textEditor.component
-    private val myPreviewEditorComponent get() = previewEditor.component
-
-    private val mySplitter: JBSplitter
-    private val myActionToolbar: ActionToolbar
-    private val myComponent: JComponent
+    protected val myComponent: SplitEditorComponent
 
     /**
      * Current split editor layout.
@@ -59,65 +46,14 @@ abstract class SplitEditor<P : FileEditor>(
         protected set
 
     init {
-        mySplitter = createSplitter()
-        myActionToolbar = createActionToolbar()
-        myComponent = createComponent()
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
+        myComponent = SplitEditorComponent(textEditor, previewEditor)
     }
-
-    private fun createSplitter(): JBSplitter {
-        val splitter = EditorSplitter(vertical = false)
-        splitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
-        splitter.components = myTextEditorComponent to myPreviewEditorComponent
-        return splitter
-    }
-
-    private fun createActionToolbar(): ActionToolbar {
-        val actionManager = ActionManager.getInstance()
-
-        check(actionManager.isGroup(TOOLBAR_ACTIONS_GROUP_ID)) {
-            "Actions group not found: $TOOLBAR_ACTIONS_GROUP_ID"
-        }
-
-        val group = actionManager.getAction(TOOLBAR_ACTIONS_GROUP_ID) as ActionGroup
-        val toolbar = actionManager.createActionToolbar(
-            ActionPlaces.EDITOR_TOOLBAR,
-            group,
-            true
-        )
-        toolbar.setTargetComponent(mySplitter)
-        toolbar.setReservePlaceAutoPopupIcon(false)
-        return toolbar
-    }
-
-    private fun createComponent(): JComponent {
-        val result = EditorWithToolbar(
-            toolbarComponent = EditorToolbarHeader(rightActionToolbar = myActionToolbar),
-            editorComponent = mySplitter
-        )
-        updateEditorsVisibility()
-        return result
-    }
-
-    private fun updateEditorsVisibility() {
-        myTextEditorComponent.isVisible = layout.isShowingTextEditor
-        myPreviewEditorComponent.isVisible = layout.isShowingPreviewEditor
-        onEditorsVisibilityChanged()
-    }
-
-    /**
-     * Override this method to handle editor visibility changes.
-     */
-    protected open fun onEditorsVisibilityChanged() = Unit
 
     override fun getComponent(): JComponent = myComponent
 
-    override fun getPreferredFocusedComponent(): JComponent? = when {
-        layout.isShowingTextEditor -> textEditor.preferredFocusedComponent
-        layout.isShowingPreviewEditor -> previewEditor.preferredFocusedComponent
-        else -> null
-    }
+    override fun getPreferredFocusedComponent(): JComponent? = myComponent.preferredFocusedComponent
 
     override fun setState(state: FileEditorState) {
         if (state is SplitEditorState) {
@@ -140,8 +76,7 @@ abstract class SplitEditor<P : FileEditor>(
      * `true` means vertical split.
      */
     fun triggerSplitterOrientationChange(newSplitterOrientation: Boolean) {
-        mySplitter.orientation = newSplitterOrientation
-        component.repaint()
+        myComponent.isSplitVertically = newSplitterOrientation
     }
 
     /**
@@ -149,10 +84,8 @@ abstract class SplitEditor<P : FileEditor>(
      */
     fun triggerLayoutChange(newLayout: Layout) {
         this.layout = newLayout
-
-        updateEditorsVisibility()
-        myActionToolbar.updateActionsImmediately()
-        component.repaint()
+        myComponent.isShowingTextEditor = newLayout.isShowingTextEditor
+        myComponent.isShowingPreviewEditor = newLayout.isShowingPreviewEditor
 
         preferredFocusedComponent?.let {
             IdeFocusManager.findInstanceByComponent(it).requestFocus(it, true)
@@ -217,8 +150,6 @@ abstract class SplitEditor<P : FileEditor>(
     }
 
     companion object {
-        private const val TOOLBAR_ACTIONS_GROUP_ID = "SplitEditor.Toolbar"
-
         val KEY_PARENT_SPLIT_EDITOR: Key<SplitEditor<*>> = Key.create("SplitEditor.parentSplitEditor")
     }
 }

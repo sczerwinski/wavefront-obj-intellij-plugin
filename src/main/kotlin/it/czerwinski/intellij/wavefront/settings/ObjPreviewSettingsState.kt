@@ -20,7 +20,7 @@ import com.intellij.util.xmlb.annotations.Attribute
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
-data class ObjPreviewFileEditorSettingsState(
+data class ObjPreviewSettingsState(
     @field:Attribute var defaultShadingMethod: ShadingMethod = ShadingMethod.DEFAULT,
     @field:Attribute var defaultUpVector: UpVector = UpVector.DEFAULT,
     @field:Attribute var showAxes: Boolean = DEFAULT_SHOW_AXES,
@@ -33,7 +33,7 @@ data class ObjPreviewFileEditorSettingsState(
 ) {
 
     companion object {
-        val DEFAULT = ObjPreviewFileEditorSettingsState()
+        val DEFAULT = ObjPreviewSettingsState()
 
         const val DEFAULT_SHOW_AXES = true
         const val DEFAULT_AXIS_LINE_WIDTH = 3f
@@ -45,6 +45,6 @@ data class ObjPreviewFileEditorSettingsState(
     }
 
     interface Holder {
-        var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState
+        var objPreviewSettings: ObjPreviewSettingsState
     }
 }

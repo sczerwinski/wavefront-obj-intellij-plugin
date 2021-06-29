@@ -19,9 +19,7 @@ package it.czerwinski.intellij.wavefront.editor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.TextEditor
 import it.czerwinski.intellij.common.editor.SplitEditor
-import it.czerwinski.intellij.common.editor.SplitEditorComponent
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 
 /**
@@ -31,33 +29,52 @@ import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
  */
 class ObjSplitEditor(
     textEditor: TextEditor,
-    previewEditor: ObjPreviewFileEditor
-) : SplitEditor<ObjPreviewFileEditor>(textEditor, previewEditor),
-    WavefrontObjSettingsState.SettingsChangedListener,
-    SplitEditorComponent.EditorsVisibilityListener {
+    previewEditor: ObjPreviewEditor
+) : SplitEditor<ObjPreviewEditor>(textEditor, previewEditor) {
+
+    private val settingsChangedListener: WavefrontObjSettingsState.SettingsChangedListener =
+        object : WavefrontObjSettingsState.SettingsChangedListener {
+
+            override fun beforeSettingsChanged(newSettings: WavefrontObjSettingsState?) {
+                val oldDefaultLayout = WavefrontObjSettingsState.getInstance()?.defaultEditorLayout ?: Layout.DEFAULT
+                val oldVerticalSplit = WavefrontObjSettingsState.getInstance()?.isVerticalSplit
+                    ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+
+                if (layout === oldDefaultLayout) {
+                    layout = newSettings?.defaultEditorLayout ?: Layout.DEFAULT
+                }
+
+                if (mySplitVertically == oldVerticalSplit) {
+                    mySplitVertically = newSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+                }
+            }
+        }
 
     init {
-        myComponent.addEditorsVisibilityListener(this)
+        initializeEditorsVisibilityListener(previewEditor)
+        initializeFromSettings()
+        observeSettingsChanges()
+    }
 
-        settingsChanged(WavefrontObjSettingsState.getInstance())
+    private fun initializeEditorsVisibilityListener(previewEditor: ObjPreviewEditor) {
+        myComponent.addEditorsVisibilityListener { _, isShowingPreviewEditor ->
+            if (isShowingPreviewEditor) {
+                previewEditor.initPreview()
+            }
+        }
+    }
 
+    private fun initializeFromSettings() {
+        val settings = WavefrontObjSettingsState.getInstance()
+
+        layout = settings?.defaultEditorLayout ?: Layout.DEFAULT
+        mySplitVertically = settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+    }
+
+    private fun observeSettingsChanges() {
         ApplicationManager.getApplication().messageBus
             .connect(this)
-            .subscribe(WavefrontObjSettingsState.SettingsChangedListener.TOPIC, this)
-    }
-
-    override fun settingsChanged(settings: WavefrontObjSettingsState?) {
-        triggerLayoutChange(newLayout = settings?.defaultEditorLayout ?: Layout.DEFAULT)
-        triggerSplitterOrientationChange(newSplitterOrientation = settings?.isVerticalSplit ?: false)
-        previewEditor.triggerSettingsChange(
-            settings = settings?.objPreviewFileEditorSettings ?: ObjPreviewFileEditorSettingsState.DEFAULT
-        )
-    }
-
-    override fun editorsVisibilityChanged(isShowingTextEditor: Boolean, isShowingPreviewEditor: Boolean) {
-        if (isShowingPreviewEditor) {
-            previewEditor.initPreview()
-        }
+            .subscribe(WavefrontObjSettingsState.SettingsChangedListener.TOPIC, settingsChangedListener)
     }
 
     override fun getName(): String = WavefrontObjBundle.message("editor.fileTypes.obj.split.name")

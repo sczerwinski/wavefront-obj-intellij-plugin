@@ -45,7 +45,7 @@ sealed class SplitLayoutAction(
         val editor = findObjSplitEditor(event)
 
         if (editor != null) {
-            editor.triggerLayoutChange(splitLayout)
+            editor.layout = splitLayout
             Toggleable.setSelected(event.presentation, true)
         }
     }

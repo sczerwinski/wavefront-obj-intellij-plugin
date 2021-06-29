@@ -24,14 +24,14 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.wavefront.lang.ObjFileType
 
-class ObjPreviewFileEditorProvider : FileEditorProvider, DumbAware {
+/**
+ * Wavefront OBJ 3D preview editor provider.
+ */
+class ObjPreviewEditorProvider : FileEditorProvider, DumbAware {
 
-    override fun accept(project: Project, file: VirtualFile): Boolean {
-        return file.isValid && file.fileType === ObjFileType
-    }
+    override fun accept(project: Project, file: VirtualFile): Boolean = file.isValid && file.fileType === ObjFileType
 
-    override fun createEditor(project: Project, file: VirtualFile): FileEditor =
-        ObjPreviewFileEditor(project, file)
+    override fun createEditor(project: Project, file: VirtualFile): FileEditor = ObjPreviewEditor(project, file)
 
     override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.PLACE_AFTER_DEFAULT_EDITOR
 

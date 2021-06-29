@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.common.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.ui.MultilineTreeCellRenderer
@@ -22,6 +22,9 @@ import com.intellij.ui.treeStructure.Tree
 import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
 
+/**
+ * Displays error log in the form of a tree.
+ */
 class ErrorLogTree(treeModel: ErrorLogTreeModel) : Tree(treeModel) {
 
     init {

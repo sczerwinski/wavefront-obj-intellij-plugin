@@ -22,6 +22,9 @@
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`
 - Trigger GitHub Actions `Build` workflows only on pushes to `main` branch or pull request to avoid duplicated checks
 
+### Fixed
+- Prevent IDE from freezing after a big change to an OBJ file
+
 ## [0.3.2]
 ### Added
 - Support for relative indices in OBJ files (#95)

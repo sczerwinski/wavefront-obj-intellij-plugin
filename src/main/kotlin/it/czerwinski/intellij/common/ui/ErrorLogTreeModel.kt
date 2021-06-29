@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.common.ui
 
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
+/**
+ * Provides a tree model containing error log.
+ */
 class ErrorLogTreeModel : DefaultTreeModel(DefaultMutableTreeNode()), ErrorLog {
 
     private val rootNode: DefaultMutableTreeNode get() = root as DefaultMutableTreeNode

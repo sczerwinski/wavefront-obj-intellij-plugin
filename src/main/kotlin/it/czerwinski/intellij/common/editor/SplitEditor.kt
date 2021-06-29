@@ -21,7 +21,6 @@ import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.util.Key
-import com.intellij.openapi.wm.IdeFocusManager
 import javax.swing.JComponent
 
 /**
@@ -43,7 +42,20 @@ abstract class SplitEditor<P : FileEditor>(
      * Current split editor layout.
      */
     var layout: Layout = Layout.DEFAULT
-        protected set
+        set(value) {
+            field = value
+            myComponent.isShowingTextEditor = value.isShowingTextEditor
+            myComponent.isShowingPreviewEditor = value.isShowingPreviewEditor
+        }
+
+    /**
+     * Indicates whether text and preview editors are split vertically.
+     */
+    protected var mySplitVertically: Boolean
+        get() = myComponent.isSplitVertically
+        set(value) {
+            myComponent.isSplitVertically = value
+        }
 
     init {
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
@@ -69,28 +81,6 @@ abstract class SplitEditor<P : FileEditor>(
             previewEditorState = previewEditor.getState(level),
             layout = layout
         )
-
-    /**
-     * Triggers split editor layout orientation change.
-     *
-     * `true` means vertical split.
-     */
-    fun triggerSplitterOrientationChange(newSplitterOrientation: Boolean) {
-        myComponent.isSplitVertically = newSplitterOrientation
-    }
-
-    /**
-     * Triggers split editor layout change.
-     */
-    fun triggerLayoutChange(newLayout: Layout) {
-        this.layout = newLayout
-        myComponent.isShowingTextEditor = newLayout.isShowingTextEditor
-        myComponent.isShowingPreviewEditor = newLayout.isShowingPreviewEditor
-
-        preferredFocusedComponent?.let {
-            IdeFocusManager.findInstanceByComponent(it).requestFocus(it, true)
-        }
-    }
 
     /**
      * Split editor layout.

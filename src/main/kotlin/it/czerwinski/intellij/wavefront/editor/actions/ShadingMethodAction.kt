@@ -39,7 +39,7 @@ abstract class ShadingMethodAction(
         val editor = findObjPreviewFileEditor(event)
 
         if (editor != null) {
-            editor.triggerShadingMethodChange(shadingMethod)
+            editor.shadingMethod = shadingMethod
             Toggleable.setSelected(event.presentation, true)
         }
     }

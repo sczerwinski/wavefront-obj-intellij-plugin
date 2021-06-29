@@ -30,7 +30,7 @@ import it.czerwinski.intellij.common.editor.SplitEditorProvider
 class ObjSplitEditorProvider :
     SplitEditorProvider(
         textEditorProvider = PsiAwareTextEditorProvider(),
-        previewEditorProvider = ObjPreviewFileEditorProvider()
+        previewEditorProvider = ObjPreviewEditorProvider()
     ),
     DumbAware {
 
@@ -48,7 +48,7 @@ class ObjSplitEditorProvider :
         override fun build(): FileEditor =
             ObjSplitEditor(
                 textEditor = buildTextEditor(),
-                previewEditor = buildPreviewEditor() as ObjPreviewFileEditor
+                previewEditor = buildPreviewEditor() as ObjPreviewEditor
             )
     }
 }

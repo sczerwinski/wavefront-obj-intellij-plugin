@@ -31,11 +31,10 @@ import it.czerwinski.intellij.common.editor.SplitEditor
     storages = [Storage("wavefrontObjSettings.xml")]
 )
 data class WavefrontObjSettingsState(
-    @field:Property override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState =
-        ObjPreviewFileEditorSettingsState.DEFAULT,
+    @field:Property override var objPreviewSettings: ObjPreviewSettingsState = ObjPreviewSettingsState.DEFAULT,
     @field:Attribute var defaultEditorLayout: SplitEditor.Layout = SplitEditor.Layout.DEFAULT,
-    @field:Attribute var isVerticalSplit: Boolean = false
-) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewFileEditorSettingsState.Holder {
+    @field:Attribute var isVerticalSplit: Boolean = DEFAULT_VERTICAL_SPLIT
+) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewSettingsState.Holder {
 
     var isHorizontalSplit: Boolean
         get() = !isVerticalSplit
@@ -48,7 +47,7 @@ data class WavefrontObjSettingsState(
     }
 
     fun setFrom(other: WavefrontObjSettingsState): WavefrontObjSettingsState {
-        objPreviewFileEditorSettings = other.objPreviewFileEditorSettings
+        objPreviewSettings = other.objPreviewSettings
         defaultEditorLayout = other.defaultEditorLayout
         isVerticalSplit = other.isVerticalSplit
         return this
@@ -57,6 +56,8 @@ data class WavefrontObjSettingsState(
     companion object {
 
         val DEFAULT = WavefrontObjSettingsState()
+
+        const val DEFAULT_VERTICAL_SPLIT = false
 
         fun getInstance(): WavefrontObjSettingsState? {
             return ServiceManager.getService(WavefrontObjSettingsState::class.java)
@@ -69,7 +70,9 @@ data class WavefrontObjSettingsState(
 
     interface SettingsChangedListener {
 
-        fun settingsChanged(settings: WavefrontObjSettingsState?)
+        fun beforeSettingsChanged(newSettings: WavefrontObjSettingsState?) = Unit
+
+        fun settingsChanged(newSettings: WavefrontObjSettingsState?) = Unit
 
         companion object {
             val TOPIC = Topic.create(

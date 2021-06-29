@@ -38,7 +38,7 @@ import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPreviewFileEditorSettingsState.Holder {
+class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPreviewSettingsState.Holder {
 
     private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
     private lateinit var defaultUpVector: ComboBox<UpVector>
@@ -105,7 +105,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                 row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLineWidth")) {
                     cell {
                         axisLineWidthInput = floatTextField(
-                            defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+                            defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
                             errorMessage = { getLineWidthErrorMessage(it) }
                         ).component
                         contextHelpLabel(
@@ -131,7 +131,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
                 row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.gridLineWidth")) {
                     cell {
                         gridLineWidthInput = floatTextField(
-                            defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_GRID_LINE_WIDTH,
+                            defaultValue = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
                             errorMessage = { getLineWidthErrorMessage(it) }
                         ).component
                         contextHelpLabel(
@@ -145,7 +145,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
                 cell {
                     lineWidthInput = floatTextField(
-                        defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
+                        defaultValue = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
                         errorMessage = { getLineWidthErrorMessage(it) }
                     ).component
                     contextHelpLabel(
@@ -157,7 +157,7 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
             }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
                 pointSizeInput = floatTextField(
-                    defaultValue = ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE,
+                    defaultValue = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
                     errorMessage = { getPointSizeErrorMessage(it) }
                 ).component
             }
@@ -166,32 +166,32 @@ class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPrevi
 
     override var wavefrontObjSettings: WavefrontObjSettingsState
         get() = WavefrontObjSettingsState(
-            objPreviewFileEditorSettings = objPreviewFileEditorSettings,
+            objPreviewSettings = objPreviewSettings,
             defaultEditorLayout = defaultEditorLayout.selectedItem as? SplitEditor.Layout ?: SplitEditor.Layout.DEFAULT,
             isVerticalSplit = verticalSplitCheckBox.isSelected
         )
         set(value) {
-            objPreviewFileEditorSettings = value.objPreviewFileEditorSettings
+            objPreviewSettings = value.objPreviewSettings
             defaultEditorLayout.selectedItem = value.defaultEditorLayout
             verticalSplitCheckBox.isSelected = value.isVerticalSplit
             horizontalSplitCheckBox.isSelected = value.isHorizontalSplit
         }
 
-    override var objPreviewFileEditorSettings: ObjPreviewFileEditorSettingsState
-        get() = ObjPreviewFileEditorSettingsState(
+    override var objPreviewSettings: ObjPreviewSettingsState
+        get() = ObjPreviewSettingsState(
             defaultShadingMethod = defaultShadingMethod.selectedItem as? ShadingMethod ?: ShadingMethod.DEFAULT,
             defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull()
-                ?: ObjPreviewFileEditorSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+                ?: ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
             showGrid = showGridCheckBox.isSelected,
             showFineGrid = showFineGridCheckBox.isSelected,
             gridLineWidth = gridLineWidthInput.text.toFloatOrNull()
-                ?: ObjPreviewFileEditorSettingsState.DEFAULT_GRID_LINE_WIDTH,
+                ?: ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
             lineWidth = lineWidthInput.text.toFloatOrNull()
-                ?: ObjPreviewFileEditorSettingsState.DEFAULT_LINE_WIDTH,
+                ?: ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
             pointSize = pointSizeInput.text.toFloatOrNull()
-                ?: ObjPreviewFileEditorSettingsState.DEFAULT_POINT_SIZE
+                ?: ObjPreviewSettingsState.DEFAULT_POINT_SIZE
         )
         set(value) {
             defaultShadingMethod.selectedItem = value.defaultShadingMethod

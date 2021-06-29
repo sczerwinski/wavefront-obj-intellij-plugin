@@ -64,11 +64,11 @@ import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesStore
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
-import it.czerwinski.intellij.wavefront.editor.ui.ErrorLog
+import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
-import it.czerwinski.intellij.wavefront.settings.ObjPreviewFileEditorSettingsState
 import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -97,7 +97,7 @@ class PreviewScene(
 
     private var showAxes: Boolean = false
     private var showGrid: Boolean = false
-    private var settings: ObjPreviewFileEditorSettingsState = ObjPreviewFileEditorSettingsState()
+    private var config: PreviewSceneConfig = PreviewSceneConfig()
 
     private val background
         get() = EditorColorsManager.getInstance().globalScheme.defaultBackground
@@ -178,8 +178,8 @@ class PreviewScene(
         requestRender()
     }
 
-    fun updateSettings(newSettings: ObjPreviewFileEditorSettingsState) {
-        settings = newSettings
+    fun updateConfig(newConfig: PreviewSceneConfig) {
+        config = newConfig
         requestRender()
     }
 
@@ -461,7 +461,7 @@ class PreviewScene(
     }
 
     private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh) {
-        gl.glLineWidth(settings.lineWidth)
+        gl.glLineWidth(config.lineWidth)
         wireframeProgram.use(gl)
         wireframeShaderProgramExecutor.applyParams(
             gl,
@@ -479,7 +479,7 @@ class PreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
-                pointSize = settings.pointSize,
+                pointSize = config.pointSize,
                 color = Colors.asVec4(Colors.COLOR_POINT)
             )
         )
@@ -488,7 +488,7 @@ class PreviewScene(
 
     private fun renderAxes(gl: GlimpseAdapter) {
         gl.glCullFace(FaceCullingMode.DISABLED)
-        gl.glLineWidth(settings.axisLineWidth)
+        gl.glLineWidth(config.axisLineWidth)
 
         wireframeProgram.use(gl)
         renderAxis(gl, AxisMeshFactory.xAxisModelMatrix, Colors.COLOR_AXIS_X)
@@ -510,7 +510,7 @@ class PreviewScene(
     }
 
     private fun renderGrid(gl: GlimpseAdapter) {
-        gl.glLineWidth(settings.gridLineWidth)
+        gl.glLineWidth(config.gridLineWidth)
         val scale = GridMeshFactory.calculateGridScale(modelSize = model?.size ?: 1f)
         wireframeProgram.use(gl)
         wireframeShaderProgramExecutor.applyParams(
@@ -521,7 +521,7 @@ class PreviewScene(
             )
         )
         wireframeShaderProgramExecutor.drawMesh(gl, gridMesh)
-        if (settings.showFineGrid) renderFineGrid(gl, scale)
+        if (config.showFineGrid) renderFineGrid(gl, scale)
     }
 
     private fun renderFineGrid(gl: GlimpseAdapter, scale: Float) {

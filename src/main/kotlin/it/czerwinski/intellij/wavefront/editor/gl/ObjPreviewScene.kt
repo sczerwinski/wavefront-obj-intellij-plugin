@@ -32,9 +32,6 @@ import graphics.glimpse.buffers.toFloatBufferData
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
-import graphics.glimpse.shaders.Program
-import graphics.glimpse.shaders.Shader
-import graphics.glimpse.shaders.ShaderType
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureMagFilter
 import graphics.glimpse.textures.TextureMinFilter
@@ -46,6 +43,7 @@ import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
 import graphics.glimpse.types.scale
+import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
@@ -54,25 +52,21 @@ import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.WireframeFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShaderProgramExecutor
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.ShaderResources
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.ProgramExecutorsManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShaderProgramExecutor
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShaderProgramExecutor
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
-import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesStore
+import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
-import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
-class PreviewScene(
+class ObjPreviewScene(
     private val profile: GLProfile,
     animatorControl: GLAnimatorControl,
     private val errorLog: ErrorLog
@@ -102,16 +96,9 @@ class PreviewScene(
     private val background
         get() = EditorColorsManager.getInstance().globalScheme.defaultBackground
 
-    private lateinit var wireframeProgram: Program
-    private lateinit var wireframeShaderProgramExecutor: WireframeShaderProgramExecutor
+    private val programExecutorsManager = ProgramExecutorsManager(errorLog)
 
-    private lateinit var solidProgram: Program
-    private lateinit var solidShaderProgramExecutor: SolidShaderProgramExecutor
-
-    private lateinit var materialProgram: Program
-    private lateinit var materialShaderProgramExecutor: MaterialShaderProgramExecutor
-
-    private val texturesStore = TexturesStore()
+    private val texturesManager = TexturesManager()
 
     private lateinit var missingTexture: Texture
     private lateinit var missingNormalmap: Texture
@@ -140,7 +127,7 @@ class PreviewScene(
 
     private fun prepareTexture(file: VirtualFile) {
         try {
-            texturesStore.prepare(profile, file)
+            texturesManager.prepare(profile, file)
         } catch (expected: Throwable) {
             errorLog.addError(
                 WavefrontObjBundle.message("editor.fileTypes.obj.preview.prepareTexture.error", file.name),
@@ -197,42 +184,10 @@ class PreviewScene(
         gl.glEnableLineSmooth()
         gl.glEnableProgramPointSize()
 
-        createShaders(gl)
+        programExecutorsManager.initialize(gl)
         createMissingTextures(gl)
         createMeshes(gl)
     }
-
-    private fun createShaders(gl: GlimpseAdapter) {
-        try {
-            val shaderFactory = Shader.Factory.newInstance(gl)
-            val programBuilder = Program.Builder.newInstance(gl)
-
-            wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
-            solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
-            materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
-
-            wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
-            solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
-            materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
-        } catch (expected: Throwable) {
-            errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createShaders.error"),
-                expected
-            )
-        }
-    }
-
-    private fun createProgram(
-        shaderFactory: Shader.Factory,
-        programBuilder: Program.Builder,
-        shadingMethod: ShadingMethod
-    ): Program = programBuilder
-        .withVertexShader(shaderFactory.createShader(shadingMethod, ShaderType.VERTEX_SHADER))
-        .withFragmentShader(shaderFactory.createShader(shadingMethod, ShaderType.FRAGMENT_SHADER))
-        .build()
-
-    private fun Shader.Factory.createShader(shadingMethod: ShadingMethod, shaderType: ShaderType): Shader =
-        createShader(type = shaderType, source = ShaderResources.getShaderSource(shadingMethod, shaderType))
 
     private fun createMissingTextures(gl: GlimpseAdapter) {
         try {
@@ -390,20 +345,18 @@ class PreviewScene(
     }
 
     private fun renderFacesWireframe(gl: GlimpseAdapter, facesMesh: Mesh) {
-        wireframeProgram.use(gl)
-        wireframeShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
                 color = Colors.asVec4(Colors.COLOR_FACE)
-            )
+            ),
+            facesMesh
         )
-        wireframeShaderProgramExecutor.drawMesh(gl, facesMesh)
     }
 
     private fun renderFacesSolid(gl: GlimpseAdapter, facesMesh: Mesh) {
-        solidProgram.use(gl)
-        solidShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderSolid(
             gl,
             SolidShader(
                 projectionMatrix = lens.projectionMatrix,
@@ -413,9 +366,9 @@ class PreviewScene(
                 cameraPosition = camera.eye,
                 upVector = upVector.vector,
                 color = Colors.asVec3(Colors.COLOR_FACE)
-            )
+            ),
+            facesMesh
         )
-        solidShaderProgramExecutor.drawMesh(gl, facesMesh)
     }
 
     @Suppress("ComplexMethod")
@@ -423,8 +376,8 @@ class PreviewScene(
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
         val ambientTexture = material?.ambientColorMap?.getTexture(gl)
         val diffuseTexture = material?.diffuseColorMap?.getTexture(gl)
-        materialProgram.use(gl)
-        materialShaderProgramExecutor.applyParams(
+
+        programExecutorsManager.renderMaterial(
             gl,
             MaterialShader(
                 projectionMatrix = lens.projectionMatrix,
@@ -445,13 +398,13 @@ class PreviewScene(
                 specularExponentGain = material?.specularExponentGain ?: 1f,
                 normalmapTexture = material?.bumpMap?.getTexture(gl) ?: missingNormalmap,
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f
-            )
+            ),
+            facesMesh
         )
-        materialShaderProgramExecutor.drawMesh(gl, facesMesh)
     }
 
     private fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
-        texturesStore[gl, this]
+        texturesManager[gl, this]
     } catch (expected: Throwable) {
         errorLog.addError(
             WavefrontObjBundle.message("editor.fileTypes.obj.preview.getTexture.error", name),
@@ -462,35 +415,32 @@ class PreviewScene(
 
     private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh) {
         gl.glLineWidth(config.lineWidth)
-        wireframeProgram.use(gl)
-        wireframeShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
                 color = Colors.asVec4(Colors.COLOR_LINE)
-            )
+            ),
+            linesMesh
         )
-        wireframeShaderProgramExecutor.drawMesh(gl, linesMesh)
     }
 
     private fun renderPoints(gl: GlimpseAdapter, pointsMesh: Mesh) {
-        wireframeProgram.use(gl)
-        wireframeShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
                 pointSize = config.pointSize,
                 color = Colors.asVec4(Colors.COLOR_POINT)
-            )
+            ),
+            pointsMesh
         )
-        wireframeShaderProgramExecutor.drawMesh(gl, pointsMesh)
     }
 
     private fun renderAxes(gl: GlimpseAdapter) {
         gl.glCullFace(FaceCullingMode.DISABLED)
         gl.glLineWidth(config.axisLineWidth)
 
-        wireframeProgram.use(gl)
         renderAxis(gl, AxisMeshFactory.xAxisModelMatrix, Colors.COLOR_AXIS_X)
         renderAxis(gl, AxisMeshFactory.yAxisModelMatrix, Colors.COLOR_AXIS_Y)
         renderAxis(gl, AxisMeshFactory.zAxisModelMatrix, Colors.COLOR_AXIS_Z)
@@ -498,41 +448,40 @@ class PreviewScene(
 
     private fun renderAxis(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey) {
         val scale = (model?.size ?: 1f) * AXIS_LENGTH_FACTOR
-        wireframeShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * modelMatrix,
                 color = Colors.asVec4(colorKey)
-            )
+            ),
+            axisMesh,
+            axisConeMesh
         )
-        wireframeShaderProgramExecutor.drawMesh(gl, axisMesh)
-        wireframeShaderProgramExecutor.drawMesh(gl, axisConeMesh)
     }
 
     private fun renderGrid(gl: GlimpseAdapter) {
         gl.glLineWidth(config.gridLineWidth)
         val scale = GridMeshFactory.calculateGridScale(modelSize = model?.size ?: 1f)
-        wireframeProgram.use(gl)
-        wireframeShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
                 color = Colors.asVec4(Colors.COLOR_GRID, GRID_ALPHA)
-            )
+            ),
+            gridMesh
         )
-        wireframeShaderProgramExecutor.drawMesh(gl, gridMesh)
         if (config.showFineGrid) renderFineGrid(gl, scale)
     }
 
     private fun renderFineGrid(gl: GlimpseAdapter, scale: Float) {
-        wireframeShaderProgramExecutor.applyParams(
+        programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
                 color = Colors.asVec4(Colors.COLOR_GRID, FINE_GRID_ALPHA)
-            )
+            ),
+            fineGridMesh
         )
-        wireframeShaderProgramExecutor.drawMesh(gl, fineGridMesh)
     }
 
     override fun onDestroy(gl: GlimpseAdapter) {
@@ -542,15 +491,10 @@ class PreviewScene(
             fineGridMesh.dispose(gl)
             axisMesh.dispose(gl)
             axisConeMesh.dispose(gl)
-            texturesStore.dispose(gl)
+            texturesManager.dispose(gl)
             missingTexture.dispose(gl)
             missingNormalmap.dispose(gl)
-            wireframeShaderProgramExecutor.dispose()
-            solidShaderProgramExecutor.dispose()
-            materialShaderProgramExecutor.dispose()
-            wireframeProgram.dispose(gl)
-            solidProgram.dispose(gl)
-            materialProgram.dispose(gl)
+            programExecutorsManager.dispose(gl)
         } catch (ignored: Throwable) {
         }
     }

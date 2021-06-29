@@ -38,7 +38,7 @@ import it.czerwinski.intellij.common.ui.EditorToolbarHeader
 import it.czerwinski.intellij.common.ui.EditorWithToolbar
 import it.czerwinski.intellij.common.ui.ErrorLogSplitter
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.gl.PreviewScene
+import it.czerwinski.intellij.wavefront.editor.gl.ObjPreviewScene
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
@@ -79,7 +79,7 @@ class ObjPreviewComponent(
             .setTargetComponent(myErrorLogSplitter)
             .build()
 
-    private lateinit var myScene: PreviewScene
+    private lateinit var myScene: ObjPreviewScene
 
     private var myModel: GLModel? = null
         set(value) {
@@ -182,7 +182,7 @@ class ObjPreviewComponent(
                     val glimpsePanel = GlimpsePanel()
                     val animator = FPSAnimator(glimpsePanel, DEFAULT_FPS_LIMIT)
 
-                    myScene = PreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
+                    myScene = ObjPreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
 
                     myScene.updateModel(myModel)
                     updateScene()

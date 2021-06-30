@@ -8,8 +8,8 @@
 - Remove reference to the `jcenter()` from Gradle configuration file
 - Upgrade Gradle Wrapper to `7.1`
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.10`
-  - Upgrade `kapt` to `1.5.10`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.20`
+  - Upgrade `kapt` to `1.5.20`
   - Upgrade `org.jetbrains.intellij` to `1.0`
   - Upgrade `detekt-formatting` to `1.17.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`

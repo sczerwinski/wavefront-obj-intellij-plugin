@@ -20,8 +20,6 @@ import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.FaceCullingMode
 import graphics.glimpse.GlimpseAdapter
-import graphics.glimpse.buffers.Buffer
-import graphics.glimpse.buffers.toFloatBufferData
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
@@ -35,10 +33,7 @@ import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.LinesMesh
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.WireframeFacesMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.meshes.ModelMeshesManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
@@ -93,9 +88,7 @@ class ObjPreviewScene(
     private lateinit var fallbackTexture: Texture
     private lateinit var fallbackNormalmap: Texture
 
-    private val facesMeshes = mutableListOf<Mesh>()
-    private val linesMeshes = mutableListOf<Mesh>()
-    private val pointsMeshes = mutableListOf<Mesh>()
+    private val modelMeshesManager = ModelMeshesManager()
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
@@ -137,9 +130,7 @@ class ObjPreviewScene(
 
     private fun createModelMeshes(gl: GlimpseAdapter) {
         try {
-            if (model != null) {
-                recreateModelMeshes(gl)
-            }
+            modelMeshesManager.initialize(gl, model ?: return, shadingMethod)
         } catch (expected: Throwable) {
             errorLog.addError(
                 WavefrontObjBundle.message("editor.fileTypes.obj.preview.createModelMeshes.error"),
@@ -161,73 +152,12 @@ class ObjPreviewScene(
 
     override fun renderModel(gl: GlimpseAdapter) {
         gl.glCullFace(FaceCullingMode.BACK)
-        if (modelChanged.getAndSet(false)) recreateModelMeshes(gl)
-        facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
-        linesMeshes.forEach { renderLines(gl, it) }
-        pointsMeshes.forEach { renderPoints(gl, it) }
-    }
-
-    private fun recreateModelMeshes(gl: GlimpseAdapter) {
-        (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
-        facesMeshes.clear()
-        linesMeshes.clear()
-        pointsMeshes.clear()
-        val model = this.model ?: return
-        createFacesMeshes(model, gl)
-        createLinesMeshes(model, gl)
-        createPointsMeshes(model, gl)
-    }
-
-    private fun createFacesMeshes(model: GLModel, gl: GlimpseAdapter) {
-        val facesMeshFactory = when (shadingMethod) {
-            ShadingMethod.WIREFRAME -> WireframeFacesMeshFactory
-            ShadingMethod.SOLID -> SolidFacesMeshFactory
-            ShadingMethod.MATERIAL -> SolidFacesMeshFactory
+        if (modelChanged.getAndSet(false)) {
+            createModelMeshes(gl)
         }
-        facesMeshes.addAll(
-            model.groupingElements.flatMap { element ->
-                element.materialParts.map { part ->
-                    facesMeshFactory.create(gl, model, part)
-                }
-            }
-        )
-    }
-
-    private fun createLinesMeshes(model: GLModel, gl: GlimpseAdapter) {
-        val bufferFactory = Buffer.Factory.newInstance(gl)
-        linesMeshes.addAll(
-            model.groupingElements.flatMap { element ->
-                element.materialParts.map { part ->
-                    val linesPositionsData = part.lines.flatMap { line ->
-                        line.vertexIndexList.zipWithNext().flatMap { (index1, index2) ->
-                            model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                                model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
-                        }
-                    }.toFloatBufferData()
-                    LinesMesh(
-                        vertexCount = part.lines.sumBy { line -> (line.vertexIndexList.size - 1) * 2 },
-                        buffers = bufferFactory.createArrayBuffers(linesPositionsData)
-                    )
-                }
-            }
-        )
-    }
-
-    private fun createPointsMeshes(model: GLModel, gl: GlimpseAdapter) {
-        val bufferFactory = Buffer.Factory.newInstance(gl)
-        pointsMeshes.addAll(
-            model.groupingElements.flatMap { element ->
-                element.materialParts.map { part ->
-                    val pointsPositionsData = part.points.flatMap { point ->
-                        model.vertices[(point.vertexIndex.value ?: 1) - 1].coordinates.map { it ?: 0f }
-                    }.toFloatBufferData()
-                    PointsMesh(
-                        vertexCount = part.points.size,
-                        buffers = bufferFactory.createArrayBuffers(pointsPositionsData)
-                    )
-                }
-            }
-        )
+        modelMeshesManager.facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
+        modelMeshesManager.linesMeshes.forEach { renderLines(gl, it) }
+        modelMeshesManager.pointsMeshes.forEach { renderPoints(gl, it) }
     }
 
     private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod, index: Int) {
@@ -330,7 +260,7 @@ class ObjPreviewScene(
 
     override fun dispose(gl: GlimpseAdapter) {
         super.dispose(gl)
-        (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
+        modelMeshesManager.dispose(gl)
         fallbackTexture.dispose(gl)
         fallbackNormalmap.dispose(gl)
     }

@@ -100,8 +100,8 @@ class ObjPreviewScene(
 
     private val texturesManager = TexturesManager()
 
-    private lateinit var missingTexture: Texture
-    private lateinit var missingNormalmap: Texture
+    private lateinit var fallbackTexture: Texture
+    private lateinit var fallbackNormalmap: Texture
 
     private val facesMeshes = mutableListOf<Mesh>()
     private val linesMeshes = mutableListOf<Mesh>()
@@ -185,19 +185,19 @@ class ObjPreviewScene(
         gl.glEnableProgramPointSize()
 
         programExecutorsManager.initialize(gl)
-        createMissingTextures(gl)
+        createFallbackTextures(gl)
         createMeshes(gl)
     }
 
-    private fun createMissingTextures(gl: GlimpseAdapter) {
+    private fun createFallbackTextures(gl: GlimpseAdapter) {
         try {
             val textures = Texture.Builder.getInstance(gl)
-                .addTexture(TextureResources.missingTextureImageSource)
-                .addTexture(TextureResources.missingNormalmapImageSource)
+                .addTexture(TextureResources.fallbackTextureImageSource)
+                .addTexture(TextureResources.fallbackNormalmapImageSource)
                 .generateMipmaps()
                 .build()
-            missingTexture = textures.first()
-            missingNormalmap = textures.last()
+            fallbackTexture = textures.first()
+            fallbackNormalmap = textures.last()
 
             gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
             gl.glTexParameterFilter(
@@ -207,7 +207,7 @@ class ObjPreviewScene(
             )
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createMissingTextures.error"),
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createFallbackTextures.error"),
                 expected
             )
         }
@@ -390,13 +390,13 @@ class ObjPreviewScene(
                 diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
                 specularColor = Vec3(color = material?.specularColor ?: Color.WHITE),
                 specularExponent = material?.specularExponent ?: 1f,
-                ambientTexture = ambientTexture ?: diffuseTexture ?: missingTexture,
-                diffuseTexture = diffuseTexture ?: missingTexture,
-                specularTexture = material?.specularColorMap?.getTexture(gl) ?: missingTexture,
-                specularExponentTexture = material?.specularExponentMap?.getTexture(gl) ?: missingTexture,
+                ambientTexture = ambientTexture ?: diffuseTexture ?: fallbackTexture,
+                diffuseTexture = diffuseTexture ?: fallbackTexture,
+                specularTexture = material?.specularColorMap?.getTexture(gl) ?: fallbackTexture,
+                specularExponentTexture = material?.specularExponentMap?.getTexture(gl) ?: fallbackTexture,
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
-                normalmapTexture = material?.bumpMap?.getTexture(gl) ?: missingNormalmap,
+                normalmapTexture = material?.bumpMap?.getTexture(gl) ?: fallbackNormalmap,
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f
             ),
             facesMesh
@@ -492,8 +492,8 @@ class ObjPreviewScene(
             axisMesh.dispose(gl)
             axisConeMesh.dispose(gl)
             texturesManager.dispose(gl)
-            missingTexture.dispose(gl)
-            missingNormalmap.dispose(gl)
+            fallbackTexture.dispose(gl)
+            fallbackNormalmap.dispose(gl)
             programExecutorsManager.dispose(gl)
         } catch (ignored: Throwable) {
         }

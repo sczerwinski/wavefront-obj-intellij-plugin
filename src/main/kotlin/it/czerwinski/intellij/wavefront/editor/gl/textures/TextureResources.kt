@@ -21,16 +21,16 @@ import graphics.glimpse.textures.fromResource
 
 object TextureResources {
 
-    private const val MISSING_TEXTURE_RESOURCE = "/textures/missing_texture.png"
-    private const val MISSING_NORMALMAP_RESOURCE = "/textures/missing_normalmap.png"
+    private const val FALLBACK_TEXTURE_RESOURCE = "/textures/fallback_texture.png"
+    private const val FALLBACK_NORMALMAP_RESOURCE = "/textures/fallback_normalmap.png"
 
-    val missingTextureImageSource: TextureImageSource
+    val fallbackTextureImageSource: TextureImageSource
         get() = TextureImageSource.builder()
-            .fromResource(owner = this, MISSING_TEXTURE_RESOURCE)
+            .fromResource(owner = this, FALLBACK_TEXTURE_RESOURCE)
             .build()
 
-    val missingNormalmapImageSource: TextureImageSource
+    val fallbackNormalmapImageSource: TextureImageSource
         get() = TextureImageSource.builder()
-            .fromResource(owner = this, MISSING_NORMALMAP_RESOURCE)
+            .fromResource(owner = this, FALLBACK_NORMALMAP_RESOURCE)
             .build()
 }

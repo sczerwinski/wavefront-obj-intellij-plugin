@@ -41,7 +41,6 @@ import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
-import graphics.glimpse.types.Vec4
 import graphics.glimpse.types.scale
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
@@ -349,7 +348,7 @@ class ObjPreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
-                color = Colors.asVec4(Colors.COLOR_FACE)
+                color = PreviewColors.asVec4(PreviewColors.COLOR_FACE)
             ),
             facesMesh
         )
@@ -365,7 +364,7 @@ class ObjPreviewScene(
                 normalMatrix = Mat3.identity,
                 cameraPosition = camera.eye,
                 upVector = upVector.vector,
-                color = Colors.asVec3(Colors.COLOR_FACE)
+                color = PreviewColors.asVec3(PreviewColors.COLOR_FACE)
             ),
             facesMesh
         )
@@ -419,7 +418,7 @@ class ObjPreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
-                color = Colors.asVec4(Colors.COLOR_LINE)
+                color = PreviewColors.asVec4(PreviewColors.COLOR_LINE)
             ),
             linesMesh
         )
@@ -431,7 +430,7 @@ class ObjPreviewScene(
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
                 pointSize = config.pointSize,
-                color = Colors.asVec4(Colors.COLOR_POINT)
+                color = PreviewColors.asVec4(PreviewColors.COLOR_POINT)
             ),
             pointsMesh
         )
@@ -441,9 +440,9 @@ class ObjPreviewScene(
         gl.glCullFace(FaceCullingMode.DISABLED)
         gl.glLineWidth(config.axisLineWidth)
 
-        renderAxis(gl, AxisMeshFactory.xAxisModelMatrix, Colors.COLOR_AXIS_X)
-        renderAxis(gl, AxisMeshFactory.yAxisModelMatrix, Colors.COLOR_AXIS_Y)
-        renderAxis(gl, AxisMeshFactory.zAxisModelMatrix, Colors.COLOR_AXIS_Z)
+        renderAxis(gl, AxisMeshFactory.xAxisModelMatrix, PreviewColors.COLOR_AXIS_X)
+        renderAxis(gl, AxisMeshFactory.yAxisModelMatrix, PreviewColors.COLOR_AXIS_Y)
+        renderAxis(gl, AxisMeshFactory.zAxisModelMatrix, PreviewColors.COLOR_AXIS_Z)
     }
 
     private fun renderAxis(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey) {
@@ -452,7 +451,7 @@ class ObjPreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * modelMatrix,
-                color = Colors.asVec4(colorKey)
+                color = PreviewColors.asVec4(colorKey)
             ),
             axisMesh,
             axisConeMesh
@@ -466,7 +465,7 @@ class ObjPreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
-                color = Colors.asVec4(Colors.COLOR_GRID, GRID_ALPHA)
+                color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, GRID_ALPHA)
             ),
             gridMesh
         )
@@ -478,7 +477,7 @@ class ObjPreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
-                color = Colors.asVec4(Colors.COLOR_GRID, FINE_GRID_ALPHA)
+                color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, FINE_GRID_ALPHA)
             ),
             fineGridMesh
         )
@@ -506,21 +505,4 @@ class ObjPreviewScene(
         private const val AXIS_LENGTH_FACTOR = 2f
     }
 
-    internal object Colors {
-
-        internal val COLOR_FACE: ColorKey = ColorKey.createColorKey("OBJ_3D_FACE", Color.LIGHT_GRAY)
-        internal val COLOR_LINE: ColorKey = ColorKey.createColorKey("OBJ_3D_LINE", Color.GRAY)
-        internal val COLOR_POINT: ColorKey = ColorKey.createColorKey("OBJ_3D_POINT", Color.GRAY)
-
-        internal val COLOR_AXIS_X: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_X", Color.RED)
-        internal val COLOR_AXIS_Y: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_Y", Color.GREEN)
-        internal val COLOR_AXIS_Z: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_Z", Color.BLUE)
-        internal val COLOR_GRID: ColorKey = ColorKey.createColorKey("OBJ_3D_GRID", Color.GRAY)
-
-        internal fun asVec3(colorKey: ColorKey): Vec3 =
-            Vec3(color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: Color.GRAY)
-
-        internal fun asVec4(colorKey: ColorKey, alpha: Float = 1f): Vec4 =
-            asVec3(colorKey).toVec4(w = alpha)
-    }
 }

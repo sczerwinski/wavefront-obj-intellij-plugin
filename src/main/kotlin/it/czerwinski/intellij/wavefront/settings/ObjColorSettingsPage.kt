@@ -22,7 +22,7 @@ import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.gl.ObjPreviewScene
+import it.czerwinski.intellij.wavefront.editor.gl.PreviewColors
 import it.czerwinski.intellij.wavefront.lang.OBJ_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter
 import javax.swing.Icon
@@ -118,37 +118,37 @@ class ObjColorSettingsPage : ColorSettingsPage {
     override fun getColorDescriptors(): Array<ColorDescriptor> = arrayOf(
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.face"),
-            ObjPreviewScene.Colors.COLOR_FACE,
+            PreviewColors.COLOR_FACE,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.line"),
-            ObjPreviewScene.Colors.COLOR_LINE,
+            PreviewColors.COLOR_LINE,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.point"),
-            ObjPreviewScene.Colors.COLOR_POINT,
+            PreviewColors.COLOR_POINT,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisX"),
-            ObjPreviewScene.Colors.COLOR_AXIS_X,
+            PreviewColors.COLOR_AXIS_X,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisY"),
-            ObjPreviewScene.Colors.COLOR_AXIS_Y,
+            PreviewColors.COLOR_AXIS_Y,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.axisZ"),
-            ObjPreviewScene.Colors.COLOR_AXIS_Z,
+            PreviewColors.COLOR_AXIS_Z,
             ColorDescriptor.Kind.FOREGROUND
         ),
         ColorDescriptor(
             WavefrontObjBundle.message("settings.fileTypes.obj.coloring.color.grid"),
-            ObjPreviewScene.Colors.COLOR_GRID,
+            PreviewColors.COLOR_GRID,
             ColorDescriptor.Kind.FOREGROUND
         )
     )

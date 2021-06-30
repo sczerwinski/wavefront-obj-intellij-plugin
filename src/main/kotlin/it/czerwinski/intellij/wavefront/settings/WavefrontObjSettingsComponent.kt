@@ -16,243 +16,46 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
-import com.intellij.icons.AllIcons
-import com.intellij.openapi.options.ConfigurationException
-import com.intellij.openapi.ui.ComboBox
-import com.intellij.ui.ContextHelpLabel
-import com.intellij.ui.EnumComboBoxModel
-import com.intellij.ui.components.JBCheckBox
-import com.intellij.ui.components.JBRadioButton
-import com.intellij.ui.components.JBTextField
-import com.intellij.ui.layout.Cell
-import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.panel
-import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
-import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRenderer
-import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
-import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
-import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class WavefrontObjSettingsComponent : WavefrontObjSettingsState.Holder, ObjPreviewSettingsState.Holder {
+/**
+ * UI component for Wavefront OBJ plugin settings.
+ */
+class WavefrontObjSettingsComponent : SettingsComponent, WavefrontObjSettingsState.Holder {
 
-    private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
-    private lateinit var defaultUpVector: ComboBox<UpVector>
-    private lateinit var showAxesCheckBox: JBCheckBox
-    private lateinit var axisLineWidthInput: JBTextField
-    private lateinit var showGridCheckBox: JBCheckBox
-    private lateinit var showFineGridCheckBox: JBCheckBox
-    private lateinit var gridLineWidthInput: JBTextField
-    private lateinit var lineWidthInput: JBTextField
-    private lateinit var pointSizeInput: JBTextField
-    private lateinit var defaultEditorLayout: ComboBox<SplitEditor.Layout>
-    private lateinit var verticalSplitCheckBox: JBRadioButton
-    private lateinit var horizontalSplitCheckBox: JBRadioButton
+    private val objSplitEditorSettingsRow = ObjSplitEditorSettingsRow()
+    private val objPreviewSettingsRow = ObjPreviewSettingsRow()
 
     private val mainPanel: JPanel = panel {
         titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
-                defaultEditorLayout = comboBox(
-                    EnumComboBoxModel(SplitEditor.Layout::class.java),
-                    getter = { SplitEditor.Layout.DEFAULT },
-                    setter = { },
-                    SplitEditorLayoutListCellRenderer()
-                ).component
-            }
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {
-                buttonGroup {
-                    row {
-                        horizontalSplitCheckBox = radioButton(
-                            WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split.horizontal")
-                        ).component
-                    }
-                    row {
-                        verticalSplitCheckBox = radioButton(
-                            WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split.vertical")
-                        ).component
-                    }
-                }
-            }
+            objSplitEditorSettingsRow.createRow(this)
         }
         titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod")) {
-                defaultShadingMethod = comboBox(
-                    EnumComboBoxModel(ShadingMethod::class.java),
-                    getter = { ShadingMethod.DEFAULT },
-                    setter = { },
-                    ShadingMethodListCellRenderer()
-                ).component
-            }
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector"), separated = true) {
-                defaultUpVector = comboBox(
-                    EnumComboBoxModel(UpVector::class.java),
-                    getter = { UpVector.DEFAULT },
-                    setter = { },
-                    UpVectorListCellRenderer()
-                ).component
-            }
-            row(separated = true) {
-                showAxesCheckBox = checkBox(
-                    WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showAxes")
-                ).component
-                showAxesCheckBox.addChangeListener {
-                    subRowsEnabled = showAxesCheckBox.isSelected
-                }
-                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLineWidth")) {
-                    cell {
-                        axisLineWidthInput = floatTextField(
-                            defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
-                            errorMessage = { getLineWidthErrorMessage(it) }
-                        ).component
-                        contextHelpLabel(
-                            description = WavefrontObjBundle.message(
-                                "settings.editor.fileTypes.obj.preview.lineWidth.help"
-                            )
-                        )
-                    }
-                }
-            }
-            row(separated = true) {
-                showGridCheckBox = checkBox(
-                    WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showGrid")
-                ).component
-                showGridCheckBox.addChangeListener {
-                    subRowsEnabled = showGridCheckBox.isSelected
-                }
-                row {
-                    showFineGridCheckBox = checkBox(
-                        WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showFineGrid")
-                    ).component
-                }
-                row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.gridLineWidth")) {
-                    cell {
-                        gridLineWidthInput = floatTextField(
-                            defaultValue = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
-                            errorMessage = { getLineWidthErrorMessage(it) }
-                        ).component
-                        contextHelpLabel(
-                            description = WavefrontObjBundle.message(
-                                "settings.editor.fileTypes.obj.preview.lineWidth.help"
-                            )
-                        )
-                    }
-                }
-            }
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
-                cell {
-                    lineWidthInput = floatTextField(
-                        defaultValue = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
-                        errorMessage = { getLineWidthErrorMessage(it) }
-                    ).component
-                    contextHelpLabel(
-                        description = WavefrontObjBundle.message(
-                            "settings.editor.fileTypes.obj.preview.lineWidth.help"
-                        )
-                    )
-                }
-            }
-            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
-                pointSizeInput = floatTextField(
-                    defaultValue = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
-                    errorMessage = { getPointSizeErrorMessage(it) }
-                ).component
-            }
+            objPreviewSettingsRow.createRow(this)
         }
     }
 
     override var wavefrontObjSettings: WavefrontObjSettingsState
         get() = WavefrontObjSettingsState(
-            objPreviewSettings = objPreviewSettings,
-            defaultEditorLayout = defaultEditorLayout.selectedItem as? SplitEditor.Layout ?: SplitEditor.Layout.DEFAULT,
-            isVerticalSplit = verticalSplitCheckBox.isSelected
+            objPreviewSettings = objPreviewSettingsRow.objPreviewSettings,
+            defaultEditorLayout = objSplitEditorSettingsRow.defaultEditorLayout,
+            isVerticalSplit = objSplitEditorSettingsRow.isVerticalSplit
         )
         set(value) {
-            objPreviewSettings = value.objPreviewSettings
-            defaultEditorLayout.selectedItem = value.defaultEditorLayout
-            verticalSplitCheckBox.isSelected = value.isVerticalSplit
-            horizontalSplitCheckBox.isSelected = value.isHorizontalSplit
+            objPreviewSettingsRow.objPreviewSettings = value.objPreviewSettings
+            objSplitEditorSettingsRow.defaultEditorLayout = value.defaultEditorLayout
+            objSplitEditorSettingsRow.isVerticalSplit = value.isVerticalSplit
         }
 
-    override var objPreviewSettings: ObjPreviewSettingsState
-        get() = ObjPreviewSettingsState(
-            defaultShadingMethod = defaultShadingMethod.selectedItem as? ShadingMethod ?: ShadingMethod.DEFAULT,
-            defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
-            showAxes = showAxesCheckBox.isSelected,
-            axisLineWidth = axisLineWidthInput.text.toFloatOrNull()
-                ?: ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
-            showGrid = showGridCheckBox.isSelected,
-            showFineGrid = showFineGridCheckBox.isSelected,
-            gridLineWidth = gridLineWidthInput.text.toFloatOrNull()
-                ?: ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
-            lineWidth = lineWidthInput.text.toFloatOrNull()
-                ?: ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
-            pointSize = pointSizeInput.text.toFloatOrNull()
-                ?: ObjPreviewSettingsState.DEFAULT_POINT_SIZE
-        )
-        set(value) {
-            defaultShadingMethod.selectedItem = value.defaultShadingMethod
-            defaultUpVector.selectedItem = value.defaultUpVector
-            showAxesCheckBox.isSelected = value.showAxes
-            axisLineWidthInput.text = value.axisLineWidth.toString()
-            showGridCheckBox.isSelected = value.showGrid
-            showFineGridCheckBox.isSelected = value.showFineGrid
-            gridLineWidthInput.text = value.gridLineWidth.toString()
-            lineWidthInput.text = value.lineWidth.toString()
-            pointSizeInput.text = value.pointSize.toString()
-        }
+    override fun getComponent(): JComponent = mainPanel
 
-    private fun Cell.floatTextField(
-        defaultValue: Float,
-        errorMessage: (String) -> String
-    ): CellBuilder<JBTextField> = textField(
-        getter = { defaultValue.toString() },
-        setter = { },
-        columns = FLOAT_INPUT_COLUMNS
-    ).withValidationOnInput {
-        val value = it.text.toFloatOrNull()
-        if (value == null) error(errorMessage)
-        else null
-    }
+    override fun getPreferredFocusedComponent(): JComponent = objPreviewSettingsRow.getPreferredFocusedComponent()
 
-    private fun Cell.contextHelpLabel(
-        label: String? = null,
-        description: String,
-        icon: Icon? = AllIcons.General.ContextHelp
-    ): CellBuilder<ContextHelpLabel> =
-        ContextHelpLabel(label.orEmpty(), description)
-            .apply { this.icon = icon }
-            .invoke()
-
-    fun getComponent(): JComponent = mainPanel
-
-    fun getPreferredFocusedComponent(): JComponent = defaultShadingMethod
-
-    fun validateForm() {
-        val errorMessage = when {
-            axisLineWidthInput.text.toFloatOrNull() == null -> getLineWidthErrorMessage(axisLineWidthInput.text)
-            gridLineWidthInput.text.toFloatOrNull() == null -> getLineWidthErrorMessage(gridLineWidthInput.text)
-            lineWidthInput.text.toFloatOrNull() == null -> getLineWidthErrorMessage(lineWidthInput.text)
-            pointSizeInput.text.toFloatOrNull() == null -> getPointSizeErrorMessage(pointSizeInput.text)
-            else -> null
-        }
-        if (errorMessage != null) throw ConfigurationException(errorMessage)
-    }
-
-    private fun getLineWidthErrorMessage(value: String): String = WavefrontObjBundle.message(
-        "settings.editor.fileTypes.obj.preview.lineWidth.error",
-        value
-    )
-
-    private fun getPointSizeErrorMessage(value: String): String = WavefrontObjBundle.message(
-        "settings.editor.fileTypes.obj.preview.pointSize.error",
-        value
-    )
-
-    companion object {
-        private const val FLOAT_INPUT_COLUMNS = 5
+    override fun validateForm() {
+        objSplitEditorSettingsRow.validateForm()
+        objPreviewSettingsRow.validateForm()
     }
 }

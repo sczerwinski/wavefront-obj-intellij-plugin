@@ -16,7 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
-import com.intellij.openapi.editor.colors.ColorKey
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.FaceCullingMode
@@ -31,15 +30,11 @@ import graphics.glimpse.textures.TextureMagFilter
 import graphics.glimpse.textures.TextureMinFilter
 import graphics.glimpse.textures.TextureType
 import graphics.glimpse.textures.TextureWrap
-import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
-import graphics.glimpse.types.scale
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.LinesMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
@@ -50,7 +45,6 @@ import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
-import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
@@ -61,7 +55,7 @@ class ObjPreviewScene(
     profile: GLProfile,
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
-) : BaseScene(profile, animatorControl, errorLog) {
+) : PreviewScene(profile, animatorControl, errorLog) {
 
     var model: GLModel? = null
         set(value) {
@@ -79,14 +73,13 @@ class ObjPreviewScene(
 
     private val modelChanged: AtomicBoolean = AtomicBoolean(false)
 
+    override val modelSize: Float? get() = model?.size
+
     var cameraModel: GLCameraModel? = null
         set(value) {
             field = value
             value?.let { recalculateCamera(it) }
         }
-
-    private var camera: TargetCamera = TargetCamera(eye = Vec3.unitX, target = Vec3.nullVector)
-    private var lens: PerspectiveLens = PerspectiveLens(Angle.rightAngle, aspect = 1f, near = 1f, far = 2f)
 
     var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
         set(value) {
@@ -95,26 +88,7 @@ class ObjPreviewScene(
             requestRender()
         }
 
-    private val upVector: UpVector
-        get() = cameraModel?.upVector ?: UpVector.DEFAULT
-
-    var showAxes: Boolean = false
-        set(value) {
-            field = value
-            requestRender()
-        }
-
-    var showGrid: Boolean = false
-        set(value) {
-            field = value
-            requestRender()
-        }
-
-    var config: PreviewSceneConfig = PreviewSceneConfig()
-        set(value) {
-            field = value
-            requestRender()
-        }
+    override val upVector: UpVector get() = cameraModel?.upVector ?: UpVector.DEFAULT
 
     private lateinit var fallbackTexture: Texture
     private lateinit var fallbackNormalmap: Texture
@@ -122,11 +96,6 @@ class ObjPreviewScene(
     private val facesMeshes = mutableListOf<Mesh>()
     private val linesMeshes = mutableListOf<Mesh>()
     private val pointsMeshes = mutableListOf<Mesh>()
-
-    private lateinit var gridMesh: Mesh
-    private lateinit var fineGridMesh: Mesh
-    private lateinit var axisMesh: Mesh
-    private lateinit var axisConeMesh: Mesh
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
@@ -137,8 +106,9 @@ class ObjPreviewScene(
     }
 
     override fun initialize(gl: GlimpseAdapter) {
+        super.initialize(gl)
         createFallbackTextures(gl)
-        createMeshes(gl)
+        createModelMeshes(gl)
     }
 
     private fun createFallbackTextures(gl: GlimpseAdapter) {
@@ -165,18 +135,14 @@ class ObjPreviewScene(
         }
     }
 
-    private fun createMeshes(gl: GlimpseAdapter) {
+    private fun createModelMeshes(gl: GlimpseAdapter) {
         try {
-            gridMesh = GridMeshFactory.createGrid(gl)
-            fineGridMesh = GridMeshFactory.createFineGrid(gl)
-            axisMesh = AxisMeshFactory.createAxis(gl)
-            axisConeMesh = AxisMeshFactory.createAxisCone(gl)
             if (model != null) {
                 recreateModelMeshes(gl)
             }
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createMeshes.error"),
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createModelMeshes.error"),
                 expected
             )
         }
@@ -193,22 +159,8 @@ class ObjPreviewScene(
         )
     }
 
-    override fun doRender(gl: GlimpseAdapter) {
+    override fun renderModel(gl: GlimpseAdapter) {
         gl.glCullFace(FaceCullingMode.BACK)
-        renderModel(gl)
-        if (showAxes) renderAxes(gl)
-        if (showGrid) renderGrid(gl)
-        if (isStarted) pause()
-    }
-
-    override fun onRenderError(gl: GlimpseAdapter, error: Throwable) {
-        errorLog.addError(
-            WavefrontObjBundle.message("editor.fileTypes.obj.preview.onRender.error"),
-            error
-        )
-    }
-
-    private fun renderModel(gl: GlimpseAdapter) {
         if (modelChanged.getAndSet(false)) recreateModelMeshes(gl)
         facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
         linesMeshes.forEach { renderLines(gl, it) }
@@ -369,69 +321,19 @@ class ObjPreviewScene(
         )
     }
 
-    private fun renderAxes(gl: GlimpseAdapter) {
-        gl.glCullFace(FaceCullingMode.DISABLED)
-        gl.glLineWidth(config.axisLineWidth)
-
-        renderAxis(gl, AxisMeshFactory.xAxisModelMatrix, PreviewColors.COLOR_AXIS_X)
-        renderAxis(gl, AxisMeshFactory.yAxisModelMatrix, PreviewColors.COLOR_AXIS_Y)
-        renderAxis(gl, AxisMeshFactory.zAxisModelMatrix, PreviewColors.COLOR_AXIS_Z)
-    }
-
-    private fun renderAxis(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey) {
-        val scale = (model?.size ?: 1f) * AXIS_LENGTH_FACTOR
-        programExecutorsManager.renderWireframe(
-            gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * modelMatrix,
-                color = PreviewColors.asVec4(colorKey)
-            ),
-            axisMesh,
-            axisConeMesh
-        )
-    }
-
-    private fun renderGrid(gl: GlimpseAdapter) {
-        gl.glLineWidth(config.gridLineWidth)
-        val scale = GridMeshFactory.calculateGridScale(modelSize = model?.size ?: 1f)
-        programExecutorsManager.renderWireframe(
-            gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
-                color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, GRID_ALPHA)
-            ),
-            gridMesh
-        )
-        if (config.showFineGrid) renderFineGrid(gl, scale)
-    }
-
-    private fun renderFineGrid(gl: GlimpseAdapter, scale: Float) {
-        programExecutorsManager.renderWireframe(
-            gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
-                color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, FINE_GRID_ALPHA)
-            ),
-            fineGridMesh
+    override fun onRenderError(gl: GlimpseAdapter, error: Throwable) {
+        errorLog.addError(
+            WavefrontObjBundle.message("editor.fileTypes.obj.preview.onRender.error"),
+            error
         )
     }
 
     override fun dispose(gl: GlimpseAdapter) {
+        super.dispose(gl)
         (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
-        gridMesh.dispose(gl)
-        fineGridMesh.dispose(gl)
-        axisMesh.dispose(gl)
-        axisConeMesh.dispose(gl)
         fallbackTexture.dispose(gl)
         fallbackNormalmap.dispose(gl)
     }
 
     override fun onDestroyError(gl: GlimpseAdapter, expected: Throwable) = Unit
-
-    companion object {
-        private const val GRID_ALPHA = 0.3f
-        private const val FINE_GRID_ALPHA = 0.1f
-
-        private const val AXIS_LENGTH_FACTOR = 2f
-    }
 }

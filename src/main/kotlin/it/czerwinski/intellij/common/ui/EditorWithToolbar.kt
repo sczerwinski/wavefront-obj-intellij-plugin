@@ -14,8 +14,22 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.common.ui
 
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import java.awt.BorderLayout
+import javax.swing.JComponent
+import javax.swing.JPanel
 
-class TextOnlySplitLayoutAction : SplitLayoutAction(SplitEditorLayout.TEXT)
+/**
+ * A panel containing an editor component and a toolbar on top.
+ */
+class EditorWithToolbar(
+    toolbarComponent: JComponent,
+    editorComponent: JComponent
+) : JPanel(BorderLayout()) {
+
+    init {
+        add(toolbarComponent, BorderLayout.BEFORE_FIRST_LINE)
+        add(editorComponent, BorderLayout.CENTER)
+    }
+}

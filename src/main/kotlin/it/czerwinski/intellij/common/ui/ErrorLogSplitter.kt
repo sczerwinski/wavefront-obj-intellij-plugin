@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.common.ui
 
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
 import javax.swing.JComponent
 
+/**
+ * A splitter displaying error log tree below its [component].
+ */
 open class ErrorLogSplitter :
     JBSplitter(
         true,
@@ -31,15 +34,23 @@ open class ErrorLogSplitter :
 
     private val model: ErrorLogTreeModel = ErrorLogTreeModel()
 
+    /**
+     * The component displayed above the error log.
+     */
     var component: JComponent
         get() = firstComponent
         set(value) {
             firstComponent = value
+            invalidate()
         }
 
     init {
         dividerWidth = DIVIDER_WIDTH
-        secondComponent = JBScrollPane(ErrorLogTree(model))
+        super.setSecondComponent(JBScrollPane(ErrorLogTree(model)))
+    }
+
+    override fun setSecondComponent(component: JComponent?) {
+        throw UnsupportedOperationException("Cannot set second component")
     }
 
     override fun addError(entry: ErrorLog.Entry) {

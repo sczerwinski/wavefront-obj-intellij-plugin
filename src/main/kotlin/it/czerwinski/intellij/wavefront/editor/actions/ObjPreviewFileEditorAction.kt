@@ -20,19 +20,20 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditor
-import it.czerwinski.intellij.wavefront.editor.ObjPreviewFileEditor
+import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.wavefront.editor.ObjPreviewEditor
 import it.czerwinski.intellij.wavefront.editor.ObjSplitEditor
 
 abstract class ObjPreviewFileEditorAction : AnAction() {
 
-    protected fun findObjPreviewFileEditor(event: AnActionEvent): ObjPreviewFileEditor? =
+    protected fun findObjPreviewFileEditor(event: AnActionEvent): ObjPreviewEditor? =
         findObjPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
-    private fun findObjPreviewFileEditor(editor: FileEditor?): ObjPreviewFileEditor? =
-        if (editor is ObjPreviewFileEditor) editor
+    private fun findObjPreviewFileEditor(editor: FileEditor?): ObjPreviewEditor? =
+        if (editor is ObjPreviewEditor) editor
         else findObjSplitEditor(editor)?.previewEditor
 
     private fun findObjSplitEditor(editor: FileEditor?): ObjSplitEditor? =
         if (editor is ObjSplitEditor) editor
-        else ObjSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
+        else SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? ObjSplitEditor
 }

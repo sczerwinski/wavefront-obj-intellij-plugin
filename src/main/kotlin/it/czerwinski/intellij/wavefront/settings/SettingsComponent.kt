@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.settings
 
-import java.awt.BorderLayout
 import javax.swing.JComponent
-import javax.swing.JPanel
 
-class EditorWithToolbar(
-    toolbarComponent: JComponent,
-    editorComponent: JComponent
-) : JPanel(BorderLayout()) {
+/**
+ * A common interface implemented by settings components.
+ */
+interface SettingsComponent {
 
-    init {
-        add(toolbarComponent, BorderLayout.BEFORE_FIRST_LINE)
-        add(editorComponent, BorderLayout.CENTER)
-    }
+    /**
+     * Returns the UI component for this settings component.
+     */
+    fun getComponent(): JComponent
+
+    /**
+     * Returns the UI component preferred to gain focus.
+     */
+    fun getPreferredFocusedComponent(): JComponent
+
+    /**
+     * Validates the settings inputs of this component.
+     */
+    fun validateForm()
 }

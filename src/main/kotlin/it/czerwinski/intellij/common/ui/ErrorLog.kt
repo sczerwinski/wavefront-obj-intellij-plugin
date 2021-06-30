@@ -14,24 +14,55 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.common.ui
 
 import com.jetbrains.rd.util.string.printToString
 
+/**
+ * A common interface for error log.
+ */
 interface ErrorLog {
 
+    /**
+     * Adds an [error] with a given [message] to the log.
+     */
     fun addError(message: String, error: Throwable) {
         addError(Entry(message, error))
     }
 
+    /**
+     * Adds an error [entry] to the log.
+     */
     fun addError(entry: Entry)
+
+    /**
+     * Clears all errors in the log
+     */
     fun clearErrors()
 
+    /**
+     * Error log entry.
+     */
     data class Entry(
+        /**
+         * Descriptive error message.
+         */
         val message: String,
+
+        /**
+         * The error.
+         */
         val error: Throwable
     ) {
+
+        /**
+         * Entry headline.
+         */
         val headline: String get() = "$message: ${error.message}"
+
+        /**
+         * Error stack trace.
+         */
         val stackTrace: String get() = error.printToString()
     }
 }

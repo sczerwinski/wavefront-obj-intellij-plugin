@@ -26,13 +26,21 @@ import graphics.glimpse.textures.TextureMinFilter
 import graphics.glimpse.textures.TextureType
 import graphics.glimpse.textures.TextureWrap
 
-class TexturesStore {
+/**
+ * GL textures manager.
+ */
+class TexturesManager {
 
     private val textureImageSourceBuilder = TextureImageSource.builder()
 
     private val imageSources = mutableMapOf<String, TextureImageSource>()
     private val textures = mutableMapOf<String, Texture>()
 
+    /**
+     * Loads texture image from given [file] before creating a texture.
+     *
+     * This method can be executed without GL thread.
+     */
     fun prepare(profile: GLProfile, file: VirtualFile) {
         if (imageSources[file.path] == null) {
             imageSources[file.path] = textureImageSourceBuilder
@@ -42,9 +50,15 @@ class TexturesStore {
         }
     }
 
-    operator fun get(gl: GlimpseAdapter, file: VirtualFile): Texture? = textures.getOrPut(file.path) {
-        createTexture(gl, file)
-    }
+    /**
+     * Returns texture created from given [file].
+     *
+     * Creates the texture if it does not exist.
+     */
+    operator fun get(gl: GlimpseAdapter, file: VirtualFile): Texture =
+        textures.getOrPut(file.path) {
+            createTexture(gl, file)
+        }
 
     private fun createTexture(gl: GlimpseAdapter, file: VirtualFile): Texture {
         val texture = Texture.Builder.getInstance(gl)
@@ -63,6 +77,9 @@ class TexturesStore {
             .fromInputStream { file.inputStream }
             .build()
 
+    /**
+     * Disposes all previously created textures.
+     */
     fun dispose(gl: GlimpseAdapter) {
         for (texture in textures.values) {
             texture.dispose(gl)

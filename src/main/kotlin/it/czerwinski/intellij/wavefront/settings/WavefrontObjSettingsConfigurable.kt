@@ -34,7 +34,7 @@ class WavefrontObjSettingsConfigurable : SearchableConfigurable {
     override fun getDisplayName(): String =
         WavefrontObjBundle.message("settings.editor.fileTypes.obj.displayName")
 
-    override fun createComponent(): JComponent? {
+    override fun createComponent(): JComponent {
         component = WavefrontObjSettingsComponent()
         return component.getComponent()
     }
@@ -48,9 +48,12 @@ class WavefrontObjSettingsConfigurable : SearchableConfigurable {
 
     override fun apply() {
         component.validateForm()
-        ApplicationManager.getApplication().messageBus
-            .syncPublisher(WavefrontObjSettingsState.SettingsChangedListener.TOPIC)
-            .settingsChanged(settings?.setFrom(component.wavefrontObjSettings))
+        val messageBus = ApplicationManager.getApplication().messageBus
+        messageBus.syncPublisher(WavefrontObjSettingsState.SettingsChangedListener.TOPIC)
+            .beforeSettingsChanged(component.wavefrontObjSettings)
+        settings?.setFrom(component.wavefrontObjSettings)
+        messageBus.syncPublisher(WavefrontObjSettingsState.SettingsChangedListener.TOPIC)
+            .settingsChanged(settings)
     }
 
     override fun reset() {

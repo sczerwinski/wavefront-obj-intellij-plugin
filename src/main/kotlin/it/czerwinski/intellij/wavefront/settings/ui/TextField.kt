@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.settings.ui
 
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import com.intellij.ui.components.JBTextField
+import com.intellij.ui.layout.Cell
+import com.intellij.ui.layout.CellBuilder
 
-class PreviewOnlySplitLayoutAction : SplitLayoutAction(SplitEditorLayout.PREVIEW)
+/**
+ * Simplified cell builder method for a text field with a default value.
+ */
+fun Cell.textField(defaultValue: Any, columns: Int): CellBuilder<JBTextField> = textField(
+    getter = { defaultValue.toString() },
+    setter = { },
+    columns = columns
+)

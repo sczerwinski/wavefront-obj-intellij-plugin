@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.settings
 
-enum class SplitEditorLayout(
-    val isShowingTextEditor: Boolean,
-    val isShowingPreviewEditor: Boolean
-) {
-    TEXT(isShowingTextEditor = true, isShowingPreviewEditor = false),
-    SPLIT(isShowingTextEditor = true, isShowingPreviewEditor = true),
-    PREVIEW(isShowingTextEditor = false, isShowingPreviewEditor = true);
+import com.intellij.ui.layout.Row
+import com.intellij.ui.layout.RowBuilder
+import javax.swing.JComponent
 
-    companion object {
-        val DEFAULT = TEXT
-    }
+/**
+ * A common interface implemented by settings component rows.
+ */
+interface SettingsRow {
+
+    /**
+     * Creates UI components in this settings row.
+     */
+    fun createRow(rowBuilder: RowBuilder): Row
+
+    /**
+     * Returns the UI component preferred to gain focus.
+     */
+    fun getPreferredFocusedComponent(): JComponent
+
+    /**
+     * Validates the settings inputs of this component.
+     */
+    fun validateForm()
 }

@@ -39,7 +39,7 @@ abstract class UpVectorAction(
         val editor = findObjPreviewFileEditor(event)
 
         if (editor != null) {
-            editor.triggerUpVectorChange(upVector)
+            editor.upVector = upVector
             Toggleable.setSelected(event.presentation, true)
         }
     }

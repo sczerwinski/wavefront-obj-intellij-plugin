@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.settings.ui
 
-import it.czerwinski.intellij.wavefront.editor.model.SplitEditorLayout
+import com.intellij.openapi.ui.ComboBox
+import com.intellij.ui.EnumComboBoxModel
+import com.intellij.ui.layout.Cell
+import com.intellij.ui.layout.CellBuilder
+import javax.swing.ListCellRenderer
 
-class TextAndPreviewSplitLayoutAction : SplitLayoutAction(SplitEditorLayout.SPLIT)
+/**
+ * Builds a combo box cell for enum values.
+ */
+inline fun <reified E : Enum<E>> Cell.enumComboBox(
+    defaultValue: E,
+    renderer: ListCellRenderer<E?>?
+): CellBuilder<ComboBox<E>> = comboBox(
+    EnumComboBoxModel(E::class.java),
+    getter = { defaultValue },
+    setter = { },
+    renderer
+)

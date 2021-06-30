@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.common.ui
 
 import com.intellij.ui.JBSplitter
 import javax.swing.JComponent
 
+/**
+ * Split editor splitter.
+ */
 class EditorSplitter(
     vertical: Boolean
 ) : JBSplitter(
@@ -28,6 +31,9 @@ class EditorSplitter(
     MAX_SPLIT_PROPORTION
 ) {
 
+    /**
+     * Components split by the splitter.
+     */
     var components: Pair<JComponent, JComponent>
         get() = firstComponent to secondComponent
         set(value) {

@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Changed
+- Group 3D preview editor color settings
 - Remove reference to the `jcenter()` from Gradle configuration file
 - Upgrade Gradle Wrapper to `7.1`
 - Dependencies:

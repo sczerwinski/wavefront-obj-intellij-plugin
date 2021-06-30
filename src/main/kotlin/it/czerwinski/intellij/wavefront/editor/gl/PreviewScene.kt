@@ -38,31 +38,58 @@ import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
+/**
+ * Base 3D preview scene.
+ *
+ * This class implements rendering axes and grid.
+ */
 abstract class PreviewScene(
     profile: GLProfile,
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
 ) : BaseScene(profile, animatorControl, errorLog) {
 
+    /**
+     * Should return maximum distance from the origin point that should be rendered.
+     */
     protected abstract val modelSize: Float?
 
+    /**
+     * Scene camera configuration.
+     */
     protected var camera: Camera = TargetCamera(eye = Vec3.unitX, target = Vec3.nullVector)
+
+    /**
+     * Scene lens configuration.
+     */
     protected var lens: Lens = PerspectiveLens(Angle.rightAngle, aspect = 1f, near = 1f, far = 2f)
 
+    /**
+     * Vector pointing in the "up" direction of the scene.
+     */
     protected abstract val upVector: UpVector
 
+    /**
+     * Determines whether axes should be shown.
+     */
     var showAxes: Boolean = false
         set(value) {
             field = value
             requestRender()
         }
 
+    /**
+     * Determines whether grid should be shown.
+     */
     var showGrid: Boolean = false
         set(value) {
             field = value
             requestRender()
         }
 
+    /**
+     * Advanced scene configuration.
+     */
     var config: PreviewSceneConfig = PreviewSceneConfig()
         set(value) {
             field = value
@@ -110,6 +137,9 @@ abstract class PreviewScene(
         if (isStarted) pause()
     }
 
+    /**
+     * Renders the actual model being the subject of this preview.
+     */
     protected abstract fun renderModel(gl: GlimpseAdapter)
 
     private fun renderAxes(gl: GlimpseAdapter) {

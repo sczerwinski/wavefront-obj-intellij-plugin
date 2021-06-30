@@ -32,6 +32,9 @@ import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.ProgramExecutorsManager
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
 
+/**
+ * Base 3D scene.
+ */
 abstract class BaseScene(
     private val profile: GLProfile,
     animatorControl: GLAnimatorControl,
@@ -50,6 +53,9 @@ abstract class BaseScene(
 
     private val texturesManager = TexturesManager()
 
+    /**
+     * Loads texture image from given [file] before creating a texture.
+     */
     protected fun prepareTexture(file: VirtualFile) {
         try {
             texturesManager.prepare(profile, file)
@@ -61,6 +67,9 @@ abstract class BaseScene(
         }
     }
 
+    /**
+     * Returns texture created from this file.
+     */
     protected fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
         texturesManager[gl, this]
     } catch (expected: Throwable) {
@@ -86,6 +95,11 @@ abstract class BaseScene(
         initialize(gl)
     }
 
+    /**
+     * Initializes the scene.
+     *
+     * Concrete implementation should create meshes in this method.
+     */
     protected abstract fun initialize(gl: GlimpseAdapter)
 
     final override fun onResize(gl: GlimpseAdapter, x: Int, y: Int, width: Int, height: Int) {
@@ -104,10 +118,21 @@ abstract class BaseScene(
         }
     }
 
+    /**
+     * Performs computations after the viewport has been resized.
+     *
+     * Concrete implementation should update camera and lens.
+     */
     protected abstract fun afterResize(gl: GlimpseAdapter)
 
+    /**
+     * Handles viewport resize errors.
+     */
     protected abstract fun onResizeError(gl: GlimpseAdapter, error: Throwable)
 
+    /**
+     * Resumes scene rendering.
+     */
     protected fun requestRender() {
         if (isStarted && isPaused) resume()
     }
@@ -122,8 +147,16 @@ abstract class BaseScene(
         }
     }
 
+    /**
+     * Performs actual scene rendering.
+     *
+     * Buffers have been cleared before this method is called.
+     */
     protected abstract fun doRender(gl: GlimpseAdapter)
 
+    /**
+     * Handles scene rendering errors.
+     */
     protected abstract fun onRenderError(gl: GlimpseAdapter, error: Throwable)
 
     final override fun onDestroy(gl: GlimpseAdapter) {
@@ -136,7 +169,15 @@ abstract class BaseScene(
         }
     }
 
+    /**
+     * Disposes OpenGL objects.
+     *
+     * Concrete implementation should dispose meshes created in [initialize].
+     */
     protected abstract fun dispose(gl: GlimpseAdapter)
 
+    /**
+     * Handles errors that occurred while disposing OpenGL objects.
+     */
     protected abstract fun onDestroyError(gl: GlimpseAdapter, expected: Throwable)
 }

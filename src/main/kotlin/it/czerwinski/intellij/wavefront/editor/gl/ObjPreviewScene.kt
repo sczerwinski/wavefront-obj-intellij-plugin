@@ -46,6 +46,9 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * 3D preview scene for an OBJ file.
+ */
 class ObjPreviewScene(
     profile: GLProfile,
     animatorControl: GLAnimatorControl,

@@ -17,16 +17,10 @@
 package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.editor.colors.ColorKey
-import com.intellij.openapi.editor.colors.EditorColorsManager
-import com.intellij.openapi.vfs.VirtualFile
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
-import graphics.glimpse.BlendingFactorFunction
-import graphics.glimpse.ClearableBufferType
-import graphics.glimpse.DepthTestFunction
 import graphics.glimpse.FaceCullingMode
 import graphics.glimpse.GlimpseAdapter
-import graphics.glimpse.GlimpseCallback
 import graphics.glimpse.buffers.Buffer
 import graphics.glimpse.buffers.toFloatBufferData
 import graphics.glimpse.cameras.TargetCamera
@@ -51,11 +45,9 @@ import it.czerwinski.intellij.wavefront.editor.gl.meshes.PointsMesh
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.SolidFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.WireframeFacesMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.ProgramExecutorsManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
-import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
@@ -66,38 +58,63 @@ import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ObjPreviewScene(
-    private val profile: GLProfile,
+    profile: GLProfile,
     animatorControl: GLAnimatorControl,
-    private val errorLog: ErrorLog
-) : GlimpseCallback,
-    GLAnimatorControl by animatorControl {
+    errorLog: ErrorLog
+) : BaseScene(profile, animatorControl, errorLog) {
 
-    private var width: Int = 1
-    private var height: Int = 1
-    private var aspect: Float = 1f
+    var model: GLModel? = null
+        set(value) {
+            field = value
+            modelChanged.set(true)
+            value?.materials?.forEach { material ->
+                material?.ambientColorMap?.let(::prepareTexture)
+                material?.diffuseColorMap?.let(::prepareTexture)
+                material?.specularColorMap?.let(::prepareTexture)
+                material?.specularExponentMap?.let(::prepareTexture)
+                material?.bumpMap?.let(::prepareTexture)
+            }
+            requestRender()
+        }
 
-    private var model: GLModel? = null
     private val modelChanged: AtomicBoolean = AtomicBoolean(false)
 
-    private var cameraModel: GLCameraModel? = null
+    var cameraModel: GLCameraModel? = null
+        set(value) {
+            field = value
+            value?.let { recalculateCamera(it) }
+        }
+
     private var camera: TargetCamera = TargetCamera(eye = Vec3.unitX, target = Vec3.nullVector)
     private var lens: PerspectiveLens = PerspectiveLens(Angle.rightAngle, aspect = 1f, near = 1f, far = 2f)
 
-    private var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
+    var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
+        set(value) {
+            field = value
+            modelChanged.set(true)
+            requestRender()
+        }
 
     private val upVector: UpVector
         get() = cameraModel?.upVector ?: UpVector.DEFAULT
 
-    private var showAxes: Boolean = false
-    private var showGrid: Boolean = false
-    private var config: PreviewSceneConfig = PreviewSceneConfig()
+    var showAxes: Boolean = false
+        set(value) {
+            field = value
+            requestRender()
+        }
 
-    private val background
-        get() = EditorColorsManager.getInstance().globalScheme.defaultBackground
+    var showGrid: Boolean = false
+        set(value) {
+            field = value
+            requestRender()
+        }
 
-    private val programExecutorsManager = ProgramExecutorsManager(errorLog)
-
-    private val texturesManager = TexturesManager()
+    var config: PreviewSceneConfig = PreviewSceneConfig()
+        set(value) {
+            field = value
+            requestRender()
+        }
 
     private lateinit var fallbackTexture: Texture
     private lateinit var fallbackNormalmap: Texture
@@ -111,35 +128,6 @@ class ObjPreviewScene(
     private lateinit var axisMesh: Mesh
     private lateinit var axisConeMesh: Mesh
 
-    fun updateModel(newModel: GLModel?) {
-        model = newModel
-        modelChanged.set(true)
-        model?.materials?.forEach { material ->
-            material?.ambientColorMap?.let(::prepareTexture)
-            material?.diffuseColorMap?.let(::prepareTexture)
-            material?.specularColorMap?.let(::prepareTexture)
-            material?.specularExponentMap?.let(::prepareTexture)
-            material?.bumpMap?.let(::prepareTexture)
-        }
-        requestRender()
-    }
-
-    private fun prepareTexture(file: VirtualFile) {
-        try {
-            texturesManager.prepare(profile, file)
-        } catch (expected: Throwable) {
-            errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.prepareTexture.error", file.name),
-                expected
-            )
-        }
-    }
-
-    fun updateCameraModel(newCameraModel: GLCameraModel) {
-        cameraModel = newCameraModel
-        recalculateCamera(newCameraModel)
-    }
-
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
             camera = TargetCamera(Vec3(x, y, z), Vec3.nullVector, upVector.vector)
@@ -148,42 +136,7 @@ class ObjPreviewScene(
         requestRender()
     }
 
-    fun updateShadingMethod(newShadingMethod: ShadingMethod) {
-        shadingMethod = newShadingMethod
-        modelChanged.set(true)
-        requestRender()
-    }
-
-    fun updateAxes(newShowAxes: Boolean) {
-        showAxes = newShowAxes
-        requestRender()
-    }
-
-    fun updateGrid(newShowGrid: Boolean) {
-        showGrid = newShowGrid
-        requestRender()
-    }
-
-    fun updateConfig(newConfig: PreviewSceneConfig) {
-        config = newConfig
-        requestRender()
-    }
-
-    private fun requestRender() {
-        if (isStarted && isPaused) resume()
-    }
-
-    override fun onCreate(gl: GlimpseAdapter) {
-        gl.glClearDepth(depth = 1f)
-        gl.glDepthTest(DepthTestFunction.LESS_OR_EQUAL)
-
-        gl.glEnableBlending()
-        gl.glBlendingFunction(BlendingFactorFunction.SOURCE_ALPHA, BlendingFactorFunction.ONE_MINUS_SOURCE_ALPHA)
-
-        gl.glEnableLineSmooth()
-        gl.glEnableProgramPointSize()
-
-        programExecutorsManager.initialize(gl)
+    override fun initialize(gl: GlimpseAdapter) {
         createFallbackTextures(gl)
         createMeshes(gl)
     }
@@ -229,40 +182,30 @@ class ObjPreviewScene(
         }
     }
 
-    override fun onResize(gl: GlimpseAdapter, x: Int, y: Int, width: Int, height: Int) {
-        try {
-            this.width = width
-            this.height = height
-
-            if (width == 0 || height == 0) return
-
-            aspect = width.toFloat() / height.toFloat()
-            gl.glViewport(width = width, height = height)
-
-            cameraModel?.let { recalculateCamera(it) }
-        } catch (expected: Throwable) {
-            errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.onResize.error"),
-                expected
-            )
-        }
+    override fun afterResize(gl: GlimpseAdapter) {
+        cameraModel?.let { recalculateCamera(it) }
     }
 
-    override fun onRender(gl: GlimpseAdapter) {
-        try {
-            gl.glClearColor(Vec3(background))
-            gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
-            gl.glCullFace(FaceCullingMode.BACK)
-            renderModel(gl)
-            if (showAxes) renderAxes(gl)
-            if (showGrid) renderGrid(gl)
-            if (isStarted) pause()
-        } catch (expected: Throwable) {
-            errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.onRender.error"),
-                expected
-            )
-        }
+    override fun onResizeError(gl: GlimpseAdapter, error: Throwable) {
+        errorLog.addError(
+            WavefrontObjBundle.message("editor.fileTypes.obj.preview.onResize.error"),
+            error
+        )
+    }
+
+    override fun doRender(gl: GlimpseAdapter) {
+        gl.glCullFace(FaceCullingMode.BACK)
+        renderModel(gl)
+        if (showAxes) renderAxes(gl)
+        if (showGrid) renderGrid(gl)
+        if (isStarted) pause()
+    }
+
+    override fun onRenderError(gl: GlimpseAdapter, error: Throwable) {
+        errorLog.addError(
+            WavefrontObjBundle.message("editor.fileTypes.obj.preview.onRender.error"),
+            error
+        )
     }
 
     private fun renderModel(gl: GlimpseAdapter) {
@@ -402,16 +345,6 @@ class ObjPreviewScene(
         )
     }
 
-    private fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
-        texturesManager[gl, this]
-    } catch (expected: Throwable) {
-        errorLog.addError(
-            WavefrontObjBundle.message("editor.fileTypes.obj.preview.getTexture.error", name),
-            expected
-        )
-        null
-    }
-
     private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh) {
         gl.glLineWidth(config.lineWidth)
         programExecutorsManager.renderWireframe(
@@ -483,20 +416,17 @@ class ObjPreviewScene(
         )
     }
 
-    override fun onDestroy(gl: GlimpseAdapter) {
-        try {
-            (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
-            gridMesh.dispose(gl)
-            fineGridMesh.dispose(gl)
-            axisMesh.dispose(gl)
-            axisConeMesh.dispose(gl)
-            texturesManager.dispose(gl)
-            fallbackTexture.dispose(gl)
-            fallbackNormalmap.dispose(gl)
-            programExecutorsManager.dispose(gl)
-        } catch (ignored: Throwable) {
-        }
+    override fun dispose(gl: GlimpseAdapter) {
+        (facesMeshes + linesMeshes + pointsMeshes).forEach { mesh -> mesh.dispose(gl) }
+        gridMesh.dispose(gl)
+        fineGridMesh.dispose(gl)
+        axisMesh.dispose(gl)
+        axisConeMesh.dispose(gl)
+        fallbackTexture.dispose(gl)
+        fallbackNormalmap.dispose(gl)
     }
+
+    override fun onDestroyError(gl: GlimpseAdapter, expected: Throwable) = Unit
 
     companion object {
         private const val GRID_ALPHA = 0.3f
@@ -504,5 +434,4 @@ class ObjPreviewScene(
 
         private const val AXIS_LENGTH_FACTOR = 2f
     }
-
 }

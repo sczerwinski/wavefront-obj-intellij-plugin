@@ -86,7 +86,7 @@ class ObjPreviewComponent(
             field = value
             BackgroundTaskUtil.executeOnPooledThread(this) {
                 if (::myScene.isInitialized) {
-                    myScene.updateModel(value)
+                    myScene.model = value
                 }
             }
         }
@@ -184,7 +184,7 @@ class ObjPreviewComponent(
 
                     myScene = ObjPreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
 
-                    myScene.updateModel(myModel)
+                    myScene.model = myModel
                     updateScene()
                     glimpsePanel.setCallback(myScene)
 
@@ -210,11 +210,11 @@ class ObjPreviewComponent(
     private fun updateScene() {
         invokeLater(ModalityState.stateForComponent(this)) {
             if (::myScene.isInitialized) {
-                myScene.updateCameraModel(cameraModel)
-                myScene.updateShadingMethod(shadingMethod)
-                myScene.updateAxes(isShowingAxes)
-                myScene.updateGrid(isShowingGrid)
-                myScene.updateConfig(previewSceneConfig)
+                myScene.cameraModel = cameraModel
+                myScene.shadingMethod = shadingMethod
+                myScene.showAxes = isShowingAxes
+                myScene.showGrid = isShowingGrid
+                myScene.config = previewSceneConfig
             }
         }
     }

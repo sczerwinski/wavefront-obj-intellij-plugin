@@ -17,12 +17,10 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.psi.tree.IElementType
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import org.jetbrains.annotations.NonNls
 
 class ObjTokenType(
     @NonNls debugName: String
-) : IElementType(debugName, ObjLanguage) {
-
-    override fun toString(): String = "ObjTokenType.${super.toString()}"
-}
+) : IElementType(WavefrontObjBundle.message("fileTypes.obj.tokenType.$debugName"), ObjLanguage)

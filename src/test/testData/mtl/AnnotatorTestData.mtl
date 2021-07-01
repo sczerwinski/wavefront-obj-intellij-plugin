@@ -10,4 +10,4 @@ Ns 32
 sharpness 60
 Ni 1.19713
 
-map_Ka <warning descr="File not found">marble_ambient.jpg</warning>
+map_Ka <warning descr="The texture file is not found">marble_ambient.jpg</warning>

@@ -27,6 +27,7 @@
 ### Fixed
 - Prevent IDE from freezing after a big change to an OBJ file
 - Display correct descriptions of OBJ and MTL token types
+- Improve UI messages
 - Require spaces after keywords, options and values
 
 ## [0.3.2]

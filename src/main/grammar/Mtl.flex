@@ -177,4 +177,6 @@ TEXTURE_FILE_NAME=[^\ \t\r\n\f]+
 
 ({CRLF}|{WHITE_SPACE})+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
+[^\ \t\r\n\f]+ { yybegin(INVALID); return TokenType.BAD_CHARACTER; }
+
 . { yybegin(INVALID); return TokenType.BAD_CHARACTER; }

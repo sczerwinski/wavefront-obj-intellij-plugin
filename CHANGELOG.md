@@ -12,6 +12,7 @@
 ### Changed
 - Group 3D preview editor color settings
 - Reorganise plugin settings
+- Smoothing group number can be any positive integer
 - Use `gradle-grammarkit-plugin` to generate parsers and lexers
 - Remove reference to the `jcenter()` from Gradle configuration file
 - Upgrade Gradle Wrapper to `7.1`

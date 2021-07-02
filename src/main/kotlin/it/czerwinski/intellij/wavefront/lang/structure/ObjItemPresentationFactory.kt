@@ -34,8 +34,8 @@ import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_OBJECT_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_POINT_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTH_SHADING_OFF_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTH_SHADING_ON_ICON
+import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTHING_OFF_ICON
+import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTHING_ON_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_TEXTURE_COORDINATES_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_VERTEX_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_VERTEX_NORMAL_ICON
@@ -49,7 +49,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
 import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
-import it.czerwinski.intellij.wavefront.lang.psi.ObjSmoothShading
+import it.czerwinski.intellij.wavefront.lang.psi.ObjSmoothingGroup
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
@@ -82,7 +82,7 @@ object ObjItemPresentationFactory {
         is ObjTextureCoordinatesIndex -> createPresentation(element)
         is ObjVertexNormalIndex -> createPresentation(element)
 
-        is ObjSmoothShading -> createPresentation(element)
+        is ObjSmoothingGroup -> createPresentation(element)
 
         is ObjMaterialFileReference -> createPresentation(element)
         is ObjMaterialReference -> createPresentation(element)
@@ -208,23 +208,20 @@ object ObjItemPresentationFactory {
         icon = OBJ_VERTEX_NORMAL_ICON
     )
 
-    private fun createPresentation(smoothShading: ObjSmoothShading): ItemPresentation {
+    private fun createPresentation(smoothShading: ObjSmoothingGroup): ItemPresentation {
         val value = smoothShading.value
         return if (value == null) createErrorPresentation(
-            errorMessage = WavefrontObjBundle.message(
-                "fileTypes.obj.structure.presentation.smoothShading.error"
-            ),
+            errorMessage = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.smoothingGroup.error"),
             elementText = smoothShading.text
         )
         else createPresentation(
-            presentableText = WavefrontObjBundle.message(
-                "fileTypes.obj.structure.presentation.smoothShading"
-            ),
-            locationString = WavefrontObjBundle.message(
-                if (value) "fileTypes.obj.structure.presentation.flag.true"
-                else "fileTypes.obj.structure.presentation.flag.false"
-            ),
-            icon = if (value) OBJ_SMOOTH_SHADING_ON_ICON else OBJ_SMOOTH_SHADING_OFF_ICON
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.smoothingGroup"),
+            locationString = if (value == 0) {
+                WavefrontObjBundle.message("fileTypes.obj.structure.presentation.smoothingGroup.false")
+            } else {
+                value.toString()
+            },
+            icon = if (value == 0) OBJ_SMOOTHING_OFF_ICON else OBJ_SMOOTHING_ON_ICON
         )
     }
 

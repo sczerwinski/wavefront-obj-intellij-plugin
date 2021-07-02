@@ -43,7 +43,7 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.FACE_KEYWORD,
             ObjTypes.LINE_KEYWORD,
             ObjTypes.POINT_KEYWORD,
-            ObjTypes.SMOOTH_SHADING_KEYWORD,
+            ObjTypes.SMOOTHING_GROUP_KEYWORD,
             ObjTypes.MATERIAL_FILE_REF_KEYWORD,
             ObjTypes.MATERIAL_REFERENCE_KEYWORD ->
                 arrayOf(ATTR_KEYWORD)
@@ -55,7 +55,7 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.INDEX ->
                 arrayOf(ATTR_NUMBER)
 
-            ObjTypes.FLAG ->
+            ObjTypes.SMOOTHING_GROUP_NUMBER ->
                 arrayOf(ATTR_CONSTANT)
 
             ObjTypes.VERTEX_INDEX_SEPARATOR ->

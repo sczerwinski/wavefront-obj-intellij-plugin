@@ -49,8 +49,8 @@ val OBJ_POINT_ICON: Icon = getIcon("/icons/objPointIcon.svg")
 
 val OBJ_FACE_VERTEX_ICON: Icon = getIcon("/icons/objFaceVertexIcon.svg")
 
-val OBJ_SMOOTH_SHADING_ON_ICON: Icon = getIcon("/icons/objSmoothShadingOnIcon.svg")
-val OBJ_SMOOTH_SHADING_OFF_ICON: Icon = getIcon("/icons/objSmoothShadingOffIcon.svg")
+val OBJ_SMOOTHING_ON_ICON: Icon = getIcon("/icons/objSmoothingOnIcon.svg")
+val OBJ_SMOOTHING_OFF_ICON: Icon = getIcon("/icons/objSmoothingOffIcon.svg")
 
 val OBJ_MATERIAL_FILE_ICON: Icon = MTL_FILE_ICON
 val OBJ_MATERIAL_ICON: Icon = MTL_MATERIAL_ICON

@@ -19,5 +19,5 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.psi.PsiElement
 
 interface ObjFlagElement : PsiElement {
-    val value: Boolean?
+    val value: Int?
 }

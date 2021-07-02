@@ -34,7 +34,7 @@ objFile ::= (groupingItem_|item_)*
 private item_ ::= (
   vertex | textureCoordinates | vertexNormal
   | point | line | face
-  | smoothShading
+  | smoothingGroup
   | materialFileReference | materialReference
   | COMMENT | CRLF
 )
@@ -93,7 +93,7 @@ vertexNormalIndex ::= (INDEX) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement"
 }
 
-smoothShading ::= (SMOOTH_SHADING_KEYWORD FLAG) {
+smoothingGroup ::= (SMOOTHING_GROUP_KEYWORD SMOOTHING_GROUP_NUMBER) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjFlagElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjFlagElement"
 }

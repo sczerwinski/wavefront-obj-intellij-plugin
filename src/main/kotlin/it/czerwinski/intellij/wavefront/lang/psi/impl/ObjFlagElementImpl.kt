@@ -25,12 +25,11 @@ abstract class ObjFlagElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), ObjFlagElement {
 
-    private val valueNode get() = node.findChildByType(ObjTypes.FLAG)
+    private val valueNode get() = node.findChildByType(ObjTypes.SMOOTHING_GROUP_NUMBER)
 
-    override val value: Boolean?
-        get() = when (valueNode?.text) {
-            "1" -> true
-            "off" -> false
-            else -> null
+    override val value: Int?
+        get() = when (val text = valueNode?.text) {
+            "off" -> 0
+            else -> text?.toIntOrNull()
         }
 }

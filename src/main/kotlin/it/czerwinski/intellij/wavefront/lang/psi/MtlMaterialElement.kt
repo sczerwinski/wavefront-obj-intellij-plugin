@@ -41,6 +41,7 @@ interface MtlMaterialElement : PsiElement {
     val specularExponentGain: Float?
     val dissolveMap: VirtualFile?
     val displacementMap: VirtualFile?
+    val displacementGain: Float?
     val stencilDecalMap: VirtualFile?
     val bumpMap: VirtualFile?
     val bumpMapMultiplier: Float?

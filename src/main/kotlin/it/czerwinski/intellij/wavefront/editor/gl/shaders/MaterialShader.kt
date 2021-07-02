@@ -88,4 +88,16 @@ data class MaterialShader(
 
     @Uniform(name = "uBumpMult")
     val normalmapMultiplier: Float,
+
+    @Uniform(name = "uDispTex")
+    val displacementTexture: Texture,
+
+    @Uniform(name = "uDispGain")
+    val displacementGain: Float,
+
+    @Uniform(name = "uDispQuality")
+    val displacementQuality: Float,
+
+    @Uniform(name = "uCropTex")
+    val cropTexture: Int,
 )

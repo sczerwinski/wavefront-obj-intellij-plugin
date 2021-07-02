@@ -24,6 +24,7 @@ data class PreviewSceneConfig(
     val gridLineWidth: Float = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
     val lineWidth: Float = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
     val pointSize: Float = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
+    val displacementQuality: Float = ObjPreviewSettingsState.DEFAULT_DISPLACEMENT_QUALITY
 ) {
     companion object {
         fun fromObjPreviewSettingsState(settings: ObjPreviewSettingsState): PreviewSceneConfig =
@@ -32,7 +33,8 @@ data class PreviewSceneConfig(
                 settings.showFineGrid,
                 settings.gridLineWidth,
                 settings.lineWidth,
-                settings.pointSize
+                settings.pointSize,
+                settings.displacementQuality
             )
     }
 }

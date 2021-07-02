@@ -101,6 +101,13 @@ class ObjPreviewComponent(
             myLeftActionToolbar.updateActionsImmediately()
         }
 
+    var isCroppingTextures: Boolean = ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
+        set(value) {
+            field = value
+            updateScene()
+            myLeftActionToolbar.updateActionsImmediately()
+        }
+
     var upVector: UpVector = UpVector.DEFAULT
         set(value) {
             field = value
@@ -212,6 +219,7 @@ class ObjPreviewComponent(
             if (::myScene.isInitialized) {
                 myScene.cameraModel = cameraModel
                 myScene.shadingMethod = shadingMethod
+                myScene.cropTextures = isCroppingTextures
                 myScene.showAxes = isShowingAxes
                 myScene.showGrid = isShowingGrid
                 myScene.config = previewSceneConfig
@@ -223,6 +231,10 @@ class ObjPreviewComponent(
         if (::myScene.isInitialized) myScene.stop()
         startLoading()
         isInitialized.set(false)
+    }
+
+    fun toggleCropTextures() {
+        isCroppingTextures = !isCroppingTextures
     }
 
     fun toggleAxes() {

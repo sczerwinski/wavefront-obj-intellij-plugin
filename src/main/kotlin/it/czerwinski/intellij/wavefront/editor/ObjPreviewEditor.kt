@@ -43,6 +43,12 @@ class ObjPreviewEditor(
             myComponent.shadingMethod = value
         }
 
+    var isCroppingTextures: Boolean
+        get() = myComponent.isCroppingTextures
+        set(value) {
+            myComponent.isCroppingTextures = value
+        }
+
     var upVector: UpVector
         get() = myComponent.upVector
         set(value) {
@@ -72,6 +78,11 @@ class ObjPreviewEditor(
                     shadingMethod = newPreviewSettings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
                 }
 
+                if (isCroppingTextures == oldPreviewSettings?.cropTextures) {
+                    isCroppingTextures = newPreviewSettings?.cropTextures
+                        ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
+                }
+
                 if (upVector === oldPreviewSettings?.defaultUpVector) {
                     upVector = newPreviewSettings?.defaultUpVector ?: UpVector.DEFAULT
                 }
@@ -99,6 +110,7 @@ class ObjPreviewEditor(
         val settings = WavefrontObjSettingsState.getInstance()?.objPreviewSettings
 
         shadingMethod = settings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
+        isCroppingTextures = settings?.cropTextures ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
         upVector = settings?.defaultUpVector ?: UpVector.DEFAULT
         isShowingAxes = settings?.showAxes ?: ObjPreviewSettingsState.DEFAULT_SHOW_AXES
         isShowingGrid = settings?.showGrid ?: ObjPreviewSettingsState.DEFAULT_SHOW_GRID
@@ -128,6 +140,10 @@ class ObjPreviewEditor(
 
     override fun dispose() {
         Disposer.dispose(myComponent)
+    }
+
+    fun toggleCropTextures() {
+        myComponent.toggleCropTextures()
     }
 
     fun toggleAxes() {

@@ -34,6 +34,9 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     private lateinit var wireframeProgram: Program
     private lateinit var wireframeShaderProgramExecutor: WireframeShaderProgramExecutor
 
+    private lateinit var texturedWireframeProgram: Program
+    private lateinit var texturedWireframeShaderProgramExecutor: TexturedWireframeShaderProgramExecutor
+
     private lateinit var solidProgram: Program
     private lateinit var solidShaderProgramExecutor: SolidShaderProgramExecutor
 
@@ -59,10 +62,15 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
         val programBuilder = Program.Builder.newInstance(gl)
 
         wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
+        texturedWireframeProgram = programBuilder
+            .withVertexShader(shaderFactory.createTexturedWireframeShader(ShaderType.VERTEX_SHADER))
+            .withFragmentShader(shaderFactory.createTexturedWireframeShader(ShaderType.FRAGMENT_SHADER))
+            .build()
         solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
         materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
 
         wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
+        texturedWireframeShaderProgramExecutor = TexturedWireframeShaderProgramExecutor(texturedWireframeProgram)
         solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
         materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
     }
@@ -79,6 +87,9 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     private fun Shader.Factory.createShader(shadingMethod: ShadingMethod, shaderType: ShaderType): Shader =
         createShader(type = shaderType, source = ShaderResources.getShaderSource(shadingMethod, shaderType))
 
+    private fun Shader.Factory.createTexturedWireframeShader(shaderType: ShaderType): Shader =
+        createShader(type = shaderType, source = ShaderResources.getTexturedWireframeShaderSource(shaderType))
+
     /**
      * Renders [meshes] using wireframe shader with given [params].
      */
@@ -93,6 +104,15 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
         applyParams(gl, params)
         for (mesh in meshes) {
             drawMesh(gl, mesh)
+        }
+    }
+
+    /**
+     * Renders [meshes] using textured wireframe shader with given [params].
+     */
+    fun renderTexturedWireframe(gl: GlimpseAdapter, params: TexturedWireframeShader, vararg meshes: Mesh) {
+        if (::texturedWireframeShaderProgramExecutor.isInitialized) {
+            texturedWireframeShaderProgramExecutor.render(gl, params, meshes)
         }
     }
 

@@ -67,14 +67,26 @@ class ModelMeshesManager {
             model.groupingElements.flatMap { element ->
                 element.materialParts.map { part ->
                     val linesPositionsData = part.lines.flatMap { line ->
-                        line.vertexIndexList.zipWithNext().flatMap { (index1, index2) ->
-                            model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                                model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
-                        }
+                        line.lineVertexList
+                            .map { it.vertexIndex }
+                            .zipWithNext()
+                            .flatMap { (index1, index2) ->
+                                model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
+                                    model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                            }
+                    }.toFloatBufferData()
+                    val linesTextureCoordinatesData = part.lines.flatMap { line ->
+                        line.lineVertexList
+                            .map { it.textureCoordinatesIndex }
+                            .zipWithNext()
+                            .flatMap { (index1, index2) ->
+                                model.textureCoordinates[(index1?.value ?: 1) - 1].coordinates.map { it ?: 0f } +
+                                    model.textureCoordinates[(index2?.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                            }
                     }.toFloatBufferData()
                     LinesMesh(
-                        vertexCount = part.lines.sumBy { line -> (line.vertexIndexList.size - 1) * 2 },
-                        buffers = bufferFactory.createArrayBuffers(linesPositionsData)
+                        vertexCount = part.lines.sumBy { line -> (line.lineVertexList.size - 1) * 2 },
+                        buffers = bufferFactory.createArrayBuffers(linesPositionsData, linesTextureCoordinatesData)
                     )
                 }
             }

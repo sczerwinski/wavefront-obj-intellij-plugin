@@ -31,11 +31,13 @@ import graphics.glimpse.textures.TextureWrap
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
+import graphics.glimpse.types.Vec4
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.ModelMeshesManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.TexturedWireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
@@ -166,7 +168,7 @@ class ObjPreviewScene(
             createModelMeshes(gl)
         }
         modelMeshesManager.facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
-        modelMeshesManager.linesMeshes.forEach { renderLines(gl, it) }
+        modelMeshesManager.linesMeshes.forEachIndexed { index, mesh -> renderLines(gl, mesh, index) }
         modelMeshesManager.pointsMeshes.forEach { renderPoints(gl, it) }
     }
 
@@ -241,13 +243,38 @@ class ObjPreviewScene(
         )
     }
 
-    private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh) {
+    private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
+        when (shadingMethod) {
+            ShadingMethod.WIREFRAME,
+            ShadingMethod.SOLID -> renderLinesWireframe(gl, linesMesh)
+            ShadingMethod.MATERIAL -> renderLinesTextured(gl, linesMesh, index)
+        }
+    }
+
+    private fun renderLinesWireframe(gl: GlimpseAdapter, linesMesh: Mesh) {
         gl.glLineWidth(config.lineWidth)
         programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
                 color = PreviewColors.asVec4(PreviewColors.COLOR_LINE)
+            ),
+            linesMesh
+        )
+    }
+
+    private fun renderLinesTextured(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
+        val material: MtlMaterial? = model?.materials?.getOrNull(index)
+        val ambientTexture = material?.ambientColorMap?.getTexture(gl)
+        val diffuseTexture = material?.diffuseColorMap?.getTexture(gl)
+
+        gl.glLineWidth(config.lineWidth)
+        programExecutorsManager.renderTexturedWireframe(
+            gl,
+            TexturedWireframeShader(
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                color = Vec4(color = material?.diffuseColor ?: material?.ambientColor ?: Color.WHITE),
+                texture = diffuseTexture ?: ambientTexture ?: fallbackTexture
             ),
             linesMesh
         )

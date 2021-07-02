@@ -33,6 +33,9 @@ public class WavefrontObjIcons {
     public static final Icon MATERIAL_SHADING_ACTION = getIcon("/icons/editor_actions/materialShading.svg");
 
     @NotNull
+    public static final Icon TOGGLE_CROP_TEXTURES_ACTION = getIcon("/icons/editor_actions/cropTextures.svg");
+
+    @NotNull
     public static final Icon TOGGLE_AXES_ACTION = getIcon("/icons/editor_actions/axes.svg");
 
     @NotNull

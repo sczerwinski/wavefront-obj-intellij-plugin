@@ -3,8 +3,15 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+- Support for displacement textures in 3D preview
+- Cropping textures toggle action in 3D preview
+- Setting for cropping textures
+- Setting for displacement quality
+
 ### Changed
 - Group 3D preview editor color settings
+- Reorganise plugin settings
 - Use `gradle-grammarkit-plugin` to generate parsers and lexers
 - Remove reference to the `jcenter()` from Gradle configuration file
 - Upgrade Gradle Wrapper to `7.1`

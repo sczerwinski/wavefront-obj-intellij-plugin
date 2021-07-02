@@ -30,6 +30,8 @@ data class ObjPreviewSettingsState(
     @field:Attribute var gridLineWidth: Float = DEFAULT_GRID_LINE_WIDTH,
     @field:Attribute var lineWidth: Float = DEFAULT_LINE_WIDTH,
     @field:Attribute var pointSize: Float = DEFAULT_POINT_SIZE,
+    @field:Attribute var cropTextures: Boolean = DEFAULT_CROP_TEXTURES,
+    @field:Attribute var displacementQuality: Float = DEFAULT_DISPLACEMENT_QUALITY,
 ) {
 
     companion object {
@@ -42,6 +44,8 @@ data class ObjPreviewSettingsState(
         const val DEFAULT_GRID_LINE_WIDTH = 1f
         const val DEFAULT_LINE_WIDTH = 1f
         const val DEFAULT_POINT_SIZE = 3f
+        const val DEFAULT_CROP_TEXTURES = false
+        const val DEFAULT_DISPLACEMENT_QUALITY = 7.5f
     }
 
     interface Holder {

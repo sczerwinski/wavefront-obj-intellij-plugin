@@ -62,6 +62,9 @@ abstract class MtlMaterialElementImpl(
         get() = material?.dissolveMapList?.firstOrNull()?.textureVirtualFile
     override val displacementMap: VirtualFile?
         get() = material?.displacementMapList?.firstOrNull()?.textureVirtualFile
+    override val displacementGain: Float?
+        get() = material?.displacementMapList?.firstOrNull()?.valueModifierOptionList
+            ?.firstOrNull()?.values?.getOrNull(1)
     override val stencilDecalMap: VirtualFile?
         get() = material?.stencilDecalMapList?.firstOrNull()?.textureVirtualFile
     override val bumpMap: VirtualFile?

@@ -65,6 +65,7 @@ class ObjPreviewScene(
                 material?.specularColorMap?.let(::prepareTexture)
                 material?.specularExponentMap?.let(::prepareTexture)
                 material?.bumpMap?.let(::prepareTexture)
+                material?.displacementMap?.let(::prepareTexture)
             }
             requestRender()
         }
@@ -83,6 +84,12 @@ class ObjPreviewScene(
         set(value) {
             field = value
             modelChanged.set(true)
+            requestRender()
+        }
+
+    var cropTextures: Boolean = false
+        set(value) {
+            field = value
             requestRender()
         }
 
@@ -224,7 +231,11 @@ class ObjPreviewScene(
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
                 normalmapTexture = material?.bumpMap?.getTexture(gl) ?: fallbackNormalmap,
-                normalmapMultiplier = material?.bumpMapMultiplier ?: 1f
+                normalmapMultiplier = material?.bumpMapMultiplier ?: 1f,
+                displacementTexture = material?.displacementMap?.getTexture(gl) ?: fallbackTexture,
+                displacementGain = material?.displacementGain ?: 1f,
+                displacementQuality = config.displacementQuality,
+                cropTexture = if (cropTextures) 1 else 0
             ),
             facesMesh
         )

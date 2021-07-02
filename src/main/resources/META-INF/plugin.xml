@@ -170,6 +170,11 @@
                     icon="WavefrontObjIcons.MATERIAL_SHADING_ACTION"/>
             <separator/>
             <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.ToggleCropTexturesAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ToggleCropTexturesAction"
+                    icon="WavefrontObjIcons.TOGGLE_CROP_TEXTURES_ACTION"/>
+            <separator/>
+            <action
                     id="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
                     icon="WavefrontObjIcons.X_UP_ACTION"/>

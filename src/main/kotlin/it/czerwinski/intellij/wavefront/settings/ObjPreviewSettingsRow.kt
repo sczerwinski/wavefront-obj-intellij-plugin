@@ -26,6 +26,7 @@ import com.intellij.ui.layout.Cell
 import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.Row
 import com.intellij.ui.layout.RowBuilder
+import com.intellij.ui.layout.slider
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
@@ -33,8 +34,12 @@ import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRendere
 import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
 import it.czerwinski.intellij.wavefront.settings.ui.textField
+import java.util.Hashtable
 import javax.swing.Icon
 import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JSlider
+import kotlin.math.roundToInt
 
 /**
  * UI component for OBJ file 3D preview settings.
@@ -50,6 +55,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     private lateinit var gridLineWidthInput: JBTextField
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
+    private lateinit var cropTexturesCheckBox: JBCheckBox
+    private lateinit var displacementQualitySlider: JSlider
 
     override var objPreviewSettings: ObjPreviewSettingsState
         get() = ObjPreviewSettingsState(
@@ -61,7 +68,9 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             showFineGrid = showFineGridCheckBox.isSelected,
             gridLineWidth = gridLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             lineWidth = lineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
-            pointSize = pointSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE
+            pointSize = pointSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
+            cropTextures = cropTexturesCheckBox.isSelected,
+            displacementQuality = displacementQualitySlider.value * DISPLACEMENT_QUALITY_FACTOR
         )
         set(value) {
             defaultShadingMethod.selectedItem = value.defaultShadingMethod
@@ -73,6 +82,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             gridLineWidthInput.text = value.gridLineWidth.toString()
             lineWidthInput.text = value.lineWidth.toString()
             pointSizeInput.text = value.pointSize.toString()
+            cropTexturesCheckBox.isSelected = value.cropTextures
+            displacementQualitySlider.value = (value.displacementQuality / DISPLACEMENT_QUALITY_FACTOR).roundToInt()
         }
 
     override fun createRow(rowBuilder: RowBuilder): Row = with(rowBuilder) {
@@ -94,20 +105,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.grid"), separated = true) {
             createGridRow()
         }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
-            cell {
-                lineWidthInput = textField(
-                    defaultValue = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
-                    columns = FLOAT_INPUT_COLUMNS
-                ).component
-                contextHelpLabel(description = lineWidthContextHelpMessage)
-            }
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
-            pointSizeInput = textField(
-                defaultValue = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
-                columns = FLOAT_INPUT_COLUMNS
-            ).component
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.rendering")) {
+            createRenderingRow()
         }
     }
 
@@ -147,6 +146,40 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
                 ).component
                 contextHelpLabel(description = lineWidthContextHelpMessage)
             }
+        }
+    }
+
+    private fun Row.createRenderingRow() {
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
+            cell {
+                lineWidthInput = textField(
+                    defaultValue = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
+                    columns = FLOAT_INPUT_COLUMNS
+                ).component
+                contextHelpLabel(description = lineWidthContextHelpMessage)
+            }
+        }
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
+            pointSizeInput = textField(
+                defaultValue = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
+                columns = FLOAT_INPUT_COLUMNS
+            ).component
+        }
+        row {
+            cropTexturesCheckBox = checkBox(
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.cropTextures")
+            ).component
+        }
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.displacementQuality")) {
+            displacementQualitySlider = slider(
+                DISPLACEMENT_QUALITY_MIN,
+                DISPLACEMENT_QUALITY_MAX,
+                DISPLACEMENT_QUALITY_MINOR_TICK,
+                DISPLACEMENT_QUALITY_MAJOR_TICK
+            ).component
+            displacementQualitySlider.labelTable = Hashtable(
+                displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
+            )
         }
     }
 
@@ -206,6 +239,21 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     )
 
     companion object {
+        private const val DISPLACEMENT_QUALITY_MIN = 25
+        private const val DISPLACEMENT_QUALITY_MAX = 100
+        private const val DISPLACEMENT_QUALITY_MINOR_TICK = 5
+        private const val DISPLACEMENT_QUALITY_MAJOR_TICK = 25
+        private const val DISPLACEMENT_QUALITY_FACTOR = .1f
+
+        private val displacementQualityLabels = mapOf(
+            DISPLACEMENT_QUALITY_MIN to WavefrontObjBundle.message(
+                "settings.editor.fileTypes.obj.preview.displacementQuality.lowest"
+            ),
+            DISPLACEMENT_QUALITY_MAX to WavefrontObjBundle.message(
+                "settings.editor.fileTypes.obj.preview.displacementQuality.highest"
+            )
+        )
+
         private const val FLOAT_INPUT_COLUMNS = 5
         private const val INVALID_FLOAT_VALUE = -1f
 

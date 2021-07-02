@@ -30,6 +30,7 @@ import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_VERTEX_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_GROUP_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_LINE_ICON
+import it.czerwinski.intellij.wavefront.lang.OBJ_LINE_VERTEX_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_OBJECT_ICON
@@ -45,6 +46,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
+import it.czerwinski.intellij.wavefront.lang.psi.ObjLineVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
@@ -77,6 +79,7 @@ object ObjItemPresentationFactory {
         is ObjPoint -> createPresentation(element)
 
         is ObjFaceVertex -> createPresentation(element)
+        is ObjLineVertex -> createPresentation(element)
 
         is ObjVertexIndex -> createPresentation(element)
         is ObjTextureCoordinatesIndex -> createPresentation(element)
@@ -180,6 +183,14 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.faceVertex"
         ),
         icon = OBJ_FACE_VERTEX_ICON
+    )
+
+    @Suppress("UnusedPrivateMember")
+    private fun createPresentation(lineVertex: ObjLineVertex): ItemPresentation = createPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.lineVertex"
+        ),
+        icon = OBJ_LINE_VERTEX_ICON
     )
 
     private fun createPresentation(vertexIndex: ObjVertexIndex): ItemPresentation = createPresentation(

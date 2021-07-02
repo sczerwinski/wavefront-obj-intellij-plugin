@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.wavefront.lang.psi.impl
 
-import com.intellij.psi.PsiElement
+import com.intellij.extapi.psi.ASTWrapperPsiElement
+import com.intellij.lang.ASTNode
+import it.czerwinski.intellij.wavefront.lang.psi.ObjLineElement
 
-interface ObjFlagElement : PsiElement {
-    val value: Int?
-}
+abstract class ObjLineElementImpl(
+    node: ASTNode
+) : ASTWrapperPsiElement(node), ObjLineElement

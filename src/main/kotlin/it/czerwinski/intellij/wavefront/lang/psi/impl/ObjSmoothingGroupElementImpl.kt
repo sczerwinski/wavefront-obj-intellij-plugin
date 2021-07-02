@@ -18,12 +18,12 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import it.czerwinski.intellij.wavefront.lang.psi.ObjFlagElement
+import it.czerwinski.intellij.wavefront.lang.psi.ObjSmoothingGroupElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 
-abstract class ObjFlagElementImpl(
+abstract class ObjSmoothingGroupElementImpl(
     node: ASTNode
-) : ASTWrapperPsiElement(node), ObjFlagElement {
+) : ASTWrapperPsiElement(node), ObjSmoothingGroupElement {
 
     private val valueNode get() = node.findChildByType(ObjTypes.SMOOTHING_GROUP_NUMBER)
 

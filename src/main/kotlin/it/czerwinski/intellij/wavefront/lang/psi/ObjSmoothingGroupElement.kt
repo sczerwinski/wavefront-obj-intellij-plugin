@@ -18,6 +18,6 @@ package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.psi.PsiElement
 
-interface ObjFlagElement : PsiElement {
+interface ObjSmoothingGroupElement : PsiElement {
     val value: Int?
 }

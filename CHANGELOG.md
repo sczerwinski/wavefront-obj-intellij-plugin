@@ -11,7 +11,7 @@
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.20`
   - Upgrade `kapt` to `1.5.20`
-  - Upgrade `org.jetbrains.intellij` to `1.0`
+  - Upgrade `org.jetbrains.intellij` to `1.1.2`
   - Upgrade `detekt-formatting` to `1.17.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`
 - GitHub Actions:

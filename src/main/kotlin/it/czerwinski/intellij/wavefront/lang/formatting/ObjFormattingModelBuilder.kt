@@ -59,7 +59,7 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
             .between(ObjTypes.LINE_KEYWORD, ObjTypes.VERTEX_INDEX).spaces(1)
             .between(ObjTypes.POINT_KEYWORD, ObjTypes.VERTEX_INDEX).spaces(1)
             .between(ObjTypes.SMOOTHING_GROUP_KEYWORD, ObjTypes.SMOOTHING_GROUP_NUMBER).spaces(1)
-            .between(ObjTypes.MATERIAL_FILE_REF_KEYWORD, ObjTypes.MATERIAL_FILE_NAME).spaces(1)
+            .between(ObjTypes.MATERIAL_FILE_REF_KEYWORD, ObjTypes.MATERIAL_FILE_REFERENCE).spaces(1)
             .between(ObjTypes.MATERIAL_REFERENCE_KEYWORD, ObjTypes.MATERIAL_NAME).spaces(1)
             .after(ObjTypes.OBJECT_OR_GROUP_NAME).none()
             .after(ObjTypes.OBJECT_OR_GROUP_IDENTIFIER).none()
@@ -67,6 +67,6 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
             .between(ObjTypes.FACE_VERTEX, ObjTypes.FACE_VERTEX).spaces(1)
             .around(ObjTypes.VERTEX_INDEX_SEPARATOR).none()
             .after(ObjTypes.SMOOTHING_GROUP_NUMBER).none()
-            .after(ObjTypes.MATERIAL_FILE_NAME).none()
+            .between(ObjTypes.MATERIAL_FILE_REFERENCE, ObjTypes.MATERIAL_FILE_REFERENCE).spaces(1)
             .after(ObjTypes.MATERIAL_NAME).none()
 }

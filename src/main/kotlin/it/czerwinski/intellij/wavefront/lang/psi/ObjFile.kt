@@ -40,7 +40,9 @@ class ObjFile(
     val objectLikeElements: List<PsiElement> get() = listOf(this) + groupingElements
 
     val materialFileReferences: List<ObjMaterialFileReference>
-        get() = objectLikeElements.flatMap { it.getChildrenOfType() }
+        get() = objectLikeElements
+            .flatMap { it.getChildrenOfType<ObjMaterialFileReferenceStatement>() }
+            .flatMap { it.getChildrenOfType() }
 
     val referencedMtlFiles: List<MtlFile> get() = materialFileReferences.mapNotNull { element -> element.mtlFile }
 

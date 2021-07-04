@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Support for textured lines
+- Support for multiple MTL filenames in `mtllib` statement
 - Support for displacement textures in 3D preview
 - Cropping textures toggle action in 3D preview
 - Setting for cropping textures

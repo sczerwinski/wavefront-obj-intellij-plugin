@@ -34,7 +34,7 @@ internal object PreviewColors {
     internal val COLOR_GRID: ColorKey = ColorKey.createColorKey("OBJ_3D_GRID", Color.GRAY)
 
     internal fun asVec3(colorKey: ColorKey): Vec3 =
-        Vec3(color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: Color.GRAY)
+        Vec3(color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: colorKey.defaultColor)
 
     internal fun asVec4(colorKey: ColorKey, alpha: Float = 1f): Vec4 =
         asVec3(colorKey).toVec4(w = alpha)

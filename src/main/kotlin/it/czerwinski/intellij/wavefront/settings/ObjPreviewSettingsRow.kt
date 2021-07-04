@@ -50,6 +50,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     private lateinit var defaultUpVector: ComboBox<UpVector>
     private lateinit var showAxesCheckBox: JBCheckBox
     private lateinit var axisLineWidthInput: JBTextField
+    private lateinit var showAxesLabelsCheckBox: JBCheckBox
+    private lateinit var axisLabelFontSizeInput: JBTextField
     private lateinit var showGridCheckBox: JBCheckBox
     private lateinit var showFineGridCheckBox: JBCheckBox
     private lateinit var gridLineWidthInput: JBTextField
@@ -64,6 +66,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
+            showAxesLabels = showAxesLabelsCheckBox.isSelected,
+            axisLabelFontSize = axisLabelFontSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             showGrid = showGridCheckBox.isSelected,
             showFineGrid = showFineGridCheckBox.isSelected,
             gridLineWidth = gridLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
@@ -77,6 +81,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             defaultUpVector.selectedItem = value.defaultUpVector
             showAxesCheckBox.isSelected = value.showAxes
             axisLineWidthInput.text = value.axisLineWidth.toString()
+            showAxesLabelsCheckBox.isSelected = value.showAxesLabels
+            axisLabelFontSizeInput.text = value.axisLabelFontSize.toString()
             showGridCheckBox.isSelected = value.showGrid
             showFineGridCheckBox.isSelected = value.showFineGrid
             gridLineWidthInput.text = value.gridLineWidth.toString()
@@ -123,6 +129,19 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
                     columns = FLOAT_INPUT_COLUMNS
                 ).component
                 contextHelpLabel(description = lineWidthContextHelpMessage)
+            }
+        }
+        row {
+            showAxesLabelsCheckBox = checkBox(
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showAxesLabels")
+            ).component
+        }
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLabelFontSize")) {
+            cell {
+                axisLabelFontSizeInput = textField(
+                    defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LABEL_FONT_SIZE,
+                    columns = FLOAT_INPUT_COLUMNS
+                ).component
             }
         }
     }
@@ -200,6 +219,9 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
         if (axisLineWidthInput.text.isInvalidPositiveFloat()) {
             errorMessages.add(getAxisLineWidthErrorMessage(axisLineWidthInput.text))
         }
+        if (axisLabelFontSizeInput.text.isInvalidPositiveFloat()) {
+            errorMessages.add(getAxisLabelFontSizeErrorMessage(axisLabelFontSizeInput.text))
+        }
         if (gridLineWidthInput.text.isInvalidPositiveFloat()) {
             errorMessages.add(getGridLineWidthErrorMessage(gridLineWidthInput.text))
         }
@@ -220,6 +242,11 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
 
     private fun getAxisLineWidthErrorMessage(value: String): String = WavefrontObjBundle.message(
         "settings.editor.fileTypes.obj.preview.axisLineWidth.error",
+        value
+    )
+
+    private fun getAxisLabelFontSizeErrorMessage(value: String): String = WavefrontObjBundle.message(
+        "settings.editor.fileTypes.obj.preview.axisLabelFontSize.error",
         value
     )
 

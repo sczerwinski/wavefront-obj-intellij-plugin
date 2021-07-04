@@ -25,6 +25,8 @@ data class ObjPreviewSettingsState(
     @field:Attribute var defaultUpVector: UpVector = UpVector.DEFAULT,
     @field:Attribute var showAxes: Boolean = DEFAULT_SHOW_AXES,
     @field:Attribute var axisLineWidth: Float = DEFAULT_AXIS_LINE_WIDTH,
+    @field:Attribute var showAxesLabels: Boolean = DEFAULT_SHOW_AXES_LABELS,
+    @field:Attribute var axisLabelFontSize: Float = DEFAULT_AXIS_LABEL_FONT_SIZE,
     @field:Attribute var showGrid: Boolean = DEFAULT_SHOW_GRID,
     @field:Attribute var showFineGrid: Boolean = DEFAULT_SHOW_FINE_GRID,
     @field:Attribute var gridLineWidth: Float = DEFAULT_GRID_LINE_WIDTH,
@@ -39,6 +41,8 @@ data class ObjPreviewSettingsState(
 
         const val DEFAULT_SHOW_AXES = true
         const val DEFAULT_AXIS_LINE_WIDTH = 3f
+        const val DEFAULT_SHOW_AXES_LABELS = true
+        const val DEFAULT_AXIS_LABEL_FONT_SIZE = 18f
         const val DEFAULT_SHOW_GRID = true
         const val DEFAULT_SHOW_FINE_GRID = false
         const val DEFAULT_GRID_LINE_WIDTH = 1f

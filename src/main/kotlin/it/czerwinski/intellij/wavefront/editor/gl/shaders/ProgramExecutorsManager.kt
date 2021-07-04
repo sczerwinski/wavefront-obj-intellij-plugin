@@ -43,6 +43,9 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     private lateinit var materialProgram: Program
     private lateinit var materialShaderProgramExecutor: MaterialShaderProgramExecutor
 
+    private lateinit var textProgram: Program
+    private lateinit var textShaderProgramExecutor: TextShaderProgramExecutor
+
     /**
      * Initializes all shaders and program executors.
      */
@@ -63,16 +66,21 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
 
         wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
         texturedWireframeProgram = programBuilder
-            .withVertexShader(shaderFactory.createTexturedWireframeShader(ShaderType.VERTEX_SHADER))
-            .withFragmentShader(shaderFactory.createTexturedWireframeShader(ShaderType.FRAGMENT_SHADER))
+            .withVertexShader(shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.VERTEX_SHADER))
+            .withFragmentShader(shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.FRAGMENT_SHADER))
             .build()
         solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
         materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
+        textProgram = programBuilder
+            .withVertexShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.VERTEX_SHADER))
+            .withFragmentShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.FRAGMENT_SHADER))
+            .build()
 
         wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
         texturedWireframeShaderProgramExecutor = TexturedWireframeShaderProgramExecutor(texturedWireframeProgram)
         solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
         materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
+        textShaderProgramExecutor = TextShaderProgramExecutor(textProgram)
     }
 
     private fun createProgram(
@@ -87,8 +95,8 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     private fun Shader.Factory.createShader(shadingMethod: ShadingMethod, shaderType: ShaderType): Shader =
         createShader(type = shaderType, source = ShaderResources.getShaderSource(shadingMethod, shaderType))
 
-    private fun Shader.Factory.createTexturedWireframeShader(shaderType: ShaderType): Shader =
-        createShader(type = shaderType, source = ShaderResources.getTexturedWireframeShaderSource(shaderType))
+    private fun Shader.Factory.createNamedShader(name: String, shaderType: ShaderType): Shader =
+        createShader(type = shaderType, source = ShaderResources.getNamedShaderSource(name, shaderType))
 
     /**
      * Renders [meshes] using wireframe shader with given [params].
@@ -135,6 +143,15 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     }
 
     /**
+     * Renders [meshes] using text shader with given [params].
+     */
+    fun renderText(gl: GlimpseAdapter, params: TextShader, vararg meshes: Mesh) {
+        if (::textShaderProgramExecutor.isInitialized) {
+            textShaderProgramExecutor.render(gl, params, meshes)
+        }
+    }
+
+    /**
      * Disposes all previously created programs.
      */
     fun dispose(gl: GlimpseAdapter) {
@@ -144,5 +161,10 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
         wireframeProgram.dispose(gl)
         solidProgram.dispose(gl)
         materialProgram.dispose(gl)
+    }
+
+    companion object {
+        private const val TEXTURED_WIREFRAME_SHADER = "textured_wireframe"
+        private const val TEXT_SHADER = "text"
     }
 }

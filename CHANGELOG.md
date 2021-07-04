@@ -8,8 +8,11 @@
 - Support for multiple MTL filenames in `mtllib` statement
 - Support for displacement textures in 3D preview
 - Cropping textures toggle action in 3D preview
+- Showing axes labels in 3D preview
 - Setting for cropping textures
 - Setting for displacement quality
+- Setting for showing axes labels
+- Setting for axes labels font size
 
 ### Changed
 - Group 3D preview editor color settings

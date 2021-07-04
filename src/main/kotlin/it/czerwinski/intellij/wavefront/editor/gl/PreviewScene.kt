@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.editor.colors.ColorKey
+import com.intellij.util.ui.UIUtil
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.FaceCullingMode
@@ -26,15 +27,24 @@ import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.Lens
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
+import graphics.glimpse.textures.Texture
+import graphics.glimpse.textures.TextureMagFilter
+import graphics.glimpse.textures.TextureMinFilter
+import graphics.glimpse.textures.TextureType
+import graphics.glimpse.textures.TextureWrap
 import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat4
+import graphics.glimpse.types.Vec2
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.scale
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.meshes.TextMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.TextShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
+import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
@@ -96,20 +106,61 @@ abstract class PreviewScene(
             requestRender()
         }
 
+    private val fontScaling: Float get() = if (UIUtil.isRetina()) 2f else 1f
+
+    private lateinit var fontTexture: Texture
+    private lateinit var boldFontTexture: Texture
+
     private lateinit var axisMesh: Mesh
     private lateinit var axisConeMesh: Mesh
+    private lateinit var axisXLabelMesh: Mesh
+    private lateinit var axisYLabelMesh: Mesh
+    private lateinit var axisZLabelMesh: Mesh
+
     private lateinit var gridMesh: Mesh
     private lateinit var fineGridMesh: Mesh
 
+    init {
+        TextureResources.prepare(profile)
+    }
+
     override fun initialize(gl: GlimpseAdapter) {
+        createFontTexture(gl)
         createAxesMeshes(gl)
         createGridMeshes(gl)
+    }
+
+    private fun createFontTexture(gl: GlimpseAdapter) {
+        try {
+            val textures = Texture.Builder.getInstance(gl)
+                .addTexture(TextureResources.fontTextureImageSource)
+                .addTexture(TextureResources.boldFontTextureImageSource)
+                .generateMipmaps()
+                .build()
+            fontTexture = textures.first()
+            boldFontTexture = textures.last()
+
+            gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
+            gl.glTexParameterFilter(
+                TextureType.TEXTURE_2D,
+                TextureMinFilter.LINEAR_MIPMAP_LINEAR,
+                TextureMagFilter.LINEAR
+            )
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createFontTexture.error"),
+                expected
+            )
+        }
     }
 
     private fun createAxesMeshes(gl: GlimpseAdapter) {
         try {
             axisMesh = AxisMeshFactory.createAxis(gl)
             axisConeMesh = AxisMeshFactory.createAxisCone(gl)
+            axisXLabelMesh = TextMeshFactory.createText(gl, AXIS_X_LABEL)
+            axisYLabelMesh = TextMeshFactory.createText(gl, AXIS_Y_LABEL)
+            axisZLabelMesh = TextMeshFactory.createText(gl, AXIS_Z_LABEL)
         } catch (expected: Throwable) {
             errorLog.addError(
                 WavefrontObjBundle.message("editor.fileTypes.obj.preview.createAxesMeshes.error"),
@@ -134,6 +185,7 @@ abstract class PreviewScene(
         renderModel(gl)
         if (showAxes) renderAxes(gl)
         if (showGrid) renderGrid(gl)
+        if (showAxes && config.showAxesLabels) renderAxesLabels(gl)
         if (isStarted) pause()
     }
 
@@ -189,6 +241,29 @@ abstract class PreviewScene(
         )
     }
 
+    private fun renderAxesLabels(gl: GlimpseAdapter) {
+        renderAxisLabel(gl, AxisMeshFactory.xAxisModelMatrix, PreviewColors.COLOR_AXIS_X, axisXLabelMesh)
+        renderAxisLabel(gl, AxisMeshFactory.yAxisModelMatrix, PreviewColors.COLOR_AXIS_Y, axisYLabelMesh)
+        renderAxisLabel(gl, AxisMeshFactory.zAxisModelMatrix, PreviewColors.COLOR_AXIS_Z, axisZLabelMesh)
+    }
+
+    private fun renderAxisLabel(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey, labelMesh: Mesh) {
+        val textSize = fontScaling * config.axisLabelFontSize
+        val scale = (modelSize ?: 1f) * AXIS_LENGTH_FACTOR
+        val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * modelMatrix
+        val labelPosition = mvpMatrix * (Vec3.unitZ * AXIS_LABEL_DISTANCE_FACTOR).toVec4(w = 1f)
+        programExecutorsManager.renderText(
+            gl,
+            TextShader(
+                position = labelPosition.toVec3() / labelPosition.w,
+                scale = Vec2(x = textSize / width, y = textSize / height),
+                color = PreviewColors.asVec4(colorKey),
+                texture = boldFontTexture
+            ),
+            labelMesh
+        )
+    }
+
     override fun dispose(gl: GlimpseAdapter) {
         axisMesh.dispose(gl)
         axisConeMesh.dispose(gl)
@@ -197,9 +272,13 @@ abstract class PreviewScene(
     }
 
     companion object {
+        private const val AXIS_LENGTH_FACTOR = 2f
+        private const val AXIS_LABEL_DISTANCE_FACTOR = 1.1f
+        private const val AXIS_X_LABEL = "x"
+        private const val AXIS_Y_LABEL = "y"
+        private const val AXIS_Z_LABEL = "z"
+
         private const val GRID_ALPHA = 0.3f
         private const val FINE_GRID_ALPHA = 0.1f
-
-        private const val AXIS_LENGTH_FACTOR = 2f
     }
 }

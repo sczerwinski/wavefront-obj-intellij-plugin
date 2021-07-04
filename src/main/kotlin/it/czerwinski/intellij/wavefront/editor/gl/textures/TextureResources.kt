@@ -16,21 +16,43 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl.textures
 
+import com.jogamp.opengl.GLProfile
 import graphics.glimpse.textures.TextureImageSource
 import graphics.glimpse.textures.fromResource
 
 object TextureResources {
 
+    private const val FONT_TEXTURE_RESOURCE = "/textures/jb_mono.png"
+    private const val BOLD_FONT_TEXTURE_RESOURCE = "/textures/jb_mono_bold.png"
     private const val FALLBACK_TEXTURE_RESOURCE = "/textures/fallback_texture.png"
     private const val FALLBACK_NORMALMAP_RESOURCE = "/textures/fallback_normalmap.png"
 
-    val fallbackTextureImageSource: TextureImageSource
-        get() = TextureImageSource.builder()
-            .fromResource(owner = this, FALLBACK_TEXTURE_RESOURCE)
+    var fontTextureImageSource: TextureImageSource = getTextureImageSource(FONT_TEXTURE_RESOURCE)
+        private set
+
+    var boldFontTextureImageSource: TextureImageSource = getTextureImageSource(BOLD_FONT_TEXTURE_RESOURCE)
+        private set
+
+    var fallbackTextureImageSource: TextureImageSource = getTextureImageSource(FALLBACK_TEXTURE_RESOURCE)
+        private set
+
+    var fallbackNormalmapImageSource: TextureImageSource = getTextureImageSource(FALLBACK_NORMALMAP_RESOURCE)
+        private set
+
+    private fun getTextureImageSource(path: String): TextureImageSource =
+        TextureImageSource.builder()
+            .fromResource(owner = this, path)
             .build()
 
-    val fallbackNormalmapImageSource: TextureImageSource
-        get() = TextureImageSource.builder()
-            .fromResource(owner = this, FALLBACK_NORMALMAP_RESOURCE)
-            .build()
+    fun prepare(profile: GLProfile) {
+        fontTextureImageSource = getPreparedTextureImageSource(FONT_TEXTURE_RESOURCE, profile)
+        boldFontTextureImageSource = getPreparedTextureImageSource(BOLD_FONT_TEXTURE_RESOURCE, profile)
+        fallbackTextureImageSource = getPreparedTextureImageSource(FALLBACK_TEXTURE_RESOURCE, profile)
+        fallbackNormalmapImageSource = getPreparedTextureImageSource(FALLBACK_NORMALMAP_RESOURCE, profile)
+    }
+
+    private fun getPreparedTextureImageSource(path: String, profile: GLProfile): TextureImageSource =
+        TextureImageSource.builder()
+            .fromResource(owner = this, path)
+            .buildPrepared(profile)
 }

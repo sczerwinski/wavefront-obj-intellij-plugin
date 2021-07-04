@@ -30,8 +30,8 @@ object ShaderResources {
             "/shaders/${shadingMethod.lowerCaseName}_${shaderType.lowerCaseName}.glsl"
         )?.use { inputStream -> inputStream.bufferedReader().readText() }.orEmpty()
 
-    fun getTexturedWireframeShaderSource(shaderType: ShaderType): String =
+    fun getNamedShaderSource(name: String, shaderType: ShaderType): String =
         javaClass.getResourceAsStream(
-            "/shaders/textured_wireframe_${shaderType.lowerCaseName}.glsl"
+            "/shaders/${name}_${shaderType.lowerCaseName}.glsl"
         )?.use { inputStream -> inputStream.bufferedReader().readText() }.orEmpty()
 }

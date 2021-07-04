@@ -20,6 +20,8 @@ import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 
 data class PreviewSceneConfig(
     val axisLineWidth: Float = ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+    val showAxesLabels: Boolean = ObjPreviewSettingsState.DEFAULT_SHOW_AXES_LABELS,
+    val axisLabelFontSize: Float = ObjPreviewSettingsState.DEFAULT_AXIS_LABEL_FONT_SIZE,
     val showFineGrid: Boolean = ObjPreviewSettingsState.DEFAULT_SHOW_FINE_GRID,
     val gridLineWidth: Float = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
     val lineWidth: Float = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
@@ -30,6 +32,8 @@ data class PreviewSceneConfig(
         fun fromObjPreviewSettingsState(settings: ObjPreviewSettingsState): PreviewSceneConfig =
             PreviewSceneConfig(
                 settings.axisLineWidth,
+                settings.showAxesLabels,
+                settings.axisLabelFontSize,
                 settings.showFineGrid,
                 settings.gridLineWidth,
                 settings.lineWidth,

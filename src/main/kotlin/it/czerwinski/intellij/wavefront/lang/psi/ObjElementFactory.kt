@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.util.PsiTreeUtil
 import it.czerwinski.intellij.wavefront.lang.ObjFileType
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
@@ -30,7 +31,7 @@ object ObjElementFactory {
 
     fun createMaterialFileReference(project: Project, filename: String): ObjMaterialFileReference {
         val file = createFile(project, text = "mtllib $filename")
-        return file.firstChild as ObjMaterialFileReference
+        return checkNotNull(PsiTreeUtil.findChildOfAnyType(file.firstChild, ObjMaterialFileReference::class.java))
     }
 
     fun createMaterialReference(project: Project, name: String): ObjMaterialReference {

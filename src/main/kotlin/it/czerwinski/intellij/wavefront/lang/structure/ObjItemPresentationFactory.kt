@@ -48,6 +48,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLineVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
+import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReferenceStatement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
 import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
@@ -87,6 +88,7 @@ object ObjItemPresentationFactory {
 
         is ObjSmoothingGroup -> createPresentation(element)
 
+        is ObjMaterialFileReferenceStatement -> createPresentation(element)
         is ObjMaterialFileReference -> createPresentation(element)
         is ObjMaterialReference -> createPresentation(element)
 
@@ -235,6 +237,14 @@ object ObjItemPresentationFactory {
             icon = if (value == 0) OBJ_SMOOTHING_OFF_ICON else OBJ_SMOOTHING_ON_ICON
         )
     }
+
+    private fun createPresentation(statement: ObjMaterialFileReferenceStatement): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.materialFileReference"
+            ),
+            icon = OBJ_MATERIAL_FILE_ICON
+        )
 
     private fun createPresentation(materialFileReference: ObjMaterialFileReference): ItemPresentation =
         createPresentation(

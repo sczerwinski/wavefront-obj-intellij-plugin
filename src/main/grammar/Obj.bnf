@@ -35,7 +35,7 @@ private item_ ::= (
   vertex | textureCoordinates | vertexNormal
   | point | line | face
   | smoothingGroup
-  | materialFileReference | materialReference
+  | materialFileReferenceStatement | materialReference
   | COMMENT | CRLF
 )
 
@@ -104,7 +104,9 @@ smoothingGroup ::= (SMOOTHING_GROUP_KEYWORD SMOOTHING_GROUP_NUMBER) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjSmoothingGroupElement"
 }
 
-materialFileReference ::= (MATERIAL_FILE_REF_KEYWORD MATERIAL_FILE_NAME) {
+materialFileReferenceStatement ::= (MATERIAL_FILE_REF_KEYWORD materialFileReference + materialFileReference*)
+
+materialFileReference ::= (MATERIAL_FILE_NAME) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjMaterialFileReferenceElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReferenceElement"
 }

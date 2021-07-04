@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.0.0]
+### Added
 - Support for textured lines
 - Support for multiple MTL filenames in `mtllib` statement
 - Support for displacement textures in 3D preview

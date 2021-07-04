@@ -238,6 +238,7 @@ object ObjItemPresentationFactory {
         )
     }
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(statement: ObjMaterialFileReferenceStatement): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(

@@ -7,6 +7,11 @@
 - Support for platform version `212.*`
 
 ### Changed
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.21`
+  - Upgrade `kapt` to `1.5.21`
+  - Upgrade `org.jetbrains.intellij` to `1.1.3`
+  - Upgrade `org.jetbrains.changelog` to `1.2.0`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`, `2021.2`
 
 ## [1.0.0]

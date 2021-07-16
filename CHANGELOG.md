@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.0.1]
+### Added
 - Support for platform version `212.*`
 
 ### Changed

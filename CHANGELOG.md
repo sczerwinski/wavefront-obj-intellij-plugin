@@ -4,16 +4,11 @@
 
 ## [Unreleased]
 ### Added
+- Support for platform version `212.*`
 
 ### Changed
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`, `2021.2`
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [1.0.0]
 ### Added
 - Support for textured lines

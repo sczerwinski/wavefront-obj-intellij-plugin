@@ -3,17 +3,15 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
+  - Upgrade `kapt` to `1.5.30`
+  - Upgrade `org.jetbrains.intellij` to `1.1.4`
+  - Upgrade `org.jetbrains.changelog` to `1.3.0`
+  - Upgrade `detekt-formatting` to `1.18.0`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.0`
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [1.0.1]
 ### Added
 - Support for platform version `212.*`

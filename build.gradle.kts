@@ -102,7 +102,10 @@ detekt {
 
     reports {
         html.enabled = false
-        xml.enabled = false
+        xml {
+            enabled = true
+            destination = file("build/reports/detekt.xml")
+        }
         txt.enabled = false
         sarif {
             enabled = true

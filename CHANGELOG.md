@@ -3,7 +3,12 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+- Publish test report in GitHub Actions build
+- Annotate sources with detekt issues in GitHub Actions build
+
 ### Changed
+- Upload detekt report in GitHub Actions build after failure
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
   - Upgrade `kapt` to `1.5.30`

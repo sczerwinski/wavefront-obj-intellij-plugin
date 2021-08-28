@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Pinch to zoom on 3D preview (if supported on current platform)
 - Publish test report in GitHub Actions build
 - Annotate sources with detekt issues in GitHub Actions build
 

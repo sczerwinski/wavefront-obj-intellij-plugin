@@ -29,6 +29,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.components.JBLoadingPanel
+import com.intellij.ui.components.Magnificator
 import com.jogamp.opengl.math.FloatUtil
 import com.jogamp.opengl.util.FPSAnimator
 import graphics.glimpse.types.Angle
@@ -37,6 +38,7 @@ import it.czerwinski.intellij.common.ui.ActionToolbarBuilder
 import it.czerwinski.intellij.common.ui.EditorToolbarHeader
 import it.czerwinski.intellij.common.ui.EditorWithToolbar
 import it.czerwinski.intellij.common.ui.ErrorLogSplitter
+import it.czerwinski.intellij.common.ui.GlimpseViewport
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.ObjPreviewScene
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
@@ -200,7 +202,17 @@ class ObjPreviewComponent(
                     glimpsePanel.addMouseListener(panningMouseInputListener)
                     glimpsePanel.addMouseMotionListener(panningMouseInputListener)
 
-                    myErrorLogSplitter.component = glimpsePanel
+                    glimpsePanel.putClientProperty(
+                        Magnificator.CLIENT_PROPERTY_KEY,
+                        Magnificator { scale, at ->
+                            zoomBy(zoomFactor = 1f / scale.toFloat())
+                            return@Magnificator at
+                        }
+                    )
+
+                    val viewport = GlimpseViewport(glimpsePanel)
+
+                    myErrorLogSplitter.component = viewport
                     myScene.start()
                     stopLoading()
                 } catch (expected: Throwable) {
@@ -246,19 +258,19 @@ class ObjPreviewComponent(
     }
 
     fun zoomIn() {
-        zoomBy(-ZOOM_PRECISION)
+        zoomBy(FloatUtil.pow(ZOOM_BASE, -ZOOM_PRECISION))
     }
 
-    private fun zoomBy(zoomAmount: Float) {
-        if (zoomAmount != 0f) {
+    private fun zoomBy(zoomFactor: Float) {
+        if (zoomFactor != 1f) {
             updateCameraModel { oldCameraModel ->
-                oldCameraModel.zoomed(zoomAmount)
+                oldCameraModel.zoomed(zoomFactor)
             }
         }
     }
 
-    private fun GLCameraModel.zoomed(zoomAmount: Float): GLCameraModel {
-        val newDistance = distance * FloatUtil.pow(ZOOM_BASE, zoomAmount)
+    private fun GLCameraModel.zoomed(zoomFactor: Float): GLCameraModel {
+        val newDistance = distance * zoomFactor
         return copy(
             distance = newDistance.coerceIn(
                 minimumValue = modelSize * MIN_DISTANCE_FACTOR,
@@ -268,7 +280,7 @@ class ObjPreviewComponent(
     }
 
     fun zoomOut() {
-        zoomBy(ZOOM_PRECISION)
+        zoomBy(FloatUtil.pow(ZOOM_BASE, ZOOM_PRECISION))
     }
 
     fun zoomFit() {
@@ -301,7 +313,7 @@ class ObjPreviewComponent(
     inner class ZoomingMouseWheelListener : MouseWheelListener {
 
         override fun mouseWheelMoved(event: MouseWheelEvent?) {
-            zoomBy(zoomAmount = ZOOM_PRECISION * (event?.wheelRotation ?: 0))
+            zoomBy(zoomFactor = FloatUtil.pow(ZOOM_BASE, ZOOM_PRECISION * (event?.wheelRotation ?: 0)))
         }
     }
 

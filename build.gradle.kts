@@ -38,7 +38,7 @@ dependencies {
     api("graphics.glimpse:glimpse-core:1.0.0")
     api("graphics.glimpse:glimpse-ui:1.0.0")
     kapt("graphics.glimpse:glimpse-processor-java:1.0.0")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1")
 }
 
 kapt {

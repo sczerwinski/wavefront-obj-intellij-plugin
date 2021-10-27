@@ -14,7 +14,7 @@ plugins {
     // Kapt annotation processing
     kotlin("kapt") version "1.5.30"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.1.4"
+    id("org.jetbrains.intellij") version "1.2.1"
     // gradle-grammarkit-plugin - read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
     id("org.jetbrains.grammarkit") version "2021.1.3"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin

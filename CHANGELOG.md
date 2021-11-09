@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Support for platform version `213.*`
 - Shader quality (float precision) setting
 - Pinch to zoom on 3D preview (if supported on current platform)
 - Publish test report in GitHub Actions build
@@ -25,7 +26,7 @@
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.0`
 - GitHub Actions:
   - Upgrade `actions/checkout` to `v2.4.0`
-- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`, `2021.3`
 - Gradle – Changelog plugin configuration update
 
 ### Fixed

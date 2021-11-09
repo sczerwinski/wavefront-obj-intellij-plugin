@@ -65,8 +65,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
 
     override var objPreviewSettings: ObjPreviewSettingsState
         get() = ObjPreviewSettingsState(
-            defaultShadingMethod = defaultShadingMethod.selectedItem as? ShadingMethod ?: ShadingMethod.DEFAULT,
-            defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
+            defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.DEFAULT,
+            defaultUpVector = defaultUpVector.item ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             showAxesLabels = showAxesLabelsCheckBox.isSelected,
@@ -81,8 +81,8 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             displacementQuality = displacementQualitySlider.value * DISPLACEMENT_QUALITY_FACTOR
         )
         set(value) {
-            defaultShadingMethod.selectedItem = value.defaultShadingMethod
-            defaultUpVector.selectedItem = value.defaultUpVector
+            defaultShadingMethod.item = value.defaultShadingMethod
+            defaultUpVector.item = value.defaultUpVector
             showAxesCheckBox.isSelected = value.showAxes
             axisLineWidthInput.text = value.axisLineWidth.toString()
             showAxesLabelsCheckBox.isSelected = value.showAxesLabels

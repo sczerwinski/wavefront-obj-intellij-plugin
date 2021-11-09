@@ -36,9 +36,9 @@ class ObjSplitEditorSettingsRow : SettingsRow {
     private lateinit var horizontalSplitCheckBox: JBRadioButton
 
     var defaultEditorLayout: SplitEditor.Layout
-        get() = defaultEditorLayoutComboBox.selectedItem as? SplitEditor.Layout ?: SplitEditor.Layout.DEFAULT
+        get() = defaultEditorLayoutComboBox.item ?: SplitEditor.Layout.DEFAULT
         set(value) {
-            defaultEditorLayoutComboBox.selectedItem = value
+            defaultEditorLayoutComboBox.item = value
         }
 
     var isVerticalSplit: Boolean

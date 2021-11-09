@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Support for platform version `213.*`
 - Shader quality (float precision) setting
 - Pinch to zoom on 3D preview (if supported on current platform)
 - Publish test report in GitHub Actions build
@@ -19,18 +20,19 @@
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.31`
   - Upgrade `kapt` to `1.5.31`
   - Upgrade `org.jetbrains.intellij` to `1.2.1`
-  - Upgrade `org.jetbrains.changelog` to `1.3.0`
+  - Upgrade `org.jetbrains.changelog` to `1.3.1`
   - Upgrade `detekt-formatting` to `1.18.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.1`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.0`
 - GitHub Actions:
   - Upgrade `actions/checkout` to `v2.4.0`
-- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`, `2021.3`
 - Gradle – Changelog plugin configuration update
 
 ### Fixed
 - Prevent infinite displacement loop
 - Use `DynamicBundle` instead of `AbstractBundle` in `WavefrontObjBundle.kt`
+- Replace deprecated `ServiceManager.getService` with `Application.getService`
 
 ## [1.0.1]
 ### Added

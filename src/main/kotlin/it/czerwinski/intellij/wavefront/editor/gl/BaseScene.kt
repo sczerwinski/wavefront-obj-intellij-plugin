@@ -156,8 +156,8 @@ abstract class BaseScene(
 
     final override fun onDestroy(gl: GlimpseAdapter) {
         try {
-            dispose(gl)
             texturesManager.dispose(gl)
+            dispose(gl)
         } catch (expected: Throwable) {
             onDestroyError(gl, expected)
         }

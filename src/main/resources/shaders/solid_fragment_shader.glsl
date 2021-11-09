@@ -1,7 +1,3 @@
-#version 100
-
-precision mediump float;
-
 uniform vec3 uColor;
 
 varying vec3 vPosTan;

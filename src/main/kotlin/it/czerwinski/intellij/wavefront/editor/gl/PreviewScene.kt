@@ -42,6 +42,7 @@ import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.TextMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.ProgramExecutorsManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.TextShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
@@ -108,6 +109,8 @@ abstract class PreviewScene(
 
     private val fontScaling: Float get() = if (UIUtil.isRetina()) 2f else 1f
 
+    protected val programExecutorsManager = ProgramExecutorsManager(errorLog)
+
     private lateinit var fontTexture: Texture
     private lateinit var boldFontTexture: Texture
 
@@ -125,9 +128,14 @@ abstract class PreviewScene(
     }
 
     override fun initialize(gl: GlimpseAdapter) {
+        createShaders(gl)
         createFontTexture(gl)
         createAxesMeshes(gl)
         createGridMeshes(gl)
+    }
+
+    private fun createShaders(gl: GlimpseAdapter) {
+        programExecutorsManager.initialize(gl, config.shaderQuality)
     }
 
     private fun createFontTexture(gl: GlimpseAdapter) {
@@ -269,6 +277,7 @@ abstract class PreviewScene(
         axisConeMesh.dispose(gl)
         gridMesh.dispose(gl)
         fineGridMesh.dispose(gl)
+        programExecutorsManager.dispose(gl)
     }
 
     companion object {

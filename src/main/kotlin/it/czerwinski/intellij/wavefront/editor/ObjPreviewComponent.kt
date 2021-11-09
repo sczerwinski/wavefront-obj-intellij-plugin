@@ -136,8 +136,13 @@ class ObjPreviewComponent(
 
     var previewSceneConfig: PreviewSceneConfig = PreviewSceneConfig()
         set(value) {
+            val oldValue = field
             field = value
-            updateScene()
+            if (value.shaderQuality != oldValue.shaderQuality) {
+                refresh()
+            } else {
+                updateScene()
+            }
         }
 
     private var cameraModel: GLCameraModel = GLCameraModelFactory.createDefault()

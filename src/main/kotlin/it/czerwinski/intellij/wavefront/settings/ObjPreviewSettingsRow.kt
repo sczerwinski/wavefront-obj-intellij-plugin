@@ -28,8 +28,10 @@ import com.intellij.ui.layout.Row
 import com.intellij.ui.layout.RowBuilder
 import com.intellij.ui.layout.slider
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.settings.ui.ShaderQualityListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
@@ -58,6 +60,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
     private lateinit var cropTexturesCheckBox: JBCheckBox
+    private lateinit var shaderQualityComboBox: ComboBox<ShaderQuality>
     private lateinit var displacementQualitySlider: JSlider
 
     override var objPreviewSettings: ObjPreviewSettingsState
@@ -74,6 +77,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             lineWidth = lineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             pointSize = pointSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             cropTextures = cropTexturesCheckBox.isSelected,
+            shaderQuality = shaderQualityComboBox.item ?: ShaderQuality.DEFAULT,
             displacementQuality = displacementQualitySlider.value * DISPLACEMENT_QUALITY_FACTOR
         )
         set(value) {
@@ -89,6 +93,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             lineWidthInput.text = value.lineWidth.toString()
             pointSizeInput.text = value.pointSize.toString()
             cropTexturesCheckBox.isSelected = value.cropTextures
+            shaderQualityComboBox.item = value.shaderQuality
             displacementQualitySlider.value = (value.displacementQuality / DISPLACEMENT_QUALITY_FACTOR).roundToInt()
         }
 
@@ -187,6 +192,12 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
         row {
             cropTexturesCheckBox = checkBox(
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.cropTextures")
+            ).component
+        }
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality")) {
+            shaderQualityComboBox = enumComboBox(
+                defaultValue = ShaderQuality.DEFAULT,
+                renderer = ShaderQualityListCellRenderer()
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.displacementQuality")) {

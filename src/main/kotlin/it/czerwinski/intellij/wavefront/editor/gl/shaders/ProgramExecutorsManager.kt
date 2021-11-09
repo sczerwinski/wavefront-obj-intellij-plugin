@@ -24,6 +24,7 @@ import graphics.glimpse.shaders.Shader
 import graphics.glimpse.shaders.ShaderType
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
 /**
@@ -49,9 +50,9 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     /**
      * Initializes all shaders and program executors.
      */
-    fun initialize(gl: GlimpseAdapter) {
+    fun initialize(gl: GlimpseAdapter, shaderQuality: ShaderQuality) {
         try {
-            createPrograms(gl)
+            createPrograms(gl, shaderQuality)
         } catch (expected: Throwable) {
             errorLog.addError(
                 WavefrontObjBundle.message("editor.fileTypes.obj.preview.createShaders.error"),
@@ -60,20 +61,24 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
         }
     }
 
-    private fun createPrograms(gl: GlimpseAdapter) {
+    private fun createPrograms(gl: GlimpseAdapter, shaderQuality: ShaderQuality) {
         val shaderFactory = Shader.Factory.newInstance(gl)
         val programBuilder = Program.Builder.newInstance(gl)
 
-        wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME)
+        wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME, shaderQuality)
         texturedWireframeProgram = programBuilder
-            .withVertexShader(shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.VERTEX_SHADER))
-            .withFragmentShader(shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.FRAGMENT_SHADER))
+            .withVertexShader(
+                shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.VERTEX_SHADER, shaderQuality)
+            )
+            .withFragmentShader(
+                shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.FRAGMENT_SHADER, shaderQuality)
+            )
             .build()
-        solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID)
-        materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL)
+        solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID, shaderQuality)
+        materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL, shaderQuality)
         textProgram = programBuilder
-            .withVertexShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.VERTEX_SHADER))
-            .withFragmentShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.FRAGMENT_SHADER))
+            .withVertexShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.VERTEX_SHADER, shaderQuality))
+            .withFragmentShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.FRAGMENT_SHADER, shaderQuality))
             .build()
 
         wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
@@ -86,17 +91,30 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     private fun createProgram(
         shaderFactory: Shader.Factory,
         programBuilder: Program.Builder,
-        shadingMethod: ShadingMethod
+        shadingMethod: ShadingMethod,
+        shaderQuality: ShaderQuality
     ): Program = programBuilder
-        .withVertexShader(shaderFactory.createShader(shadingMethod, ShaderType.VERTEX_SHADER))
-        .withFragmentShader(shaderFactory.createShader(shadingMethod, ShaderType.FRAGMENT_SHADER))
+        .withVertexShader(shaderFactory.createShader(shadingMethod, ShaderType.VERTEX_SHADER, shaderQuality))
+        .withFragmentShader(shaderFactory.createShader(shadingMethod, ShaderType.FRAGMENT_SHADER, shaderQuality))
         .build()
 
-    private fun Shader.Factory.createShader(shadingMethod: ShadingMethod, shaderType: ShaderType): Shader =
-        createShader(type = shaderType, source = ShaderResources.getShaderSource(shadingMethod, shaderType))
+    private fun Shader.Factory.createShader(
+        shadingMethod: ShadingMethod,
+        shaderType: ShaderType,
+        shaderQuality: ShaderQuality
+    ): Shader = createShader(
+        type = shaderType,
+        source = ShaderResources.getShaderSource(shadingMethod, shaderType, shaderQuality)
+    )
 
-    private fun Shader.Factory.createNamedShader(name: String, shaderType: ShaderType): Shader =
-        createShader(type = shaderType, source = ShaderResources.getNamedShaderSource(name, shaderType))
+    private fun Shader.Factory.createNamedShader(
+        name: String,
+        shaderType: ShaderType,
+        shaderQuality: ShaderQuality
+    ): Shader = createShader(
+        type = shaderType,
+        source = ShaderResources.getNamedShaderSource(name, shaderType, shaderQuality)
+    )
 
     /**
      * Renders [meshes] using wireframe shader with given [params].

@@ -1,7 +1,3 @@
-#version 100
-
-precision mediump float;
-
 uniform vec3 uAmbColor;
 uniform vec3 uDiffColor;
 uniform vec3 uSpecColor;

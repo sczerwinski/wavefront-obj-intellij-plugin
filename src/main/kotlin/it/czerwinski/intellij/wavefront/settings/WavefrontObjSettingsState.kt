@@ -16,8 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.messages.Topic
@@ -60,7 +60,7 @@ data class WavefrontObjSettingsState(
         const val DEFAULT_VERTICAL_SPLIT = false
 
         fun getInstance(): WavefrontObjSettingsState? {
-            return ServiceManager.getService(WavefrontObjSettingsState::class.java)
+            return ApplicationManager.getApplication().getService(WavefrontObjSettingsState::class.java)
         }
     }
 

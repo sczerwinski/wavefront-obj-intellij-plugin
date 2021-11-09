@@ -32,6 +32,7 @@
 ### Fixed
 - Prevent infinite displacement loop
 - Use `DynamicBundle` instead of `AbstractBundle` in `WavefrontObjBundle.kt`
+- Replace deprecated `ServiceManager.getService` with `Application.getService`
 
 ## [1.0.1]
 ### Added

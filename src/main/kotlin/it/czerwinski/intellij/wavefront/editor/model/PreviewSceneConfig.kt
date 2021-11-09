@@ -26,6 +26,7 @@ data class PreviewSceneConfig(
     val gridLineWidth: Float = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
     val lineWidth: Float = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
     val pointSize: Float = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
+    val shaderQuality: ShaderQuality = ShaderQuality.DEFAULT,
     val displacementQuality: Float = ObjPreviewSettingsState.DEFAULT_DISPLACEMENT_QUALITY
 ) {
     companion object {
@@ -38,6 +39,7 @@ data class PreviewSceneConfig(
                 settings.gridLineWidth,
                 settings.lineWidth,
                 settings.pointSize,
+                settings.shaderQuality,
                 settings.displacementQuality
             )
     }

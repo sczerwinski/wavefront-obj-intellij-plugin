@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
 import graphics.glimpse.shaders.ShaderType
+import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import java.util.Locale
 
@@ -25,13 +26,24 @@ object ShaderResources {
     private val <E : Enum<E>> Enum<E>.lowerCaseName
         get() = name.toLowerCase(Locale.ENGLISH)
 
-    fun getShaderSource(shadingMethod: ShadingMethod, shaderType: ShaderType): String =
-        javaClass.getResourceAsStream(
-            "/shaders/${shadingMethod.lowerCaseName}_${shaderType.lowerCaseName}.glsl"
-        )?.use { inputStream -> inputStream.bufferedReader().readText() }.orEmpty()
+    fun getShaderSource(shadingMethod: ShadingMethod, shaderType: ShaderType, shaderQuality: ShaderQuality): String =
+        loadShaderSource(
+            path = "/shaders/${shadingMethod.lowerCaseName}_${shaderType.lowerCaseName}.glsl",
+            shaderQuality
+        )
 
-    fun getNamedShaderSource(name: String, shaderType: ShaderType): String =
-        javaClass.getResourceAsStream(
-            "/shaders/${name}_${shaderType.lowerCaseName}.glsl"
-        )?.use { inputStream -> inputStream.bufferedReader().readText() }.orEmpty()
+    private fun loadShaderSource(path: String, shaderQuality: ShaderQuality): String =
+        javaClass.getResourceAsStream(path)
+            ?.use { inputStream -> inputStream.bufferedReader().readText() }
+            .orEmpty()
+            .let { source ->
+                """
+                    #version 100
+                    precision ${shaderQuality.lowerCaseName}p float;
+                    $source
+                """.trimIndent()
+            }
+
+    fun getNamedShaderSource(name: String, shaderType: ShaderType, shaderQuality: ShaderQuality): String =
+        loadShaderSource(path = "/shaders/${name}_${shaderType.lowerCaseName}.glsl", shaderQuality)
 }

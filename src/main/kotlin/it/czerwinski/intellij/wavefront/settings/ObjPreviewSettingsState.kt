@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.util.xmlb.annotations.Attribute
+import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
@@ -33,6 +34,7 @@ data class ObjPreviewSettingsState(
     @field:Attribute var lineWidth: Float = DEFAULT_LINE_WIDTH,
     @field:Attribute var pointSize: Float = DEFAULT_POINT_SIZE,
     @field:Attribute var cropTextures: Boolean = DEFAULT_CROP_TEXTURES,
+    @field:Attribute var shaderQuality: ShaderQuality = ShaderQuality.DEFAULT,
     @field:Attribute var displacementQuality: Float = DEFAULT_DISPLACEMENT_QUALITY,
 ) {
 

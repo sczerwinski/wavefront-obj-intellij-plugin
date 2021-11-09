@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Shader quality (float precision) setting
 - Pinch to zoom on 3D preview (if supported on current platform)
 - Publish test report in GitHub Actions build
 - Annotate sources with detekt issues in GitHub Actions build
@@ -17,6 +18,9 @@
   - Upgrade `org.jetbrains.changelog` to `1.3.0`
   - Upgrade `detekt-formatting` to `1.18.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.0`
+
+### Fixed
+- Prevent infinite displacement loop
 
 ## [1.0.1]
 ### Added

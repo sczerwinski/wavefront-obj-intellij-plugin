@@ -28,8 +28,10 @@ import com.intellij.ui.layout.Row
 import com.intellij.ui.layout.RowBuilder
 import com.intellij.ui.layout.slider
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.settings.ui.ShaderQualityListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
@@ -58,12 +60,13 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
     private lateinit var cropTexturesCheckBox: JBCheckBox
+    private lateinit var shaderQualityComboBox: ComboBox<ShaderQuality>
     private lateinit var displacementQualitySlider: JSlider
 
     override var objPreviewSettings: ObjPreviewSettingsState
         get() = ObjPreviewSettingsState(
-            defaultShadingMethod = defaultShadingMethod.selectedItem as? ShadingMethod ?: ShadingMethod.DEFAULT,
-            defaultUpVector = defaultUpVector.selectedItem as? UpVector ?: UpVector.DEFAULT,
+            defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.DEFAULT,
+            defaultUpVector = defaultUpVector.item ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             showAxesLabels = showAxesLabelsCheckBox.isSelected,
@@ -74,11 +77,12 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             lineWidth = lineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             pointSize = pointSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             cropTextures = cropTexturesCheckBox.isSelected,
+            shaderQuality = shaderQualityComboBox.item ?: ShaderQuality.DEFAULT,
             displacementQuality = displacementQualitySlider.value * DISPLACEMENT_QUALITY_FACTOR
         )
         set(value) {
-            defaultShadingMethod.selectedItem = value.defaultShadingMethod
-            defaultUpVector.selectedItem = value.defaultUpVector
+            defaultShadingMethod.item = value.defaultShadingMethod
+            defaultUpVector.item = value.defaultUpVector
             showAxesCheckBox.isSelected = value.showAxes
             axisLineWidthInput.text = value.axisLineWidth.toString()
             showAxesLabelsCheckBox.isSelected = value.showAxesLabels
@@ -89,6 +93,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             lineWidthInput.text = value.lineWidth.toString()
             pointSizeInput.text = value.pointSize.toString()
             cropTexturesCheckBox.isSelected = value.cropTextures
+            shaderQualityComboBox.item = value.shaderQuality
             displacementQualitySlider.value = (value.displacementQuality / DISPLACEMENT_QUALITY_FACTOR).roundToInt()
         }
 
@@ -189,16 +194,36 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.cropTextures")
             ).component
         }
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality")) {
+            cell {
+                shaderQualityComboBox = enumComboBox(
+                    defaultValue = ShaderQuality.DEFAULT,
+                    renderer = ShaderQualityListCellRenderer()
+                ).component
+                contextHelpLabel(
+                    description = WavefrontObjBundle.message(
+                        "settings.editor.fileTypes.obj.preview.shaderQuality.contextHelp"
+                    )
+                )
+            }
+        }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.displacementQuality")) {
-            displacementQualitySlider = slider(
-                DISPLACEMENT_QUALITY_MIN,
-                DISPLACEMENT_QUALITY_MAX,
-                DISPLACEMENT_QUALITY_MINOR_TICK,
-                DISPLACEMENT_QUALITY_MAJOR_TICK
-            ).component
-            displacementQualitySlider.labelTable = Hashtable(
-                displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
-            )
+            cell {
+                displacementQualitySlider = slider(
+                    DISPLACEMENT_QUALITY_MIN,
+                    DISPLACEMENT_QUALITY_MAX,
+                    DISPLACEMENT_QUALITY_MINOR_TICK,
+                    DISPLACEMENT_QUALITY_MAJOR_TICK
+                ).component
+                displacementQualitySlider.labelTable = Hashtable(
+                    displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
+                )
+                contextHelpLabel(
+                    description = WavefrontObjBundle.message(
+                        "settings.editor.fileTypes.obj.preview.displacementQuality.contextHelp"
+                    )
+                )
+            }
         }
     }
 

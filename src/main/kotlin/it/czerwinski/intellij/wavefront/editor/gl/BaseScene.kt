@@ -29,7 +29,6 @@ import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.ProgramExecutorsManager
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
 
 /**
@@ -48,8 +47,6 @@ abstract class BaseScene(
 
     private val background
         get() = EditorColorsManager.getInstance().globalScheme.defaultBackground
-
-    protected val programExecutorsManager = ProgramExecutorsManager(errorLog)
 
     private val texturesManager = TexturesManager()
 
@@ -89,8 +86,6 @@ abstract class BaseScene(
 
         gl.glEnableLineSmooth()
         gl.glEnableProgramPointSize()
-
-        programExecutorsManager.initialize(gl)
 
         initialize(gl)
     }
@@ -161,9 +156,8 @@ abstract class BaseScene(
 
     final override fun onDestroy(gl: GlimpseAdapter) {
         try {
-            dispose(gl)
             texturesManager.dispose(gl)
-            programExecutorsManager.dispose(gl)
+            dispose(gl)
         } catch (expected: Throwable) {
             onDestroyError(gl, expected)
         }

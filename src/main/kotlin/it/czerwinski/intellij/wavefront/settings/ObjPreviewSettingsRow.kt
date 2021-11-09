@@ -195,21 +195,35 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality")) {
-            shaderQualityComboBox = enumComboBox(
-                defaultValue = ShaderQuality.DEFAULT,
-                renderer = ShaderQualityListCellRenderer()
-            ).component
+            cell {
+                shaderQualityComboBox = enumComboBox(
+                    defaultValue = ShaderQuality.DEFAULT,
+                    renderer = ShaderQualityListCellRenderer()
+                ).component
+                contextHelpLabel(
+                    description = WavefrontObjBundle.message(
+                        "settings.editor.fileTypes.obj.preview.shaderQuality.contextHelp"
+                    )
+                )
+            }
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.displacementQuality")) {
-            displacementQualitySlider = slider(
-                DISPLACEMENT_QUALITY_MIN,
-                DISPLACEMENT_QUALITY_MAX,
-                DISPLACEMENT_QUALITY_MINOR_TICK,
-                DISPLACEMENT_QUALITY_MAJOR_TICK
-            ).component
-            displacementQualitySlider.labelTable = Hashtable(
-                displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
-            )
+            cell {
+                displacementQualitySlider = slider(
+                    DISPLACEMENT_QUALITY_MIN,
+                    DISPLACEMENT_QUALITY_MAX,
+                    DISPLACEMENT_QUALITY_MINOR_TICK,
+                    DISPLACEMENT_QUALITY_MAJOR_TICK
+                ).component
+                displacementQualitySlider.labelTable = Hashtable(
+                    displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
+                )
+                contextHelpLabel(
+                    description = WavefrontObjBundle.message(
+                        "settings.editor.fileTypes.obj.preview.displacementQuality.contextHelp"
+                    )
+                )
+            }
         }
     }
 

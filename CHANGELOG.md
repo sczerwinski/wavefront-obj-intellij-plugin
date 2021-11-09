@@ -16,13 +16,16 @@
 - Upload detekt report in GitHub Actions build after failure
 - Upgrade Gradle Wrapper to `7.2`
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
-  - Upgrade `kapt` to `1.5.30`
-  - Upgrade `org.jetbrains.intellij` to `1.1.6`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.31`
+  - Upgrade `kapt` to `1.5.31`
+  - Upgrade `org.jetbrains.intellij` to `1.2.1`
   - Upgrade `org.jetbrains.changelog` to `1.3.0`
-  - Upgrade `detekt-formatting` to `1.18.0`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.0`
-- Update `pluginVerifierIdeVersions` to `2020.3.4, 2021.1.3, 2021.2.1`
+  - Upgrade `detekt-formatting` to `1.18.1`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.1`
+  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.0`
+- GitHub Actions:
+  - Upgrade `actions/checkout` to `v2.4.0`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`
 - Gradle – Changelog plugin configuration update
 
 ### Fixed

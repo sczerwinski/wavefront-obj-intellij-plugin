@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.0.2]
+### Added
 - Support for platform version `213.*`
 - Shader quality (float precision) setting
 - Pinch to zoom on 3D preview (if supported on current platform)

@@ -8,19 +8,26 @@
 - Pinch to zoom on 3D preview (if supported on current platform)
 - Publish test report in GitHub Actions build
 - Annotate sources with detekt issues in GitHub Actions build
+- Use Gradle `wrapper` task to handle Gradle updates
+- JVM compatibility version extracted to `gradle.properties` file
+- Suppress `UnusedProperty` inspection for the `kotlin.stdlib.default.dependency` in `gradle.properties`
 
 ### Changed
 - Upload detekt report in GitHub Actions build after failure
+- Upgrade Gradle Wrapper to `7.2`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
   - Upgrade `kapt` to `1.5.30`
-  - Upgrade `org.jetbrains.intellij` to `1.1.4`
+  - Upgrade `org.jetbrains.intellij` to `1.1.6`
   - Upgrade `org.jetbrains.changelog` to `1.3.0`
   - Upgrade `detekt-formatting` to `1.18.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.0`
+- Update `pluginVerifierIdeVersions` to `2020.3.4, 2021.1.3, 2021.2.1`
+- Gradle – Changelog plugin configuration update
 
 ### Fixed
 - Prevent infinite displacement loop
+- Use `DynamicBundle` instead of `AbstractBundle` in `WavefrontObjBundle.kt`
 
 ## [1.0.1]
 ### Added

@@ -20,7 +20,7 @@
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.31`
   - Upgrade `kapt` to `1.5.31`
   - Upgrade `org.jetbrains.intellij` to `1.2.1`
-  - Upgrade `org.jetbrains.changelog` to `1.3.0`
+  - Upgrade `org.jetbrains.changelog` to `1.3.1`
   - Upgrade `detekt-formatting` to `1.18.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.1`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.0`

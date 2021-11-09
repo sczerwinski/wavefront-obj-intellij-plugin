@@ -21,6 +21,8 @@ varying vec3 vCameraPosTan;
 varying vec3 vLightPosTan;
 varying vec2 vTexCoord;
 
+#define MAX_ITERATIONS 1024
+
 float displacement(vec2 texCoord) {
     return 1.0 - texture2D(uDispTex, texCoord).r;
 }
@@ -34,11 +36,13 @@ vec2 displacedTexCoord(vec3 cameraDir) {
     float newError = displacement(vTexCoord);
     float oldError = newError;
 
+    int iteration = 0;
     for (float depth = 0.0; newError > 0.0; depth += depthStep) {
         oldTexCoord = newTexCoord;
         newTexCoord -= texCoordDisplacementStep;
         oldError = newError;
         newError = displacement(newTexCoord) - depth;
+        if (iteration++ > MAX_ITERATIONS) break;
     }
 
     if (newError == oldError) {

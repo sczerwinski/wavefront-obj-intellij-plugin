@@ -65,7 +65,7 @@ transmissionFilter ::= (TRANSMISSION_FILTER_KEYWORD FLOAT FLOAT FLOAT) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement"
 }
 
-private property_ ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity)
+private property_ ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity | roughness | metalness)
 
 illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlIlluminationValueElementImpl"
@@ -88,6 +88,15 @@ opticalDensity ::= (OPTICAL_DENSITY_KEYWORD FLOAT) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
 }
 
+roughness ::= (ROUGHNESS_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+metalness ::= (METALNESS_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+
 private map_ ::= (colorMap_ | scalarMap_ | bumpMap | reflectionMap)
 
 private colorMap_ ::= (ambientColorMap | diffuseColorMap | specularColorMap)
@@ -105,7 +114,7 @@ specularColorMap ::= (SPECULAR_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE) 
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
 }
 
-private scalarMap_ ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap)
+private scalarMap_ ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap | roughnessMap | metalnessMap | normalMap)
 
 specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
@@ -120,6 +129,19 @@ displacementMap ::= (DISPLACEMENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
 }
 stencilDecalMap ::= (STENCIL_DECAL_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+
+roughnessMap ::= (ROUGHNESS_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+metalnessMap ::= (METALNESS_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+}
+normalMap ::= (NORMAL_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
 }

@@ -49,8 +49,9 @@ class ModelMeshesManager {
     private fun createFacesMeshes(gl: GlimpseAdapter, model: GLModel, shadingMethod: ShadingMethod) {
         val facesMeshFactory = when (shadingMethod) {
             ShadingMethod.WIREFRAME -> WireframeFacesMeshFactory
-            ShadingMethod.SOLID -> SolidFacesMeshFactory
-            ShadingMethod.MATERIAL -> SolidFacesMeshFactory
+            ShadingMethod.SOLID,
+            ShadingMethod.MATERIAL,
+            ShadingMethod.PBR -> SolidFacesMeshFactory
         }
         myFacesMeshes.addAll(
             model.groupingElements.flatMap { element ->

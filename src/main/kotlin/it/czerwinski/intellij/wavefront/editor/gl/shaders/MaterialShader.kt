@@ -50,9 +50,6 @@ data class MaterialShader(
     @Uniform(name = "uCameraPos")
     val cameraPosition: Vec3,
 
-    @Uniform(name = "uUpVector")
-    val upVector: Vec3,
-
     @Uniform(name = "uAmbColor")
     val ambientColor: Vec3,
 

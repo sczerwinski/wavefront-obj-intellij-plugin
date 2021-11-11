@@ -23,6 +23,7 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.PreviewEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
@@ -41,6 +42,12 @@ class ObjPreviewEditor(
         get() = myComponent.shadingMethod
         set(value) {
             myComponent.shadingMethod = value
+        }
+
+    var environment: PBREnvironment
+        get() = myComponent.environment
+        set(value) {
+            myComponent.environment = value
         }
 
     var isCroppingTextures: Boolean

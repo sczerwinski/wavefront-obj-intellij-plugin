@@ -16,24 +16,36 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
-import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.actionSystem.ex.ComboBoxAction
 import com.intellij.openapi.fileEditor.FileEditor
-import com.intellij.openapi.util.NlsActions.ActionDescription
-import com.intellij.openapi.util.NlsActions.ActionText
 import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.editor.ObjPreviewEditor
 import it.czerwinski.intellij.wavefront.editor.ObjSplitEditor
-import javax.swing.Icon
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import javax.swing.JComponent
 
-abstract class ObjPreviewFileEditorAction(
-    @ActionText text: String? = null,
-    @ActionDescription description: String? = null,
-    icon: Icon? = null
-) : AnAction(text, description, icon) {
+class PBREnvironmentsComboBoxAction : ComboBoxAction() {
 
-    protected fun findObjPreviewFileEditor(event: AnActionEvent): ObjPreviewEditor? =
+    override fun createPopupActionGroup(button: JComponent?): DefaultActionGroup = DefaultActionGroup(
+        enumValues<PBREnvironment>()
+            .map { environment -> PBREnvironmentAction(environment) }
+    )
+
+    override fun update(event: AnActionEvent) {
+        val editor = findObjPreviewFileEditor(event)
+
+        event.presentation.isEnabled = editor?.shadingMethod === ShadingMethod.PBR
+
+        if (editor != null) {
+            event.presentation.text = PBREnvironmentAction.text(editor.environment)
+        }
+    }
+
+    private fun findObjPreviewFileEditor(event: AnActionEvent): ObjPreviewEditor? =
         findObjPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
     private fun findObjPreviewFileEditor(editor: FileEditor?): ObjPreviewEditor? =

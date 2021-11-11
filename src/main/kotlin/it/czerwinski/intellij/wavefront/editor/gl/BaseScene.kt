@@ -69,11 +69,7 @@ abstract class BaseScene(
      */
     protected fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
         texturesManager[gl, this]
-    } catch (expected: Throwable) {
-        errorLog.addError(
-            WavefrontObjBundle.message("editor.fileTypes.obj.preview.getTexture.error", name),
-            expected
-        )
+    } catch (ignored: Throwable) {
         null
     }
 

@@ -13,6 +13,8 @@ attribute vec3 aTangent;
 varying vec3 vPosTan;
 varying vec3 vCameraPosTan;
 varying vec3 vLightPosTan;
+varying vec3 vNormal;
+varying vec3 vTangent;
 varying vec2 vTexCoord;
 
 void main() {
@@ -36,6 +38,9 @@ void main() {
     vec3 leftVector = cross(cameraDir, upVector);
     vCameraPosTan = tbnMat * cameraDir * 10.0;
     vLightPosTan = tbnMat * ((cameraDir + leftVector + upVector) * 10.0);
+
+    vNormal = uNormalMat * aNormal;
+    vTangent = uNormalMat * aTangent;
 
     vTexCoord = aTexCoord;
 

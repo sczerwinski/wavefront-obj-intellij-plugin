@@ -44,6 +44,12 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     private lateinit var materialProgram: Program
     private lateinit var materialShaderProgramExecutor: MaterialShaderProgramExecutor
 
+    private lateinit var pbrProgram: Program
+    private lateinit var pbrShaderProgramExecutor: PBRShaderProgramExecutor
+
+    private lateinit var environmentProgram: Program
+    private lateinit var environmentShaderProgramExecutor: EnvironmentShaderProgramExecutor
+
     private lateinit var textProgram: Program
     private lateinit var textShaderProgramExecutor: TextShaderProgramExecutor
 
@@ -66,25 +72,20 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
         val programBuilder = Program.Builder.newInstance(gl)
 
         wireframeProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.WIREFRAME, shaderQuality)
-        texturedWireframeProgram = programBuilder
-            .withVertexShader(
-                shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.VERTEX_SHADER, shaderQuality)
-            )
-            .withFragmentShader(
-                shaderFactory.createNamedShader(TEXTURED_WIREFRAME_SHADER, ShaderType.FRAGMENT_SHADER, shaderQuality)
-            )
-            .build()
+        texturedWireframeProgram =
+            createNamedProgram(shaderFactory, programBuilder, TEXTURED_WIREFRAME_SHADER, shaderQuality)
         solidProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.SOLID, shaderQuality)
         materialProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.MATERIAL, shaderQuality)
-        textProgram = programBuilder
-            .withVertexShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.VERTEX_SHADER, shaderQuality))
-            .withFragmentShader(shaderFactory.createNamedShader(TEXT_SHADER, ShaderType.FRAGMENT_SHADER, shaderQuality))
-            .build()
+        pbrProgram = createProgram(shaderFactory, programBuilder, ShadingMethod.PBR, shaderQuality)
+        environmentProgram = createNamedProgram(shaderFactory, programBuilder, ENVIRONMENT_SHADER, shaderQuality)
+        textProgram = createNamedProgram(shaderFactory, programBuilder, TEXT_SHADER, shaderQuality)
 
         wireframeShaderProgramExecutor = WireframeShaderProgramExecutor(wireframeProgram)
         texturedWireframeShaderProgramExecutor = TexturedWireframeShaderProgramExecutor(texturedWireframeProgram)
         solidShaderProgramExecutor = SolidShaderProgramExecutor(solidProgram)
         materialShaderProgramExecutor = MaterialShaderProgramExecutor(materialProgram)
+        pbrShaderProgramExecutor = PBRShaderProgramExecutor(pbrProgram)
+        environmentShaderProgramExecutor = EnvironmentShaderProgramExecutor(environmentProgram)
         textShaderProgramExecutor = TextShaderProgramExecutor(textProgram)
     }
 
@@ -96,6 +97,16 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     ): Program = programBuilder
         .withVertexShader(shaderFactory.createShader(shadingMethod, ShaderType.VERTEX_SHADER, shaderQuality))
         .withFragmentShader(shaderFactory.createShader(shadingMethod, ShaderType.FRAGMENT_SHADER, shaderQuality))
+        .build()
+
+    private fun createNamedProgram(
+        shaderFactory: Shader.Factory,
+        programBuilder: Program.Builder,
+        shaderName: String,
+        shaderQuality: ShaderQuality
+    ): Program = programBuilder
+        .withVertexShader(shaderFactory.createNamedShader(shaderName, ShaderType.VERTEX_SHADER, shaderQuality))
+        .withFragmentShader(shaderFactory.createNamedShader(shaderName, ShaderType.FRAGMENT_SHADER, shaderQuality))
         .build()
 
     private fun Shader.Factory.createShader(
@@ -161,6 +172,24 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
     }
 
     /**
+     * Renders [meshes] using PBR shader with given [params].
+     */
+    fun renderPBR(gl: GlimpseAdapter, params: PBRShader, vararg meshes: Mesh) {
+        if (::pbrShaderProgramExecutor.isInitialized) {
+            pbrShaderProgramExecutor.render(gl, params, meshes)
+        }
+    }
+
+    /**
+     * Renders [meshes] using environment shader with given [params].
+     */
+    fun renderEnvironment(gl: GlimpseAdapter, params: EnvironmentShader, vararg meshes: Mesh) {
+        if (::environmentShaderProgramExecutor.isInitialized) {
+            environmentShaderProgramExecutor.render(gl, params, meshes)
+        }
+    }
+
+    /**
      * Renders [meshes] using text shader with given [params].
      */
     fun renderText(gl: GlimpseAdapter, params: TextShader, vararg meshes: Mesh) {
@@ -179,10 +208,14 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
         wireframeProgram.dispose(gl)
         solidProgram.dispose(gl)
         materialProgram.dispose(gl)
+        pbrProgram.dispose(gl)
+        environmentProgram.dispose(gl)
+        textProgram.dispose(gl)
     }
 
     companion object {
         private const val TEXTURED_WIREFRAME_SHADER = "textured_wireframe"
+        private const val ENVIRONMENT_SHADER = "environment"
         private const val TEXT_SHADER = "text"
     }
 }

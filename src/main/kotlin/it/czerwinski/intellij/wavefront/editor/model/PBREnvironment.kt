@@ -16,13 +16,13 @@
 
 package it.czerwinski.intellij.wavefront.editor.model
 
-enum class ShadingMethod {
-    WIREFRAME,
-    SOLID,
-    MATERIAL,
-    PBR;
+enum class PBREnvironment {
+    INTERIOR,
+    GARDEN,
+    WOODS,
+    PARK;
 
     companion object {
-        val DEFAULT = SOLID
+        val DEFAULT = INTERIOR
     }
 }

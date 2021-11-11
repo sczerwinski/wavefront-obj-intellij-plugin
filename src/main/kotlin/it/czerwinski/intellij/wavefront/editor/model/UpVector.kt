@@ -24,11 +24,13 @@ import graphics.glimpse.types.rotationY
 
 enum class UpVector(
     val vector: Vec3,
-    val gridModelMatrix: Mat4
+    val modelMatrix: Mat4
 ) {
-    X_UP(vector = Vec3.unitX, gridModelMatrix = rotationY(Angle.rightAngle)),
-    Y_UP(vector = Vec3.unitY, gridModelMatrix = rotationX(Angle.rightAngle)),
-    Z_UP(vector = Vec3.unitZ, gridModelMatrix = Mat4.identity);
+    X_UP(vector = Vec3.unitX, modelMatrix = rotationY(-Angle.rightAngle) * rotationX(-Angle.rightAngle)),
+    Y_UP(vector = Vec3.unitY, modelMatrix = rotationX(Angle.rightAngle) * rotationY(Angle.rightAngle)),
+    Z_UP(vector = Vec3.unitZ, modelMatrix = Mat4.identity);
+
+    val normalMatrix: Mat4 = modelMatrix.inverse().transpose()
 
     companion object {
         val DEFAULT = Z_UP

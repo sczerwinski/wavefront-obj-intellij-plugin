@@ -12,6 +12,7 @@
 ### Removed
 
 ### Fixed
+- Prevent texture loading on GL thread
 
 ### Security
 

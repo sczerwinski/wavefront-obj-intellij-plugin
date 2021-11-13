@@ -28,14 +28,13 @@ import graphics.glimpse.textures.TextureMagFilter
 import graphics.glimpse.textures.TextureMinFilter
 import graphics.glimpse.textures.TextureType
 import graphics.glimpse.textures.TextureWrap
-import graphics.glimpse.types.Mat3
-import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.ModelMeshesManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.PBRShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.TexturedWireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
@@ -66,6 +65,9 @@ class ObjPreviewScene(
                 material?.diffuseColorMap?.let(::prepareTexture)
                 material?.specularColorMap?.let(::prepareTexture)
                 material?.specularExponentMap?.let(::prepareTexture)
+                material?.roughnessMap?.let(::prepareTexture)
+                material?.metalnessMap?.let(::prepareTexture)
+                material?.normalMap?.let(::prepareTexture)
                 material?.bumpMap?.let(::prepareTexture)
                 material?.displacementMap?.let(::prepareTexture)
             }
@@ -97,6 +99,8 @@ class ObjPreviewScene(
 
     override val upVector: UpVector get() = cameraModel?.upVector ?: UpVector.DEFAULT
 
+    override val showEnvironment: Boolean get() = shadingMethod == ShadingMethod.PBR
+
     private lateinit var fallbackTexture: Texture
     private lateinit var fallbackNormalmap: Texture
 
@@ -104,7 +108,7 @@ class ObjPreviewScene(
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
-            camera = TargetCamera(Vec3(x, y, z), Vec3.nullVector, upVector.vector)
+            camera = TargetCamera(upVector.modelMatrix.toMat3() * Vec3(x, y, z), Vec3.nullVector, Vec3.unitZ)
             lens = PerspectiveLens(fovY(aspect), aspect, near, far)
         }
         requestRender()
@@ -177,6 +181,7 @@ class ObjPreviewScene(
             ShadingMethod.WIREFRAME -> renderFacesWireframe(gl, facesMesh)
             ShadingMethod.SOLID -> renderFacesSolid(gl, facesMesh)
             ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh, index)
+            ShadingMethod.PBR -> renderFacesPBR(gl, facesMesh, index)
         }
     }
 
@@ -184,7 +189,7 @@ class ObjPreviewScene(
         programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
                 color = PreviewColors.asVec4(PreviewColors.COLOR_FACE)
             ),
             facesMesh
@@ -197,10 +202,9 @@ class ObjPreviewScene(
             SolidShader(
                 projectionMatrix = lens.projectionMatrix,
                 viewMatrix = camera.viewMatrix,
-                modelMatrix = Mat4.identity,
-                normalMatrix = Mat3.identity,
+                modelMatrix = upVector.modelMatrix,
+                normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
-                upVector = upVector.vector,
                 color = PreviewColors.asVec3(PreviewColors.COLOR_FACE)
             ),
             facesMesh
@@ -213,26 +217,32 @@ class ObjPreviewScene(
         val ambientTexture = material?.ambientColorMap?.getTexture(gl)
         val diffuseTexture = material?.diffuseColorMap?.getTexture(gl)
 
+        val roughnessTexture = material?.roughnessMap?.getTexture(gl)
+        val metalnessTexture = material?.metalnessMap?.getTexture(gl)
+        val normalTexture = material?.normalMap?.getTexture(gl)
+        val specularColorTexture = material?.specularColorMap?.getTexture(gl)
+        val specularExponentTexture = material?.specularExponentMap?.getTexture(gl)
+        val bumpTexture = material?.bumpMap?.getTexture(gl)
+
         programExecutorsManager.renderMaterial(
             gl,
             MaterialShader(
                 projectionMatrix = lens.projectionMatrix,
                 viewMatrix = camera.viewMatrix,
-                modelMatrix = Mat4.identity,
-                normalMatrix = Mat3.identity,
+                modelMatrix = upVector.modelMatrix,
+                normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
-                upVector = upVector.vector,
                 ambientColor = Vec3(color = material?.let { it.ambientColor ?: it.diffuseColor } ?: Color.WHITE),
                 diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
                 specularColor = Vec3(color = material?.specularColor ?: Color.WHITE),
                 specularExponent = material?.specularExponent ?: 1f,
                 ambientTexture = ambientTexture ?: diffuseTexture ?: fallbackTexture,
                 diffuseTexture = diffuseTexture ?: fallbackTexture,
-                specularTexture = material?.specularColorMap?.getTexture(gl) ?: fallbackTexture,
-                specularExponentTexture = material?.specularExponentMap?.getTexture(gl) ?: fallbackTexture,
+                specularTexture = specularColorTexture ?: metalnessTexture ?: fallbackTexture,
+                specularExponentTexture = specularExponentTexture ?: roughnessTexture ?: fallbackTexture,
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
-                normalmapTexture = material?.bumpMap?.getTexture(gl) ?: fallbackNormalmap,
+                normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f,
                 displacementTexture = material?.displacementMap?.getTexture(gl) ?: fallbackTexture,
                 displacementGain = material?.displacementGain ?: 1f,
@@ -243,11 +253,49 @@ class ObjPreviewScene(
         )
     }
 
+    @Suppress("ComplexMethod")
+    private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
+        val material: MtlMaterial? = model?.materials?.getOrNull(index)
+
+        val roughnessTexture = material?.roughnessMap?.getTexture(gl)
+        val metalnessTexture = material?.metalnessMap?.getTexture(gl)
+        val normalTexture = material?.normalMap?.getTexture(gl)
+        val specularColorTexture = material?.specularColorMap?.getTexture(gl)
+        val specularExponentTexture = material?.specularExponentMap?.getTexture(gl)
+        val bumpTexture = material?.bumpMap?.getTexture(gl)
+
+        programExecutorsManager.renderPBR(
+            gl,
+            PBRShader(
+                projectionMatrix = lens.projectionMatrix,
+                viewMatrix = camera.viewMatrix,
+                modelMatrix = upVector.modelMatrix,
+                normalMatrix = upVector.normalMatrix.toMat3(),
+                cameraPosition = camera.eye,
+                diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
+                roughness = material?.roughness ?: 1f,
+                metalness = material?.metalness ?: 1f,
+                diffuseTexture = material?.diffuseColorMap?.getTexture(gl) ?: fallbackTexture,
+                roughnessTexture = roughnessTexture ?: specularExponentTexture ?: fallbackTexture,
+                metalnessTexture = metalnessTexture ?: specularColorTexture ?: fallbackTexture,
+                normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,
+                displacementTexture = material?.displacementMap?.getTexture(gl) ?: fallbackTexture,
+                displacementGain = material?.displacementGain ?: 1f,
+                displacementQuality = config.displacementQuality,
+                reflectionTexture = environmentTexture,
+                radianceTexture = radianceTexture,
+                cropTexture = if (cropTextures) 1 else 0
+            ),
+            facesMesh
+        )
+    }
+
     private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
         when (shadingMethod) {
             ShadingMethod.WIREFRAME,
             ShadingMethod.SOLID -> renderLinesWireframe(gl, linesMesh)
-            ShadingMethod.MATERIAL -> renderLinesTextured(gl, linesMesh, index)
+            ShadingMethod.MATERIAL,
+            ShadingMethod.PBR -> renderLinesTextured(gl, linesMesh, index)
         }
     }
 
@@ -256,7 +304,7 @@ class ObjPreviewScene(
         programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
                 color = PreviewColors.asVec4(PreviewColors.COLOR_LINE)
             ),
             linesMesh
@@ -272,7 +320,7 @@ class ObjPreviewScene(
         programExecutorsManager.renderTexturedWireframe(
             gl,
             TexturedWireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
                 color = Vec4(color = material?.diffuseColor ?: material?.ambientColor ?: Color.WHITE),
                 texture = diffuseTexture ?: ambientTexture ?: fallbackTexture
             ),
@@ -284,7 +332,7 @@ class ObjPreviewScene(
         programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix,
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
                 pointSize = config.pointSize,
                 color = PreviewColors.asVec4(PreviewColors.COLOR_POINT)
             ),

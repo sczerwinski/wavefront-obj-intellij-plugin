@@ -20,34 +20,19 @@ import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
-import graphics.glimpse.types.Mat3
+import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Mat4
-import graphics.glimpse.types.Vec3
 
 @ShaderParams(
     attributes = [
         Attribute(name = "aPos", role = AttributeRole.POSITIONS, vectorSize = 3),
-        Attribute(name = "aNormal", role = AttributeRole.NORMALS, vectorSize = 3),
-        Attribute(name = "aTangent", role = AttributeRole.TANGENTS, vectorSize = 3),
     ]
 )
-data class SolidShader(
+data class EnvironmentShader(
 
-    @Uniform(name = "uProjMat")
-    val projectionMatrix: Mat4,
+    @Uniform(name = "uMVPMat")
+    val mvpMatrix: Mat4,
 
-    @Uniform(name = "uViewMat")
-    val viewMatrix: Mat4,
-
-    @Uniform(name = "uModelMat")
-    val modelMatrix: Mat4,
-
-    @Uniform(name = "uNormalMat")
-    val normalMatrix: Mat3,
-
-    @Uniform(name = "uCameraPos")
-    val cameraPosition: Vec3,
-
-    @Uniform(name = "uColor")
-    val color: Vec3,
+    @Uniform(name = "uEnvTexture")
+    val environmentTexture: Texture,
 )

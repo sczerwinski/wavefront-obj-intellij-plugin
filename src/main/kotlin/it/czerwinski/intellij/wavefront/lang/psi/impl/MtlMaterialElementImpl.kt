@@ -43,6 +43,8 @@ abstract class MtlMaterialElementImpl(
     override val specularExponent: Float? get() = material?.specularExponentList?.firstOrNull()?.value
     override val sharpness: Float? get() = material?.sharpnessList?.firstOrNull()?.value
     override val opticalDensity: Float? get() = material?.opticalDensityList?.firstOrNull()?.value
+    override val roughness: Float? get() = material?.roughnessList?.firstOrNull()?.value
+    override val metalness: Float? get() = material?.metalnessList?.firstOrNull()?.value
 
     override val ambientColorMap: VirtualFile?
         get() = material?.ambientColorMapList?.firstOrNull()?.textureVirtualFile
@@ -67,6 +69,12 @@ abstract class MtlMaterialElementImpl(
             ?.firstOrNull()?.values?.getOrNull(1)
     override val stencilDecalMap: VirtualFile?
         get() = material?.stencilDecalMapList?.firstOrNull()?.textureVirtualFile
+    override val roughnessMap: VirtualFile?
+        get() = material?.roughnessMapList?.firstOrNull()?.textureVirtualFile
+    override val metalnessMap: VirtualFile?
+        get() = material?.metalnessMapList?.firstOrNull()?.textureVirtualFile
+    override val normalMap: VirtualFile?
+        get() = material?.normalMapList?.firstOrNull()?.textureVirtualFile
     override val bumpMap: VirtualFile?
         get() = material?.bumpMapList?.firstOrNull()?.textureVirtualFile
     override val bumpMapMultiplier: Float?

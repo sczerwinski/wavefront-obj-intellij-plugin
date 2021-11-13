@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 ### Added
+- Extended MTL syntax for physically based rendering parameters:
+  - roughness (`Pr` and `map_Pr`)
+  - metalness (`Pm` and `map_Pm`)
+  - normal map (`norm`)
+- Physically based shading method in 3D preview
 
 ### Changed
 

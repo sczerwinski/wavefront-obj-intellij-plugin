@@ -19,26 +19,37 @@ package it.czerwinski.intellij.wavefront.editor.actions
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.util.NlsActions.ActionText
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import java.util.Locale
 
-class ToggleCropTexturesAction : ObjPreviewFileEditorAction(), DumbAware, Toggleable {
+class PBREnvironmentAction(
+    private val environment: PBREnvironment
+) : ObjPreviewFileEditorAction(text = text(environment)), DumbAware, Toggleable {
 
     override fun update(event: AnActionEvent) {
         val editor = findObjPreviewFileEditor(event)
 
-        event.presentation.isEnabled = editor?.shadingMethod in listOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
+        event.presentation.isEnabled = editor?.shadingMethod === ShadingMethod.PBR
 
         if (editor != null) {
-            Toggleable.setSelected(event.presentation, editor.isCroppingTextures)
+            Toggleable.setSelected(event.presentation, editor.environment === environment)
         }
     }
 
     override fun actionPerformed(event: AnActionEvent) {
         val editor = findObjPreviewFileEditor(event)
 
-        if (editor != null) {
-            Toggleable.setSelected(event.presentation, !Toggleable.isSelected(event.presentation))
-            editor.toggleCropTextures()
-        }
+        editor?.environment = environment
+    }
+
+    companion object {
+
+        @ActionText
+        fun text(environment: PBREnvironment): String = WavefrontObjBundle.message(
+            key = "action.${PBREnvironmentAction::class.java.name}.text.${environment.name.toLowerCase(Locale.ENGLISH)}"
+        )
     }
 }

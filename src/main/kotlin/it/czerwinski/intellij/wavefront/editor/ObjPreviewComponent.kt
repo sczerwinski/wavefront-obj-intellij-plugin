@@ -45,6 +45,7 @@ import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModelFactory
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModelFactory
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
@@ -97,6 +98,13 @@ class ObjPreviewComponent(
         get() = (myModel?.size?.takeUnless { it == 0f }) ?: EMPTY_MODEL_SIZE
 
     var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
+        set(value) {
+            field = value
+            updateScene()
+            myLeftActionToolbar.updateActionsImmediately()
+        }
+
+    var environment: PBREnvironment = PBREnvironment.DEFAULT
         set(value) {
             field = value
             updateScene()
@@ -236,6 +244,7 @@ class ObjPreviewComponent(
             if (::myScene.isInitialized) {
                 myScene.cameraModel = cameraModel
                 myScene.shadingMethod = shadingMethod
+                myScene.environment = environment
                 myScene.cropTextures = isCroppingTextures
                 myScene.showAxes = isShowingAxes
                 myScene.showGrid = isShowingGrid

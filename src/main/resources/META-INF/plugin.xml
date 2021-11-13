@@ -167,6 +167,13 @@
                     id="it.czerwinski.intellij.wavefront.editor.actions.MaterialShadingMethodAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.MaterialShadingMethodAction"
                     icon="WavefrontObjIcons.MATERIAL_SHADING_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.PBRShadingMethodAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PBRShadingMethodAction"
+                    icon="WavefrontObjIcons.PBR_SHADING_ACTION"/>
+            <action
+                    id="it.czerwinski.intellij.wavefront.editor.actions.PBREnvironmentsComboBoxAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PBREnvironmentsComboBoxAction"/>
             <separator/>
             <action
                     id="it.czerwinski.intellij.wavefront.editor.actions.ToggleCropTexturesAction"

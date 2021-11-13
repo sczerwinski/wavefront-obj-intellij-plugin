@@ -30,6 +30,8 @@ fun ShadingMethodListCellRenderer(): SimpleListCellRenderer<ShadingMethod> =
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.solid")
             ShadingMethod.MATERIAL ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.material")
+            ShadingMethod.PBR ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.pbr")
             else ->
                 null
         }

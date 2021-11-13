@@ -51,6 +51,6 @@ data class GLCameraModel(
 
     companion object {
         private const val NEAR_RATIO = 0.1f
-        private const val FAR_RATIO = 2f
+        private const val FAR_RATIO = 10f
     }
 }

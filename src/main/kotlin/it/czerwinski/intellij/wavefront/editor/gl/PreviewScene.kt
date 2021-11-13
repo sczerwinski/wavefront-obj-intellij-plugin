@@ -20,6 +20,7 @@ import com.intellij.openapi.editor.colors.ColorKey
 import com.intellij.util.ui.UIUtil
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
+import graphics.glimpse.ClearableBufferType
 import graphics.glimpse.FaceCullingMode
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.Camera
@@ -36,16 +37,21 @@ import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec2
 import graphics.glimpse.types.Vec3
+import graphics.glimpse.types.magnitude
 import graphics.glimpse.types.scale
+import graphics.glimpse.types.translation
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.AxisMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.meshes.EnvironmentMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.GridMeshFactory
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.TextMeshFactory
+import it.czerwinski.intellij.wavefront.editor.gl.shaders.EnvironmentShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.ProgramExecutorsManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.TextShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
@@ -59,6 +65,15 @@ abstract class PreviewScene(
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
 ) : BaseScene(profile, animatorControl, errorLog) {
+
+    /**
+     * Environment for physically based rendering.
+     */
+    var environment: PBREnvironment = PBREnvironment.DEFAULT
+        set(value) {
+            field = value
+            requestRender()
+        }
 
     /**
      * Should return maximum distance from the origin point that should be rendered.
@@ -79,6 +94,11 @@ abstract class PreviewScene(
      * Vector pointing in the "up" direction of the scene.
      */
     protected abstract val upVector: UpVector
+
+    /**
+     * Determines whether axes should be shown.
+     */
+    protected abstract val showEnvironment: Boolean
 
     /**
      * Determines whether axes should be shown.
@@ -111,9 +131,14 @@ abstract class PreviewScene(
 
     protected val programExecutorsManager = ProgramExecutorsManager(errorLog)
 
+    private lateinit var environmentTextures: List<Texture>
+    protected val environmentTexture: Texture get() = environmentTextures[environment.ordinal]
+    private lateinit var radianceTextures: List<Texture>
+    protected val radianceTexture: Texture get() = radianceTextures[environment.ordinal]
     private lateinit var fontTexture: Texture
     private lateinit var boldFontTexture: Texture
 
+    private lateinit var environmentMesh: Mesh
     private lateinit var axisMesh: Mesh
     private lateinit var axisConeMesh: Mesh
     private lateinit var axisXLabelMesh: Mesh
@@ -140,13 +165,46 @@ abstract class PreviewScene(
 
     private fun createFontTexture(gl: GlimpseAdapter) {
         try {
-            val textures = Texture.Builder.getInstance(gl)
+            val textureBuilder = Texture.Builder.getInstance(gl)
+
+            environmentTextures = textureBuilder
+                .apply {
+                    for (textureImageSource in TextureResources.environmentTextureImageSources) {
+                        addTexture(textureImageSource)
+                    }
+                }
+                .build()
+
+            for (texture in environmentTextures) {
+                texture.useAtIndex(gl, textureIndex = 0)
+                gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
+                gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
+            }
+
+            radianceTextures = textureBuilder
+                .apply {
+                    for (textureImageSource in TextureResources.radianceTextureImageSources) {
+                        addTexture(textureImageSource)
+                    }
+                }
+                .build()
+
+            for (texture in radianceTextures) {
+                texture.useAtIndex(gl, textureIndex = 0)
+                gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
+                gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
+            }
+
+            gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
+            gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
+
+            val fontTextures = textureBuilder
                 .addTexture(TextureResources.fontTextureImageSource)
                 .addTexture(TextureResources.boldFontTextureImageSource)
                 .generateMipmaps()
                 .build()
-            fontTexture = textures.first()
-            boldFontTexture = textures.last()
+            fontTexture = fontTextures.first()
+            boldFontTexture = fontTextures.last()
 
             gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
             gl.glTexParameterFilter(
@@ -164,6 +222,7 @@ abstract class PreviewScene(
 
     private fun createAxesMeshes(gl: GlimpseAdapter) {
         try {
+            environmentMesh = EnvironmentMeshFactory.create(gl)
             axisMesh = AxisMeshFactory.createAxis(gl)
             axisConeMesh = AxisMeshFactory.createAxisCone(gl)
             axisXLabelMesh = TextMeshFactory.createText(gl, AXIS_X_LABEL)
@@ -190,11 +249,27 @@ abstract class PreviewScene(
     }
 
     final override fun doRender(gl: GlimpseAdapter) {
+        if (showEnvironment) renderEnvironment(gl)
         renderModel(gl)
         if (showAxes) renderAxes(gl)
         if (showGrid) renderGrid(gl)
         if (showAxes && config.showAxesLabels) renderAxesLabels(gl)
         if (isStarted) pause()
+    }
+
+    private fun renderEnvironment(gl: GlimpseAdapter) {
+        gl.glCullFace(FaceCullingMode.DISABLED)
+        val scale = magnitude(camera.eye) * ENVIRONMENT_CUBE_RATIO
+        val modelMatrix = translation(camera.eye) * scale(scale)
+        programExecutorsManager.renderEnvironment(
+            gl,
+            EnvironmentShader(
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * modelMatrix,
+                environmentTexture = environmentTexture
+            ),
+            environmentMesh
+        )
+        gl.glClear(ClearableBufferType.DEPTH_BUFFER)
     }
 
     /**
@@ -213,12 +288,10 @@ abstract class PreviewScene(
 
     private fun renderAxis(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey) {
         val scale = (modelSize ?: 1f) * AXIS_LENGTH_FACTOR
+        val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.modelMatrix * modelMatrix
         programExecutorsManager.renderWireframe(
             gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * modelMatrix,
-                color = PreviewColors.asVec4(colorKey)
-            ),
+            WireframeShader(mvpMatrix = mvpMatrix, color = PreviewColors.asVec4(colorKey)),
             axisMesh,
             axisConeMesh
         )
@@ -230,7 +303,7 @@ abstract class PreviewScene(
         programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale),
                 color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, GRID_ALPHA)
             ),
             gridMesh
@@ -242,7 +315,7 @@ abstract class PreviewScene(
         programExecutorsManager.renderWireframe(
             gl,
             WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.gridModelMatrix,
+                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale),
                 color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, FINE_GRID_ALPHA)
             ),
             fineGridMesh
@@ -258,7 +331,7 @@ abstract class PreviewScene(
     private fun renderAxisLabel(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey, labelMesh: Mesh) {
         val textSize = fontScaling * config.axisLabelFontSize
         val scale = (modelSize ?: 1f) * AXIS_LENGTH_FACTOR
-        val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * modelMatrix
+        val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.modelMatrix * modelMatrix
         val labelPosition = mvpMatrix * (Vec3.unitZ * AXIS_LABEL_DISTANCE_FACTOR).toVec4(w = 1f)
         programExecutorsManager.renderText(
             gl,
@@ -277,10 +350,15 @@ abstract class PreviewScene(
         axisConeMesh.dispose(gl)
         gridMesh.dispose(gl)
         fineGridMesh.dispose(gl)
+        for (texture in environmentTextures + radianceTextures + fontTexture + boldFontTexture) {
+            texture.dispose(gl)
+        }
         programExecutorsManager.dispose(gl)
     }
 
     companion object {
+        private const val ENVIRONMENT_CUBE_RATIO = 5f
+
         private const val AXIS_LENGTH_FACTOR = 2f
         private const val AXIS_LABEL_DISTANCE_FACTOR = 1.1f
         private const val AXIS_X_LABEL = "x"

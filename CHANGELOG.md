@@ -6,6 +6,17 @@
 ### Added
 
 ### Changed
+- Upgrade Gradle Wrapper to `7.3.3`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.10`
+  - Upgrade `kapt` to `1.6.10`
+  - Upgrade `org.jetbrains.intellij` to `1.3.0`
+  - Upgrade `org.jetbrains.grammarkit` to `2021.2.1`
+  - Upgrade `detekt-formatting` to `1.19.0`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.19.0`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v2.1.7`
+  - Upgrade `actions/upload-artifact` to `v2.3.1`
 
 ### Deprecated
 

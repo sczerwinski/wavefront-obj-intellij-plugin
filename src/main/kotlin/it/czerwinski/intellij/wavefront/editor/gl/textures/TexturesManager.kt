@@ -62,7 +62,7 @@ class TexturesManager {
 
     private fun createTexture(gl: GlimpseAdapter, file: VirtualFile): Texture {
         val texture = Texture.Builder.getInstance(gl)
-            .addTexture(imageSources.getOrPut(file.path) { createTextureImageSource(file) })
+            .addTexture(imageSources.getOrElse(file.path) { error("Image not loaded for ${file.name}") })
             .generateMipmaps()
             .build()
             .first()
@@ -70,12 +70,6 @@ class TexturesManager {
         gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR_MIPMAP_LINEAR, TextureMagFilter.LINEAR)
         return texture
     }
-
-    private fun createTextureImageSource(file: VirtualFile): TextureImageSource =
-        textureImageSourceBuilder
-            .withFilename(file.name)
-            .fromInputStream { file.inputStream }
-            .build()
 
     /**
      * Disposes all previously created textures.

@@ -20,7 +20,8 @@ enum class PBREnvironment {
     INTERIOR,
     GARDEN,
     WOODS,
-    PARK;
+    PARK,
+    NIGHT;
 
     companion object {
         val DEFAULT = INTERIOR

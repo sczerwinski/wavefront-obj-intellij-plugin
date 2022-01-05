@@ -53,6 +53,9 @@ data class PBRShader(
     @Uniform(name = "uDiffColor")
     val diffuseColor: Vec3,
 
+    @Uniform(name = "uEmissionColor")
+    val emissionColor: Vec3,
+
     @Uniform(name = "uRoughness")
     val roughness: Float,
 
@@ -61,6 +64,9 @@ data class PBRShader(
 
     @Uniform(name = "uDiffTex")
     val diffuseTexture: Texture,
+
+    @Uniform(name = "uEmissionTex")
+    val emissionTexture: Texture,
 
     @Uniform(name = "uRoughnessTex")
     val roughnessTexture: Texture,

@@ -8,6 +8,7 @@
   - roughness (`Pr` and `map_Pr`)
   - metalness (`Pm` and `map_Pm`)
   - normal map (`norm`)
+  - emission (`Ke` and `map_Ke`)
 - Physically based shading method in 3D preview
 
 ### Changed

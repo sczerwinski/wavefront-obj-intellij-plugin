@@ -30,6 +30,7 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer = MtlLexerAdapter()
 
+    @Suppress("LongMethod")
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> =
         when (tokenType) {
             MtlTypes.COMMENT ->
@@ -40,6 +41,7 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
             MtlTypes.DIFFUSE_COLOR_KEYWORD,
             MtlTypes.SPECULAR_COLOR_KEYWORD,
             MtlTypes.TRANSMISSION_FILTER_KEYWORD,
+            MtlTypes.EMISSION_COLOR_KEYWORD,
             MtlTypes.ILLUMINATION_KEYWORD,
             MtlTypes.DISSOLVE_KEYWORD,
             MtlTypes.SPECULAR_EXPONENT_KEYWORD,
@@ -50,6 +52,7 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
             MtlTypes.AMBIENT_COLOR_MAP_KEYWORD,
             MtlTypes.DIFFUSE_COLOR_MAP_KEYWORD,
             MtlTypes.SPECULAR_COLOR_MAP_KEYWORD,
+            MtlTypes.EMISSION_COLOR_MAP_KEYWORD,
             MtlTypes.SPECULAR_EXPONENT_MAP_KEYWORD,
             MtlTypes.DISSOLVE_MAP_KEYWORD,
             MtlTypes.DISPLACEMENT_MAP_KEYWORD,

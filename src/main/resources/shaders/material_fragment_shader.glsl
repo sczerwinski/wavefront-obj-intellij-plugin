@@ -1,11 +1,13 @@
 uniform vec3 uAmbColor;
 uniform vec3 uDiffColor;
 uniform vec3 uSpecColor;
+uniform vec3 uEmissionColor;
 uniform float uSpecExp;
 
 uniform sampler2D uAmbTex;
 uniform sampler2D uDiffTex;
 uniform sampler2D uSpecTex;
+uniform sampler2D uEmissionTex;
 uniform sampler2D uSpecExpTex;
 uniform float uSpecExpBase;
 uniform float uSpecExpGain;
@@ -74,7 +76,9 @@ void main() {
     vec3 ambColor = texture2D(uAmbTex, texCoord).rgb * uAmbColor * 0.4;
     vec3 diffColor = texture2D(uDiffTex, texCoord).rgb * uDiffColor;
     vec3 specColor = texture2D(uSpecTex, texCoord).rgb * uSpecColor;
-    vec3 color = diffColor * exposure + ambColor * (1.0 - exposure) + specColor * specular;
+    vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
+
+    vec3 color = diffColor * exposure + ambColor * (1.0 - exposure) + specColor * specular + emissionColor;
 
     gl_FragColor = vec4(color, 1.0);
 }

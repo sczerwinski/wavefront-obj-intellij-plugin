@@ -19,6 +19,7 @@
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.1`
   - Upgrade `detekt-formatting` to `1.19.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.19.0`
+  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.1`
 - GitHub Actions:
   - Upgrade `actions/cache` to `v2.1.7`
   - Upgrade `actions/upload-artifact` to `v2.3.1`

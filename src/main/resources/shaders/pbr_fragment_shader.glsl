@@ -1,8 +1,10 @@
 uniform vec3 uDiffColor;
+uniform vec3 uEmissionColor;
 uniform float uRoughness;
 uniform float uMetalness;
 
 uniform sampler2D uDiffTex;
+uniform sampler2D uEmissionTex;
 uniform sampler2D uRoughnessTex;
 uniform sampler2D uMetalnessTex;
 uniform sampler2D uNormalTex;
@@ -109,6 +111,7 @@ void main() {
     vec3 normal = normalize(texture2D(uNormalTex, texCoord).rgb * 2.0 - 1.0);
 
     vec3 diffColor = texture2D(uDiffTex, texCoord).rgb * uDiffColor;
+    vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
     vec3 radiance = texture2D(uRadianceTex, envTexCoord(normalWorld(normal))).rgb;
 
     float roughness = texture2D(uRoughnessTex, texCoord).r * uRoughness;
@@ -130,7 +133,7 @@ void main() {
 
     float exposure = max(dot(normal, lightDir), 0.0);
 
-    vec3 color = diffuseFactor * diffColor / pi * exposure + ambColor + specular;
+    vec3 color = diffuseFactor * diffColor / pi * exposure + ambColor + specular + emissionColor;
 
     gl_FragColor = vec4(color, 1.0);
 }

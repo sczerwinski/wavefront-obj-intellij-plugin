@@ -64,6 +64,7 @@ class ObjPreviewScene(
                 material?.ambientColorMap?.let(::prepareTexture)
                 material?.diffuseColorMap?.let(::prepareTexture)
                 material?.specularColorMap?.let(::prepareTexture)
+                material?.emissionColorMap?.let(::prepareTexture)
                 material?.specularExponentMap?.let(::prepareTexture)
                 material?.roughnessMap?.let(::prepareTexture)
                 material?.metalnessMap?.let(::prepareTexture)
@@ -216,6 +217,7 @@ class ObjPreviewScene(
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
         val ambientTexture = material?.ambientColorMap?.getTexture(gl)
         val diffuseTexture = material?.diffuseColorMap?.getTexture(gl)
+        val emissionTexture = material?.emissionColorMap?.getTexture(gl)
 
         val roughnessTexture = material?.roughnessMap?.getTexture(gl)
         val metalnessTexture = material?.metalnessMap?.getTexture(gl)
@@ -223,6 +225,8 @@ class ObjPreviewScene(
         val specularColorTexture = material?.specularColorMap?.getTexture(gl)
         val specularExponentTexture = material?.specularExponentMap?.getTexture(gl)
         val bumpTexture = material?.bumpMap?.getTexture(gl)
+
+        val emissionColor = material?.emissionColor ?: if (emissionTexture != null) Color.WHITE else Color.BLACK
 
         programExecutorsManager.renderMaterial(
             gl,
@@ -235,10 +239,12 @@ class ObjPreviewScene(
                 ambientColor = Vec3(color = material?.let { it.ambientColor ?: it.diffuseColor } ?: Color.WHITE),
                 diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
                 specularColor = Vec3(color = material?.specularColor ?: Color.WHITE),
+                emissionColor = Vec3(color = emissionColor),
                 specularExponent = material?.specularExponent ?: 1f,
                 ambientTexture = ambientTexture ?: diffuseTexture ?: fallbackTexture,
                 diffuseTexture = diffuseTexture ?: fallbackTexture,
                 specularTexture = specularColorTexture ?: metalnessTexture ?: fallbackTexture,
+                emissionTexture = emissionTexture ?: fallbackTexture,
                 specularExponentTexture = specularExponentTexture ?: roughnessTexture ?: fallbackTexture,
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
@@ -257,12 +263,16 @@ class ObjPreviewScene(
     private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
 
+        val diffuseTexture = material?.diffuseColorMap?.getTexture(gl)
+        val emissionTexture = material?.emissionColorMap?.getTexture(gl)
         val roughnessTexture = material?.roughnessMap?.getTexture(gl)
         val metalnessTexture = material?.metalnessMap?.getTexture(gl)
         val normalTexture = material?.normalMap?.getTexture(gl)
         val specularColorTexture = material?.specularColorMap?.getTexture(gl)
         val specularExponentTexture = material?.specularExponentMap?.getTexture(gl)
         val bumpTexture = material?.bumpMap?.getTexture(gl)
+
+        val emissionColor = material?.emissionColor ?: if (emissionTexture != null) Color.WHITE else Color.BLACK
 
         programExecutorsManager.renderPBR(
             gl,
@@ -273,9 +283,11 @@ class ObjPreviewScene(
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
                 diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
+                emissionColor = Vec3(color = emissionColor),
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,
-                diffuseTexture = material?.diffuseColorMap?.getTexture(gl) ?: fallbackTexture,
+                diffuseTexture = diffuseTexture ?: fallbackTexture,
+                emissionTexture = emissionTexture ?: fallbackTexture,
                 roughnessTexture = roughnessTexture ?: specularExponentTexture ?: fallbackTexture,
                 metalnessTexture = metalnessTexture ?: specularColorTexture ?: fallbackTexture,
                 normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,

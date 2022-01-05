@@ -36,6 +36,7 @@ abstract class MtlMaterialElementImpl(
     override val diffuseColor: Color? get() = material?.diffuseColorList?.firstOrNull()?.color
     override val specularColor: Color? get() = material?.specularColorList?.firstOrNull()?.color
     override val transmissionFilter: Color? get() = material?.transmissionFilterList?.firstOrNull()?.color
+    override val emissionColor: Color? get() = material?.emissionColorList?.firstOrNull()?.color
 
     override val illumination: MtlIlluminationValueElement.Illumination?
         get() = material?.illuminationList?.firstOrNull()?.value
@@ -52,6 +53,8 @@ abstract class MtlMaterialElementImpl(
         get() = material?.diffuseColorMapList?.firstOrNull()?.textureVirtualFile
     override val specularColorMap: VirtualFile?
         get() = material?.specularColorMapList?.firstOrNull()?.textureVirtualFile
+    override val emissionColorMap: VirtualFile?
+        get() = material?.emissionColorMapList?.firstOrNull()?.textureVirtualFile
     override val specularExponentMap: VirtualFile?
         get() = material?.specularExponentMapList?.firstOrNull()?.textureVirtualFile
     override val specularExponentBase: Float?

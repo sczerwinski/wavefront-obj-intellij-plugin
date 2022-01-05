@@ -59,6 +59,9 @@ data class MaterialShader(
     @Uniform(name = "uSpecColor")
     val specularColor: Vec3,
 
+    @Uniform(name = "uEmissionColor")
+    val emissionColor: Vec3,
+
     @Uniform(name = "uSpecExp")
     val specularExponent: Float,
 
@@ -70,6 +73,9 @@ data class MaterialShader(
 
     @Uniform(name = "uSpecTex")
     val specularTexture: Texture,
+
+    @Uniform(name = "uEmissionTex")
+    val emissionTexture: Texture,
 
     @Uniform(name = "uSpecExpTex")
     val specularExponentTexture: Texture,

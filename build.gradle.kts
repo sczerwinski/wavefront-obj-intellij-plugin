@@ -11,8 +11,8 @@ plugins {
     id("java")
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
-    // Kapt annotation processing
-    kotlin("kapt") version "1.6.10"
+    // Kotlin Symbol Processing - read more: https://github.com/google/ksp
+    id("com.google.devtools.ksp") version "1.6.10-1.0.2"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "1.3.0"
     // gradle-grammarkit-plugin - read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
@@ -35,14 +35,10 @@ repositories {
 
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
-    api("graphics.glimpse:glimpse-core:1.0.0")
-    api("graphics.glimpse:glimpse-ui:1.0.0")
-    kapt("graphics.glimpse:glimpse-processor-java:1.0.0")
+    api("graphics.glimpse:glimpse-core:1.1.0-ALPHA1")
+    api("graphics.glimpse:glimpse-ui:1.1.0-ALPHA1")
+    ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0-ALPHA1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 // Generate parsers and lexers before Kotlin compilation.
@@ -112,7 +108,8 @@ tasks {
             "${project.buildDir}/generated/source/lexer/obj",
             "${project.buildDir}/generated/source/lexer/mtl",
             "${project.buildDir}/generated/source/parser/obj",
-            "${project.buildDir}/generated/source/parser/mtl"
+            "${project.buildDir}/generated/source/parser/mtl",
+            "${project.buildDir}/generated/ksp/main/kotlin"
         )
     }
     withType<KotlinCompile> {

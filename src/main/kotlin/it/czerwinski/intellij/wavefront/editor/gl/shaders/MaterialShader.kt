@@ -102,5 +102,5 @@ data class MaterialShader(
     val displacementQuality: Float,
 
     @Uniform(name = "uCropTex")
-    val cropTexture: Int,
+    val cropTexture: Boolean,
 )

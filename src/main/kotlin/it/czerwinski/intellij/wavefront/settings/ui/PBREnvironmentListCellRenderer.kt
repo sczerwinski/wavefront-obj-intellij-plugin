@@ -19,7 +19,6 @@ package it.czerwinski.intellij.wavefront.settings.ui
 import com.intellij.ui.SimpleListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
-import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
 @Suppress("FunctionName")
 fun PBREnvironmentListCellRenderer(): SimpleListCellRenderer<PBREnvironment> =

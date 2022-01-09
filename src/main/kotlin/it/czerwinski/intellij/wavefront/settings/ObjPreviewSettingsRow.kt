@@ -69,7 +69,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     override var objPreviewSettings: ObjPreviewSettingsState
         get() = ObjPreviewSettingsState(
             defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.DEFAULT,
-            defaultPBREnvironment  = defaultPBREnvironment.item ?: PBREnvironment.DEFAULT,
+            defaultPBREnvironment = defaultPBREnvironment.item ?: PBREnvironment.DEFAULT,
             defaultUpVector = defaultUpVector.item ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,

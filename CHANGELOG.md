@@ -27,6 +27,7 @@
 - GitHub Actions:
   - Upgrade `actions/cache` to `v2.1.7`
   - Upgrade `actions/upload-artifact` to `v2.3.1`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1`
 
 ### Deprecated
 

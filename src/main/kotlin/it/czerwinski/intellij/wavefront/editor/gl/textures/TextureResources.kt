@@ -57,6 +57,12 @@ object TextureResources {
             .build()
 
     fun prepare(profile: GLProfile) {
+        environmentTextureImageSources = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
+            getPreparedTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(index), profile)
+        }
+        radianceTextureImageSources = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
+            getPreparedTextureImageSource(RADIANCE_TEXTURE_RESOURCE_FORMAT.format(index), profile)
+        }
         fontTextureImageSource = getPreparedTextureImageSource(FONT_TEXTURE_RESOURCE, profile)
         boldFontTextureImageSource = getPreparedTextureImageSource(BOLD_FONT_TEXTURE_RESOURCE, profile)
         fallbackTextureImageSource = getPreparedTextureImageSource(FALLBACK_TEXTURE_RESOURCE, profile)

@@ -253,7 +253,7 @@ class ObjPreviewScene(
                 displacementTexture = material?.displacementMap?.getTexture(gl) ?: fallbackTexture,
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
-                cropTexture = if (cropTextures) 1 else 0
+                cropTexture = cropTextures
             ),
             facesMesh
         )
@@ -296,7 +296,7 @@ class ObjPreviewScene(
                 displacementQuality = config.displacementQuality,
                 reflectionTexture = environmentTexture,
                 radianceTexture = radianceTexture,
-                cropTexture = if (cropTextures) 1 else 0
+                cropTexture = cropTextures
             ),
             facesMesh
         )

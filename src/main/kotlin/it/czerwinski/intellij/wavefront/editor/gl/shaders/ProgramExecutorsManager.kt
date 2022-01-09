@@ -202,15 +202,13 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
      * Disposes all previously created programs.
      */
     fun dispose(gl: GlimpseAdapter) {
-        wireframeShaderProgramExecutor.dispose()
-        solidShaderProgramExecutor.dispose()
-        materialShaderProgramExecutor.dispose()
-        wireframeProgram.dispose(gl)
-        solidProgram.dispose(gl)
-        materialProgram.dispose(gl)
-        pbrProgram.dispose(gl)
-        environmentProgram.dispose(gl)
-        textProgram.dispose(gl)
+        wireframeShaderProgramExecutor.dispose(gl)
+        texturedWireframeShaderProgramExecutor.dispose(gl)
+        solidShaderProgramExecutor.dispose(gl)
+        materialShaderProgramExecutor.dispose(gl)
+        pbrShaderProgramExecutor.dispose(gl)
+        environmentShaderProgramExecutor.dispose(gl)
+        textShaderProgramExecutor.dispose(gl)
     }
 
     companion object {

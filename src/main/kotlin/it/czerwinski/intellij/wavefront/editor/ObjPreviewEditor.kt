@@ -85,6 +85,10 @@ class ObjPreviewEditor(
                     shadingMethod = newPreviewSettings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
                 }
 
+                if (environment === oldPreviewSettings?.defaultPBREnvironment) {
+                    environment = newPreviewSettings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
+                }
+
                 if (isCroppingTextures == oldPreviewSettings?.cropTextures) {
                     isCroppingTextures = newPreviewSettings?.cropTextures
                         ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
@@ -117,6 +121,7 @@ class ObjPreviewEditor(
         val settings = WavefrontObjSettingsState.getInstance()?.objPreviewSettings
 
         shadingMethod = settings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
+        environment = settings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
         isCroppingTextures = settings?.cropTextures ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
         upVector = settings?.defaultUpVector ?: UpVector.DEFAULT
         isShowingAxes = settings?.showAxes ?: ObjPreviewSettingsState.DEFAULT_SHOW_AXES

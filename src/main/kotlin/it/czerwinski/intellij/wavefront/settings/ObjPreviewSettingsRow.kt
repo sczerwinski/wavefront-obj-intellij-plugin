@@ -28,9 +28,11 @@ import com.intellij.ui.layout.Row
 import com.intellij.ui.layout.RowBuilder
 import com.intellij.ui.layout.slider
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.settings.ui.PBREnvironmentListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.ShaderQualityListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.ShadingMethodListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
@@ -49,6 +51,7 @@ import kotlin.math.roundToInt
 class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
 
     private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
+    private lateinit var defaultPBREnvironment: ComboBox<PBREnvironment>
     private lateinit var defaultUpVector: ComboBox<UpVector>
     private lateinit var showAxesCheckBox: JBCheckBox
     private lateinit var axisLineWidthInput: JBTextField
@@ -66,6 +69,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
     override var objPreviewSettings: ObjPreviewSettingsState
         get() = ObjPreviewSettingsState(
             defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.DEFAULT,
+            defaultPBREnvironment  = defaultPBREnvironment.item ?: PBREnvironment.DEFAULT,
             defaultUpVector = defaultUpVector.item ?: UpVector.DEFAULT,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
@@ -82,6 +86,7 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
         )
         set(value) {
             defaultShadingMethod.item = value.defaultShadingMethod
+            defaultPBREnvironment.item = value.defaultPBREnvironment
             defaultUpVector.item = value.defaultUpVector
             showAxesCheckBox.isSelected = value.showAxes
             axisLineWidthInput.text = value.axisLineWidth.toString()
@@ -102,6 +107,12 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             defaultShadingMethod = enumComboBox(
                 defaultValue = ShadingMethod.DEFAULT,
                 renderer = ShadingMethodListCellRenderer()
+            ).component
+        }
+        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment")) {
+            defaultPBREnvironment = enumComboBox(
+                defaultValue = PBREnvironment.DEFAULT,
+                renderer = PBREnvironmentListCellRenderer()
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector"), separated = true) {

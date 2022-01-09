@@ -17,12 +17,14 @@
 package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.util.xmlb.annotations.Attribute
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
 data class ObjPreviewSettingsState(
     @field:Attribute var defaultShadingMethod: ShadingMethod = ShadingMethod.DEFAULT,
+    @field:Attribute var defaultPBREnvironment: PBREnvironment = PBREnvironment.DEFAULT,
     @field:Attribute var defaultUpVector: UpVector = UpVector.DEFAULT,
     @field:Attribute var showAxes: Boolean = DEFAULT_SHOW_AXES,
     @field:Attribute var axisLineWidth: Float = DEFAULT_AXIS_LINE_WIDTH,

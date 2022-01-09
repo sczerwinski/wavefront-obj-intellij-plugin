@@ -18,20 +18,22 @@ package it.czerwinski.intellij.wavefront.settings.ui
 
 import com.intellij.ui.SimpleListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 
 @Suppress("FunctionName")
-fun ShadingMethodListCellRenderer(): SimpleListCellRenderer<ShadingMethod> =
+fun PBREnvironmentListCellRenderer(): SimpleListCellRenderer<PBREnvironment> =
     SimpleListCellRenderer.create("") { value ->
         when (value) {
-            ShadingMethod.WIREFRAME ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.wireframe")
-            ShadingMethod.SOLID ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.solid")
-            ShadingMethod.MATERIAL ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.material")
-            ShadingMethod.PBR ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod.pbr")
+            PBREnvironment.INTERIOR ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.interior")
+            PBREnvironment.GARDEN ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.garden")
+            PBREnvironment.WOODS ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.woods")
+            PBREnvironment.PARK ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.park")
+            PBREnvironment.NIGHT ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.night")
             else ->
                 null
         }

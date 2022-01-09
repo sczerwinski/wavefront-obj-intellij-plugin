@@ -43,14 +43,21 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlDiffuseColorMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlDisplacementMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlDissolve
 import it.czerwinski.intellij.wavefront.lang.psi.MtlDissolveMap
+import it.czerwinski.intellij.wavefront.lang.psi.MtlEmissionColor
+import it.czerwinski.intellij.wavefront.lang.psi.MtlEmissionColorMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIllumination
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMetalness
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMetalnessMap
+import it.czerwinski.intellij.wavefront.lang.psi.MtlNormalMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlOffsetOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlOpticalDensity
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTypeOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlResolutionOption
+import it.czerwinski.intellij.wavefront.lang.psi.MtlRoughness
+import it.czerwinski.intellij.wavefront.lang.psi.MtlRoughnessMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannelOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScaleOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlSharpness
@@ -81,20 +88,27 @@ object MtlItemPresentationFactory {
         is MtlDiffuseColor -> createPresentation(element)
         is MtlSpecularColor -> createPresentation(element)
         is MtlTransmissionFilter -> createPresentation(element)
+        is MtlEmissionColor -> createPresentation(element)
 
         is MtlIllumination -> createPresentation(element)
         is MtlDissolve -> createPresentation(element)
         is MtlSpecularExponent -> createPresentation(element)
         is MtlSharpness -> createPresentation(element)
         is MtlOpticalDensity -> createPresentation(element)
+        is MtlRoughness -> createPresentation(element)
+        is MtlMetalness -> createPresentation(element)
 
         is MtlAmbientColorMap -> createPresentation(element)
         is MtlDiffuseColorMap -> createPresentation(element)
         is MtlSpecularColorMap -> createPresentation(element)
+        is MtlEmissionColorMap -> createPresentation(element)
         is MtlSpecularExponentMap -> createPresentation(element)
         is MtlDissolveMap -> createPresentation(element)
         is MtlDisplacementMap -> createPresentation(element)
         is MtlStencilDecalMap -> createPresentation(element)
+        is MtlRoughnessMap -> createPresentation(element)
+        is MtlMetalnessMap -> createPresentation(element)
+        is MtlNormalMap -> createPresentation(element)
         is MtlBumpMap -> createPresentation(element)
         is MtlReflectionMap -> createPresentation(element)
 
@@ -166,6 +180,13 @@ object MtlItemPresentationFactory {
         color = color
     )
 
+    private fun createPresentation(color: MtlEmissionColor): ItemPresentation = createColorPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.emissionColor"
+        ),
+        color = color
+    )
+
     private fun createPresentation(illumination: MtlIllumination): ItemPresentation = createPropertyPresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.illumination"
@@ -211,6 +232,20 @@ object MtlItemPresentationFactory {
         locationString = opticalDensity.value?.toString().orEmpty()
     )
 
+    private fun createPresentation(roughness: MtlRoughness): ItemPresentation = createPropertyPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.roughness"
+        ),
+        locationString = roughness.value?.toString().orEmpty()
+    )
+
+    private fun createPresentation(metalness: MtlMetalness): ItemPresentation = createPropertyPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.metalness"
+        ),
+        locationString = metalness.value?.toString().orEmpty()
+    )
+
     private fun createPresentation(map: MtlAmbientColorMap): ItemPresentation = createTexturePresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.ambientColorMap"
@@ -239,6 +274,13 @@ object MtlItemPresentationFactory {
         texture = map
     )
 
+    private fun createPresentation(map: MtlEmissionColorMap): ItemPresentation = createTexturePresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.emissionColorMap"
+        ),
+        texture = map
+    )
+
     private fun createPresentation(map: MtlSpecularExponentMap): ItemPresentation = createTexturePresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.specularExponentMap"
@@ -263,6 +305,27 @@ object MtlItemPresentationFactory {
     private fun createPresentation(map: MtlStencilDecalMap): ItemPresentation = createTexturePresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.stencilDecalMap"
+        ),
+        texture = map
+    )
+
+    private fun createPresentation(map: MtlRoughnessMap): ItemPresentation = createTexturePresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.roughnessMap"
+        ),
+        texture = map
+    )
+
+    private fun createPresentation(map: MtlMetalnessMap): ItemPresentation = createTexturePresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.metalnessMap"
+        ),
+        texture = map
+    )
+
+    private fun createPresentation(map: MtlNormalMap): ItemPresentation = createTexturePresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.normalmap"
         ),
         texture = map
     )

@@ -4,7 +4,6 @@ uniform mat4 uModelMat;
 uniform mat3 uNormalMat;
 
 uniform vec3 uCameraPos;
-uniform vec3 uUpVector;
 
 attribute vec3 aPos;
 attribute vec3 aNormal;
@@ -30,7 +29,7 @@ void main() {
     vPosTan = tbnMat * vec3(uModelMat * pos);
 
     vec3 cameraDir = normalize(uCameraPos);
-    vec3 upVector = normalize(uUpVector - dot(uUpVector, cameraDir) * cameraDir);
+    vec3 upVector = normalize(vec3(0.0, 0.0, 1.0) - cameraDir.z * cameraDir);
     vec3 leftVector = cross(cameraDir, upVector);
     vLightPosTan = tbnMat * ((cameraDir + leftVector + upVector) * 10.0);
 

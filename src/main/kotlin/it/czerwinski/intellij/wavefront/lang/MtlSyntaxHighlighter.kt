@@ -30,6 +30,7 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer = MtlLexerAdapter()
 
+    @Suppress("LongMethod")
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> =
         when (tokenType) {
             MtlTypes.COMMENT ->
@@ -40,18 +41,25 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
             MtlTypes.DIFFUSE_COLOR_KEYWORD,
             MtlTypes.SPECULAR_COLOR_KEYWORD,
             MtlTypes.TRANSMISSION_FILTER_KEYWORD,
+            MtlTypes.EMISSION_COLOR_KEYWORD,
             MtlTypes.ILLUMINATION_KEYWORD,
             MtlTypes.DISSOLVE_KEYWORD,
             MtlTypes.SPECULAR_EXPONENT_KEYWORD,
             MtlTypes.SHARPNESS_KEYWORD,
             MtlTypes.OPTICAL_DENSITY_KEYWORD,
+            MtlTypes.ROUGHNESS_KEYWORD,
+            MtlTypes.METALNESS_KEYWORD,
             MtlTypes.AMBIENT_COLOR_MAP_KEYWORD,
             MtlTypes.DIFFUSE_COLOR_MAP_KEYWORD,
             MtlTypes.SPECULAR_COLOR_MAP_KEYWORD,
+            MtlTypes.EMISSION_COLOR_MAP_KEYWORD,
             MtlTypes.SPECULAR_EXPONENT_MAP_KEYWORD,
             MtlTypes.DISSOLVE_MAP_KEYWORD,
             MtlTypes.DISPLACEMENT_MAP_KEYWORD,
             MtlTypes.STENCIL_DECAL_MAP_KEYWORD,
+            MtlTypes.ROUGHNESS_MAP_KEYWORD,
+            MtlTypes.METALNESS_MAP_KEYWORD,
+            MtlTypes.NORMAL_MAP_KEYWORD,
             MtlTypes.BUMP_MAP_KEYWORD,
             MtlTypes.REFLECTION_MAP_KEYWORD ->
                 arrayOf(ATTR_KEYWORD)

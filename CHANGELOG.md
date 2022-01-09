@@ -4,16 +4,26 @@
 
 ## [Unreleased]
 ### Added
+- Extended MTL syntax for physically based rendering parameters:
+  - roughness (`Pr` and `map_Pr`)
+  - metalness (`Pm` and `map_Pm`)
+  - normal map (`norm`)
+  - emission (`Ke` and `map_Ke`)
+- Physically based shading method in 3D preview
 
 ### Changed
 - Upgrade Gradle Wrapper to `7.3.3`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.10`
-  - Upgrade `kapt` to `1.6.10`
+  - Replace `kapt` with `com.google.devtools.ksp` version `1.6.10-1.0.2`
   - Upgrade `org.jetbrains.intellij` to `1.3.0`
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.1`
   - Upgrade `detekt-formatting` to `1.19.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.19.0`
+  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.1`
+  - Upgrade `glimpse-core` to `1.1.0-ALPHA1`
+  - Upgrade `glimpse-ui` to `1.1.0-ALPHA1`
+  - Replace `glimpse-processor-java` with `glimpse-processor-ksp` version `1.1.0-ALPHA1`
 - GitHub Actions:
   - Upgrade `actions/cache` to `v2.1.7`
   - Upgrade `actions/upload-artifact` to `v2.3.1`
@@ -23,6 +33,7 @@
 ### Removed
 
 ### Fixed
+- Prevent texture loading on GL thread
 
 ### Security
 

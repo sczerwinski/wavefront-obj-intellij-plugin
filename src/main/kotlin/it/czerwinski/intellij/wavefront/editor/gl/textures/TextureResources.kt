@@ -22,10 +22,22 @@ import graphics.glimpse.textures.fromResource
 
 object TextureResources {
 
+    private const val ENVIRONMENT_TEXTURES_COUNT = 5
+    private const val ENVIRONMENT_TEXTURE_RESOURCE_FORMAT = "/textures/environment%d.jpg"
+    private const val RADIANCE_TEXTURE_RESOURCE_FORMAT = "/textures/radiance%d.jpg"
+
     private const val FONT_TEXTURE_RESOURCE = "/textures/jb_mono.png"
     private const val BOLD_FONT_TEXTURE_RESOURCE = "/textures/jb_mono_bold.png"
     private const val FALLBACK_TEXTURE_RESOURCE = "/textures/fallback_texture.png"
     private const val FALLBACK_NORMALMAP_RESOURCE = "/textures/fallback_normalmap.png"
+
+    var environmentTextureImageSources: List<TextureImageSource> = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
+        getTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(index))
+    }
+
+    var radianceTextureImageSources: List<TextureImageSource> = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
+        getTextureImageSource(RADIANCE_TEXTURE_RESOURCE_FORMAT.format(index))
+    }
 
     var fontTextureImageSource: TextureImageSource = getTextureImageSource(FONT_TEXTURE_RESOURCE)
         private set
@@ -45,6 +57,12 @@ object TextureResources {
             .build()
 
     fun prepare(profile: GLProfile) {
+        environmentTextureImageSources = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
+            getPreparedTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(index), profile)
+        }
+        radianceTextureImageSources = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
+            getPreparedTextureImageSource(RADIANCE_TEXTURE_RESOURCE_FORMAT.format(index), profile)
+        }
         fontTextureImageSource = getPreparedTextureImageSource(FONT_TEXTURE_RESOURCE, profile)
         boldFontTextureImageSource = getPreparedTextureImageSource(BOLD_FONT_TEXTURE_RESOURCE, profile)
         fallbackTextureImageSource = getPreparedTextureImageSource(FALLBACK_TEXTURE_RESOURCE, profile)

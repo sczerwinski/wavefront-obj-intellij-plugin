@@ -26,16 +26,20 @@ interface MtlMaterialElement : PsiElement {
     val diffuseColor: Color?
     val specularColor: Color?
     val transmissionFilter: Color?
+    val emissionColor: Color?
 
     val illumination: MtlIlluminationValueElement.Illumination?
     val dissolve: Float?
     val specularExponent: Float?
     val sharpness: Float?
     val opticalDensity: Float?
+    val roughness: Float?
+    val metalness: Float?
 
     val ambientColorMap: VirtualFile?
     val diffuseColorMap: VirtualFile?
     val specularColorMap: VirtualFile?
+    val emissionColorMap: VirtualFile?
     val specularExponentMap: VirtualFile?
     val specularExponentBase: Float?
     val specularExponentGain: Float?
@@ -43,6 +47,9 @@ interface MtlMaterialElement : PsiElement {
     val displacementMap: VirtualFile?
     val displacementGain: Float?
     val stencilDecalMap: VirtualFile?
+    val roughnessMap: VirtualFile?
+    val metalnessMap: VirtualFile?
+    val normalMap: VirtualFile?
     val bumpMap: VirtualFile?
     val bumpMapMultiplier: Float?
     val reflectionMap: VirtualFile?

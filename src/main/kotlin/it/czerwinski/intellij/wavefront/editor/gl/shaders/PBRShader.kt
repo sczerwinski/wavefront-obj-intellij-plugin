@@ -20,6 +20,7 @@ import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
+import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
@@ -27,11 +28,12 @@ import graphics.glimpse.types.Vec3
 @ShaderParams(
     attributes = [
         Attribute(name = "aPos", role = AttributeRole.POSITIONS, vectorSize = 3),
+        Attribute(name = "aTexCoord", role = AttributeRole.TEX_COORDS, vectorSize = 2),
         Attribute(name = "aNormal", role = AttributeRole.NORMALS, vectorSize = 3),
         Attribute(name = "aTangent", role = AttributeRole.TANGENTS, vectorSize = 3),
     ]
 )
-data class SolidShader(
+data class PBRShader(
 
     @Uniform(name = "uProjMat")
     val projectionMatrix: Mat4,
@@ -48,6 +50,48 @@ data class SolidShader(
     @Uniform(name = "uCameraPos")
     val cameraPosition: Vec3,
 
-    @Uniform(name = "uColor")
-    val color: Vec3,
+    @Uniform(name = "uDiffColor")
+    val diffuseColor: Vec3,
+
+    @Uniform(name = "uEmissionColor")
+    val emissionColor: Vec3,
+
+    @Uniform(name = "uRoughness")
+    val roughness: Float,
+
+    @Uniform(name = "uMetalness")
+    val metalness: Float,
+
+    @Uniform(name = "uDiffTex")
+    val diffuseTexture: Texture,
+
+    @Uniform(name = "uEmissionTex")
+    val emissionTexture: Texture,
+
+    @Uniform(name = "uRoughnessTex")
+    val roughnessTexture: Texture,
+
+    @Uniform(name = "uMetalnessTex")
+    val metalnessTexture: Texture,
+
+    @Uniform(name = "uNormalTex")
+    val normalmapTexture: Texture,
+
+    @Uniform(name = "uDispTex")
+    val displacementTexture: Texture,
+
+    @Uniform(name = "uDispGain")
+    val displacementGain: Float,
+
+    @Uniform(name = "uDispQuality")
+    val displacementQuality: Float,
+
+    @Uniform(name = "uReflectionTex")
+    val reflectionTexture: Texture,
+
+    @Uniform(name = "uRadianceTex")
+    val radianceTexture: Texture,
+
+    @Uniform(name = "uCropTex")
+    val cropTexture: Boolean,
 )

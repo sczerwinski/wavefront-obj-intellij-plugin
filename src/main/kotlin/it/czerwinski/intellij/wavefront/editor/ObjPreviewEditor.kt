@@ -23,6 +23,7 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.PreviewEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
@@ -41,6 +42,12 @@ class ObjPreviewEditor(
         get() = myComponent.shadingMethod
         set(value) {
             myComponent.shadingMethod = value
+        }
+
+    var environment: PBREnvironment
+        get() = myComponent.environment
+        set(value) {
+            myComponent.environment = value
         }
 
     var isCroppingTextures: Boolean
@@ -78,6 +85,10 @@ class ObjPreviewEditor(
                     shadingMethod = newPreviewSettings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
                 }
 
+                if (environment === oldPreviewSettings?.defaultPBREnvironment) {
+                    environment = newPreviewSettings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
+                }
+
                 if (isCroppingTextures == oldPreviewSettings?.cropTextures) {
                     isCroppingTextures = newPreviewSettings?.cropTextures
                         ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
@@ -110,6 +121,7 @@ class ObjPreviewEditor(
         val settings = WavefrontObjSettingsState.getInstance()?.objPreviewSettings
 
         shadingMethod = settings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
+        environment = settings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
         isCroppingTextures = settings?.cropTextures ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
         upVector = settings?.defaultUpVector ?: UpVector.DEFAULT
         isShowingAxes = settings?.showAxes ?: ObjPreviewSettingsState.DEFAULT_SHOW_AXES

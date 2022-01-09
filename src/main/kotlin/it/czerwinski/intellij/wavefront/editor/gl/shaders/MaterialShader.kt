@@ -50,9 +50,6 @@ data class MaterialShader(
     @Uniform(name = "uCameraPos")
     val cameraPosition: Vec3,
 
-    @Uniform(name = "uUpVector")
-    val upVector: Vec3,
-
     @Uniform(name = "uAmbColor")
     val ambientColor: Vec3,
 
@@ -61,6 +58,9 @@ data class MaterialShader(
 
     @Uniform(name = "uSpecColor")
     val specularColor: Vec3,
+
+    @Uniform(name = "uEmissionColor")
+    val emissionColor: Vec3,
 
     @Uniform(name = "uSpecExp")
     val specularExponent: Float,
@@ -73,6 +73,9 @@ data class MaterialShader(
 
     @Uniform(name = "uSpecTex")
     val specularTexture: Texture,
+
+    @Uniform(name = "uEmissionTex")
+    val emissionTexture: Texture,
 
     @Uniform(name = "uSpecExpTex")
     val specularExponentTexture: Texture,
@@ -99,5 +102,5 @@ data class MaterialShader(
     val displacementQuality: Float,
 
     @Uniform(name = "uCropTex")
-    val cropTexture: Int,
+    val cropTexture: Boolean,
 )

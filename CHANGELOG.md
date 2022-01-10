@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.1.0]
+### Added
 - Extended MTL syntax for physically based rendering parameters:
   - roughness (`Pr` and `map_Pr`)
   - metalness (`Pm` and `map_Pm`)

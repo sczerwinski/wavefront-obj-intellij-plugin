@@ -321,3 +321,20 @@
 - Basic 3D preview of OBJ files
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
+
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...main
+[1.1.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.2...v1.1.0
+[1.0.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.3.2...v1.0.0
+[0.3.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.2.1...v0.3.0
+[0.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.1.5...v0.2.0
+[0.1.5]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/releases/tag/v0.1.0

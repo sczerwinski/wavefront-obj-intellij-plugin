@@ -7,6 +7,7 @@
 - Color preview markers in MTL files
 
 ### Changed
+- Line markers made configurable
 
 ### Deprecated
 

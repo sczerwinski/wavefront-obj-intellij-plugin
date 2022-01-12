@@ -32,6 +32,11 @@ object MtlElementFactory {
     fun createMaterialIdentifier(project: Project, name: String): MtlMaterialIdentifier =
         createMaterial(project, name).getChildrenOfType<MtlMaterialIdentifier>().single()
 
+    fun createColorElement(project: Project, colorComponents: FloatArray): MtlColorElement {
+        val file = createFile(project, text = "newmtl temp\n\tKd ${colorComponents.joinToString(separator = " ")}")
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlColorElement>().single()
+    }
+
     fun createTextureElement(project: Project, name: String): MtlTextureElement {
         val file = createFile(project, text = "newmtl temp\n\tbump $name")
         return (file.firstChild as MtlMaterial).getChildrenOfType<MtlTextureElement>().single()

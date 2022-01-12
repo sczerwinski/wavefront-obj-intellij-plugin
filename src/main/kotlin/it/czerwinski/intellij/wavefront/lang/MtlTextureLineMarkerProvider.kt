@@ -23,30 +23,36 @@ import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
+import javax.swing.Icon
 
-class MtlLineMarkerProvider : RelatedItemLineMarkerProvider() {
+class MtlTextureLineMarkerProvider : RelatedItemLineMarkerProvider() {
+
+    private val myName: String by lazy {
+        WavefrontObjBundle.message("fileTypes.mtl.marker.textureFile.name")
+    }
+
+    private val myTooltip: String by lazy {
+        WavefrontObjBundle.message("fileTypes.mtl.marker.textureFile.tooltip")
+    }
+
+    override fun getName(): String = myName
+
+    override fun getIcon(): Icon = MTL_TEXTURE_ICON
 
     override fun collectNavigationMarkers(
         element: PsiElement,
         result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
     ) {
-        when (element) {
-            is MtlTextureElement -> collectTextureFileMarkers(element, result)
-        }
-    }
-
-    private fun collectTextureFileMarkers(
-        element: MtlTextureElement,
-        result: MutableCollection<in RelatedItemLineMarkerInfo<*>>
-    ) {
-        val markedElement = element.node.findChildByType(MtlTypes.TEXTURE_FILE)?.psi
-        val files = element.textureFiles
-        if (markedElement != null && files.isNotEmpty()) {
-            val marker = NavigationGutterIconBuilder.create(MTL_TEXTURE_ICON)
-                .setTargets(files)
-                .setTooltipText(WavefrontObjBundle.message("fileTypes.mtl.marker.textureFile"))
-                .createLineMarkerInfo(markedElement)
-            result.add(marker)
+        if (element is MtlTextureElement) {
+            val markedElement = element.node.findChildByType(MtlTypes.TEXTURE_FILE)?.psi
+            val files = element.textureFiles
+            if (markedElement != null && files.isNotEmpty()) {
+                val marker = NavigationGutterIconBuilder.create(icon)
+                    .setTargets(files)
+                    .setTooltipText(myTooltip)
+                    .createLineMarkerInfo(markedElement)
+                result.add(marker)
+            }
         }
     }
 }

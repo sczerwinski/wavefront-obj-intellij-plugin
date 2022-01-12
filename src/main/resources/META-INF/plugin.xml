@@ -28,7 +28,10 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjAnnotator"/>
         <codeInsight.lineMarkerProvider
                 language="Wavefront OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjLineMarkerProvider"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjMaterialFileLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider
+                language="Wavefront OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjMaterialLineMarkerProvider"/>
         <lang.elementManipulator
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.ObjMaterialFileReferenceManipulator"/>
@@ -89,7 +92,7 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlAnnotator"/>
         <codeInsight.lineMarkerProvider
                 language="Wavefront MTL"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlLineMarkerProvider"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlTextureLineMarkerProvider"/>
         <lang.elementManipulator
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.MtlTextureElementManipulator"/>

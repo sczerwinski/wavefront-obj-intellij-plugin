@@ -6,6 +6,7 @@
 ### Added
 
 ### Changed
+- Line markers made configurable
 
 ### Deprecated
 

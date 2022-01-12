@@ -22,8 +22,8 @@ import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
-import com.intellij.util.ui.ColorIcon
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.ColorIcon
 import it.czerwinski.intellij.wavefront.lang.MTL_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.MTL_MATERIAL_ICON
 import it.czerwinski.intellij.wavefront.lang.MTL_OPTION_ICON
@@ -74,9 +74,6 @@ import it.czerwinski.intellij.wavefront.lang.psi.valuesString
 import javax.swing.Icon
 
 object MtlItemPresentationFactory {
-
-    private const val ICON_SIZE = 16
-    private const val COLOR_SIZE = 14
 
     @Suppress("ComplexMethod")
     fun createPresentation(element: PsiElement): ItemPresentation = when (element) {
@@ -156,7 +153,7 @@ object MtlItemPresentationFactory {
         createPresentation(
             presentableText = presentableText,
             locationString = color.colorString.orEmpty(),
-            icon = color.color?.let { ColorIcon(ICON_SIZE, COLOR_SIZE, it, true) } ?: AllIcons.General.Error
+            icon = color.color?.let(::ColorIcon) ?: AllIcons.General.Error
         )
 
     private fun createPresentation(color: MtlDiffuseColor): ItemPresentation = createColorPresentation(

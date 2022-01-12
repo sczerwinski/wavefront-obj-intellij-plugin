@@ -19,7 +19,9 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.openapi.util.IconLoader
+import com.intellij.util.ui.ColorIcon
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import java.awt.Color
 import javax.swing.Icon
 
 private fun getIcon(path: String): Icon = IconLoader.getIcon(path, WavefrontObjBundle.javaClass)
@@ -55,3 +57,8 @@ val OBJ_SMOOTHING_OFF_ICON: Icon = getIcon("/icons/objSmoothingOffIcon.svg")
 
 val OBJ_MATERIAL_FILE_ICON: Icon = MTL_FILE_ICON
 val OBJ_MATERIAL_ICON: Icon = MTL_MATERIAL_ICON
+
+private const val COLOR_ICON_SIZE = 16
+private const val COLOR_ICON_COLOR_SIZE = 14
+
+fun ColorIcon(color: Color): ColorIcon = ColorIcon(COLOR_ICON_SIZE, COLOR_ICON_COLOR_SIZE, color, false)

@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Color preview markers in MTL files
 
 ### Changed
 

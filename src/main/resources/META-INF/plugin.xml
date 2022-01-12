@@ -119,6 +119,8 @@
         <spellchecker.support
                 language="Wavefront MTL"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
+        <colorProvider
+                implementation="it.czerwinski.intellij.wavefront.lang.MtlElementColorProvider" />
 
         <!-- Settings -->
         <colorSettingsPage

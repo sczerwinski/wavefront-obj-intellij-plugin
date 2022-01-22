@@ -30,6 +30,7 @@ import graphics.glimpse.textures.TextureType
 import graphics.glimpse.textures.TextureWrap
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
+import graphics.glimpse.types.normalize
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.ModelMeshesManager
@@ -274,6 +275,11 @@ class ObjPreviewScene(
 
         val emissionColor = material?.emissionColor ?: if (emissionTexture != null) Color.WHITE else Color.BLACK
 
+        val cameraDirection = normalize(camera.eye)
+        val cameraUpVector = normalize(vector = Vec3.unitZ - cameraDirection * cameraDirection.z)
+        val cameraLeftVector = normalize(vector = cameraDirection cross cameraUpVector)
+        val lightPosition = (cameraDirection + cameraUpVector + cameraLeftVector) * CAMERA_DISTANCE
+
         programExecutorsManager.renderPBR(
             gl,
             PBRShader(
@@ -282,6 +288,7 @@ class ObjPreviewScene(
                 modelMatrix = upVector.modelMatrix,
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
+                lightPosition = lightPosition,
                 diffuseColor = Vec3(color = material?.diffuseColor ?: Color.WHITE),
                 emissionColor = Vec3(color = emissionColor),
                 roughness = material?.roughness ?: 1f,
@@ -367,4 +374,8 @@ class ObjPreviewScene(
     }
 
     override fun onDestroyError(gl: GlimpseAdapter, expected: Throwable) = Unit
+
+    companion object {
+        private const val CAMERA_DISTANCE = 10f
+    }
 }

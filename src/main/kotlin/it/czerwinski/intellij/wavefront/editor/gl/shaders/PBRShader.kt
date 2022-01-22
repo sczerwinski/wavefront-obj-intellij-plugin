@@ -50,6 +50,9 @@ data class PBRShader(
     @Uniform(name = "uCameraPos")
     val cameraPosition: Vec3,
 
+    @Uniform(name = "uLightPos")
+    val lightPosition: Vec3,
+
     @Uniform(name = "uDiffColor")
     val diffuseColor: Vec3,
 

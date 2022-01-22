@@ -30,7 +30,7 @@ float displacement(vec2 texCoord) {
 }
 
 vec2 displacedTexCoord(vec3 cameraDir) {
-    float depthStep = pow(2.0, -uDispQuality) * max(dot(vec3(0.0, 0.0, 1.0), cameraDir), 0.01);
+    float depthStep = pow(2.0, -uDispQuality) / max(dot(vec3(0.0, 0.0, 1.0), cameraDir), 0.01);
     vec2 texCoordDisplacementStep = cameraDir.xy * uDispGain * depthStep;
 
     vec2 newTexCoord = vTexCoord;

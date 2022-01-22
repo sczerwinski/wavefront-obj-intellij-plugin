@@ -68,7 +68,7 @@ vec2 displacedTexCoord(vec3 cameraDir) {
 }
 
 float normalDistribution(vec3 normal, vec3 halfVector, float roughness) {
-    float coefficient = pow(roughness, 4.0);
+    float coefficient = roughness * roughness;
     float exposure = max(dot(normal, halfVector), 0.0);
     float divisor = exposure * exposure * (coefficient - 1.0) + 1.0;
     return coefficient / (pi * divisor * divisor);
@@ -84,10 +84,22 @@ float geometry(vec3 normal, vec3 cameraDir, vec3 lightDir, float roughness) {
     return geometryFactor(normal, cameraDir, roughness) * geometryFactor(normal, lightDir, roughness);
 }
 
-vec3 specularFactor(vec3 diffColor, float metalness, vec3 cameraDir, vec3 halfVector, float roughness) {
-    vec3 baseColor = mix(vec3(0.04), diffColor, metalness);
-    float exposure = min(1.0, max(dot(cameraDir, halfVector), 0.0001));
-    return baseColor + (max(vec3(1.0 - roughness), baseColor) - baseColor) * pow(1.0 - exposure, 5.0);
+vec3 baseSpecularColor(vec3 diffColor, float metalness) {
+    return mix(vec3(0.04), diffColor, metalness);
+}
+
+vec3 specularFactor(vec3 baseSpecularColor, vec3 cameraDir, vec3 vector) {
+    float factor = 1.0 - min(1.0, max(dot(cameraDir, vector), 0.0001));
+    return baseSpecularColor + (1.0 - baseSpecularColor) * pow(factor, 5.0);
+}
+
+vec3 specularFactor(vec3 baseSpecularColor, vec3 cameraDir, vec3 vector, float roughness) {
+    float factor = 1.0 - min(1.0, max(dot(cameraDir, vector), 0.0001));
+    return baseSpecularColor + (max(vec3(1.0 - roughness), baseSpecularColor) - baseSpecularColor) * pow(factor, 5.0);
+}
+
+float specularDivider(vec3 normal, vec3 cameraDir, vec3 lightDir) {
+    return 4.0 * min(1.0, max(max(dot(normal, cameraDir), 0.0) * max(dot(normal, lightDir), 0.0), 0.0001));
 }
 
 vec2 envTexCoord(vec3 direction) {
@@ -117,23 +129,31 @@ void main() {
     float roughness = texture2D(uRoughnessTex, texCoord).r * uRoughness;
     float metalness = texture2D(uMetalnessTex, texCoord).r * uMetalness;
 
+    vec3 baseSpecularColor = baseSpecularColor(diffColor, metalness);
+
     float normalDistribution = normalDistribution(normal, halfVector, roughness);
     float geometry = geometry(normal, cameraDir, lightDir, roughness);
-    vec3 specularFactor = specularFactor(diffColor, metalness, cameraDir, normal, roughness);
+
+    vec3 lightSpecularFactor = specularFactor(baseSpecularColor, cameraDir, halfVector);
+    vec3 lightDiffuseFactor = (vec3(1.0) - lightSpecularFactor) * (1.0 - metalness);
+
+    vec3 specularFromLight = normalDistribution * geometry * lightSpecularFactor / specularDivider(normal, cameraDir, lightDir);
+    vec3 colorFromLight = (lightDiffuseFactor * diffColor / pi + specularFromLight) * max(dot(normal, lightDir), 0.0);
+
+    vec3 specularFactor = specularFactor(baseSpecularColor, cameraDir, normal, roughness);
 
     vec2 reflectTexCoord = envTexCoord(normalWorld(reflect(-cameraDir, normal)));
     float sharpness = pow(roughness, 0.5);
     vec3 reflection = texture2D(uReflectionTex, reflectTexCoord).rgb * (1.0 - sharpness) +
             texture2D(uRadianceTex, reflectTexCoord).rgb * sharpness;
-    vec3 specular = specularFactor * reflection;
+
+    vec3 specularColor = specularFactor * reflection;
 
     vec3 diffuseFactor = (vec3(1.0) - specularFactor) * (1.0 - metalness);
 
-    vec3 ambColor = radiance * diffColor * diffuseFactor;
+    vec3 ambColor = diffuseFactor * radiance * diffColor;
 
-    float exposure = max(dot(normal, lightDir), 0.0);
-
-    vec3 color = diffuseFactor * diffColor / pi * exposure + ambColor + specular + emissionColor;
+    vec3 color = colorFromLight + ambColor + specularColor + emissionColor;
 
     gl_FragColor = vec4(color, 1.0);
 }

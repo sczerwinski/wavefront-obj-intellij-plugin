@@ -8,12 +8,15 @@
 
 ### Changed
 - Line markers made configurable
+- PBR shader calculations in world space
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Improve PBR shader calculations
+- Fix displacement step calculation
 
 ### Security
 

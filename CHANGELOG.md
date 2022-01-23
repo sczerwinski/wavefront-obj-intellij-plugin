@@ -9,6 +9,8 @@
 ### Changed
 - Line markers made configurable
 - PBR shader calculations in world space
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.3.1`
 
 ### Deprecated
 

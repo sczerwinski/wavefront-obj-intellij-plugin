@@ -19,6 +19,7 @@ package it.czerwinski.intellij.wavefront.editor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.startup.StartupManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.PreviewEditor
@@ -32,7 +33,7 @@ import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 import javax.swing.JComponent
 
 class ObjPreviewEditor(
-    project: Project,
+    private val project: Project,
     virtualFile: VirtualFile
 ) : PreviewEditor() {
 
@@ -139,6 +140,9 @@ class ObjPreviewEditor(
     }
 
     fun initPreview() {
+        StartupManager.getInstance(project).registerPostStartupActivity {
+            myComponent.initialize()
+        }
         myComponent.initialize()
     }
 

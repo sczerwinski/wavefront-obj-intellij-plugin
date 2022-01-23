@@ -254,7 +254,6 @@ abstract class PreviewScene(
         if (showAxes) renderAxes(gl)
         if (showGrid) renderGrid(gl)
         if (showAxes && config.showAxesLabels) renderAxesLabels(gl)
-        if (isStarted) pause()
     }
 
     private fun renderEnvironment(gl: GlimpseAdapter) {

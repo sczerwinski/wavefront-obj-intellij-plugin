@@ -25,6 +25,7 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -59,12 +60,14 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.event.MouseInputAdapter
 
 class ObjPreviewComponent(
-    project: Project,
-    file: VirtualFile,
+    private val project: Project,
+    private val file: VirtualFile,
     editor: ObjPreviewEditor
 ) : JBLoadingPanel(BorderLayout(), editor), Disposable {
 
     private val isInitialized = AtomicBoolean(false)
+
+    private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
 
     private val myErrorLogSplitter: ErrorLogSplitter = ErrorLogSplitter()
 
@@ -168,12 +171,6 @@ class ObjPreviewComponent(
             ),
             BorderLayout.CENTER
         )
-        val objFile = PsiManager.getInstance(project).findFile(file) as? ObjFile
-        updateObjFile(objFile)
-        objFile?.let {
-            PsiManager.getInstance(objFile.project)
-                .addPsiTreeChangeListener(MyPsiTreeChangeListener(objFile), this)
-        }
     }
 
     private fun updateObjFile(objFile: ObjFile?) {
@@ -196,49 +193,6 @@ class ObjPreviewComponent(
         updateScene()
     }
 
-    fun initialize() {
-        myRightActionToolbar.updateActionsImmediately()
-        if (isInitialized.compareAndSet(false, true)) {
-            BackgroundTaskUtil.executeOnPooledThread(this) {
-                try {
-                    val glimpsePanel = GlimpsePanel()
-                    val animator = FPSAnimator(glimpsePanel, DEFAULT_FPS_LIMIT)
-
-                    myScene = ObjPreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
-
-                    myScene.model = myModel
-                    updateScene()
-                    glimpsePanel.setCallback(myScene)
-
-                    glimpsePanel.addMouseWheelListener(ZoomingMouseWheelListener())
-                    val panningMouseInputListener = PanningMouseInputListener()
-                    glimpsePanel.addMouseListener(panningMouseInputListener)
-                    glimpsePanel.addMouseMotionListener(panningMouseInputListener)
-
-                    glimpsePanel.putClientProperty(
-                        Magnificator.CLIENT_PROPERTY_KEY,
-                        Magnificator { scale, at ->
-                            zoomBy(zoomFactor = 1f / scale.toFloat())
-                            return@Magnificator at
-                        }
-                    )
-
-                    val viewport = GlimpseViewport(glimpsePanel)
-
-                    myErrorLogSplitter.component = viewport
-                    myScene.start()
-                    stopLoading()
-                } catch (expected: Throwable) {
-                    myErrorLogSplitter.addError(
-                        WavefrontObjBundle.message("editor.fileTypes.obj.preview.error"),
-                        expected
-                    )
-                    deinitialize()
-                }
-            }
-        }
-    }
-
     private fun updateScene() {
         invokeLater(ModalityState.stateForComponent(this)) {
             if (::myScene.isInitialized) {
@@ -253,9 +207,80 @@ class ObjPreviewComponent(
         }
     }
 
+    fun initialize() {
+        myRightActionToolbar.updateActionsImmediately()
+
+        if (project.isInitialized && isInitialized.compareAndSet(false, true)) {
+            try {
+                initializeObjFile()
+
+                val glimpsePanel = createGlimpsePanel()
+
+                BackgroundTaskUtil.executeOnPooledThread(this) {
+                    try {
+                        val animator = FPSAnimator(glimpsePanel, DEFAULT_FPS_LIMIT)
+
+                        myScene = ObjPreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
+
+                        myScene.model = myModel
+                        updateScene()
+                        glimpsePanel.setCallback(myScene)
+
+                        myScene.start()
+                        stopLoading()
+                    } catch (expected: Throwable) {
+                        onInitializeError(expected)
+                    }
+                }
+            } catch (expected: Throwable) {
+                onInitializeError(expected)
+            }
+        }
+    }
+
+    private fun initializeObjFile() {
+        val psiManager = PsiManager.getInstance(project)
+        val objFile = requireNotNull(psiManager.findFile(file) as? ObjFile)
+
+        psiTreeChangeListener?.let { listener -> psiManager.removePsiTreeChangeListener(listener) }
+        psiTreeChangeListener = MyPsiTreeChangeListener(objFile)
+        psiTreeChangeListener?.let { listener -> psiManager.addPsiTreeChangeListener(listener, this) }
+
+        updateObjFile(objFile)
+    }
+
+    private fun createGlimpsePanel(): GlimpsePanel {
+        val glimpsePanel = GlimpsePanel()
+
+        glimpsePanel.addMouseWheelListener(ZoomingMouseWheelListener())
+        val panningMouseInputListener = PanningMouseInputListener()
+        glimpsePanel.addMouseListener(panningMouseInputListener)
+        glimpsePanel.addMouseMotionListener(panningMouseInputListener)
+
+        glimpsePanel.putClientProperty(
+            Magnificator.CLIENT_PROPERTY_KEY,
+            Magnificator { scale, at ->
+                zoomBy(zoomFactor = 1f / scale.toFloat())
+                return@Magnificator at
+            }
+        )
+
+        myErrorLogSplitter.component = GlimpseViewport(glimpsePanel)
+
+        return glimpsePanel
+    }
+
+    private fun onInitializeError(expected: Throwable) {
+        myErrorLogSplitter.addError(
+            WavefrontObjBundle.message("editor.fileTypes.obj.preview.error"),
+            expected
+        )
+        deinitialize()
+        stopLoading()
+    }
+
     private fun deinitialize() {
         if (::myScene.isInitialized) myScene.stop()
-        startLoading()
         isInitialized.set(false)
     }
 
@@ -304,6 +329,7 @@ class ObjPreviewComponent(
     }
 
     fun refresh() {
+        startLoading()
         deinitialize()
         myErrorLogSplitter.clearErrors()
         initialize()
@@ -317,10 +343,19 @@ class ObjPreviewComponent(
 
     private inner class MyPsiTreeChangeListener(private val file: ObjFile) : PsiTreeChangeAdapter() {
 
-        override fun childrenChanged(event: PsiTreeChangeEvent) {
-            if (event.file == file) {
+        val referencedFiles: List<PsiFile>
+            get() = file.referencedMtlFiles.flatMap { mtlFile ->
+                mtlFile.materials.flatMap { material -> material.texturePsiFiles } + mtlFile
+            }
+
+        private fun onPsiTreeChangeEvent(event: PsiTreeChangeEvent) {
+            if (event.file == file || event.file in referencedFiles) {
                 updateObjFile(file)
             }
+        }
+
+        override fun childrenChanged(event: PsiTreeChangeEvent) {
+            onPsiTreeChangeEvent(event)
         }
     }
 

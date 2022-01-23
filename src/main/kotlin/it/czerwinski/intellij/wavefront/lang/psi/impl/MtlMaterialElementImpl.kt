@@ -19,10 +19,12 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 import java.awt.Color
 
@@ -84,6 +86,12 @@ abstract class MtlMaterialElementImpl(
         get() = material?.bumpMapList?.firstOrNull()?.bumpMultiplierOptionList?.firstOrNull()?.value
     override val reflectionMap: VirtualFile?
         get() = material?.reflectionMapList?.firstOrNull()?.textureVirtualFile
+
+    override val texturePsiFiles: List<PsiFile>
+        get() = material
+            ?.getChildrenOfType<MtlTextureElement>()
+            ?.flatMap { textureElement -> textureElement.textureFiles }
+            .orEmpty()
 
     override fun getName(): String? =
         getChildrenOfType<MtlMaterialIdentifier>().singleOrNull()?.name

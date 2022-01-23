@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import java.awt.Color
 
 interface MtlMaterialElement : PsiElement {
@@ -53,6 +54,8 @@ interface MtlMaterialElement : PsiElement {
     val bumpMap: VirtualFile?
     val bumpMapMultiplier: Float?
     val reflectionMap: VirtualFile?
+
+    val texturePsiFiles: List<PsiFile>
 
     fun getName(): String?
 }

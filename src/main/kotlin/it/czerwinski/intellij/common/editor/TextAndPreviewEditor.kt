@@ -52,7 +52,7 @@ abstract class TextAndPreviewEditor<P : FileEditor>(
     }
 
     override fun deselectNotify() {
-        previewEditor.deselectNotify()
+        textEditor.deselectNotify()
         previewEditor.deselectNotify()
     }
 

@@ -135,6 +135,8 @@ abstract class BaseScene(
             doRender(gl)
         } catch (expected: Throwable) {
             onRenderError(gl, expected)
+        } finally {
+            if (isStarted) pause()
         }
     }
 

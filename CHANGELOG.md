@@ -17,6 +17,7 @@
 ### Fixed
 - Improve PBR shader calculations
 - Fix displacement step calculation
+- Refresh 3D preview when any of the MTL and texture files referenced by OBJ file changes
 
 ### Security
 

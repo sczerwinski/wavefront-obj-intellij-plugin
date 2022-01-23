@@ -25,6 +25,7 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -169,11 +170,11 @@ class ObjPreviewComponent(
             BorderLayout.CENTER
         )
         val objFile = PsiManager.getInstance(project).findFile(file) as? ObjFile
-        updateObjFile(objFile)
         objFile?.let {
             PsiManager.getInstance(objFile.project)
                 .addPsiTreeChangeListener(MyPsiTreeChangeListener(objFile), this)
         }
+        updateObjFile(objFile)
     }
 
     private fun updateObjFile(objFile: ObjFile?) {
@@ -317,10 +318,19 @@ class ObjPreviewComponent(
 
     private inner class MyPsiTreeChangeListener(private val file: ObjFile) : PsiTreeChangeAdapter() {
 
-        override fun childrenChanged(event: PsiTreeChangeEvent) {
-            if (event.file == file) {
+        val referencedFiles: List<PsiFile>
+            get() = file.referencedMtlFiles.flatMap { mtlFile ->
+                mtlFile.materials.flatMap { material -> material.texturePsiFiles } + mtlFile
+            }
+
+        private fun onPsiTreeChangeEvent(event: PsiTreeChangeEvent) {
+            if (event.file == file || event.file in referencedFiles) {
                 updateObjFile(file)
             }
+        }
+
+        override fun childrenChanged(event: PsiTreeChangeEvent) {
+            onPsiTreeChangeEvent(event)
         }
     }
 

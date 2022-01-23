@@ -140,10 +140,14 @@ class ObjPreviewEditor(
     }
 
     fun initPreview() {
-        StartupManager.getInstance(project).registerPostStartupActivity {
+        val startupManager = StartupManager.getInstance(project)
+        if (!startupManager.postStartupActivityPassed()) {
+            startupManager.registerPostStartupActivity {
+                myComponent.initialize()
+            }
+        } else {
             myComponent.initialize()
         }
-        myComponent.initialize()
     }
 
     override fun getComponent(): JComponent = myComponent

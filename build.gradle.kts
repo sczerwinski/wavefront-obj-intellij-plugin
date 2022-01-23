@@ -171,6 +171,12 @@ tasks {
         ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
     }
 
+    signPlugin {
+        certificateChain.set(System.getenv("SIGNING_CERTIFICATE_CHAIN"))
+        privateKey.set(System.getenv("SIGNING_PRIVATE_KEY"))
+        password.set(System.getenv("SIGNING_PASSWORD"))
+    }
+
     publishPlugin {
         dependsOn("patchChangelog")
         token.set(System.getenv("PUBLISH_TOKEN"))

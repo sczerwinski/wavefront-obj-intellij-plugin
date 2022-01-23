@@ -31,6 +31,9 @@ jobs:
       - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          SIGNING_CERTIFICATE_CHAIN: ${{ secrets.SIGNING_CERTIFICATE_CHAIN }}
+          SIGNING_PRIVATE_KEY: ${{ secrets.SIGNING_PRIVATE_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: ./gradlew publishPlugin
 
   # Patch changelog, commit and push to the current repository

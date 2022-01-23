@@ -12,10 +12,6 @@
 - Dependencies:
   - Upgrade `org.jetbrains.intellij` to `1.3.1`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Improve PBR shader calculations
 - Fix displacement step calculation
@@ -23,6 +19,7 @@
 - Fix 3D preview issues when loading a project with multiple OBJ files open
 
 ### Security
+- Sign plugin before publishing
 
 ## [1.1.0]
 ### Added

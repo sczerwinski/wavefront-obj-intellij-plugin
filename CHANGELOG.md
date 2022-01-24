@@ -6,6 +6,10 @@
 ### Added
 
 ### Changed
+- Dependencies:
+  - Upgrade `glimpse-core` to `1.1.0-ALPHA2`
+  - Upgrade `glimpse-ui` to `1.1.0-ALPHA2`
+  - Upgrade `glimpse-processor-ksp` version `1.1.0-ALPHA2`
 
 ### Deprecated
 

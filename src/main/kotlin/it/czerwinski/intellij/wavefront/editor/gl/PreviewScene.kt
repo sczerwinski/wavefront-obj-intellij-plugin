@@ -31,7 +31,6 @@ import graphics.glimpse.meshes.Mesh
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureMagFilter
 import graphics.glimpse.textures.TextureMinFilter
-import graphics.glimpse.textures.TextureType
 import graphics.glimpse.textures.TextureWrap
 import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat4
@@ -173,13 +172,9 @@ abstract class PreviewScene(
                         addTexture(textureImageSource)
                     }
                 }
+                .setTextureFilter(TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
+                .setTextureWrap(TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
                 .build()
-
-            for (texture in environmentTextures) {
-                texture.useAtIndex(gl, textureIndex = 0)
-                gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
-                gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
-            }
 
             radianceTextures = textureBuilder
                 .apply {
@@ -187,16 +182,9 @@ abstract class PreviewScene(
                         addTexture(textureImageSource)
                     }
                 }
+                .setTextureFilter(TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
+                .setTextureWrap(TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
                 .build()
-
-            for (texture in radianceTextures) {
-                texture.useAtIndex(gl, textureIndex = 0)
-                gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
-                gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
-            }
-
-            gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
-            gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
 
             val fontTextures = textureBuilder
                 .addTexture(TextureResources.fontTextureImageSource)
@@ -205,13 +193,6 @@ abstract class PreviewScene(
                 .build()
             fontTexture = fontTextures.first()
             boldFontTexture = fontTextures.last()
-
-            gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
-            gl.glTexParameterFilter(
-                TextureType.TEXTURE_2D,
-                TextureMinFilter.LINEAR_MIPMAP_LINEAR,
-                TextureMagFilter.LINEAR
-            )
         } catch (expected: Throwable) {
             errorLog.addError(
                 WavefrontObjBundle.message("editor.fileTypes.obj.preview.createFontTexture.error"),

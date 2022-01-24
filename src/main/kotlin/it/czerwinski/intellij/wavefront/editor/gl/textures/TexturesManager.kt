@@ -21,10 +21,6 @@ import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureImageSource
-import graphics.glimpse.textures.TextureMagFilter
-import graphics.glimpse.textures.TextureMinFilter
-import graphics.glimpse.textures.TextureType
-import graphics.glimpse.textures.TextureWrap
 
 /**
  * GL textures manager.
@@ -66,8 +62,6 @@ class TexturesManager {
             .generateMipmaps()
             .build()
             .first()
-        gl.glTexParameterWrap(TextureType.TEXTURE_2D, TextureWrap.REPEAT, TextureWrap.REPEAT)
-        gl.glTexParameterFilter(TextureType.TEXTURE_2D, TextureMinFilter.LINEAR_MIPMAP_LINEAR, TextureMagFilter.LINEAR)
         return texture
     }
 

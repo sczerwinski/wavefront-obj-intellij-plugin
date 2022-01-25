@@ -16,6 +16,7 @@
 ### Removed
 
 ### Fixed
+- Allow material color components outside of range
 
 ### Security
 

@@ -20,13 +20,13 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
+import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
-import java.awt.Color
 
 abstract class MtlMaterialElementImpl(
     node: ASTNode
@@ -34,11 +34,11 @@ abstract class MtlMaterialElementImpl(
 
     private val material: MtlMaterial? get() = this as? MtlMaterial
 
-    override val ambientColor: Color? get() = material?.ambientColorList?.firstOrNull()?.color
-    override val diffuseColor: Color? get() = material?.diffuseColorList?.firstOrNull()?.color
-    override val specularColor: Color? get() = material?.specularColorList?.firstOrNull()?.color
-    override val transmissionFilter: Color? get() = material?.transmissionFilterList?.firstOrNull()?.color
-    override val emissionColor: Color? get() = material?.emissionColorList?.firstOrNull()?.color
+    override val ambientColorVector: Vec3? get() = material?.ambientColorList?.firstOrNull()?.colorVector
+    override val diffuseColorVector: Vec3? get() = material?.diffuseColorList?.firstOrNull()?.colorVector
+    override val specularColorVector: Vec3? get() = material?.specularColorList?.firstOrNull()?.colorVector
+    override val transmissionFilterVector: Vec3? get() = material?.transmissionFilterList?.firstOrNull()?.colorVector
+    override val emissionColorVector: Vec3? get() = material?.emissionColorList?.firstOrNull()?.colorVector
 
     override val illumination: MtlIlluminationValueElement.Illumination?
         get() = material?.illuminationList?.firstOrNull()?.value

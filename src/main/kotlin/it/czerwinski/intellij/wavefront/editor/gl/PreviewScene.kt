@@ -271,7 +271,7 @@ abstract class PreviewScene(
         val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.modelMatrix * modelMatrix
         programExecutorsManager.renderWireframe(
             gl,
-            WireframeShader(mvpMatrix = mvpMatrix, color = PreviewColors.asVec4(colorKey)),
+            WireframeShader(mvpMatrix = mvpMatrix, color = Vec4(colorKey)),
             axisMesh,
             axisConeMesh
         )
@@ -284,7 +284,7 @@ abstract class PreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale),
-                color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, GRID_ALPHA)
+                color = Vec4(PreviewColors.COLOR_GRID, GRID_ALPHA)
             ),
             gridMesh
         )
@@ -296,7 +296,7 @@ abstract class PreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale),
-                color = PreviewColors.asVec4(PreviewColors.COLOR_GRID, FINE_GRID_ALPHA)
+                color = Vec4(PreviewColors.COLOR_GRID, FINE_GRID_ALPHA)
             ),
             fineGridMesh
         )
@@ -318,7 +318,7 @@ abstract class PreviewScene(
             TextShader(
                 position = labelPosition.toVec3() / labelPosition.w,
                 scale = Vec2(x = textSize / width, y = textSize / height),
-                color = PreviewColors.asVec4(colorKey),
+                color = Vec4(colorKey),
                 texture = boldFontTexture
             ),
             labelMesh

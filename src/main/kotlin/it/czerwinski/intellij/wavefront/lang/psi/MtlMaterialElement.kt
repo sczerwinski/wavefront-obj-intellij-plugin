@@ -19,15 +19,15 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import java.awt.Color
+import graphics.glimpse.types.Vec3
 
 interface MtlMaterialElement : PsiElement {
 
-    val ambientColor: Color?
-    val diffuseColor: Color?
-    val specularColor: Color?
-    val transmissionFilter: Color?
-    val emissionColor: Color?
+    val ambientColorVector: Vec3?
+    val diffuseColorVector: Vec3?
+    val specularColorVector: Vec3?
+    val transmissionFilterVector: Vec3?
+    val emissionColorVector: Vec3?
 
     val illumination: MtlIlluminationValueElement.Illumination?
     val dissolve: Float?

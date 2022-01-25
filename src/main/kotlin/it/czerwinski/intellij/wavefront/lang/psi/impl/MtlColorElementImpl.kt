@@ -16,9 +16,11 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi.impl
 
+import com.google.common.primitives.Floats.max
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.tree.TokenSet
+import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 import java.awt.Color
@@ -34,7 +36,20 @@ abstract class MtlColorElementImpl(
     override val color: Color?
         get() = channels
             .takeIf { it.size == COLOR_CHANNELS_COUNT }
-            ?.let { (r, g, b) -> Color(r, g, b) }
+            ?.let { (r, g, b) ->
+                try {
+                    val value = max(r, g, b)
+                    if (value > 1f) Color(r / value, g / value, b / value)
+                    else Color(r, g, b)
+                } catch (ignored: IllegalArgumentException) {
+                    null
+                }
+            }
+
+    override val colorVector: Vec3?
+        get() = channels
+            .takeIf { it.size == COLOR_CHANNELS_COUNT }
+            ?.let { (r, g, b) -> Vec3(r, g, b) }
 
     override val colorString: String?
         get() = channels.joinToString(prefix = "RGB(", separator = ", ", postfix = ")")

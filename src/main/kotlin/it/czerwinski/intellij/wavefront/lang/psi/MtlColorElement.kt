@@ -17,9 +17,11 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.psi.PsiElement
+import graphics.glimpse.types.Vec3
 import java.awt.Color
 
 interface MtlColorElement : PsiElement {
     val color: Color?
+    val colorVector: Vec3?
     val colorString: String?
 }

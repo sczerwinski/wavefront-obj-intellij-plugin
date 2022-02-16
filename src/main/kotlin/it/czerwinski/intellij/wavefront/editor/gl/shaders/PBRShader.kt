@@ -31,6 +31,7 @@ import graphics.glimpse.types.Vec3
         Attribute(name = "aTexCoord", role = AttributeRole.TEX_COORDS, vectorSize = 2),
         Attribute(name = "aNormal", role = AttributeRole.NORMALS, vectorSize = 3),
         Attribute(name = "aTangent", role = AttributeRole.TANGENTS, vectorSize = 3),
+        Attribute(name = "aBitangent", role = AttributeRole.BITANGENTS, vectorSize = 3),
     ]
 )
 data class PBRShader(

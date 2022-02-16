@@ -21,6 +21,7 @@ uniform int uCropTex;
 varying vec3 vPos;
 varying vec3 vNormal;
 varying vec3 vTangent;
+varying vec3 vBitangent;
 varying vec2 vTexCoord;
 
 const float pi = 3.14159265358979323846;
@@ -31,8 +32,7 @@ const float tau = 2.0 * pi;
 mat3 tbnMat() {
     vec3 normal = normalize(vNormal);
     vec3 tangent = normalize(vTangent);
-    tangent = normalize(tangent - dot(tangent, normal) * normal);
-    vec3 bitangent = cross(normal, tangent);
+    vec3 bitangent = normalize(vBitangent);
     return mat3(tangent, bitangent, normal);
 }
 
@@ -47,8 +47,7 @@ float displacement(vec2 texCoord) {
 vec2 displacedTexCoord(vec3 cameraDir) {
     vec3 normal = normalize(vNormal);
     vec3 tangent = normalize(vTangent);
-    tangent = normalize(tangent - dot(tangent, normal) * normal);
-    vec3 bitangent = cross(normal, tangent);
+    vec3 bitangent = normalize(vBitangent);
 
     float depthStep = pow(2.0, -uDispQuality) / max(dot(normal, cameraDir), 0.01);
     vec2 texCoordDisplacementStep = vec2(dot(tangent, cameraDir), dot(bitangent, cameraDir)) * uDispGain * depthStep;

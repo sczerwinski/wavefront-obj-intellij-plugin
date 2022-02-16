@@ -7,10 +7,12 @@ attribute vec3 aPos;
 attribute vec2 aTexCoord;
 attribute vec3 aNormal;
 attribute vec3 aTangent;
+attribute vec3 aBitangent;
 
 varying vec3 vPos;
 varying vec3 vNormal;
 varying vec3 vTangent;
+varying vec3 vBitangent;
 varying vec2 vTexCoord;
 
 void main() {
@@ -20,6 +22,7 @@ void main() {
 
     vNormal = uNormalMat * aNormal;
     vTangent = uNormalMat * aTangent;
+    vBitangent = uNormalMat * aBitangent;
 
     vTexCoord = aTexCoord;
 

@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.1.1]
+### Added
 - Support for platform version `221.*`
 - Color preview markers in MTL files
 - Add city square (night) environment for physically based shading method in 3D preview

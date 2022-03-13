@@ -6,6 +6,7 @@
 ### Added
 - Support for platform version `221.*`
 - Color preview markers in MTL files
+- Add city square (night) environment for physically based shading method in 3D preview
 
 ### Changed
 - Line markers made configurable

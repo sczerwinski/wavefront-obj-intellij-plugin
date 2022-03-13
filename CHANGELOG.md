@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Support for platform version `221.*`
 - Color preview markers in MTL files
 
 ### Changed
@@ -20,6 +21,7 @@
 - GitHub Actions:
   - Upgrade `actions/checkout` to `v3`
   - Upgrade `actions/upload-artifact` to `v3`
+- `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1, 2022.1`
 
 ### Deprecated
 

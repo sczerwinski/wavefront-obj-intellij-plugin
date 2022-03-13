@@ -4,22 +4,36 @@
 
 ## [Unreleased]
 ### Added
+- Color preview markers in MTL files
 
 ### Changed
+- Line markers made configurable
+- PBR shader calculations in world space
 - Use pre-calculated bitangents in PBR shader
+- Upgrade Gradle Wrapper to `7.4.1`
 - Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.4.0`
+  - Upgrade `com.google.devtools.ksp` to `1.6.10-1.0.4`
   - Upgrade `glimpse-core` to `1.1.0-ALPHA3`
   - Upgrade `glimpse-ui` to `1.1.0-ALPHA3`
-  - Upgrade `glimpse-processor-ksp` version `1.1.0-ALPHA3`
+  - Upgrade `glimpse-processor-ksp` to `1.1.0-ALPHA3`
+- GitHub Actions:
+  - Upgrade `actions/checkout` to `v3`
+  - Upgrade `actions/upload-artifact` to `v3`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Improve PBR shader calculations
+- Fix displacement step calculation
+- Refresh 3D preview when any of the MTL and texture files referenced by OBJ file changes
+- Fix 3D preview issues when loading a project with multiple OBJ files open
 - Allow material color components outside of range
 
 ### Security
+- Sign plugin before publishing
 
 ## [1.1.1-alpha.1]
 ### Added

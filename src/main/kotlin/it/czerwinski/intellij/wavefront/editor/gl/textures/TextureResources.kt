@@ -22,7 +22,7 @@ import graphics.glimpse.textures.fromResource
 
 object TextureResources {
 
-    private const val ENVIRONMENT_TEXTURES_COUNT = 5
+    private const val ENVIRONMENT_TEXTURES_COUNT = 6
     private const val ENVIRONMENT_TEXTURE_RESOURCE_FORMAT = "/textures/environment%d.jpg"
     private const val RADIANCE_TEXTURE_RESOURCE_FORMAT = "/textures/radiance%d.jpg"
 

@@ -24,10 +24,6 @@
   - Upgrade `actions/upload-artifact` to `v3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1, 2022.1`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Improve PBR shader calculations
 - Fix displacement step calculation
@@ -364,7 +360,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...main
+[1.1.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1
 [1.1.1-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1-alpha.1
 [1.1.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.1...v1.0.2

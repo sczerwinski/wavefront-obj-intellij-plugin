@@ -10,7 +10,7 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.jvm") version "1.6.20"
     // Kotlin Symbol Processing - read more: https://github.com/google/ksp
     id("com.google.devtools.ksp") version "1.6.10-1.0.4"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

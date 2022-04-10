@@ -13,10 +13,12 @@
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.2`
 - GitHub Actions:
   - Upgrade `actions/cache` to `v3.0.1`
+- `pluginVerifierIdeVersions` – upgrade to `2021.1.3, 2021.2.4, 2021.3.1, 2022.1`
 
 ### Deprecated
 
 ### Removed
+- Remove support for platform version `203.*`
 
 ### Fixed
 - Change language IDs to `OBJ` and `MTL`.

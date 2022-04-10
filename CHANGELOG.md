@@ -6,6 +6,13 @@
 ### Added
 
 ### Changed
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.20`
+  - Upgrade `com.google.devtools.ksp` to `1.6.20-1.0.5`
+  - Upgrade `org.jetbrains.intellij` to `1.5.2`
+  - Upgrade `org.jetbrains.grammarkit` to `2021.2.2`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.1`
 
 ### Deprecated
 

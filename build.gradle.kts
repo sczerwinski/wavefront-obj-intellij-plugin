@@ -10,13 +10,13 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.jvm") version "1.6.20"
     // Kotlin Symbol Processing - read more: https://github.com/google/ksp
-    id("com.google.devtools.ksp") version "1.6.10-1.0.4"
+    id("com.google.devtools.ksp") version "1.6.20-1.0.5"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.5.2"
     // gradle-grammarkit-plugin - read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
-    id("org.jetbrains.grammarkit") version "2021.2.1"
+    id("org.jetbrains.grammarkit") version "2021.2.2"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html

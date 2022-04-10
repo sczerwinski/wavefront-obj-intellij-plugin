@@ -18,4 +18,4 @@ package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.lang.Language
 
-object ObjLanguage : Language("Wavefront OBJ")
+object ObjLanguage : Language("OBJ")

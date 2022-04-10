@@ -18,4 +18,4 @@ package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.lang.Language
 
-object MtlLanguage : Language("Wavefront MTL")
+object MtlLanguage : Language("MTL")

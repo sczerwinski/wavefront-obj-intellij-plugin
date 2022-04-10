@@ -15,22 +15,22 @@
                 name="Wavefront OBJ File"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFileType"
                 fieldName="INSTANCE"
-                language="Wavefront OBJ"
+                language="OBJ"
                 extensions="obj"/>
         <lang.parserDefinition
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.parser.ObjParserDefinition"/>
         <lang.syntaxHighlighter
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter"/>
         <annotator
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjAnnotator"/>
         <codeInsight.lineMarkerProvider
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjMaterialFileLineMarkerProvider"/>
         <codeInsight.lineMarkerProvider
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjMaterialLineMarkerProvider"/>
         <lang.elementManipulator
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference"
@@ -39,25 +39,25 @@
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.ObjMaterialReferenceManipulator"/>
         <psi.referenceContributor
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementation="it.czerwinski.intellij.wavefront.lang.ObjReferenceContributor"/>
         <lang.refactoringSupport
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjRefactoringSupportProvider"/>
         <lang.foldingBuilder
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFoldingBuilder"/>
         <lang.psiStructureViewFactory
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.ObjStructureViewFactory"/>
         <lang.formatter
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.ObjFormattingModelBuilder"/>
         <lang.commenter
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
         <spellchecker.support
-                language="Wavefront OBJ"
+                language="OBJ"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
 
         <!-- Settings -->
@@ -79,48 +79,48 @@
                 name="Wavefront MTL File"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFileType"
                 fieldName="INSTANCE"
-                language="Wavefront MTL"
+                language="MTL"
                 extensions="mtl"/>
         <lang.parserDefinition
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.parser.MtlParserDefinition"/>
         <lang.syntaxHighlighter
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlSyntaxHighlighter"/>
         <annotator
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlAnnotator"/>
         <codeInsight.lineMarkerProvider
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlTextureLineMarkerProvider"/>
         <lang.elementManipulator
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.MtlTextureElementManipulator"/>
         <psi.referenceContributor
-                language="Wavefront MTL"
+                language="MTL"
                 implementation="it.czerwinski.intellij.wavefront.lang.MtlReferenceContributor"/>
         <lang.refactoringSupport
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlRefactoringSupportProvider"/>
         <lang.findUsagesProvider
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFindUsagesProvider"/>
         <lang.foldingBuilder
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFoldingBuilder"/>
         <gotoSymbolContributor
                 implementation="it.czerwinski.intellij.wavefront.lang.MtlChooseByNameContributor"/>
         <lang.psiStructureViewFactory
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.MtlStructureViewFactory"/>
         <lang.formatter
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.MtlFormattingModelBuilder"/>
         <lang.commenter
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
         <spellchecker.support
-                language="Wavefront MTL"
+                language="MTL"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
         <colorProvider
                 implementation="it.czerwinski.intellij.wavefront.lang.MtlElementColorProvider" />

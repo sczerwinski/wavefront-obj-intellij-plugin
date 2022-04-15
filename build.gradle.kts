@@ -38,7 +38,7 @@ dependencies {
     api("graphics.glimpse:glimpse-core:1.1.0-ALPHA3")
     api("graphics.glimpse:glimpse-ui:1.1.0-ALPHA3")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0-ALPHA3")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
 }
 
 // Generate parsers and lexers before Kotlin compilation.

@@ -30,6 +30,7 @@
 
 ### Fixed
 - Change language IDs to `OBJ` and `MTL`.
+- Remove unnecessary abstract class `ObjLineElementImpl`.
 
 ### Security
 

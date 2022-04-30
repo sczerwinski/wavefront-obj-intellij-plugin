@@ -29,12 +29,15 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
+import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBLoadingPanel
 import com.intellij.ui.components.Magnificator
+import com.intellij.util.ui.JBUI
 import com.jogamp.opengl.math.FloatUtil
 import com.jogamp.opengl.util.FPSAnimator
 import graphics.glimpse.types.Angle
 import graphics.glimpse.ui.GlimpsePanel
+import it.czerwinski.intellij.common.editor.EditorFooterComponent
 import it.czerwinski.intellij.common.ui.ActionToolbarBuilder
 import it.czerwinski.intellij.common.ui.EditorToolbarHeader
 import it.czerwinski.intellij.common.ui.EditorWithToolbar
@@ -84,6 +87,8 @@ class ObjPreviewComponent(
             .setPlace(ActionPlaces.EDITOR_TOOLBAR)
             .setTargetComponent(myErrorLogSplitter)
             .build()
+
+    private val myStatusBar: JBLabel = JBLabel()
 
     private lateinit var myScene: ObjPreviewScene
 
@@ -161,13 +166,17 @@ class ObjPreviewComponent(
     init {
         setLoadingText(WavefrontObjBundle.message("editor.fileTypes.obj.preview.placeholder"))
         startLoading()
+        myStatusBar.border = JBUI.Borders.empty(STATUS_BAR_VERTICAL_BORDER, STATUS_BAR_HORIZONTAL_BORDER)
         add(
             EditorWithToolbar(
                 toolbarComponent = EditorToolbarHeader(
                     leftActionToolbar = myLeftActionToolbar,
                     rightActionToolbar = myRightActionToolbar
                 ),
-                editorComponent = myErrorLogSplitter
+                editorComponent = myErrorLogSplitter,
+                statusBarComponent = EditorFooterComponent().apply {
+                    add(myStatusBar, BorderLayout.CENTER)
+                }
             ),
             BorderLayout.CENTER
         )
@@ -185,6 +194,16 @@ class ObjPreviewComponent(
                     )
                 )
             }
+            myStatusBar.text = if (objFile != null) {
+                WavefrontObjBundle.message(
+                    key = "editor.fileTypes.obj.preview.statusFormat",
+                    objFile.objectsCount,
+                    objFile.groupsCount,
+                    objFile.verticesCount,
+                    objFile.facesCount,
+                    objFile.trianglesCount
+                )
+            } else ""
         }
     }
 
@@ -420,6 +439,9 @@ class ObjPreviewComponent(
     companion object {
         private const val LEFT_TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.Toolbar"
         private const val RIGHT_TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.AdditionalToolbar"
+
+        private const val STATUS_BAR_VERTICAL_BORDER = 2
+        private const val STATUS_BAR_HORIZONTAL_BORDER = 4
 
         private const val DEFAULT_FPS_LIMIT = 10
 

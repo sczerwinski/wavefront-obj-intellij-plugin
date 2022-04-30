@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 ### Added
+- OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
+- Display Number of triangles for each object and group in structure view
 
 ### Changed
 - Dependencies:

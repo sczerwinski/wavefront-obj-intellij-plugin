@@ -19,5 +19,6 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.psi.PsiElement
 
 interface ObjGroupingElement : PsiElement {
+    val trianglesCount: Int
     fun getName(): String?
 }

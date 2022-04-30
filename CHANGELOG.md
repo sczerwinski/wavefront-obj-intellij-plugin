@@ -24,15 +24,9 @@
   - Upgrade `actions/setup-java` to `v3`
   - Upgrade `github/codeql-action/upload-sarif` to `v2`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Change language IDs to `OBJ` and `MTL`.
 - Remove unnecessary abstract class `ObjLineElementImpl`.
-
-### Security
 
 ## [1.1.1]
 ### Added
@@ -392,7 +386,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...main
+[1.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1
 [1.1.1-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1-alpha.1
 [1.1.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.2...v1.1.0

@@ -19,7 +19,10 @@
   - Upgrade `glimpse-ui` to `1.1.0`
   - Upgrade `glimpse-processor-ksp` to `1.1.0`
 - GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.1`
+  - Upgrade `actions/cache` to `v3.0.2`
+  - Upgrade `actions/download-artifact` to `v3`
+  - Upgrade `actions/setup-java` to `v3`
+  - Upgrade `github/codeql-action/upload-sarif` to `v2`
 
 ### Deprecated
 

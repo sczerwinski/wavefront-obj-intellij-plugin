@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.1.2]
+### Added
 - OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
 - Display Number of triangles for each object and group in structure view
 

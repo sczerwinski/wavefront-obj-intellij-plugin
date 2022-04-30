@@ -9,12 +9,20 @@
 
 ### Changed
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.20`
-  - Upgrade `com.google.devtools.ksp` to `1.6.20-1.0.5`
-  - Upgrade `org.jetbrains.intellij` to `1.5.2`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.21`
+  - Upgrade `com.google.devtools.ksp` to `1.6.21-1.0.5`
+  - Upgrade `org.jetbrains.intellij` to `1.5.3`
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.2`
+  - Upgrade `detekt-formatting` to `1.20.0`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.20.0`
+  - Upgrade `glimpse-core` to `1.1.0`
+  - Upgrade `glimpse-ui` to `1.1.0`
+  - Upgrade `glimpse-processor-ksp` to `1.1.0`
 - GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.1`
+  - Upgrade `actions/cache` to `v3.0.2`
+  - Upgrade `actions/download-artifact` to `v3`
+  - Upgrade `actions/setup-java` to `v3`
+  - Upgrade `github/codeql-action/upload-sarif` to `v2`
 
 ### Deprecated
 
@@ -22,6 +30,7 @@
 
 ### Fixed
 - Change language IDs to `OBJ` and `MTL`.
+- Remove unnecessary abstract class `ObjLineElementImpl`.
 
 ### Security
 

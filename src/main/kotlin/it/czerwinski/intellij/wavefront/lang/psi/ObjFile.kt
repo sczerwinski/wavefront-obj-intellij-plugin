@@ -31,15 +31,22 @@ class ObjFile(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, ObjLanguage) {
 
+    val objectsCount get() = countChildrenOfType<ObjObject>()
+    val groupsCount get() = countChildrenOfType<ObjGroup>()
+
     val verticesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
     val textureCoordinatesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
     val vertexNormalsCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
+    val facesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjFaceElement>() }
+    val trianglesCount get() = objectLikeElements.sumBy { element ->
+        element.getChildrenOfType<ObjFaceElement>().sumBy { face -> face.trianglesCount }
+    }
 
-    val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
+    private val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
 
-    val objectLikeElements: List<PsiElement> get() = listOf(this) + groupingElements
+    private val objectLikeElements: List<PsiElement> get() = listOf(this) + groupingElements
 
-    val materialFileReferences: List<ObjMaterialFileReference>
+    private val materialFileReferences: List<ObjMaterialFileReference>
         get() = objectLikeElements
             .flatMap { it.getChildrenOfType<ObjMaterialFileReferenceStatement>() }
             .flatMap { it.getChildrenOfType() }

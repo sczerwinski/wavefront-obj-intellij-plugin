@@ -21,4 +21,5 @@ import com.intellij.psi.PsiElement
 interface ObjFaceElement : PsiElement {
     val faceVertexList: List<ObjFaceVertex>
     val type: ObjFaceType?
+    val trianglesCount: Int
 }

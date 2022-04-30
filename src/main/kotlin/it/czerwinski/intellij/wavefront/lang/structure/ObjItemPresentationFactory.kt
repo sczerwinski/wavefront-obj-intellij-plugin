@@ -109,12 +109,20 @@ object ObjItemPresentationFactory {
         presentableText = obj.getName() ?: WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.object"
         ),
+        locationString = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.object.triangles",
+            obj.trianglesCount
+        ),
         icon = OBJ_OBJECT_ICON
     )
 
     private fun createPresentation(group: ObjGroup): ItemPresentation = createPresentation(
         presentableText = group.getName() ?: WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.group"
+        ),
+        locationString = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.group.triangles",
+            group.trianglesCount
         ),
         icon = OBJ_GROUP_ICON
     )

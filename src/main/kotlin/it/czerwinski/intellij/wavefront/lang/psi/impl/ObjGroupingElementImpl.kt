@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
@@ -25,6 +26,9 @@ import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 abstract class ObjGroupingElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), ObjGroupingElement {
+
+    override val trianglesCount: Int
+        get() = getChildrenOfType<ObjFaceElement>().sumBy { it.trianglesCount }
 
     override fun getName(): String? =
         getChildrenOfType<ObjObjectOrGroupIdentifier>().singleOrNull()?.name

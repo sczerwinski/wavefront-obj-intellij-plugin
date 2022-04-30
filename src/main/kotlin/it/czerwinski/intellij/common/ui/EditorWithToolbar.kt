@@ -25,11 +25,15 @@ import javax.swing.JPanel
  */
 class EditorWithToolbar(
     toolbarComponent: JComponent,
-    editorComponent: JComponent
+    editorComponent: JComponent,
+    statusBarComponent: JComponent? = null
 ) : JPanel(BorderLayout()) {
 
     init {
         add(toolbarComponent, BorderLayout.BEFORE_FIRST_LINE)
         add(editorComponent, BorderLayout.CENTER)
+        if (statusBarComponent != null) {
+            add(statusBarComponent, BorderLayout.AFTER_LAST_LINE)
+        }
     }
 }

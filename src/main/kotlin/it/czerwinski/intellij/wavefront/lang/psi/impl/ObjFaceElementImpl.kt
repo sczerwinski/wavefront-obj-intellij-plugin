@@ -27,4 +27,7 @@ abstract class ObjFaceElementImpl(
 
     override val type: ObjFaceType?
         get() = ObjFaceType.fromVerticesCount(faceVertexList.size)
+
+    override val trianglesCount: Int
+        get() = faceVertexList.size - 2
 }

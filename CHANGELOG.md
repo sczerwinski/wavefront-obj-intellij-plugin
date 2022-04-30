@@ -9,8 +9,8 @@
 
 ### Changed
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.20`
-  - Upgrade `com.google.devtools.ksp` to `1.6.20-1.0.5`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.21`
+  - Upgrade `com.google.devtools.ksp` to `1.6.21-1.0.5`
   - Upgrade `org.jetbrains.intellij` to `1.5.3`
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.2`
   - Upgrade `detekt-formatting` to `1.20.0`

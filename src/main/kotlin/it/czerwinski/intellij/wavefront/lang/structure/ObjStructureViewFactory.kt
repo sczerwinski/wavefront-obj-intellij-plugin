@@ -25,7 +25,7 @@ import com.intellij.psi.PsiFile
 
 class ObjStructureViewFactory : PsiStructureViewFactory {
 
-    override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder? =
+    override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder =
         object : TreeBasedStructureViewBuilder() {
             override fun createStructureViewModel(editor: Editor?): StructureViewModel =
                 ObjStructureViewModel(psiFile)

@@ -28,7 +28,7 @@ import javax.swing.Icon
 
 class MtlColorSettingsPage : ColorSettingsPage {
 
-    override fun getIcon(): Icon? =
+    override fun getIcon(): Icon =
         MTL_FILE_ICON
 
     override fun getHighlighter(): SyntaxHighlighter =

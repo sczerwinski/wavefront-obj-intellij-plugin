@@ -27,5 +27,5 @@ object ObjFileType : LanguageFileType(ObjLanguage) {
 
     override fun getDefaultExtension(): String = "obj"
 
-    override fun getIcon(): Icon? = OBJ_FILE_ICON
+    override fun getIcon(): Icon = OBJ_FILE_ICON
 }

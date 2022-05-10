@@ -20,7 +20,7 @@ import com.intellij.lang.Commenter
 
 class WavefrontCommenter : Commenter {
 
-    override fun getLineCommentPrefix(): String? = LINE_COMMENT_PREFIX
+    override fun getLineCommentPrefix(): String = LINE_COMMENT_PREFIX
 
     override fun getBlockCommentSuffix(): String? = null
 

@@ -29,7 +29,7 @@ import javax.swing.Icon
 
 class ObjColorSettingsPage : ColorSettingsPage {
 
-    override fun getIcon(): Icon? =
+    override fun getIcon(): Icon =
         OBJ_FILE_ICON
 
     override fun getHighlighter(): SyntaxHighlighter =

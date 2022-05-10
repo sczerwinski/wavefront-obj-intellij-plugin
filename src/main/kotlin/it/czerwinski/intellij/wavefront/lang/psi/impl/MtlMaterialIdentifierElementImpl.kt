@@ -51,8 +51,8 @@ abstract class MtlMaterialIdentifierElementImpl(
     override fun getPresentation(): ItemPresentation =
         object : ItemPresentation {
             override fun getPresentableText(): String? = name
-            override fun getLocationString(): String? = containingFile.name
-            override fun getIcon(unused: Boolean): Icon? = MTL_MATERIAL_ICON
+            override fun getLocationString(): String = containingFile.name
+            override fun getIcon(unused: Boolean): Icon = MTL_MATERIAL_ICON
         }
 
     override fun getIcon(flags: Int): Icon? = MTL_MATERIAL_ICON

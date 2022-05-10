@@ -27,5 +27,5 @@ object MtlFileType : LanguageFileType(MtlLanguage) {
 
     override fun getDefaultExtension(): String = "mtl"
 
-    override fun getIcon(): Icon? = MTL_FILE_ICON
+    override fun getIcon(): Icon = MTL_FILE_ICON
 }

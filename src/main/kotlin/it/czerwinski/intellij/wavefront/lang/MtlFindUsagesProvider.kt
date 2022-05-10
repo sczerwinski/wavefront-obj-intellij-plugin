@@ -27,7 +27,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 
 class MtlFindUsagesProvider : FindUsagesProvider {
 
-    override fun getWordsScanner(): WordsScanner? =
+    override fun getWordsScanner(): WordsScanner =
         DefaultWordsScanner(
             MtlLexerAdapter(),
             TokenSet.create(MtlTypes.MATERIAL_NAME),

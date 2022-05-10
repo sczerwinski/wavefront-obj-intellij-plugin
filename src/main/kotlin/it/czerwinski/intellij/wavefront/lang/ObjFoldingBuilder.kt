@@ -39,7 +39,7 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private fun buildObjGroupingElements(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java).toList()
 
-    override fun getPlaceholderText(node: ASTNode): String? =
+    override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
 
             is ObjObject -> OBJECT_PLACEHOLDER_TEXT_FORMAT.format(element.getName())

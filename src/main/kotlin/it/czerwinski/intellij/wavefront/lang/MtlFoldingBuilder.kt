@@ -37,7 +37,7 @@ class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private fun buildMtlMaterialElements(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, MtlMaterialElement::class.java).toList()
 
-    override fun getPlaceholderText(node: ASTNode): String? =
+    override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
 
             is MtlMaterial -> MATERIAL_PLACEHOLDER_TEXT_FORMAT.format(element.getName())

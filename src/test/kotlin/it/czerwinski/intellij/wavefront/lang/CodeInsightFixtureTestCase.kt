@@ -17,10 +17,8 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiManager
 import com.intellij.testFramework.LightProjectDescriptor
 import com.intellij.testFramework.PlatformTestUtil
 import com.intellij.testFramework.UsefulTestCase
@@ -60,11 +58,6 @@ abstract class CodeInsightFixtureTestCase : UsefulTestCase() {
     protected open val file: PsiFile get() = myFixture.file
 
     protected open val editor: Editor get() = myFixture.editor
-
-    protected open val module: Module get() = myFixture.module
-
-    protected open val psiManager: PsiManager
-        get() = project.let { PsiManager.getInstance(it) }
 
     override fun setUp() {
         super.setUp()

@@ -36,10 +36,6 @@ data class WavefrontObjSettingsState(
     @field:Attribute var isVerticalSplit: Boolean = DEFAULT_VERTICAL_SPLIT
 ) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewSettingsState.Holder {
 
-    var isHorizontalSplit: Boolean
-        get() = !isVerticalSplit
-        set(value) { isVerticalSplit = !value }
-
     override fun getState(): WavefrontObjSettingsState = this
 
     override fun loadState(state: WavefrontObjSettingsState) {

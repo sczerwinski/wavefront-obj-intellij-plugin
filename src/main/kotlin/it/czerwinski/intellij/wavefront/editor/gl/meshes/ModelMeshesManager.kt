@@ -86,7 +86,7 @@ class ModelMeshesManager {
                             }
                     }.toFloatBufferData()
                     LinesMesh(
-                        vertexCount = part.lines.sumBy { line -> (line.lineVertexList.size - 1) * 2 },
+                        vertexCount = part.lines.sumOf { line -> (line.lineVertexList.size - 1) * 2 },
                         buffers = bufferFactory.createArrayBuffers(linesPositionsData, linesTextureCoordinatesData)
                     )
                 }

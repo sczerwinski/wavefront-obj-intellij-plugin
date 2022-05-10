@@ -34,12 +34,12 @@ class ObjFile(
     val objectsCount get() = countChildrenOfType<ObjObject>()
     val groupsCount get() = countChildrenOfType<ObjGroup>()
 
-    val verticesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertex>() }
-    val textureCoordinatesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjTextureCoordinates>() }
-    val vertexNormalsCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjVertexNormal>() }
-    val facesCount get() = objectLikeElements.sumBy { it.countChildrenOfType<ObjFaceElement>() }
-    val trianglesCount get() = objectLikeElements.sumBy { element ->
-        element.getChildrenOfType<ObjFaceElement>().sumBy { face -> face.trianglesCount }
+    val verticesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjVertex>() }
+    val textureCoordinatesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjTextureCoordinates>() }
+    val vertexNormalsCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjVertexNormal>() }
+    val facesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjFaceElement>() }
+    val trianglesCount get() = objectLikeElements.sumOf { element ->
+        element.getChildrenOfType<ObjFaceElement>().sumOf { face -> face.trianglesCount }
     }
 
     private val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
@@ -56,13 +56,13 @@ class ObjFile(
     override fun getFileType(): FileType = ObjFileType
 
     fun countVerticesBefore(element: PsiElement): Int =
-        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertex>(element) }
+        objectLikeElements.sumOf { it.countChildrenOfTypeBefore<ObjVertex>(element) }
 
     fun countTextureCoordinatesBefore(element: PsiElement): Int =
-        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjTextureCoordinates>(element) }
+        objectLikeElements.sumOf { it.countChildrenOfTypeBefore<ObjTextureCoordinates>(element) }
 
     fun countVertexNormalsBefore(element: PsiElement): Int =
-        objectLikeElements.sumBy { it.countChildrenOfTypeBefore<ObjVertexNormal>(element) }
+        objectLikeElements.sumOf { it.countChildrenOfTypeBefore<ObjVertexNormal>(element) }
 
     fun findMtlFile(filePath: String): MtlFile? = findRelativeFile(this, filePath) as? MtlFile
 

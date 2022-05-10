@@ -28,7 +28,7 @@ abstract class ObjGroupingElementImpl(
 ) : ASTWrapperPsiElement(node), ObjGroupingElement {
 
     override val trianglesCount: Int
-        get() = getChildrenOfType<ObjFaceElement>().sumBy { it.trianglesCount }
+        get() = getChildrenOfType<ObjFaceElement>().sumOf { it.trianglesCount }
 
     override fun getName(): String? =
         getChildrenOfType<ObjObjectOrGroupIdentifier>().singleOrNull()?.name

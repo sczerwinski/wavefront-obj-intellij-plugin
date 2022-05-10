@@ -49,7 +49,7 @@ class PBREnvironmentAction(
 
         @ActionText
         fun text(environment: PBREnvironment): String = WavefrontObjBundle.message(
-            key = "action.${PBREnvironmentAction::class.java.name}.text.${environment.name.toLowerCase(Locale.ENGLISH)}"
+            key = "action.${PBREnvironmentAction::class.java.name}.text.${environment.name.lowercase(Locale.ENGLISH)}"
         )
     }
 }

@@ -54,7 +54,7 @@ object TextMeshFactory {
         }
         meshDataBuilder.addNormal(Vec3.nullVector)
         for ((index, char) in text.withIndex()) {
-            val charPosition = char.toInt()
+            val charPosition = char.code
             val charRow = charPosition / (FONT_COLS)
             require(value = charPosition in 0..CHAR_MAX) { "Not an ASCII character: $char" }
             val firstVertexIndex = index * VERTICES_PER_BORDER

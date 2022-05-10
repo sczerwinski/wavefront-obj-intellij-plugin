@@ -6,6 +6,7 @@
 ### Added
 
 ### Changed
+- Improved action and gutter icons to work with high contrast theme
 
 ### Deprecated
 

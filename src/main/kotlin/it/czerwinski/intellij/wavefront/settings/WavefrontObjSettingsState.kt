@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Slawomir Czerwinski
+ * Copyright 2020-2022 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,10 +35,6 @@ data class WavefrontObjSettingsState(
     @field:Attribute var defaultEditorLayout: SplitEditor.Layout = SplitEditor.Layout.DEFAULT,
     @field:Attribute var isVerticalSplit: Boolean = DEFAULT_VERTICAL_SPLIT
 ) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewSettingsState.Holder {
-
-    var isHorizontalSplit: Boolean
-        get() = !isVerticalSplit
-        set(value) { isVerticalSplit = !value }
 
     override fun getState(): WavefrontObjSettingsState = this
 

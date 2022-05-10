@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Slawomir Czerwinski
+ * Copyright 2020-2022 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 
 class MtlFindUsagesProvider : FindUsagesProvider {
 
-    override fun getWordsScanner(): WordsScanner? =
+    override fun getWordsScanner(): WordsScanner =
         DefaultWordsScanner(
             MtlLexerAdapter(),
             TokenSet.create(MtlTypes.MATERIAL_NAME),

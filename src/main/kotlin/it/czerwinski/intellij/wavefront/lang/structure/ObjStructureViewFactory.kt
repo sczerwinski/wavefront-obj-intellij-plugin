@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Slawomir Czerwinski
+ * Copyright 2020-2022 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.intellij.psi.PsiFile
 
 class ObjStructureViewFactory : PsiStructureViewFactory {
 
-    override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder? =
+    override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder =
         object : TreeBasedStructureViewBuilder() {
             override fun createStructureViewModel(editor: Editor?): StructureViewModel =
                 ObjStructureViewModel(psiFile)

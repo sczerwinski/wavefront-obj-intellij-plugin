@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Slawomir Czerwinski
+ * Copyright 2020-2022 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private fun buildObjGroupingElements(root: PsiElement): List<PsiElement> =
         PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java).toList()
 
-    override fun getPlaceholderText(node: ASTNode): String? =
+    override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
 
             is ObjObject -> OBJECT_PLACEHOLDER_TEXT_FORMAT.format(element.getName())

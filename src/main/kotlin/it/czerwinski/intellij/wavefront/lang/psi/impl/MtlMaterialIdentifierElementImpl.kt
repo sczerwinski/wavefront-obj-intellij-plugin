@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Slawomir Czerwinski
+ * Copyright 2020-2022 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,8 +51,8 @@ abstract class MtlMaterialIdentifierElementImpl(
     override fun getPresentation(): ItemPresentation =
         object : ItemPresentation {
             override fun getPresentableText(): String? = name
-            override fun getLocationString(): String? = containingFile.name
-            override fun getIcon(unused: Boolean): Icon? = MTL_MATERIAL_ICON
+            override fun getLocationString(): String = containingFile.name
+            override fun getIcon(unused: Boolean): Icon = MTL_MATERIAL_ICON
         }
 
     override fun getIcon(flags: Int): Icon? = MTL_MATERIAL_ICON

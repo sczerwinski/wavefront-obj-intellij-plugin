@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Slawomir Czerwinski
+ * Copyright 2020-2022 Slawomir Czerwinski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import javax.swing.Icon
 
 class ObjColorSettingsPage : ColorSettingsPage {
 
-    override fun getIcon(): Icon? =
+    override fun getIcon(): Icon =
         OBJ_FILE_ICON
 
     override fun getHighlighter(): SyntaxHighlighter =

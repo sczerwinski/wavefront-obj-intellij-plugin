@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 ### Added
+- New OBJ file action
+- New MTL file action
 
 ### Changed
 - Improved action and gutter icons to work with high contrast theme

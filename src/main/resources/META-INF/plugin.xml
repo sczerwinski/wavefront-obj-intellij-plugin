@@ -60,6 +60,12 @@
                 language="OBJ"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
 
+        <!-- File templates -->
+        <createFromTemplateHandler
+                implementation="it.czerwinski.intellij.wavefront.templates.ObjCreateFromTemplateHandler"/>
+        <internalFileTemplate
+                name="Wavefront OBJ File"/>
+
         <!-- Settings -->
         <colorSettingsPage
                 implementation="it.czerwinski.intellij.wavefront.settings.ObjColorSettingsPage"/>
@@ -125,6 +131,12 @@
         <colorProvider
                 implementation="it.czerwinski.intellij.wavefront.lang.MtlElementColorProvider" />
 
+        <!-- File templates -->
+        <createFromTemplateHandler
+                implementation="it.czerwinski.intellij.wavefront.templates.MtlCreateFromTemplateHandler"/>
+        <internalFileTemplate
+                name="Wavefront MTL File"/>
+
         <!-- Settings -->
         <colorSettingsPage
                 implementation="it.czerwinski.intellij.wavefront.settings.MtlColorSettingsPage"/>
@@ -138,6 +150,7 @@
     </extensions>
 
     <actions>
+        <!-- Split editor -->
         <group
                 id="SplitEditor.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
@@ -157,6 +170,7 @@
                     icon="AllIcons.General.LayoutPreviewOnly">
             </action>
         </group>
+        <!-- OBJ preview -->
         <group
                 id="ObjPreviewFileEditor.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
@@ -233,6 +247,17 @@
                     class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
                     icon="AllIcons.General.Settings"/>
         </group>
+        <!-- New file -->
+        <action
+                id="it.czerwinski.intellij.wavefront.actions.CreateObjFileAction"
+                class="it.czerwinski.intellij.wavefront.actions.CreateObjFileAction">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
+        </action>
+        <action
+                id="it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction"
+                class="it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
+        </action>
     </actions>
 
 </idea-plugin>

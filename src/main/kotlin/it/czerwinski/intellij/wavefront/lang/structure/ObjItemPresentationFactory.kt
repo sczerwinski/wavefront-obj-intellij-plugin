@@ -35,8 +35,7 @@ import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_FILE_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_OBJECT_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_POINT_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTHING_OFF_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTHING_ON_ICON
+import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTHING_GROUP_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_TEXTURE_COORDINATES_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_VERTEX_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_VERTEX_NORMAL_ICON
@@ -242,7 +241,7 @@ object ObjItemPresentationFactory {
             } else {
                 value.toString()
             },
-            icon = if (value == 0) OBJ_SMOOTHING_OFF_ICON else OBJ_SMOOTHING_ON_ICON
+            icon = OBJ_SMOOTHING_GROUP_ICON
         )
     }
 

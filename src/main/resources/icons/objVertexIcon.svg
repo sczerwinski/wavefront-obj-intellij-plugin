@@ -1,4 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 16 16">
-    <path style="fill:none;stroke:#300040;stroke-width:2px;stroke-linecap:square" d="m 5,5 6,6 m -6,0 6,-6"/>
-    <path style="fill:none;stroke:#c040ff;stroke-width:1px;stroke-linecap:square" d="m 5,5 6,6 m -6,0 6,-6"/>
+    <path stroke="#6e6e6e" stroke-width="1.5" stroke-linecap="square" fill="none" d="m 5,5 6,6 m -6,0 6,-6"/>
 </svg>

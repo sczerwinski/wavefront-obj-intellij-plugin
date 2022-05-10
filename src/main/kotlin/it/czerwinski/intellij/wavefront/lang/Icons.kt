@@ -49,11 +49,10 @@ val OBJ_FACE_POLYGON_ICON: Icon = getIcon("/icons/objFacePolygonIcon.svg")
 val OBJ_LINE_ICON: Icon = getIcon("/icons/objLineIcon.svg")
 val OBJ_POINT_ICON: Icon = getIcon("/icons/objPointIcon.svg")
 
-val OBJ_FACE_VERTEX_ICON: Icon = getIcon("/icons/objFaceVertexIcon.svg")
-val OBJ_LINE_VERTEX_ICON: Icon = OBJ_FACE_VERTEX_ICON
+val OBJ_FACE_VERTEX_ICON: Icon = OBJ_VERTEX_ICON
+val OBJ_LINE_VERTEX_ICON: Icon = OBJ_VERTEX_ICON
 
-val OBJ_SMOOTHING_ON_ICON: Icon = getIcon("/icons/objSmoothingOnIcon.svg")
-val OBJ_SMOOTHING_OFF_ICON: Icon = getIcon("/icons/objSmoothingOffIcon.svg")
+val OBJ_SMOOTHING_GROUP_ICON: Icon = getIcon("/icons/objSmoothingIcon.svg")
 
 val OBJ_MATERIAL_FILE_ICON: Icon = MTL_FILE_ICON
 val OBJ_MATERIAL_ICON: Icon = MTL_MATERIAL_ICON

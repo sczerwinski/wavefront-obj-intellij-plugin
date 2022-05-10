@@ -69,8 +69,8 @@ abstract class SplitEditor<P : FileEditor>(
 
     override fun setState(state: FileEditorState) {
         if (state is SplitEditorState) {
-            state.textEditorState?.let(textEditor::setState)
-            state.previewEditorState?.let(previewEditor::setState)
+            textEditor.setState(state.textEditorState)
+            previewEditor.setState(state.previewEditorState)
             state.layout?.let { layout = it }
         }
     }
@@ -122,8 +122,8 @@ abstract class SplitEditor<P : FileEditor>(
     }
 
     private class SplitEditorState(
-        val textEditorState: FileEditorState?,
-        val previewEditorState: FileEditorState?,
+        val textEditorState: FileEditorState,
+        val previewEditorState: FileEditorState,
         layout: Layout?
     ) : FileEditorState {
 
@@ -132,11 +132,11 @@ abstract class SplitEditor<P : FileEditor>(
         val layout: Layout? get() = layoutName?.let { Layout.valueOf(it) }
 
         override fun canBeMergedWith(
-            otherState: FileEditorState?,
-            level: FileEditorStateLevel?
+            otherState: FileEditorState,
+            level: FileEditorStateLevel
         ): Boolean = otherState is SplitEditorState &&
-            (textEditorState?.canBeMergedWith(otherState.textEditorState, level) != false) &&
-            (previewEditorState?.canBeMergedWith(otherState.previewEditorState, level) != false)
+            textEditorState.canBeMergedWith(otherState.textEditorState, level) &&
+            previewEditorState.canBeMergedWith(otherState.previewEditorState, level)
     }
 
     companion object {

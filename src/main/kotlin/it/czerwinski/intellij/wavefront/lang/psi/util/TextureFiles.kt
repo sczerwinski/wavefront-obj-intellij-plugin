@@ -45,6 +45,6 @@ fun Project.findAllTextureFiles(): List<PsiFile> =
     }
 
 fun Project.findMatchingTextureFiles(filename: String): List<PsiFile> = runReadAction {
-    FilenameIndex.getFilesByName(this, filename, GlobalSearchScope.allScope(this))
-        .toList()
+    FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(this))
+        .mapNotNull { virtualFile -> PsiManager.getInstance(this).findFile(virtualFile) }
 }

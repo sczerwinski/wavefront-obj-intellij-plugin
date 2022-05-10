@@ -24,7 +24,7 @@ import java.util.Locale
 object ShaderResources {
 
     private val <E : Enum<E>> Enum<E>.lowerCaseName
-        get() = name.toLowerCase(Locale.ENGLISH)
+        get() = name.lowercase(Locale.ENGLISH)
 
     fun getShaderSource(shadingMethod: ShadingMethod, shaderType: ShaderType, shaderQuality: ShaderQuality): String =
         loadShaderSource(

@@ -18,7 +18,6 @@ package it.czerwinski.intellij.common.ui
 
 import com.intellij.ui.components.Magnificator
 import com.intellij.ui.components.ZoomableViewport
-import com.intellij.util.ui.UIUtil
 import graphics.glimpse.ui.GlimpsePanel
 import java.awt.BorderLayout
 import java.awt.Point
@@ -34,7 +33,7 @@ class GlimpseViewport(private val glimpsePanel: GlimpsePanel) : JPanel(BorderLay
     }
 
     override fun getMagnificator(): Magnificator? =
-        UIUtil.getClientProperty(glimpsePanel, Magnificator.CLIENT_PROPERTY_KEY)
+        glimpsePanel.getClientProperty(Magnificator.CLIENT_PROPERTY_KEY) as? Magnificator
 
     override fun magnificationStarted(at: Point?) {
         this.at = at

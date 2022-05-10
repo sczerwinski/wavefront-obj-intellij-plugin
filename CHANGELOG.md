@@ -7,12 +7,23 @@
 
 ### Changed
 - Improved action and gutter icons to work with high contrast theme
+- Use non-null values in editor state
+- Update platform version to `2021.2.4`
+- `pluginVerifierIdeVersions` – upgrade to `2021.2.4, 2021.3.1, 2022.1`
 
 ### Deprecated
 
 ### Removed
+- Remove support for platform version `203.*`
+- Remove support for platform version `211.*`
 
 ### Fixed
+- Replace usage of deprecated `UIUtil.getClientProperty` with direct call to `JComponent.getClientProperty`
+- Replace usage of deprecated `FilenameIndex.getFilesByName` with `FilenameIndex.getVirtualFilesByName`
+  and additional mapping using `PsiManager.findFile`
+- Replace usages of deprecated `Iterable.sumBy` with `Iterable.sumOf`
+- Replace usages of deprecated `String.toLowerCase` with `String.lowercase`
+- Replace usage of deprecated `Char.toInt` with `Char.code`
 
 ### Security
 

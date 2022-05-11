@@ -18,19 +18,20 @@ package it.czerwinski.intellij.wavefront.settings.ui
 
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.EnumComboBoxModel
-import com.intellij.ui.layout.Cell
-import com.intellij.ui.layout.CellBuilder
+import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.Row
+import com.intellij.ui.dsl.builder.bindItem
 import javax.swing.ListCellRenderer
 
 /**
  * Builds a combo box cell for enum values.
  */
-inline fun <reified E : Enum<E>> Cell.enumComboBox(
+inline fun <reified E : Enum<E>> Row.enumComboBox(
     defaultValue: E,
     renderer: ListCellRenderer<E?>?
-): CellBuilder<ComboBox<E>> = comboBox(
-    EnumComboBoxModel(E::class.java),
-    getter = { defaultValue },
-    setter = { },
-    renderer
-)
+): Cell<ComboBox<E>> =
+    comboBox(EnumComboBoxModel(E::class.java), renderer)
+        .bindItem(
+            getter = { defaultValue },
+            setter = { },
+        )

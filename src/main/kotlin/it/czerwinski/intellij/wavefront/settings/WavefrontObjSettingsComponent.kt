@@ -16,7 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -26,15 +26,15 @@ import javax.swing.JPanel
  */
 class WavefrontObjSettingsComponent : SettingsComponent, WavefrontObjSettingsState.Holder {
 
-    private val objSplitEditorSettingsRow = ObjSplitEditorSettingsRow()
-    private val objPreviewSettingsRow = ObjPreviewSettingsRow()
+    private val objSplitEditorSettingsRow = ObjSplitEditorSettingsGroup()
+    private val objPreviewSettingsRow = ObjPreviewSettingsGroup()
 
     private val mainPanel: JPanel = panel {
-        titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
-            objSplitEditorSettingsRow.createRow(this)
+        group(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
+            objSplitEditorSettingsRow.createGroupContents(this)
         }
-        titledRow(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
-            objPreviewSettingsRow.createRow(this)
+        group(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
+            objPreviewSettingsRow.createGroupContents(this)
         }
     }
 

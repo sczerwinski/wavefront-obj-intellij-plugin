@@ -18,8 +18,7 @@ package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.components.JBRadioButton
-import com.intellij.ui.layout.Row
-import com.intellij.ui.layout.RowBuilder
+import com.intellij.ui.dsl.builder.Panel
 import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
@@ -29,7 +28,7 @@ import javax.swing.JComponent
 /**
  * UI component for OBJ split editor settings.
  */
-class ObjSplitEditorSettingsRow : SettingsRow {
+class ObjSplitEditorSettingsGroup : SettingsGroup {
 
     private lateinit var defaultEditorLayoutComboBox: ComboBox<SplitEditor.Layout>
     private lateinit var verticalSplitCheckBox: JBRadioButton
@@ -48,15 +47,15 @@ class ObjSplitEditorSettingsRow : SettingsRow {
             horizontalSplitCheckBox.isSelected = !value
         }
 
-    override fun createRow(rowBuilder: RowBuilder): Row = with(rowBuilder) {
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
-            defaultEditorLayoutComboBox = enumComboBox(
-                defaultValue = SplitEditor.Layout.DEFAULT,
-                renderer = SplitEditorLayoutListCellRenderer()
-            ).component
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {
-            buttonGroup {
+    override fun createGroupContents(panel: Panel) {
+        with(panel) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
+                defaultEditorLayoutComboBox = enumComboBox(
+                    defaultValue = SplitEditor.Layout.DEFAULT,
+                    renderer = SplitEditorLayoutListCellRenderer()
+                ).component
+            }
+            buttonGroup(title = WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {
                 row {
                     horizontalSplitCheckBox = radioButton(
                         WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split.horizontal")

@@ -16,17 +16,11 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.ComboBox
-import com.intellij.ui.ContextHelpLabel
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBTextField
-import com.intellij.ui.layout.Cell
-import com.intellij.ui.layout.CellBuilder
-import com.intellij.ui.layout.Row
-import com.intellij.ui.layout.RowBuilder
-import com.intellij.ui.layout.slider
+import com.intellij.ui.dsl.builder.Panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
@@ -39,7 +33,6 @@ import it.czerwinski.intellij.wavefront.settings.ui.UpVectorListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
 import it.czerwinski.intellij.wavefront.settings.ui.textField
 import java.util.Hashtable
-import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JSlider
@@ -48,7 +41,7 @@ import kotlin.math.roundToInt
 /**
  * UI component for OBJ file 3D preview settings.
  */
-class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
+class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
 
     private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
     private lateinit var defaultPBREnvironment: ComboBox<PBREnvironment>
@@ -102,50 +95,49 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             displacementQualitySlider.value = (value.displacementQuality / DISPLACEMENT_QUALITY_FACTOR).roundToInt()
         }
 
-    override fun createRow(rowBuilder: RowBuilder): Row = with(rowBuilder) {
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod")) {
-            defaultShadingMethod = enumComboBox(
-                defaultValue = ShadingMethod.DEFAULT,
-                renderer = ShadingMethodListCellRenderer()
-            ).component
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment")) {
-            defaultPBREnvironment = enumComboBox(
-                defaultValue = PBREnvironment.DEFAULT,
-                renderer = PBREnvironmentListCellRenderer()
-            ).component
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector"), separated = true) {
-            defaultUpVector = enumComboBox(
-                defaultValue = UpVector.DEFAULT,
-                renderer = UpVectorListCellRenderer()
-            ).component
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axes"), separated = true) {
-            createAxesRow()
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.grid"), separated = true) {
-            createGridRow()
-        }
-        row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.rendering")) {
-            createRenderingRow()
+    override fun createGroupContents(panel: Panel) {
+        with(panel) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shadingMethod")) {
+                defaultShadingMethod = enumComboBox(
+                    defaultValue = ShadingMethod.DEFAULT,
+                    renderer = ShadingMethodListCellRenderer()
+                ).component
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment")) {
+                defaultPBREnvironment = enumComboBox(
+                    defaultValue = PBREnvironment.DEFAULT,
+                    renderer = PBREnvironmentListCellRenderer()
+                ).component
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector")) {
+                defaultUpVector = enumComboBox(
+                    defaultValue = UpVector.DEFAULT,
+                    renderer = UpVectorListCellRenderer()
+                ).component
+            }
+            collapsibleGroup(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axes")) {
+                createAxesGroup()
+            }
+            collapsibleGroup(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.grid")) {
+                createGridGroup()
+            }
+            collapsibleGroup(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.advanced")) {
+                createAdvancedGroup()
+            }
         }
     }
 
-    private fun Row.createAxesRow() {
+    private fun Panel.createAxesGroup() {
         row {
             showAxesCheckBox = checkBox(
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showAxes")
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLineWidth")) {
-            cell {
-                axisLineWidthInput = textField(
-                    defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
-                    columns = FLOAT_INPUT_COLUMNS
-                ).component
-                contextHelpLabel(description = lineWidthContextHelpMessage)
-            }
+            axisLineWidthInput = textField(
+                defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LINE_WIDTH,
+                columns = FLOAT_INPUT_COLUMNS
+            ).comment(comment = lineWidthContextHelpMessage).component
         }
         row {
             showAxesLabelsCheckBox = checkBox(
@@ -153,16 +145,14 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axisLabelFontSize")) {
-            cell {
-                axisLabelFontSizeInput = textField(
-                    defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LABEL_FONT_SIZE,
-                    columns = FLOAT_INPUT_COLUMNS
-                ).component
-            }
+            axisLabelFontSizeInput = textField(
+                defaultValue = ObjPreviewSettingsState.DEFAULT_AXIS_LABEL_FONT_SIZE,
+                columns = FLOAT_INPUT_COLUMNS
+            ).component
         }
     }
 
-    private fun Row.createGridRow() {
+    private fun Panel.createGridGroup() {
         row {
             showGridCheckBox = checkBox(
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.showGrid")
@@ -174,25 +164,19 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.gridLineWidth")) {
-            cell {
-                gridLineWidthInput = textField(
-                    defaultValue = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
-                    columns = FLOAT_INPUT_COLUMNS
-                ).component
-                contextHelpLabel(description = lineWidthContextHelpMessage)
-            }
+            gridLineWidthInput = textField(
+                defaultValue = ObjPreviewSettingsState.DEFAULT_GRID_LINE_WIDTH,
+                columns = FLOAT_INPUT_COLUMNS
+            ).comment(comment = lineWidthContextHelpMessage).component
         }
     }
 
-    private fun Row.createRenderingRow() {
+    private fun Panel.createAdvancedGroup() {
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
-            cell {
-                lineWidthInput = textField(
-                    defaultValue = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
-                    columns = FLOAT_INPUT_COLUMNS
-                ).component
-                contextHelpLabel(description = lineWidthContextHelpMessage)
-            }
+            lineWidthInput = textField(
+                defaultValue = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
+                columns = FLOAT_INPUT_COLUMNS
+            ).comment(comment = lineWidthContextHelpMessage).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pointSize")) {
             pointSizeInput = textField(
@@ -206,46 +190,31 @@ class ObjPreviewSettingsRow : SettingsRow, ObjPreviewSettingsState.Holder {
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality")) {
-            cell {
-                shaderQualityComboBox = enumComboBox(
-                    defaultValue = ShaderQuality.DEFAULT,
-                    renderer = ShaderQualityListCellRenderer()
-                ).component
-                contextHelpLabel(
-                    description = WavefrontObjBundle.message(
-                        "settings.editor.fileTypes.obj.preview.shaderQuality.contextHelp"
-                    )
+            shaderQualityComboBox = enumComboBox(
+                defaultValue = ShaderQuality.DEFAULT,
+                renderer = ShaderQualityListCellRenderer()
+            ).comment(
+                comment = WavefrontObjBundle.message(
+                    "settings.editor.fileTypes.obj.preview.shaderQuality.contextHelp"
                 )
-            }
+            ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.displacementQuality")) {
-            cell {
-                displacementQualitySlider = slider(
-                    DISPLACEMENT_QUALITY_MIN,
-                    DISPLACEMENT_QUALITY_MAX,
-                    DISPLACEMENT_QUALITY_MINOR_TICK,
-                    DISPLACEMENT_QUALITY_MAJOR_TICK
-                ).component
-                displacementQualitySlider.labelTable = Hashtable(
-                    displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
+            displacementQualitySlider = slider(
+                DISPLACEMENT_QUALITY_MIN,
+                DISPLACEMENT_QUALITY_MAX,
+                DISPLACEMENT_QUALITY_MINOR_TICK,
+                DISPLACEMENT_QUALITY_MAJOR_TICK
+            ).comment(
+                comment = WavefrontObjBundle.message(
+                    "settings.editor.fileTypes.obj.preview.displacementQuality.contextHelp"
                 )
-                contextHelpLabel(
-                    description = WavefrontObjBundle.message(
-                        "settings.editor.fileTypes.obj.preview.displacementQuality.contextHelp"
-                    )
-                )
-            }
+            ).component
+            displacementQualitySlider.labelTable = Hashtable(
+                displacementQualityLabels.map { (value, text) -> value to JLabel(text) }.toMap()
+            )
         }
     }
-
-    private fun Cell.contextHelpLabel(
-        label: String? = null,
-        description: String,
-        icon: Icon? = AllIcons.General.ContextHelp
-    ): CellBuilder<ContextHelpLabel> =
-        ContextHelpLabel(label.orEmpty(), description)
-            .apply { this.icon = icon }
-            .invoke()
 
     override fun getPreferredFocusedComponent(): JComponent = defaultShadingMethod
 

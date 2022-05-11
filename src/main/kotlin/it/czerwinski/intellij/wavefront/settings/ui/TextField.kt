@@ -17,14 +17,18 @@
 package it.czerwinski.intellij.wavefront.settings.ui
 
 import com.intellij.ui.components.JBTextField
-import com.intellij.ui.layout.Cell
-import com.intellij.ui.layout.CellBuilder
+import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.Row
+import com.intellij.ui.dsl.builder.bindText
+import com.intellij.ui.dsl.builder.columns
 
 /**
  * Simplified cell builder method for a text field with a default value.
  */
-fun Cell.textField(defaultValue: Any, columns: Int): CellBuilder<JBTextField> = textField(
-    getter = { defaultValue.toString() },
-    setter = { },
-    columns = columns
-)
+fun Row.textField(defaultValue: Any, columns: Int): Cell<JBTextField> =
+    textField()
+        .bindText(
+            getter = { defaultValue.toString() },
+            setter = { }
+        )
+        .columns(columns)

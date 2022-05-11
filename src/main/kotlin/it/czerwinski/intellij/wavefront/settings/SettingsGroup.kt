@@ -16,19 +16,18 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
-import com.intellij.ui.layout.Row
-import com.intellij.ui.layout.RowBuilder
+import com.intellij.ui.dsl.builder.Panel
 import javax.swing.JComponent
 
 /**
  * A common interface implemented by settings component rows.
  */
-interface SettingsRow {
+interface SettingsGroup {
 
     /**
      * Creates UI components in this settings row.
      */
-    fun createRow(rowBuilder: RowBuilder): Row
+    fun createGroupContents(panel: Panel)
 
     /**
      * Returns the UI component preferred to gain focus.

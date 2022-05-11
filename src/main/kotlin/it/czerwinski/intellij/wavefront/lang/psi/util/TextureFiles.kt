@@ -16,8 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi.util
 
-import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FilenameIndex
@@ -44,7 +44,9 @@ fun Project.findAllTextureFiles(): List<PsiFile> =
         PsiManager.getInstance(this).findFile(virtualFile)
     }
 
-fun Project.findMatchingTextureFiles(filename: String): List<PsiFile> = runReadAction {
-    FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(this))
+fun Project.findMatchingTextureFiles(filename: String): List<PsiFile> =
+    findMatchingTextureVirtualFiles(filename)
         .mapNotNull { virtualFile -> PsiManager.getInstance(this).findFile(virtualFile) }
-}
+
+fun Project.findMatchingTextureVirtualFiles(filename: String): Collection<VirtualFile> =
+    FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(this))

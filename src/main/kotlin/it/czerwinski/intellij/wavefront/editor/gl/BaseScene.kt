@@ -17,7 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.editor.colors.EditorColorsManager
-import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.project.Project
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.BlendingFactorFunction
@@ -51,14 +51,14 @@ abstract class BaseScene(
     private val texturesManager = TexturesManager()
 
     /**
-     * Loads texture image from given [file] before creating a texture.
+     * Loads texture image from a file with given [filename] before creating a texture.
      */
-    protected fun prepareTexture(file: VirtualFile) {
+    protected fun prepareTexture(project: Project, filename: String) {
         try {
-            texturesManager.prepare(profile, file)
+            texturesManager.prepare(profile, project, filename)
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.prepareTexture.error", file.name),
+                WavefrontObjBundle.message("editor.fileTypes.obj.preview.prepareTexture.error", filename),
                 expected
             )
         }
@@ -67,8 +67,8 @@ abstract class BaseScene(
     /**
      * Returns texture created from this file.
      */
-    protected fun VirtualFile.getTexture(gl: GlimpseAdapter): Texture? = try {
-        texturesManager[gl, this]
+    protected fun getTexture(gl: GlimpseAdapter, filename: String): Texture? = try {
+        texturesManager[gl, filename]
     } catch (ignored: Throwable) {
         null
     }

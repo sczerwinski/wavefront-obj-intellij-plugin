@@ -18,7 +18,6 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
@@ -49,43 +48,43 @@ abstract class MtlMaterialElementImpl(
     override val roughness: Float? get() = material?.roughnessList?.firstOrNull()?.value
     override val metalness: Float? get() = material?.metalnessList?.firstOrNull()?.value
 
-    override val ambientColorMap: VirtualFile?
-        get() = material?.ambientColorMapList?.firstOrNull()?.textureVirtualFile
-    override val diffuseColorMap: VirtualFile?
-        get() = material?.diffuseColorMapList?.firstOrNull()?.textureVirtualFile
-    override val specularColorMap: VirtualFile?
-        get() = material?.specularColorMapList?.firstOrNull()?.textureVirtualFile
-    override val emissionColorMap: VirtualFile?
-        get() = material?.emissionColorMapList?.firstOrNull()?.textureVirtualFile
-    override val specularExponentMap: VirtualFile?
-        get() = material?.specularExponentMapList?.firstOrNull()?.textureVirtualFile
+    override val ambientColorMap: String?
+        get() = material?.ambientColorMapList?.firstOrNull()?.textureFilename
+    override val diffuseColorMap: String?
+        get() = material?.diffuseColorMapList?.firstOrNull()?.textureFilename
+    override val specularColorMap: String?
+        get() = material?.specularColorMapList?.firstOrNull()?.textureFilename
+    override val emissionColorMap: String?
+        get() = material?.emissionColorMapList?.firstOrNull()?.textureFilename
+    override val specularExponentMap: String?
+        get() = material?.specularExponentMapList?.firstOrNull()?.textureFilename
     override val specularExponentBase: Float?
         get() = material?.specularExponentMapList?.firstOrNull()?.valueModifierOptionList
             ?.firstOrNull()?.values?.getOrNull(0)
     override val specularExponentGain: Float?
         get() = material?.specularExponentMapList?.firstOrNull()?.valueModifierOptionList
             ?.firstOrNull()?.values?.getOrNull(1)
-    override val dissolveMap: VirtualFile?
-        get() = material?.dissolveMapList?.firstOrNull()?.textureVirtualFile
-    override val displacementMap: VirtualFile?
-        get() = material?.displacementMapList?.firstOrNull()?.textureVirtualFile
+    override val dissolveMap: String?
+        get() = material?.dissolveMapList?.firstOrNull()?.textureFilename
+    override val displacementMap: String?
+        get() = material?.displacementMapList?.firstOrNull()?.textureFilename
     override val displacementGain: Float?
         get() = material?.displacementMapList?.firstOrNull()?.valueModifierOptionList
             ?.firstOrNull()?.values?.getOrNull(1)
-    override val stencilDecalMap: VirtualFile?
-        get() = material?.stencilDecalMapList?.firstOrNull()?.textureVirtualFile
-    override val roughnessMap: VirtualFile?
-        get() = material?.roughnessMapList?.firstOrNull()?.textureVirtualFile
-    override val metalnessMap: VirtualFile?
-        get() = material?.metalnessMapList?.firstOrNull()?.textureVirtualFile
-    override val normalMap: VirtualFile?
-        get() = material?.normalMapList?.firstOrNull()?.textureVirtualFile
-    override val bumpMap: VirtualFile?
-        get() = material?.bumpMapList?.firstOrNull()?.textureVirtualFile
+    override val stencilDecalMap: String?
+        get() = material?.stencilDecalMapList?.firstOrNull()?.textureFilename
+    override val roughnessMap: String?
+        get() = material?.roughnessMapList?.firstOrNull()?.textureFilename
+    override val metalnessMap: String?
+        get() = material?.metalnessMapList?.firstOrNull()?.textureFilename
+    override val normalMap: String?
+        get() = material?.normalMapList?.firstOrNull()?.textureFilename
+    override val bumpMap: String?
+        get() = material?.bumpMapList?.firstOrNull()?.textureFilename
     override val bumpMapMultiplier: Float?
         get() = material?.bumpMapList?.firstOrNull()?.bumpMultiplierOptionList?.firstOrNull()?.value
-    override val reflectionMap: VirtualFile?
-        get() = material?.reflectionMapList?.firstOrNull()?.textureVirtualFile
+    override val reflectionMap: String?
+        get() = material?.reflectionMapList?.firstOrNull()?.textureFilename
 
     override val texturePsiFiles: List<PsiFile>
         get() = material

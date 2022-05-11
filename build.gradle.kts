@@ -33,6 +33,13 @@ repositories {
     mavenCentral()
 }
 
+// Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
     api("graphics.glimpse:glimpse-core:1.1.0")

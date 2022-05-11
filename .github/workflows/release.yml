@@ -12,6 +12,8 @@ jobs:
   release:
     name: Publish Plugin
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
 
       # Setup Java 11 environment for the next steps

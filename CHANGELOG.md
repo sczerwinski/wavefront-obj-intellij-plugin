@@ -6,6 +6,8 @@
 ### Added
 - New OBJ file action
 - New MTL file action
+- Use JVM toolchain for configuring source/target compilation compatibility
+- Make sure GitHub Actions release jobs have write permissions
 
 ### Changed
 - Improved action and gutter icons to work with high contrast theme

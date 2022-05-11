@@ -16,11 +16,12 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl.textures
 
-import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.project.Project
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureImageSource
+import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureVirtualFiles
 
 /**
  * GL textures manager.
@@ -33,37 +34,38 @@ class TexturesManager {
     private val textures = mutableMapOf<String, Texture>()
 
     /**
-     * Loads texture image from given [file] before creating a texture.
+     * Loads texture image from a file with given [filename] before creating a texture.
      *
      * This method can be executed without GL thread.
      */
-    fun prepare(profile: GLProfile, file: VirtualFile) {
-        if (imageSources[file.path] == null) {
-            imageSources[file.path] = textureImageSourceBuilder
-                .withFilename(file.name)
-                .fromInputStream { file.inputStream }
-                .buildPrepared(profile)
+    fun prepare(profile: GLProfile, project: Project, filename: String) {
+        if (imageSources[filename] == null) {
+            val file = project.findMatchingTextureVirtualFiles(filename).firstOrNull()
+            if (file != null) {
+                imageSources[filename] = textureImageSourceBuilder
+                    .withFilename(filename)
+                    .fromInputStream { file.inputStream }
+                    .buildPrepared(profile)
+            }
         }
     }
 
     /**
-     * Returns texture created from given [file].
+     * Returns texture created from a file with given [filename].
      *
      * Creates the texture if it does not exist.
      */
-    operator fun get(gl: GlimpseAdapter, file: VirtualFile): Texture =
-        textures.getOrPut(file.path) {
-            createTexture(gl, file)
+    operator fun get(gl: GlimpseAdapter, filename: String): Texture =
+        textures.getOrPut(filename) {
+            createTexture(gl, filename)
         }
 
-    private fun createTexture(gl: GlimpseAdapter, file: VirtualFile): Texture {
-        val texture = Texture.Builder.getInstance(gl)
-            .addTexture(imageSources.getOrElse(file.path) { error("Image not loaded: ${file.name}") })
+    private fun createTexture(gl: GlimpseAdapter, filename: String): Texture =
+        Texture.Builder.getInstance(gl)
+            .addTexture(imageSources.getOrElse(filename) { error("Image not loaded: $filename") })
             .generateMipmaps()
             .build()
             .first()
-        return texture
-    }
 
     /**
      * Disposes all previously created textures.

@@ -16,7 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import graphics.glimpse.types.Vec3
@@ -37,23 +36,23 @@ interface MtlMaterialElement : PsiElement {
     val roughness: Float?
     val metalness: Float?
 
-    val ambientColorMap: VirtualFile?
-    val diffuseColorMap: VirtualFile?
-    val specularColorMap: VirtualFile?
-    val emissionColorMap: VirtualFile?
-    val specularExponentMap: VirtualFile?
+    val ambientColorMap: String?
+    val diffuseColorMap: String?
+    val specularColorMap: String?
+    val emissionColorMap: String?
+    val specularExponentMap: String?
     val specularExponentBase: Float?
     val specularExponentGain: Float?
-    val dissolveMap: VirtualFile?
-    val displacementMap: VirtualFile?
+    val dissolveMap: String?
+    val displacementMap: String?
     val displacementGain: Float?
-    val stencilDecalMap: VirtualFile?
-    val roughnessMap: VirtualFile?
-    val metalnessMap: VirtualFile?
-    val normalMap: VirtualFile?
-    val bumpMap: VirtualFile?
+    val stencilDecalMap: String?
+    val roughnessMap: String?
+    val metalnessMap: String?
+    val normalMap: String?
+    val bumpMap: String?
     val bumpMapMultiplier: Float?
-    val reflectionMap: VirtualFile?
+    val reflectionMap: String?
 
     val texturePsiFiles: List<PsiFile>
 

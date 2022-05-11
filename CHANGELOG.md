@@ -26,6 +26,7 @@
 - Replace usages of deprecated `Iterable.sumBy` with `Iterable.sumOf`
 - Replace usages of deprecated `String.toLowerCase` with `String.lowercase`
 - Replace usage of deprecated `Char.toInt` with `Char.code`
+- Prevent long operations from running on UI thread
 
 ### Security
 

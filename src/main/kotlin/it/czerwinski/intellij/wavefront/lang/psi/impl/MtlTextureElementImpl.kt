@@ -35,7 +35,7 @@ abstract class MtlTextureElementImpl(
     override val textureFilename: String?
         get() = textureFilenameNode?.text
 
-    override val textureFiles: List<PsiFile>
+    override val textureFiles: Collection<PsiFile>
         get() = textureFilename?.let { filename -> project.findMatchingTextureFiles(filename) }.orEmpty()
 
     override fun getReferences(): Array<PsiReference> =

@@ -2,7 +2,6 @@ import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -105,12 +104,7 @@ detekt {
 }
 
 tasks {
-    // Set the JVM compatibility versions
-    val javaVersion = properties("javaVersion")
-
     withType<JavaCompile> {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
         sourceSets["main"].java.srcDirs(
             "${project.buildDir}/generated/source/lexer/obj",
             "${project.buildDir}/generated/source/lexer/mtl",
@@ -119,13 +113,8 @@ tasks {
             "${project.buildDir}/generated/ksp/main/kotlin"
         )
     }
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = javaVersion
-    }
 
     withType<Detekt> {
-        jvmTarget = javaVersion
-
         // Configure detekt reports.
         // Read more: https://detekt.github.io/detekt/kotlindsl.html
         reports {

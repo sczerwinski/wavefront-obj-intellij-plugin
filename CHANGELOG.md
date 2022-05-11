@@ -13,6 +13,8 @@
 - Improved action and gutter icons to work with high contrast theme
 - Use non-null values in editor state
 - Migrate to Kotlin UI DSL version 2
+- Dependencies:
+  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.1`
 - Update platform version to `2021.3.3`
 - `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
 

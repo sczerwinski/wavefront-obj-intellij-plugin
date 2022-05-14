@@ -81,13 +81,6 @@ class ObjPreviewComponent(
             .setTargetComponent(myErrorLogSplitter)
             .build()
 
-    private val myRightActionToolbar: ActionToolbar =
-        ActionToolbarBuilder()
-            .setActionGroupId(RIGHT_TOOLBAR_ACTIONS_GROUP_ID)
-            .setPlace(ActionPlaces.EDITOR_TOOLBAR)
-            .setTargetComponent(myErrorLogSplitter)
-            .build()
-
     private val myStatusBar: JBLabel = JBLabel()
 
     private lateinit var myScene: ObjPreviewScene
@@ -169,10 +162,7 @@ class ObjPreviewComponent(
         myStatusBar.border = JBUI.Borders.empty(STATUS_BAR_VERTICAL_BORDER, STATUS_BAR_HORIZONTAL_BORDER)
         add(
             EditorWithToolbar(
-                toolbarComponent = EditorToolbarHeader(
-                    leftActionToolbar = myLeftActionToolbar,
-                    rightActionToolbar = myRightActionToolbar
-                ),
+                toolbarComponent = EditorToolbarHeader(leftActionToolbar = myLeftActionToolbar),
                 editorComponent = myErrorLogSplitter,
                 statusBarComponent = EditorFooterComponent().apply {
                     add(myStatusBar, BorderLayout.CENTER)
@@ -227,8 +217,6 @@ class ObjPreviewComponent(
     }
 
     fun initialize() {
-        myRightActionToolbar.updateActionsImmediately()
-
         if (project.isInitialized && isInitialized.compareAndSet(false, true)) {
             try {
                 initializeObjFile()
@@ -438,7 +426,6 @@ class ObjPreviewComponent(
 
     companion object {
         private const val LEFT_TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.Toolbar"
-        private const val RIGHT_TOOLBAR_ACTIONS_GROUP_ID = "ObjPreviewFileEditor.AdditionalToolbar"
 
         private const val STATUS_BAR_VERTICAL_BORDER = 2
         private const val STATUS_BAR_HORIZONTAL_BORDER = 4

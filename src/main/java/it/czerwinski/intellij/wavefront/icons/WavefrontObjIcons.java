@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package icons;
+package it.czerwinski.intellij.wavefront.icons;
 
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;

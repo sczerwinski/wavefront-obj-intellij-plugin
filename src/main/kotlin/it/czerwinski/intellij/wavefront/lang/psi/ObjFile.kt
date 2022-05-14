@@ -38,9 +38,10 @@ class ObjFile(
     val textureCoordinatesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjTextureCoordinates>() }
     val vertexNormalsCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjVertexNormal>() }
     val facesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjFaceElement>() }
-    val trianglesCount get() = objectLikeElements.sumOf { element ->
-        element.getChildrenOfType<ObjFaceElement>().sumOf { face -> face.trianglesCount }
-    }
+    val trianglesCount
+        get() = objectLikeElements.sumOf { element ->
+            element.getChildrenOfType<ObjFaceElement>().sumOf { face -> face.trianglesCount }
+        }
 
     private val groupingElements: List<ObjGroupingElement> get() = getChildrenOfType()
 

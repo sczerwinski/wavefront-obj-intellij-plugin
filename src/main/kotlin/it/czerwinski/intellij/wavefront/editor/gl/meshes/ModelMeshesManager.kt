@@ -73,7 +73,7 @@ class ModelMeshesManager {
                             .zipWithNext()
                             .flatMap { (index1, index2) ->
                                 model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                                    model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                                        model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
                             }
                     }.toFloatBufferData()
                     val linesTextureCoordinatesData = part.lines.flatMap { line ->
@@ -82,7 +82,7 @@ class ModelMeshesManager {
                             .zipWithNext()
                             .flatMap { (index1, index2) ->
                                 model.textureCoordinates[(index1?.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                                    model.textureCoordinates[(index2?.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                                        model.textureCoordinates[(index2?.value ?: 1) - 1].coordinates.map { it ?: 0f }
                             }
                     }.toFloatBufferData()
                     LinesMesh(

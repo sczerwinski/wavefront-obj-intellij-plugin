@@ -129,7 +129,7 @@
                 language="MTL"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
         <colorProvider
-                implementation="it.czerwinski.intellij.wavefront.lang.MtlElementColorProvider" />
+                implementation="it.czerwinski.intellij.wavefront.lang.MtlElementColorProvider"/>
 
         <!-- File templates -->
         <createFromTemplateHandler

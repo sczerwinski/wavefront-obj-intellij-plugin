@@ -29,11 +29,11 @@ abstract class AbstractRenamingManipulator<T : PsiElement> : AbstractElementMani
             val nameRange = TextRange(nameNode.startOffsetInParent, nameNode.startOffsetInParent + nameNode.textLength)
             if (range in nameRange) {
                 val newName: String = nameNode.text.substring(0, range.startOffset - nameNode.startOffsetInParent) +
-                    newContent +
-                    nameNode.text.substring(
-                        range.startOffset - nameNode.startOffsetInParent + range.length,
-                        nameNode.textLength
-                    )
+                        newContent +
+                        nameNode.text.substring(
+                            range.startOffset - nameNode.startOffsetInParent + range.length,
+                            nameNode.textLength
+                        )
 
                 val newElement = createRenamedElement(element, newName)
                 val newNameNode = extractNameNode(newElement)

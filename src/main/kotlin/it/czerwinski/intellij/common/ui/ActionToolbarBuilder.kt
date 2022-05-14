@@ -20,9 +20,9 @@ import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
-import org.jetbrains.annotations.NonNls
 import java.lang.ref.WeakReference
 import javax.swing.JComponent
+import org.jetbrains.annotations.NonNls
 
 /**
  * Action toolbar builder.

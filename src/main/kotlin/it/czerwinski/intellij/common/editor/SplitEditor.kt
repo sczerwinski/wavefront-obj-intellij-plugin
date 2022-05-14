@@ -135,8 +135,8 @@ abstract class SplitEditor<P : FileEditor>(
             otherState: FileEditorState,
             level: FileEditorStateLevel
         ): Boolean = otherState is SplitEditorState &&
-            textEditorState.canBeMergedWith(otherState.textEditorState, level) &&
-            previewEditorState.canBeMergedWith(otherState.previewEditorState, level)
+                textEditorState.canBeMergedWith(otherState.textEditorState, level) &&
+                previewEditorState.canBeMergedWith(otherState.previewEditorState, level)
     }
 
     companion object {

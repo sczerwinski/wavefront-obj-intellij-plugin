@@ -51,11 +51,8 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
     override fun isCollapsedByDefault(node: ASTNode): Boolean = node.psi is ObjIndexElement
 
     companion object {
-        @NonNls
-        private const val DEFAULT_PLACEHOLDER_TEXT = "..."
-        @NonNls
-        private const val OBJECT_PLACEHOLDER_TEXT_FORMAT = "o %s ..."
-        @NonNls
-        private const val GROUP_PLACEHOLDER_TEXT_FORMAT = "g %s ..."
+        @NonNls private const val DEFAULT_PLACEHOLDER_TEXT = "..."
+        @NonNls private const val OBJECT_PLACEHOLDER_TEXT_FORMAT = "o %s ..."
+        @NonNls private const val GROUP_PLACEHOLDER_TEXT_FORMAT = "g %s ..."
     }
 }

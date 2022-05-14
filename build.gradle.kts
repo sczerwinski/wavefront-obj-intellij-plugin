@@ -1,8 +1,6 @@
-import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -11,18 +9,16 @@ plugins {
     id("java")
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.21"
-    // Kotlin Symbol Processing - read more: https://github.com/google/ksp
+    // Kotlin Symbol Processing
     id("com.google.devtools.ksp") version "1.6.21-1.0.5"
-    // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
+    // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.5.3"
-    // gradle-grammarkit-plugin - read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
+    // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2021.2.2"
-    // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
+    // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
-    // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
-    // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    // Gradle Qodana Plugin
+    id("org.jetbrains.qodana") version "0.1.13"
 }
 
 group = properties("pluginGroup")
@@ -33,12 +29,18 @@ repositories {
     mavenCentral()
 }
 
+// Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
     api("graphics.glimpse:glimpse-core:1.1.0")
     api("graphics.glimpse:glimpse-ui:1.1.0")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
 }
 
 // Generate parsers and lexers before Kotlin compilation.
@@ -90,20 +92,16 @@ changelog {
     version.set(properties("pluginVersion"))
 }
 
-// Configure detekt plugin.
-// Read more: https://detekt.github.io/detekt/kotlindsl.html
-detekt {
-    config = files("./detekt-config.yml")
-    buildUponDefaultConfig = true
+// Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
+qodana {
+    cachePath.set(projectDir.resolve(".qodana").canonicalPath)
+    reportPath.set(projectDir.resolve("build/reports/inspections").canonicalPath)
+    saveReport.set(true)
+    showReport.set(System.getenv("QODANA_SHOW_REPORT")?.toBoolean() ?: false)
 }
 
 tasks {
-    // Set the JVM compatibility versions
-    val javaVersion = properties("javaVersion")
-
     withType<JavaCompile> {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
         sourceSets["main"].java.srcDirs(
             "${project.buildDir}/generated/source/lexer/obj",
             "${project.buildDir}/generated/source/lexer/mtl",
@@ -112,27 +110,10 @@ tasks {
             "${project.buildDir}/generated/ksp/main/kotlin"
         )
     }
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = javaVersion
-    }
 
-    withType<Detekt> {
-        jvmTarget = javaVersion
-
-        // Configure detekt reports.
-        // Read more: https://detekt.github.io/detekt/kotlindsl.html
-        reports {
-            html.required.set(false)
-            xml {
-                required.set(true)
-                outputLocation.set(file("build/reports/detekt.xml"))
-            }
-            txt.required.set(false)
-            sarif {
-                required.set(true)
-                outputLocation.set(file("build/reports/detekt.sarif.json"))
-            }
-        }
+    val test by getting(Test::class) {
+        isScanForTestClasses = false
+        include("**/*Test.class")
     }
 
     wrapper {

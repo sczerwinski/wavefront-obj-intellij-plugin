@@ -8,11 +8,13 @@
 - New MTL file action
 - Use JVM toolchain for configuring source/target compilation compatibility
 - Make sure GitHub Actions release jobs have write permissions
+- Add Qodana checks
 
 ### Changed
 - Improved action and gutter icons to work with high contrast theme
 - Use non-null values in editor state
 - Migrate to Kotlin UI DSL version 2
+- Update GitHub Actions build pipeline
 - Dependencies:
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.1`
 - Update platform version to `2021.3.3`
@@ -24,6 +26,8 @@
 - Remove support for platform version `203.*`
 - Remove support for platform version `211.*`
 - Remove support for platform version `212.*`
+- Remove detekt linter
+- Remove ktlint linter
 
 ### Fixed
 - Replace usage of deprecated `UIUtil.getClientProperty` with direct call to `JComponent.getClientProperty`

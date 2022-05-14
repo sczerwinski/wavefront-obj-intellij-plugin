@@ -30,19 +30,21 @@ abstract class ObjIndexElementImpl(
 
     override val value: Int? get() = text.toIntOrNull()
 
-    override val countReferencesBefore: Int get() = when (this) {
-        is ObjVertexIndex -> containingObjFile?.countVerticesBefore(this) ?: 0
-        is ObjTextureCoordinatesIndex -> containingObjFile?.countTextureCoordinatesBefore(this) ?: 0
-        is ObjVertexNormalIndex -> containingObjFile?.countVertexNormalsBefore(this) ?: 0
-        else -> 0
-    }
+    override val countReferencesBefore: Int
+        get() = when (this) {
+            is ObjVertexIndex -> containingObjFile?.countVerticesBefore(this) ?: 0
+            is ObjTextureCoordinatesIndex -> containingObjFile?.countTextureCoordinatesBefore(this) ?: 0
+            is ObjVertexNormalIndex -> containingObjFile?.countVertexNormalsBefore(this) ?: 0
+            else -> 0
+        }
 
-    private val maxIndex: Int get() = when (this) {
-        is ObjVertexIndex -> containingObjFile?.verticesCount ?: 0
-        is ObjTextureCoordinatesIndex -> containingObjFile?.textureCoordinatesCount ?: 0
-        is ObjVertexNormalIndex -> containingObjFile?.vertexNormalsCount ?: 0
-        else -> 0
-    }
+    private val maxIndex: Int
+        get() = when (this) {
+            is ObjVertexIndex -> containingObjFile?.verticesCount ?: 0
+            is ObjTextureCoordinatesIndex -> containingObjFile?.textureCoordinatesCount ?: 0
+            is ObjVertexNormalIndex -> containingObjFile?.vertexNormalsCount ?: 0
+            else -> 0
+        }
 
     override fun isValidIndex(): Boolean {
         val objIndex = value ?: 0

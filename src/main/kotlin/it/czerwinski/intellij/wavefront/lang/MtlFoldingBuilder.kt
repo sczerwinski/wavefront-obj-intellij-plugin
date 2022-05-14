@@ -48,9 +48,7 @@ class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
     override fun isCollapsedByDefault(node: ASTNode): Boolean = false
 
     companion object {
-        @NonNls
-        private const val DEFAULT_PLACEHOLDER_TEXT = "..."
-        @NonNls
-        private const val MATERIAL_PLACEHOLDER_TEXT_FORMAT = "newmtl %s ..."
+        @NonNls private const val DEFAULT_PLACEHOLDER_TEXT = "..."
+        @NonNls private const val MATERIAL_PLACEHOLDER_TEXT_FORMAT = "newmtl %s ..."
     }
 }

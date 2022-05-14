@@ -111,6 +111,11 @@ tasks {
         )
     }
 
+    val test by getting(Test::class) {
+        isScanForTestClasses = false
+        include("**/*Test.class")
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion")
     }

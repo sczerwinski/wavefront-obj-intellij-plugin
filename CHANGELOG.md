@@ -37,6 +37,7 @@
 - Replace usages of deprecated `String.toLowerCase` with `String.lowercase`
 - Replace usage of deprecated `Char.toInt` with `Char.code`
 - Prevent long operations from running on UI thread
+- Workaround for unit tests not running
 
 ### Security
 

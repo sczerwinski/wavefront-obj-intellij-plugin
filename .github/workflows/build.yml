@@ -71,6 +71,13 @@ jobs:
       - name: Run Tests
         run: ./gradlew test
 
+      # Publish test results
+      - name: Publish Test Report
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        with:
+          files: ${{ github.workspace }}/build/test-results/**/*.xml
+
       # Collect Tests Result of failed tests
       - name: Collect Tests Result
         if: ${{ failure() }}

@@ -37,6 +37,7 @@
 - Replace usage of deprecated `Char.toInt` with `Char.code`
 - Prevent long operations from running on UI thread
 - Workaround for unit tests not running
+- Add `kspKotlin` Gradle task dependencies
 
 ### Security
 

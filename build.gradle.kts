@@ -101,8 +101,16 @@ qodana {
 }
 
 tasks {
+
+    afterEvaluate {
+        named("kspKotlin") {
+            dependsOn(generateParserObj, generateParserMtl, generateLexerObj, generateLexerMtl)
+        }
+    }
+
     withType<JavaCompile> {
         sourceSets["main"].java.srcDirs(
+            "${project.projectDir}/src/main/kotlin",
             "${project.buildDir}/generated/source/lexer/obj",
             "${project.buildDir}/generated/source/lexer/mtl",
             "${project.buildDir}/generated/source/parser/obj",

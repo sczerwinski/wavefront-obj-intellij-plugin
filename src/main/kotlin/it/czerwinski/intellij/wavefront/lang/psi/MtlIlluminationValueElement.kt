@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.psi.PsiElement
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 
 interface MtlIlluminationValueElement : PsiElement {
     val value: Illumination?
@@ -32,6 +33,9 @@ interface MtlIlluminationValueElement : PsiElement {
         REFRACTION_FRESNEL_RAYTRACE,
         REFLECTION,
         GLASS,
-        SHADOWS
+        SHADOWS;
+
+        val description: String =
+            WavefrontObjBundle.message("fileTypes.mtl.structure.presentation.illumination.$name")
     }
 }

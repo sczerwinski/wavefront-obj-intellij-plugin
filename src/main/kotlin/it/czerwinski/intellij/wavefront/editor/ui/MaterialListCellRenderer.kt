@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.wavefront.editor.ui
 
-import com.intellij.lang.ASTNode
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
+import com.intellij.ui.SimpleListCellRenderer
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import javax.swing.ListCellRenderer
 
-interface MtlTextureElement : PsiElement {
-
-    val textureFilenameNode: ASTNode?
-    val textureFilename: String?
-    val textureFile: PsiFile? get() = textureFiles.firstOrNull()
-    val textureFiles: Collection<PsiFile>
-
-    val valueModifierOptionList: List<MtlValueModifierOption>
-    val valueModifierOptionElement: MtlValueModifierOption?
-}
+@Suppress("FunctionName")
+fun MaterialListCellRenderer(): ListCellRenderer<MtlMaterialElement?> =
+    SimpleListCellRenderer.create("") { value -> value?.getName() }

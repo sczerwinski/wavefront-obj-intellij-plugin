@@ -101,7 +101,7 @@ class SplitEditorComponent(
 
     private fun createSplitter(): JBSplitter {
         val splitter = EditorSplitter(vertical = false)
-        splitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
+        splitter.splitterProportionKey = "${previewEditor.javaClass.simpleName}.Proportion"
         splitter.components = myTextEditorComponent to myPreviewEditorComponent
         return splitter
     }

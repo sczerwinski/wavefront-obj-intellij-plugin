@@ -20,6 +20,8 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiFile
 import graphics.glimpse.types.Vec3
+import it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
@@ -33,58 +35,69 @@ abstract class MtlMaterialElementImpl(
 
     private val material: MtlMaterial? get() = this as? MtlMaterial
 
-    override val ambientColorVector: Vec3? get() = material?.ambientColorList?.firstOrNull()?.colorVector
-    override val diffuseColorVector: Vec3? get() = material?.diffuseColorList?.firstOrNull()?.colorVector
-    override val specularColorVector: Vec3? get() = material?.specularColorList?.firstOrNull()?.colorVector
-    override val transmissionFilterVector: Vec3? get() = material?.transmissionFilterList?.firstOrNull()?.colorVector
-    override val emissionColorVector: Vec3? get() = material?.emissionColorList?.firstOrNull()?.colorVector
+    override val ambientColorElement: MtlColorElement? get() = material?.ambientColorList?.firstOrNull()
+    override val diffuseColorElement: MtlColorElement? get() = material?.diffuseColorList?.firstOrNull()
+    override val specularColorElement: MtlColorElement? get() = material?.specularColorList?.firstOrNull()
+    override val transmissionFilterElement: MtlColorElement? get() = material?.transmissionFilterList?.firstOrNull()
+    override val emissionColorElement: MtlColorElement? get() = material?.emissionColorList?.firstOrNull()
 
-    override val illumination: MtlIlluminationValueElement.Illumination?
-        get() = material?.illuminationList?.firstOrNull()?.value
-    override val dissolve: Float? get() = material?.dissolveList?.firstOrNull()?.value
-    override val specularExponent: Float? get() = material?.specularExponentList?.firstOrNull()?.value
-    override val sharpness: Float? get() = material?.sharpnessList?.firstOrNull()?.value
-    override val opticalDensity: Float? get() = material?.opticalDensityList?.firstOrNull()?.value
-    override val roughness: Float? get() = material?.roughnessList?.firstOrNull()?.value
-    override val metalness: Float? get() = material?.metalnessList?.firstOrNull()?.value
+    override val illuminationElement: MtlIlluminationValueElement? get() = material?.illuminationList?.firstOrNull()
+    override val dissolveElement: MtlFloatValueElement? get() = material?.dissolveList?.firstOrNull()
+    override val specularExponentElement: MtlFloatValueElement? get() = material?.specularExponentList?.firstOrNull()
+    override val sharpnessElement: MtlFloatValueElement? get() = material?.sharpnessList?.firstOrNull()
+    override val opticalDensityElement: MtlFloatValueElement? get() = material?.opticalDensityList?.firstOrNull()
+    override val roughnessElement: MtlFloatValueElement? get() = material?.roughnessList?.firstOrNull()
+    override val metalnessElement: MtlFloatValueElement? get() = material?.metalnessList?.firstOrNull()
 
-    override val ambientColorMap: String?
-        get() = material?.ambientColorMapList?.firstOrNull()?.textureFilename
-    override val diffuseColorMap: String?
-        get() = material?.diffuseColorMapList?.firstOrNull()?.textureFilename
-    override val specularColorMap: String?
-        get() = material?.specularColorMapList?.firstOrNull()?.textureFilename
-    override val emissionColorMap: String?
-        get() = material?.emissionColorMapList?.firstOrNull()?.textureFilename
-    override val specularExponentMap: String?
-        get() = material?.specularExponentMapList?.firstOrNull()?.textureFilename
+    override val ambientColorMapElement: MtlTextureElement? get() = material?.ambientColorMapList?.firstOrNull()
+    override val diffuseColorMapElement: MtlTextureElement? get() = material?.diffuseColorMapList?.firstOrNull()
+    override val specularColorMapElement: MtlTextureElement? get() = material?.specularColorMapList?.firstOrNull()
+    override val emissionColorMapElement: MtlTextureElement? get() = material?.emissionColorMapList?.firstOrNull()
+    override val specularExponentMapElement: MtlTextureElement? get() = material?.specularExponentMapList?.firstOrNull()
+    override val dissolveMapElement: MtlTextureElement? get() = material?.dissolveMapList?.firstOrNull()
+    override val displacementMapElement: MtlTextureElement? get() = material?.displacementMapList?.firstOrNull()
+    override val stencilDecalMapElement: MtlTextureElement? get() = material?.stencilDecalMapList?.firstOrNull()
+    override val roughnessMapElement: MtlTextureElement? get() = material?.roughnessMapList?.firstOrNull()
+    override val metalnessMapElement: MtlTextureElement? get() = material?.metalnessMapList?.firstOrNull()
+    override val normalMapElement: MtlTextureElement? get() = material?.normalMapList?.firstOrNull()
+    override val bumpMapElement: MtlTextureElement? get() = material?.bumpMapList?.firstOrNull()
+    override val reflectionMapElement: MtlTextureElement? get() = material?.reflectionMapList?.firstOrNull()
+
+    override val ambientColorVector: Vec3? get() = ambientColorElement?.colorVector
+    override val diffuseColorVector: Vec3? get() = diffuseColorElement?.colorVector
+    override val specularColorVector: Vec3? get() = specularColorElement?.colorVector
+    override val transmissionFilterVector: Vec3? get() = transmissionFilterElement?.colorVector
+    override val emissionColorVector: Vec3? get() = emissionColorElement?.colorVector
+
+    override val illumination: MtlIlluminationValueElement.Illumination? get() = illuminationElement?.value
+    override val dissolve: Float? get() = dissolveElement?.value
+    override val specularExponent: Float? get() = specularExponentElement?.value
+    override val sharpness: Float? get() = sharpnessElement?.value
+    override val opticalDensity: Float? get() = opticalDensityElement?.value
+    override val roughness: Float? get() = roughnessElement?.value
+    override val metalness: Float? get() = metalnessElement?.value
+
+    override val ambientColorMap: String? get() = ambientColorMapElement?.textureFilename
+    override val diffuseColorMap: String? get() = diffuseColorMapElement?.textureFilename
+    override val specularColorMap: String? get() = specularColorMapElement?.textureFilename
+    override val emissionColorMap: String? get() = emissionColorMapElement?.textureFilename
+    override val specularExponentMap: String? get() = specularExponentMapElement?.textureFilename
     override val specularExponentBase: Float?
-        get() = material?.specularExponentMapList?.firstOrNull()?.valueModifierOptionList
-            ?.firstOrNull()?.values?.getOrNull(0)
+        get() = specularExponentMapElement?.valueModifierOptionElement?.values?.getOrNull(0)
     override val specularExponentGain: Float?
-        get() = material?.specularExponentMapList?.firstOrNull()?.valueModifierOptionList
-            ?.firstOrNull()?.values?.getOrNull(1)
-    override val dissolveMap: String?
-        get() = material?.dissolveMapList?.firstOrNull()?.textureFilename
-    override val displacementMap: String?
-        get() = material?.displacementMapList?.firstOrNull()?.textureFilename
+        get() = specularExponentMapElement?.valueModifierOptionElement?.values?.getOrNull(1)
+    override val dissolveMap: String? get() = dissolveMapElement?.textureFilename
+    override val displacementMap: String? get() = displacementMapElement?.textureFilename
     override val displacementGain: Float?
-        get() = material?.displacementMapList?.firstOrNull()?.valueModifierOptionList
-            ?.firstOrNull()?.values?.getOrNull(1)
-    override val stencilDecalMap: String?
-        get() = material?.stencilDecalMapList?.firstOrNull()?.textureFilename
-    override val roughnessMap: String?
-        get() = material?.roughnessMapList?.firstOrNull()?.textureFilename
-    override val metalnessMap: String?
-        get() = material?.metalnessMapList?.firstOrNull()?.textureFilename
-    override val normalMap: String?
-        get() = material?.normalMapList?.firstOrNull()?.textureFilename
-    override val bumpMap: String?
-        get() = material?.bumpMapList?.firstOrNull()?.textureFilename
+        get() = displacementMapElement?.valueModifierOptionElement?.values?.getOrNull(1)
+    override val stencilDecalMap: String? get() = stencilDecalMapElement?.textureFilename
+    override val roughnessMap: String? get() = roughnessMapElement?.textureFilename
+    override val metalnessMap: String? get() = metalnessMapElement?.textureFilename
+    override val normalMap: String? get() = normalMapElement?.textureFilename
+    override val bumpMap: String? get() = bumpMapElement?.textureFilename
     override val bumpMapMultiplier: Float?
         get() = material?.bumpMapList?.firstOrNull()?.bumpMultiplierOptionList?.firstOrNull()?.value
-    override val reflectionMap: String?
-        get() = material?.reflectionMapList?.firstOrNull()?.textureFilename
+    override val reflectionMap: String? get() = reflectionMapElement?.textureFilename
 
     override val texturePsiFiles: List<PsiFile>
         get() = material

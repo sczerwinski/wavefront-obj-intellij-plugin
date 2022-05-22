@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.settings
 
-enum class ShadingMethod {
-    WIREFRAME,
-    SOLID,
-    MATERIAL,
-    PBR;
+import com.intellij.util.xmlb.annotations.Attribute
+import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+
+data class MtlEditorSettingsState(
+    @field:Attribute var defaultPreviewMesh: MaterialPreviewMesh = MaterialPreviewMesh.DEFAULT,
+    @field:Attribute var defaultShadingMethod: ShadingMethod = ShadingMethod.MTL_DEFAULT,
+) {
 
     companion object {
-        val DEFAULT = SOLID
-        val MTL_DEFAULT = MATERIAL
+        val DEFAULT = MtlEditorSettingsState()
+    }
 
-        val materialValues: List<ShadingMethod> = listOf(MATERIAL, PBR)
+    interface Holder {
+        var mtlEditorSettings: MtlEditorSettingsState
     }
 }

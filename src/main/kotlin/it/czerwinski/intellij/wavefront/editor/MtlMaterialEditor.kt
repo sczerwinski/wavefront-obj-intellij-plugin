@@ -70,11 +70,17 @@ class MtlMaterialEditor(
         object : WavefrontObjSettingsState.SettingsChangedListener {
 
             override fun beforeSettingsChanged(newSettings: WavefrontObjSettingsState?) {
+                val newMtlEditorSettings = newSettings?.mtlEditorSettings
+                val oldMtlEditorSettings = WavefrontObjSettingsState.getInstance()?.mtlEditorSettings
                 val newPreviewSettings = newSettings?.objPreviewSettings
                 val oldPreviewSettings = WavefrontObjSettingsState.getInstance()?.objPreviewSettings
 
-                if (shadingMethod === oldPreviewSettings?.defaultShadingMethod) {
-                    shadingMethod = newPreviewSettings?.defaultShadingMethod ?: ShadingMethod.MTL_DEFAULT
+                if (previewMesh === oldMtlEditorSettings?.defaultPreviewMesh) {
+                    previewMesh = newMtlEditorSettings?.defaultPreviewMesh ?: MaterialPreviewMesh.DEFAULT
+                }
+
+                if (shadingMethod === oldMtlEditorSettings?.defaultShadingMethod) {
+                    shadingMethod = newMtlEditorSettings?.defaultShadingMethod ?: ShadingMethod.MTL_DEFAULT
                 }
 
                 if (environment === oldPreviewSettings?.defaultPBREnvironment) {
@@ -98,14 +104,18 @@ class MtlMaterialEditor(
     }
 
     private fun initializeFromSettings() {
-        val settings = WavefrontObjSettingsState.getInstance()?.objPreviewSettings
+        val settings = WavefrontObjSettingsState.getInstance()
+        val mtlEditorSettings = settings?.mtlEditorSettings
+        val objPreviewSettings = settings?.objPreviewSettings
 
-        shadingMethod = settings?.defaultShadingMethod ?: ShadingMethod.MTL_DEFAULT
-        environment = settings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
-        isCroppingTextures = settings?.cropTextures ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
+        previewMesh = mtlEditorSettings?.defaultPreviewMesh ?: MaterialPreviewMesh.DEFAULT
+        shadingMethod = mtlEditorSettings?.defaultShadingMethod ?: ShadingMethod.MTL_DEFAULT
 
-        if (settings != null) {
-            myComponent.previewSceneConfig = PreviewSceneConfig.fromObjPreviewSettingsState(settings)
+        environment = objPreviewSettings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
+        isCroppingTextures = objPreviewSettings?.cropTextures ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
+
+        if (objPreviewSettings != null) {
+            myComponent.previewSceneConfig = PreviewSceneConfig.fromObjPreviewSettingsState(objPreviewSettings)
         }
     }
 

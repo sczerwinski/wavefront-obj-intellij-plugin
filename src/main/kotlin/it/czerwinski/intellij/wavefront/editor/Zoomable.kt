@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor
 
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
-
-class ZUpVectorAction : UpVectorAction(UpVector.Z_UP)
+interface Zoomable {
+    fun zoomIn()
+    fun zoomOut()
+    fun zoomFit()
+}

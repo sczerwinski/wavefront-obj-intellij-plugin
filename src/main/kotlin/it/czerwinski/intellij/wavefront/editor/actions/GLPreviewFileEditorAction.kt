@@ -20,27 +20,23 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditor
-import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.util.NlsActions.ActionDescription
+import com.intellij.openapi.util.NlsActions.ActionText
 import it.czerwinski.intellij.common.editor.SplitEditor
-import it.czerwinski.intellij.wavefront.editor.Refreshable
+import it.czerwinski.intellij.wavefront.editor.GLPreviewEditor
+import javax.swing.Icon
 
-class RefreshAction : AnAction(), DumbAware {
+abstract class GLPreviewFileEditorAction(
+    @ActionText text: String? = null,
+    @ActionDescription description: String? = null,
+    icon: Icon? = null
+) : AnAction(text, description, icon) {
 
-    override fun update(event: AnActionEvent) {
-        val editor = findRefreshableFileEditor(event)
+    protected fun findGLPreviewFileEditor(event: AnActionEvent): GLPreviewEditor? =
+        findGLPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
-        event.presentation.isEnabled = editor != null
-    }
-
-    override fun actionPerformed(event: AnActionEvent) {
-        findRefreshableFileEditor(event)?.refresh()
-    }
-
-    private fun findRefreshableFileEditor(event: AnActionEvent): Refreshable? =
-        findRefreshableFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
-
-    private fun findRefreshableFileEditor(editor: FileEditor?): Refreshable? =
-        editor as? Refreshable ?: findSplitEditor(editor)?.previewEditor as? Refreshable
+    private fun findGLPreviewFileEditor(editor: FileEditor?): GLPreviewEditor? =
+        editor as? GLPreviewEditor ?: findSplitEditor(editor)?.previewEditor as? GLPreviewEditor
 
     private fun findSplitEditor(editor: FileEditor?): SplitEditor<*>? =
         editor as? SplitEditor<*> ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]

@@ -157,92 +157,149 @@
                 id="SplitEditor.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
             <action
-                    id="it.czerwinski.intellij.common.actions.SplitLayoutAction.TextOnly"
+                    id="SplitEditor.Toolbar.SplitLayoutAction.TextOnly"
                     class="it.czerwinski.intellij.common.actions.SplitLayoutAction$TextOnly"
                     icon="AllIcons.General.LayoutEditorOnly">
             </action>
             <action
-                    id="it.czerwinski.intellij.common.actions.SplitLayoutAction.TextAndPreview"
+                    id="SplitEditor.Toolbar.SplitLayoutAction.TextAndPreview"
                     class="it.czerwinski.intellij.common.actions.SplitLayoutAction$TextAndPreview"
                     icon="AllIcons.General.LayoutEditorPreview">
             </action>
             <action
-                    id="it.czerwinski.intellij.common.actions.SplitLayoutAction.PreviewOnly"
+                    id="SplitEditor.Toolbar.SplitLayoutAction.PreviewOnly"
                     class="it.czerwinski.intellij.common.actions.SplitLayoutAction$PreviewOnly"
                     icon="AllIcons.General.LayoutPreviewOnly">
             </action>
         </group>
         <!-- OBJ preview -->
         <group
-                id="ObjPreviewFileEditor.Toolbar"
+                id="ObjPreviewComponent.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.WireframeShadingMethodAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.WireframeShadingMethodAction"
+                    id="ObjPreviewComponent.Toolbar.ShadingMethodAction.Wireframe"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShadingMethodAction$Wireframe"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.WIREFRAME_SHADING_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.SolidShadingMethodAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.SolidShadingMethodAction"
+                    id="ObjPreviewComponent.Toolbar.ShadingMethodAction.Solid"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShadingMethodAction$Solid"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.SOLID_SHADING_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.MaterialShadingMethodAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.MaterialShadingMethodAction"
+                    id="ObjPreviewComponent.Toolbar.ShadingMethodAction.Material"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShadingMethodAction$Material"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.MATERIAL_SHADING_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.PBRShadingMethodAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.PBRShadingMethodAction"
+                    id="ObjPreviewComponent.Toolbar.ShadingMethodAction.PBR"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShadingMethodAction$PBR"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.PBR_SHADING_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.PBREnvironmentsComboBoxAction"
+                    id="ObjPreviewComponent.Toolbar.PBREnvironmentsComboBoxAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.PBREnvironmentsComboBoxAction"/>
             <separator/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ToggleCropTexturesAction"
+                    id="ObjPreviewComponent.Toolbar.ToggleCropTexturesAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ToggleCropTexturesAction"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.TOGGLE_CROP_TEXTURES_ACTION"/>
             <separator/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.XUpVectorAction"
+                    id="ObjPreviewComponent.Toolbar.UpVectorAction.X"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.UpVectorAction$X"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.X_UP_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.YUpVectorAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.YUpVectorAction"
+                    id="ObjPreviewComponent.Toolbar.UpVectorAction.Y"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.UpVectorAction$Y"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.Y_UP_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ZUpVectorAction"
-                    class="it.czerwinski.intellij.wavefront.editor.actions.ZUpVectorAction"
+                    id="ObjPreviewComponent.Toolbar.UpVectorAction.Z"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.UpVectorAction$Z"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.Z_UP_ACTION"/>
             <separator/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ToggleAxesAction"
+                    id="ObjPreviewComponent.Toolbar.ToggleAxesAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ToggleAxesAction"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.TOGGLE_AXES_ACTION"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ToggleGridAction"
+                    id="ObjPreviewComponent.Toolbar.ToggleGridAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ToggleGridAction"
                     icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.TOGGLE_GRID_ACTION"/>
             <separator/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
+                    id="ObjPreviewComponent.Toolbar.ZoomInAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
                     icon="AllIcons.General.ZoomIn"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
+                    id="ObjPreviewComponent.Toolbar.ZoomOutAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
                     icon="AllIcons.General.ZoomOut"/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
+                    id="ObjPreviewComponent.Toolbar.ZoomFitAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
                     icon="AllIcons.General.FitContent"/>
             <separator/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.RefreshAction"
+                    id="ObjPreviewComponent.Toolbar.RefreshAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.RefreshAction"
                     icon="AllIcons.Actions.Refresh"/>
             <separator/>
             <action
-                    id="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
+                    id="ObjPreviewComponent.Toolbar.ShowSettingsAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
+                    icon="AllIcons.General.Settings"/>
+        </group>
+        <!-- MTL material preview -->
+        <group
+                id="MtlMaterialPreviewComponent.Toolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.PreviewMeshAction.Cube"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PreviewMeshAction$Cube"
+                    icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.CUBE_MESH_ACTION"/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.PreviewMeshAction.Cylinder"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PreviewMeshAction$Cylinder"
+                    icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.CYLINDER_MESH_ACTION"/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.PreviewMeshAction.Sphere"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PreviewMeshAction$Sphere"
+                    icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.SPHERE_MESH_ACTION"/>
+            <separator/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ShadingMethodAction.Material"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShadingMethodAction$Material"
+                    icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.MATERIAL_SHADING_ACTION"/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ShadingMethodAction.PBR"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ShadingMethodAction$PBR"
+                    icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.PBR_SHADING_ACTION"/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.PBREnvironmentsComboBoxAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PBREnvironmentsComboBoxAction"/>
+            <separator/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ToggleCropTexturesAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ToggleCropTexturesAction"
+                    icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.TOGGLE_CROP_TEXTURES_ACTION"/>
+            <separator/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ZoomInAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomInAction"
+                    icon="AllIcons.General.ZoomIn"/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ZoomOutAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomOutAction"
+                    icon="AllIcons.General.ZoomOut"/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ZoomFitAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.ZoomFitAction"
+                    icon="AllIcons.General.FitContent"/>
+            <separator/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.RefreshAction"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.RefreshAction"
+                    icon="AllIcons.Actions.Refresh"/>
+            <separator/>
+            <action
+                    id="MtlMaterialPreviewComponent.Toolbar.ShowSettingsAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
                     icon="AllIcons.General.Settings"/>
         </group>

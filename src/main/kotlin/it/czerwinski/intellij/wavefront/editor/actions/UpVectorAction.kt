@@ -21,7 +21,7 @@ import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.project.DumbAware
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 
-abstract class UpVectorAction(
+sealed class UpVectorAction(
     private val upVector: UpVector
 ) : ObjPreviewFileEditorAction(), DumbAware, Toggleable {
 
@@ -43,4 +43,10 @@ abstract class UpVectorAction(
             Toggleable.setSelected(event.presentation, true)
         }
     }
+
+    class X : UpVectorAction(UpVector.X_UP)
+
+    class Y : UpVectorAction(UpVector.Y_UP)
+
+    class Z : UpVectorAction(UpVector.Z_UP)
 }

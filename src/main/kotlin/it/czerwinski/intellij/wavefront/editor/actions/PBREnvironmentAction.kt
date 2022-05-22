@@ -23,14 +23,13 @@ import com.intellij.openapi.util.NlsActions.ActionText
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
-import java.util.Locale
 
 class PBREnvironmentAction(
     private val environment: PBREnvironment
-) : ObjPreviewFileEditorAction(text = text(environment)), DumbAware, Toggleable {
+) : GLPreviewFileEditorAction(text = text(environment)), DumbAware, Toggleable {
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         event.presentation.isEnabled = editor?.shadingMethod === ShadingMethod.PBR
 
@@ -40,7 +39,7 @@ class PBREnvironmentAction(
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         editor?.environment = environment
     }
@@ -49,7 +48,7 @@ class PBREnvironmentAction(
 
         @ActionText
         fun text(environment: PBREnvironment): String = WavefrontObjBundle.message(
-            key = "action.${PBREnvironmentAction::class.java.name}.text.${environment.name.lowercase(Locale.ENGLISH)}"
+            key = "action.PBREnvironmentAction.text.${environment.name}"
         )
     }
 }

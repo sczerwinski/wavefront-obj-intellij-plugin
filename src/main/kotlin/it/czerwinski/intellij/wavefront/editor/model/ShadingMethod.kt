@@ -24,5 +24,6 @@ enum class ShadingMethod {
 
     companion object {
         val DEFAULT = SOLID
+        val MTL_DEFAULT = MATERIAL
     }
 }

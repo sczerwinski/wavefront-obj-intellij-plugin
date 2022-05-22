@@ -19,15 +19,15 @@ package it.czerwinski.intellij.wavefront.editor.actions
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAware
 
-class ZoomOutAction : ObjPreviewFileEditorAction(), DumbAware {
+class ZoomOutAction : ZoomableFileEditorAction(), DumbAware {
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findZoomableFileEditor(event)
 
         event.presentation.isEnabled = editor != null
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        findObjPreviewFileEditor(event)?.zoomOut()
+        findZoomableFileEditor(event)?.zoomOut()
     }
 }

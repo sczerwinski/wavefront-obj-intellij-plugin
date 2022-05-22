@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor
 
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-class WireframeShadingMethodAction : ShadingMethodAction(ShadingMethod.WIREFRAME)
+interface GLPreviewEditor : Zoomable, Refreshable {
+    var shadingMethod: ShadingMethod
+    var environment: PBREnvironment
+    var isCroppingTextures: Boolean
+    fun toggleCropTextures()
+}

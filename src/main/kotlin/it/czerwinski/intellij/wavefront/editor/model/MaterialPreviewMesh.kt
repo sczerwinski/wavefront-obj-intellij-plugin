@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor.model
 
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
+enum class MaterialPreviewMesh {
+    CUBE,
+    CYLINDER,
+    SPHERE;
 
-class XUpVectorAction : UpVectorAction(UpVector.X_UP)
+    companion object {
+        val DEFAULT = SPHERE
+    }
+}

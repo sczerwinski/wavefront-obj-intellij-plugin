@@ -21,10 +21,10 @@ import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.project.DumbAware
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-class ToggleCropTexturesAction : ObjPreviewFileEditorAction(), DumbAware, Toggleable {
+class ToggleCropTexturesAction : GLPreviewFileEditorAction(), DumbAware, Toggleable {
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         event.presentation.isEnabled = editor?.shadingMethod in listOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
 
@@ -34,7 +34,7 @@ class ToggleCropTexturesAction : ObjPreviewFileEditorAction(), DumbAware, Toggle
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         if (editor != null) {
             Toggleable.setSelected(event.presentation, !Toggleable.isSelected(event.presentation))

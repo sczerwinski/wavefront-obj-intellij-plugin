@@ -35,23 +35,23 @@ import javax.swing.JComponent
 class ObjPreviewEditor(
     private val project: Project,
     virtualFile: VirtualFile
-) : PreviewEditor() {
+) : PreviewEditor(), GLPreviewEditor {
 
     private val myComponent: ObjPreviewComponent = ObjPreviewComponent(project, virtualFile, this)
 
-    var shadingMethod: ShadingMethod
+    override var shadingMethod: ShadingMethod
         get() = myComponent.shadingMethod
         set(value) {
             myComponent.shadingMethod = value
         }
 
-    var environment: PBREnvironment
+    override var environment: PBREnvironment
         get() = myComponent.environment
         set(value) {
             myComponent.environment = value
         }
 
-    var isCroppingTextures: Boolean
+    override var isCroppingTextures: Boolean
         get() = myComponent.isCroppingTextures
         set(value) {
             myComponent.isCroppingTextures = value
@@ -162,7 +162,7 @@ class ObjPreviewEditor(
         Disposer.dispose(myComponent)
     }
 
-    fun toggleCropTextures() {
+    override fun toggleCropTextures() {
         myComponent.toggleCropTextures()
     }
 
@@ -174,19 +174,19 @@ class ObjPreviewEditor(
         myComponent.toggleGrid()
     }
 
-    fun zoomIn() {
+    override fun zoomIn() {
         myComponent.zoomIn()
     }
 
-    fun zoomOut() {
+    override fun zoomOut() {
         myComponent.zoomOut()
     }
 
-    fun zoomFit() {
+    override fun zoomFit() {
         myComponent.zoomFit()
     }
 
-    fun refresh() {
+    override fun refresh() {
         myComponent.refresh()
     }
 }

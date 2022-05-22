@@ -24,57 +24,44 @@ import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
-import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.normalize
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.gl.meshes.ModelMeshesManager
+import it.czerwinski.intellij.wavefront.editor.gl.meshes.MtlPreviewMeshesManager
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.MaterialShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.PBRShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.TexturedWireframeShader
-import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
-import it.czerwinski.intellij.wavefront.editor.model.GLModel
+import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import java.awt.Color
-import java.util.concurrent.atomic.AtomicBoolean
 
-/**
- * 3D preview scene for an OBJ file.
- */
-class ObjPreviewScene(
+class MtlPreviewScene(
     profile: GLProfile,
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
 ) : PreviewScene(profile, animatorControl, errorLog) {
 
-    var model: GLModel? = null
+    var material: MtlMaterialElement? = null
         set(value) {
             field = value
-            modelChanged.set(true)
             runReadAction {
-                value?.materials?.forEach { material ->
-                    material?.ambientColorMap?.let { prepareTexture(material.project, it) }
-                    material?.diffuseColorMap?.let { prepareTexture(material.project, it) }
-                    material?.specularColorMap?.let { prepareTexture(material.project, it) }
-                    material?.emissionColorMap?.let { prepareTexture(material.project, it) }
-                    material?.specularExponentMap?.let { prepareTexture(material.project, it) }
-                    material?.roughnessMap?.let { prepareTexture(material.project, it) }
-                    material?.metalnessMap?.let { prepareTexture(material.project, it) }
-                    material?.normalMap?.let { prepareTexture(material.project, it) }
-                    material?.bumpMap?.let { prepareTexture(material.project, it) }
-                    material?.displacementMap?.let { prepareTexture(material.project, it) }
-                }
+                value?.ambientColorMap?.let { prepareTexture(value.project, it) }
+                value?.diffuseColorMap?.let { prepareTexture(value.project, it) }
+                value?.specularColorMap?.let { prepareTexture(value.project, it) }
+                value?.emissionColorMap?.let { prepareTexture(value.project, it) }
+                value?.specularExponentMap?.let { prepareTexture(value.project, it) }
+                value?.roughnessMap?.let { prepareTexture(value.project, it) }
+                value?.metalnessMap?.let { prepareTexture(value.project, it) }
+                value?.normalMap?.let { prepareTexture(value.project, it) }
+                value?.bumpMap?.let { prepareTexture(value.project, it) }
+                value?.displacementMap?.let { prepareTexture(value.project, it) }
             }
             requestRender()
         }
 
-    private val modelChanged: AtomicBoolean = AtomicBoolean(false)
-
-    override val modelSize: Float? get() = model?.size
+    override val modelSize: Float = MODEL_SIZE
 
     var cameraModel: GLCameraModel? = null
         set(value) {
@@ -82,10 +69,15 @@ class ObjPreviewScene(
             value?.let { recalculateCamera(it) }
         }
 
-    var shadingMethod: ShadingMethod = ShadingMethod.DEFAULT
+    var previewMesh: MaterialPreviewMesh = MaterialPreviewMesh.DEFAULT
         set(value) {
             field = value
-            modelChanged.set(true)
+            requestRender()
+        }
+
+    var shadingMethod: ShadingMethod = ShadingMethod.MTL_DEFAULT
+        set(value) {
+            field = value
             requestRender()
         }
 
@@ -95,15 +87,32 @@ class ObjPreviewScene(
             requestRender()
         }
 
-    override val upVector: UpVector get() = cameraModel?.upVector ?: UpVector.DEFAULT
+    override val upVector: UpVector = UpVector.Z_UP
 
     override val showEnvironment: Boolean get() = shadingMethod == ShadingMethod.PBR
 
-    private val modelMeshesManager = ModelMeshesManager()
+    private val meshesManager = MtlPreviewMeshesManager()
+
+    private val mesh: Mesh? get() = meshesManager.getMesh(previewMesh)
+
+    init {
+        try {
+            meshesManager.prepare()
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.fileTypes.mtl.material.preview.loadMeshes.error"),
+                expected
+            )
+        }
+    }
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
-            camera = TargetCamera(upVector.modelMatrix.toMat3() * Vec3(x, y, z), Vec3.nullVector, Vec3.unitZ)
+            camera = TargetCamera(
+                upVector.modelMatrix.toMat3() * graphics.glimpse.types.Vec3(x, y, z),
+                graphics.glimpse.types.Vec3.nullVector,
+                graphics.glimpse.types.Vec3.unitZ
+            )
             lens = PerspectiveLens(fovY(aspect), aspect, near, far)
         }
         requestRender()
@@ -111,15 +120,15 @@ class ObjPreviewScene(
 
     override fun initialize(gl: GlimpseAdapter) {
         super.initialize(gl)
-        createModelMeshes(gl)
+        createMeshes(gl)
     }
 
-    private fun createModelMeshes(gl: GlimpseAdapter) {
+    private fun createMeshes(gl: GlimpseAdapter) {
         try {
-            modelMeshesManager.initialize(gl, model ?: return, shadingMethod)
+            meshesManager.initialize(gl)
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createModelMeshes.error"),
+                WavefrontObjBundle.message("editor.fileTypes.mtl.material.preview.createMeshes.error"),
                 expected
             )
         }
@@ -131,59 +140,23 @@ class ObjPreviewScene(
 
     override fun onResizeError(gl: GlimpseAdapter, error: Throwable) {
         errorLog.addError(
-            WavefrontObjBundle.message("editor.fileTypes.obj.preview.onResize.error"),
+            WavefrontObjBundle.message("editor.fileTypes.mtl.material.preview.onResize.error"),
             error
         )
     }
 
     override fun renderModel(gl: GlimpseAdapter) {
+        val facesMesh = mesh ?: return
         gl.glCullFace(FaceCullingMode.BACK)
-        if (modelChanged.getAndSet(false)) {
-            createModelMeshes(gl)
-        }
-        modelMeshesManager.facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
-        modelMeshesManager.linesMeshes.forEachIndexed { index, mesh -> renderLines(gl, mesh, index) }
-        modelMeshesManager.pointsMeshes.forEach { renderPoints(gl, it) }
-    }
-
-    private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod, index: Int) {
         when (shadingMethod) {
-            ShadingMethod.WIREFRAME -> renderFacesWireframe(gl, facesMesh)
-            ShadingMethod.SOLID -> renderFacesSolid(gl, facesMesh)
-            ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh, index)
-            ShadingMethod.PBR -> renderFacesPBR(gl, facesMesh, index)
+            ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh)
+            ShadingMethod.PBR -> renderFacesPBR(gl, facesMesh)
+            else -> throw IllegalStateException("Material preview requires MATERIAL or PBR shading method")
         }
-    }
-
-    private fun renderFacesWireframe(gl: GlimpseAdapter, facesMesh: Mesh) {
-        programExecutorsManager.renderWireframe(
-            gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
-                color = Vec4(PreviewColors.COLOR_FACE)
-            ),
-            facesMesh
-        )
-    }
-
-    private fun renderFacesSolid(gl: GlimpseAdapter, facesMesh: Mesh) {
-        programExecutorsManager.renderSolid(
-            gl,
-            SolidShader(
-                projectionMatrix = lens.projectionMatrix,
-                viewMatrix = camera.viewMatrix,
-                modelMatrix = upVector.modelMatrix,
-                normalMatrix = upVector.normalMatrix.toMat3(),
-                cameraPosition = camera.eye,
-                color = Vec3(PreviewColors.COLOR_FACE)
-            ),
-            facesMesh
-        )
     }
 
     @Suppress("ComplexMethod")
-    private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
-        val material: MtlMaterial? = model?.materials?.getOrNull(index)
+    private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh) {
         val ambientTexture = material?.ambientColorMap?.let { getTexture(gl, it) }
         val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
         val emissionTexture = material?.emissionColorMap?.let { getTexture(gl, it) }
@@ -195,9 +168,10 @@ class ObjPreviewScene(
         val specularExponentTexture = material?.specularExponentMap?.let { getTexture(gl, it) }
         val bumpTexture = material?.bumpMap?.let { getTexture(gl, it) }
 
-        val fallbackEmissionColor = Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor =
+            graphics.glimpse.types.Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
-        val fallbackColor = Vec3(color = Color.WHITE)
+        val fallbackColor = graphics.glimpse.types.Vec3(color = Color.WHITE)
 
         programExecutorsManager.renderMaterial(
             gl,
@@ -231,9 +205,7 @@ class ObjPreviewScene(
     }
 
     @Suppress("ComplexMethod")
-    private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
-        val material: MtlMaterial? = model?.materials?.getOrNull(index)
-
+    private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh) {
         val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
         val emissionTexture = material?.emissionColorMap?.let { getTexture(gl, it) }
         val roughnessTexture = material?.roughnessMap?.let { getTexture(gl, it) }
@@ -243,11 +215,12 @@ class ObjPreviewScene(
         val specularExponentTexture = material?.specularExponentMap?.let { getTexture(gl, it) }
         val bumpTexture = material?.bumpMap?.let { getTexture(gl, it) }
 
-        val fallbackEmissionColor = Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor =
+            graphics.glimpse.types.Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
 
         val cameraDirection = normalize(camera.eye)
-        val cameraUpVector = normalize(vector = Vec3.unitZ - cameraDirection * cameraDirection.z)
+        val cameraUpVector = normalize(vector = graphics.glimpse.types.Vec3.unitZ - cameraDirection * cameraDirection.z)
         val cameraLeftVector = normalize(vector = cameraDirection cross cameraUpVector)
         val lightPosition = (cameraDirection + cameraUpVector + cameraLeftVector) * CAMERA_DISTANCE
 
@@ -260,7 +233,7 @@ class ObjPreviewScene(
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
                 lightPosition = lightPosition,
-                diffuseColor = material?.diffuseColorVector ?: Vec3(color = Color.WHITE),
+                diffuseColor = material?.diffuseColorVector ?: graphics.glimpse.types.Vec3(color = Color.WHITE),
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,
@@ -280,73 +253,22 @@ class ObjPreviewScene(
         )
     }
 
-    private fun renderLines(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
-        when (shadingMethod) {
-            ShadingMethod.WIREFRAME,
-            ShadingMethod.SOLID -> renderLinesWireframe(gl, linesMesh)
-            ShadingMethod.MATERIAL,
-            ShadingMethod.PBR -> renderLinesTextured(gl, linesMesh, index)
-        }
-    }
-
-    private fun renderLinesWireframe(gl: GlimpseAdapter, linesMesh: Mesh) {
-        gl.glLineWidth(config.lineWidth)
-        programExecutorsManager.renderWireframe(
-            gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
-                color = Vec4(PreviewColors.COLOR_LINE)
-            ),
-            linesMesh
-        )
-    }
-
-    private fun renderLinesTextured(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
-        val material: MtlMaterial? = model?.materials?.getOrNull(index)
-        val ambientTexture = material?.ambientColorMap?.let { getTexture(gl, it) }
-        val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
-
-        val color = material?.diffuseColorVector ?: material?.ambientColorVector ?: Vec3(color = Color.WHITE)
-
-        gl.glLineWidth(config.lineWidth)
-        programExecutorsManager.renderTexturedWireframe(
-            gl,
-            TexturedWireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
-                color = color.toVec4(w = 1f),
-                texture = diffuseTexture ?: ambientTexture ?: fallbackTexture
-            ),
-            linesMesh
-        )
-    }
-
-    private fun renderPoints(gl: GlimpseAdapter, pointsMesh: Mesh) {
-        programExecutorsManager.renderWireframe(
-            gl,
-            WireframeShader(
-                mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
-                pointSize = config.pointSize,
-                color = Vec4(PreviewColors.COLOR_POINT)
-            ),
-            pointsMesh
-        )
-    }
-
     override fun onRenderError(gl: GlimpseAdapter, error: Throwable) {
         errorLog.addError(
-            WavefrontObjBundle.message("editor.fileTypes.obj.preview.onRender.error"),
+            WavefrontObjBundle.message("editor.fileTypes.mtl.material.preview.onRender.error"),
             error
         )
     }
 
     override fun dispose(gl: GlimpseAdapter) {
         super.dispose(gl)
-        modelMeshesManager.dispose(gl)
+        meshesManager.dispose(gl)
     }
 
     override fun onDestroyError(gl: GlimpseAdapter, expected: Throwable) = Unit
 
     companion object {
+        const val MODEL_SIZE = 1f
         private const val CAMERA_DISTANCE = 10f
     }
 }

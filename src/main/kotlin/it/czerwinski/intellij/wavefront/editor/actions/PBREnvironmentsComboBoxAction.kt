@@ -22,8 +22,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.actionSystem.ex.ComboBoxAction
 import com.intellij.openapi.fileEditor.FileEditor
 import it.czerwinski.intellij.common.editor.SplitEditor
-import it.czerwinski.intellij.wavefront.editor.ObjPreviewEditor
-import it.czerwinski.intellij.wavefront.editor.ObjSplitEditor
+import it.czerwinski.intellij.wavefront.editor.GLPreviewEditor
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import javax.swing.JComponent
@@ -36,7 +35,7 @@ class PBREnvironmentsComboBoxAction : ComboBoxAction() {
     )
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         event.presentation.isEnabled = editor?.shadingMethod === ShadingMethod.PBR
 
@@ -45,14 +44,12 @@ class PBREnvironmentsComboBoxAction : ComboBoxAction() {
         }
     }
 
-    private fun findObjPreviewFileEditor(event: AnActionEvent): ObjPreviewEditor? =
-        findObjPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
+    private fun findGLPreviewFileEditor(event: AnActionEvent): GLPreviewEditor? =
+        findGLPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
-    private fun findObjPreviewFileEditor(editor: FileEditor?): ObjPreviewEditor? =
-        if (editor is ObjPreviewEditor) editor
-        else findObjSplitEditor(editor)?.previewEditor
+    private fun findGLPreviewFileEditor(editor: FileEditor?): GLPreviewEditor? =
+        editor as? GLPreviewEditor ?: findSplitEditor(editor)?.previewEditor as? GLPreviewEditor
 
-    private fun findObjSplitEditor(editor: FileEditor?): ObjSplitEditor? =
-        if (editor is ObjSplitEditor) editor
-        else SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? ObjSplitEditor
+    private fun findSplitEditor(editor: FileEditor?): SplitEditor<*>? =
+        editor as? SplitEditor<*> ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
 }

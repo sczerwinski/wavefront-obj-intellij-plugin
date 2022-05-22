@@ -20,13 +20,14 @@ import graphics.glimpse.types.Angle
 
 object GLCameraModelFactory {
 
-    private const val DISTANCE = 5f
+    const val DEFAULT_DISTANCE = 5f
+
     private val longitude = Angle.fromDeg(deg = 150f)
     private val latitude = Angle.fromDeg(deg = 30f)
     private val fov = Angle.fromDeg(deg = 50f)
 
     fun createDefault(): GLCameraModel = GLCameraModel(
-        distance = DISTANCE,
+        distance = DEFAULT_DISTANCE,
         longitude = longitude,
         latitude = latitude,
         fov = fov,

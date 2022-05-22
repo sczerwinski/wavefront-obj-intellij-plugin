@@ -137,6 +137,9 @@ abstract class PreviewScene(
     private lateinit var fontTexture: Texture
     private lateinit var boldFontTexture: Texture
 
+    protected lateinit var fallbackTexture: Texture
+    protected lateinit var fallbackNormalmap: Texture
+
     private lateinit var environmentMesh: Mesh
     private lateinit var axisMesh: Mesh
     private lateinit var axisConeMesh: Mesh
@@ -154,6 +157,7 @@ abstract class PreviewScene(
     override fun initialize(gl: GlimpseAdapter) {
         createShaders(gl)
         createFontTexture(gl)
+        createFallbackTextures(gl)
         createAxesMeshes(gl)
         createGridMeshes(gl)
     }
@@ -195,7 +199,24 @@ abstract class PreviewScene(
             boldFontTexture = fontTextures.last()
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createFontTexture.error"),
+                WavefrontObjBundle.message("editor.common.preview.createFontTexture.error"),
+                expected
+            )
+        }
+    }
+
+    private fun createFallbackTextures(gl: GlimpseAdapter) {
+        try {
+            val textures = Texture.Builder.getInstance(gl)
+                .addTexture(TextureResources.fallbackTextureImageSource)
+                .addTexture(TextureResources.fallbackNormalmapImageSource)
+                .generateMipmaps()
+                .build()
+            fallbackTexture = textures.first()
+            fallbackNormalmap = textures.last()
+        } catch (expected: Throwable) {
+            errorLog.addError(
+                WavefrontObjBundle.message("editor.common.preview.createFallbackTextures.error"),
                 expected
             )
         }
@@ -211,7 +232,7 @@ abstract class PreviewScene(
             axisZLabelMesh = TextMeshFactory.createText(gl, AXIS_Z_LABEL)
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createAxesMeshes.error"),
+                WavefrontObjBundle.message("editor.common.preview.createAxesMeshes.error"),
                 expected
             )
         }
@@ -223,7 +244,7 @@ abstract class PreviewScene(
             fineGridMesh = GridMeshFactory.createFineGrid(gl)
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createGridMeshes.error"),
+                WavefrontObjBundle.message("editor.common.preview.createGridMeshes.error"),
                 expected
             )
         }
@@ -330,7 +351,9 @@ abstract class PreviewScene(
         axisConeMesh.dispose(gl)
         gridMesh.dispose(gl)
         fineGridMesh.dispose(gl)
-        for (texture in environmentTextures + radianceTextures + fontTexture + boldFontTexture) {
+        val textures =
+            environmentTextures + radianceTextures + fontTexture + boldFontTexture + fallbackTexture + fallbackNormalmap
+        for (texture in textures) {
             texture.dispose(gl)
         }
         programExecutorsManager.dispose(gl)

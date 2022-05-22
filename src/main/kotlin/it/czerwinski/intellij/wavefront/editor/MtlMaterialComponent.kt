@@ -19,18 +19,21 @@ package it.czerwinski.intellij.wavefront.editor
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
-import com.intellij.ui.components.JBLabel
-import com.intellij.ui.components.JBLoadingPanel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.ui.table.JBTable
 import it.czerwinski.intellij.common.ui.EditorSplitter
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
+import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
+import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialComboBoxModel
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialListCellRenderer
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTableCellRenderer
@@ -38,8 +41,6 @@ import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTableModel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import java.awt.BorderLayout
-import java.awt.Color
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
@@ -48,19 +49,49 @@ import javax.swing.table.TableCellRenderer
 class MtlMaterialComponent(
     private val project: Project,
     private val file: VirtualFile,
-    editor: MtlMaterialEditor
-) : JBLoadingPanel(BorderLayout(), editor), Disposable {
+    parent: Disposable
+) : JPanel(BorderLayout()), Zoomable, Refreshable, Disposable {
 
-    private val isInitialized = AtomicBoolean(false)
-
-    private var psiTreeChangeListener: MtlMaterialComponent.MyPsiTreeChangeListener? = null
+    private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
 
     private var myMtlFile: MtlFile? = null
+
+    private val myMaterialPreviewComponent = MtlMaterialPreviewComponent(project, parent)
 
     private val myMaterialComboBoxModel = MaterialComboBoxModel(emptyList())
     private val myMaterialPropertiesTableModel = MaterialPropertiesTableModel()
 
     val material: MtlMaterialElement? get() = myMaterialComboBoxModel.selectedItem as? MtlMaterialElement
+
+    var previewMesh: MaterialPreviewMesh
+        get() = myMaterialPreviewComponent.previewMesh
+        set(value) {
+            myMaterialPreviewComponent.previewMesh = value
+        }
+
+    var shadingMethod: ShadingMethod
+        get() = myMaterialPreviewComponent.shadingMethod
+        set(value) {
+            myMaterialPreviewComponent.shadingMethod = value
+        }
+
+    var environment: PBREnvironment
+        get() = myMaterialPreviewComponent.environment
+        set(value) {
+            myMaterialPreviewComponent.environment = value
+        }
+
+    var isCroppingTextures: Boolean
+        get() = myMaterialPreviewComponent.isCroppingTextures
+        set(value) {
+            myMaterialPreviewComponent.isCroppingTextures = value
+        }
+
+    var previewSceneConfig: PreviewSceneConfig
+        get() = myMaterialPreviewComponent.previewSceneConfig
+        set(value) {
+            myMaterialPreviewComponent.previewSceneConfig = value
+        }
 
     init {
         myMaterialComboBoxModel.addListDataListener(
@@ -72,6 +103,7 @@ class MtlMaterialComponent(
 
                 override fun contentsChanged(e: ListDataEvent?) {
                     myMaterialPropertiesTableModel.updateMaterial(material)
+                    myMaterialPreviewComponent.updateMaterial(material)
                 }
             }
         )
@@ -85,10 +117,7 @@ class MtlMaterialComponent(
 
         val splitter = EditorSplitter(vertical = true)
         splitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
-        splitter.firstComponent = JPanel(BorderLayout()).apply {
-            background = Color.BLACK
-            add (JBLabel("TODO: Preview Placeholder"))
-        }
+        splitter.firstComponent = myMaterialPreviewComponent
         splitter.secondComponent = JBScrollPane(
             object : JBTable(myMaterialPropertiesTableModel) {
                 override fun getCellRenderer(row: Int, column: Int): TableCellRenderer =
@@ -99,20 +128,10 @@ class MtlMaterialComponent(
         add(splitter, BorderLayout.CENTER)
     }
 
-    private fun updateMtlFile(mtlFile: MtlFile?) {
-        runReadAction {
-            myMtlFile = mtlFile
-            myMaterialComboBoxModel.updateMaterials(mtlFile?.materials.orEmpty())
-        }
-    }
-
     fun initialize() {
-        if (project.isInitialized && isInitialized.compareAndSet(false, true)) {
-            try {
-                initializeMtlFile()
-            } catch (expected: Throwable) {
-                // TODO: Handle errors
-            }
+        if (project.isInitialized) {
+            initializeMtlFile()
+            myMaterialPreviewComponent.initialize()
         }
     }
 
@@ -127,8 +146,35 @@ class MtlMaterialComponent(
         updateMtlFile(mtlFile)
     }
 
+    private fun updateMtlFile(mtlFile: MtlFile?) {
+        runReadAction {
+            myMtlFile = mtlFile
+            myMaterialComboBoxModel.updateMaterials(mtlFile?.materials.orEmpty())
+        }
+    }
+
+    fun toggleCropTextures() {
+        isCroppingTextures = !isCroppingTextures
+    }
+
+    override fun zoomIn() {
+        myMaterialPreviewComponent.zoomIn()
+    }
+
+    override fun zoomOut() {
+        myMaterialPreviewComponent.zoomOut()
+    }
+
+    override fun zoomFit() {
+        myMaterialPreviewComponent.zoomFit()
+    }
+
+    override fun refresh() {
+        myMaterialPreviewComponent.refresh()
+    }
+
     override fun dispose() {
-        // TODO: Dispose preview
+        Disposer.dispose(myMaterialPreviewComponent)
     }
 
     private inner class MyPsiTreeChangeListener(private val file: MtlFile) : PsiTreeChangeAdapter() {

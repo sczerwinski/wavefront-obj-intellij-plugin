@@ -61,7 +61,7 @@ class ProgramExecutorsManager(private val errorLog: ErrorLog) {
             createPrograms(gl, shaderQuality)
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createShaders.error"),
+                WavefrontObjBundle.message("editor.common.preview.createShaders.error"),
                 expected
             )
         }

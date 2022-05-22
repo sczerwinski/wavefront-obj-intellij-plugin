@@ -21,6 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import it.czerwinski.intellij.wavefront.lang.MtlFileType
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
+import java.awt.Color
 
 object MtlElementFactory {
 
@@ -32,14 +33,49 @@ object MtlElementFactory {
     fun createMaterialIdentifier(project: Project, name: String): MtlMaterialIdentifier =
         createMaterial(project, name).getChildrenOfType<MtlMaterialIdentifier>().single()
 
-    fun createColorElement(project: Project, colorComponents: FloatArray): MtlColorElement {
-        val file = createFile(project, text = "newmtl temp\n\tKd ${colorComponents.joinToString(separator = " ")}")
+    fun createColorElement(project: Project, color: Color): MtlColorElement =
+        createColorElement(project, colorKeyword = "Kd", color)
+
+    fun createColorElement(project: Project, colorKeyword: String, color: Color): MtlColorElement {
+        val colorComponents = FloatArray(size = 3)
+        color.getRGBColorComponents(colorComponents)
+
+        val file = createFile(
+            project,
+            text = "newmtl temp\n$colorKeyword ${colorComponents.joinToString(separator = " ")}"
+        )
         return (file.firstChild as MtlMaterial).getChildrenOfType<MtlColorElement>().single()
     }
 
-    fun createTextureElement(project: Project, name: String): MtlTextureElement {
-        val file = createFile(project, text = "newmtl temp\n\tbump $name")
+    fun createIlluminationValueElement(
+        project: Project,
+        illumination: MtlIlluminationValueElement.Illumination
+    ): MtlIlluminationValueElement {
+        val file = createFile(project, text = "newmtl temp\nillum ${illumination.ordinal}")
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlIlluminationValueElement>().single()
+    }
+
+    fun createFloatValueElement(project: Project, value: Float): MtlFloatValueElement =
+        createFloatValueElement(project, floatValueKeyword = "d", value)
+
+    fun createFloatValueElement(project: Project, floatValueKeyword: String, value: Float): MtlFloatValueElement {
+        val file = createFile(project, text = "newmtl temp\n$floatValueKeyword $value")
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlFloatValueElement>().single()
+    }
+
+    fun createTextureElement(project: Project, filename: String): MtlTextureElement =
+        createTextureElement(project, textureKeyword = "bump", filename)
+
+    fun createTextureElement(project: Project, textureKeyword: String, filename: String): MtlTextureElement {
+        val file = createFile(project, text = "newmtl temp\n$textureKeyword $filename")
         return (file.firstChild as MtlMaterial).getChildrenOfType<MtlTextureElement>().single()
+    }
+
+    fun createValueModifierOption(project: Project, base: Float = 0f, gain: Float = 1f): MtlValueModifierOption {
+        val file = createFile(project, text = "newmtl temp\ndisp -mm $base $gain filename.png")
+        return (file.firstChild as MtlMaterial)
+            .getChildrenOfType<MtlTextureElement>().single()
+            .getChildrenOfType<MtlValueModifierOption>().single()
     }
 
     fun createCRLF(project: Project): PsiElement {

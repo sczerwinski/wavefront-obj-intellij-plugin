@@ -14,15 +14,29 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.common.ui
 
-import com.intellij.psi.PsiElement
+import com.intellij.ui.components.JBLabel
+import it.czerwinski.intellij.wavefront.lang.ColorIcon
+import java.awt.Color
 
-interface MtlFloatVectorValueElement : PsiElement {
-    val values: List<Float?>
-    val base: Float?
-    val gain: Float?
+class ColorLabel(color: Color?) : JBLabel() {
+
+    private var myColor: Color? = null
+
+    var color: Color?
+        get() = myColor
+        set(value) {
+            updateColor(value)
+        }
+
+    init {
+        updateColor(color)
+    }
+
+    private fun updateColor(value: Color?) {
+        myColor = value
+        icon = value?.let { ColorIcon(it) }
+        text = color?.rgb?.toUInt()?.toString(radix = 16).orEmpty()
+    }
 }
-
-val MtlFloatVectorValueElement.valuesString: String
-    get() = values.joinToString(prefix = "[", separator = " ", postfix = "]")

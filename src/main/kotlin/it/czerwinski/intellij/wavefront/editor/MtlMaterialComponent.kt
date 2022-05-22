@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
@@ -27,7 +28,6 @@ import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.dsl.builder.panel
-import com.intellij.ui.table.JBTable
 import it.czerwinski.intellij.common.ui.EditorSplitter
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
@@ -36,7 +36,7 @@ import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialComboBoxModel
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialListCellRenderer
-import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTableCellRenderer
+import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTable
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTableModel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
@@ -44,19 +44,18 @@ import java.awt.BorderLayout
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
-import javax.swing.table.TableCellRenderer
 
 class MtlMaterialComponent(
     private val project: Project,
     private val file: VirtualFile,
-    parent: Disposable
+    editor: FileEditor
 ) : JPanel(BorderLayout()), Zoomable, Refreshable, Disposable {
 
     private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
 
     private var myMtlFile: MtlFile? = null
 
-    private val myMaterialPreviewComponent = MtlMaterialPreviewComponent(project, parent)
+    private val myMaterialPreviewComponent = MtlMaterialPreviewComponent(project, editor)
 
     private val myMaterialComboBoxModel = MaterialComboBoxModel(emptyList())
     private val myMaterialPropertiesTableModel = MaterialPropertiesTableModel()
@@ -119,10 +118,7 @@ class MtlMaterialComponent(
         splitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
         splitter.firstComponent = myMaterialPreviewComponent
         splitter.secondComponent = JBScrollPane(
-            object : JBTable(myMaterialPropertiesTableModel) {
-                override fun getCellRenderer(row: Int, column: Int): TableCellRenderer =
-                    MaterialPropertiesTableCellRenderer()
-            }
+            MaterialPropertiesTable(myMaterialPropertiesTableModel, editor = editor)
         )
 
         add(splitter, BorderLayout.CENTER)

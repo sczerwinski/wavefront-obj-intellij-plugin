@@ -82,14 +82,11 @@ abstract class MtlMaterialElementImpl(
     override val specularColorMap: String? get() = specularColorMapElement?.textureFilename
     override val emissionColorMap: String? get() = emissionColorMapElement?.textureFilename
     override val specularExponentMap: String? get() = specularExponentMapElement?.textureFilename
-    override val specularExponentBase: Float?
-        get() = specularExponentMapElement?.valueModifierOptionElement?.values?.getOrNull(0)
-    override val specularExponentGain: Float?
-        get() = specularExponentMapElement?.valueModifierOptionElement?.values?.getOrNull(1)
+    override val specularExponentBase: Float? get() = specularExponentMapElement?.valueModifierOptionElement?.base
+    override val specularExponentGain: Float? get() = specularExponentMapElement?.valueModifierOptionElement?.gain
     override val dissolveMap: String? get() = dissolveMapElement?.textureFilename
     override val displacementMap: String? get() = displacementMapElement?.textureFilename
-    override val displacementGain: Float?
-        get() = displacementMapElement?.valueModifierOptionElement?.values?.getOrNull(1)
+    override val displacementGain: Float? get() = displacementMapElement?.valueModifierOptionElement?.gain
     override val stencilDecalMap: String? get() = stencilDecalMapElement?.textureFilename
     override val roughnessMap: String? get() = roughnessMapElement?.textureFilename
     override val metalnessMap: String? get() = metalnessMapElement?.textureFilename

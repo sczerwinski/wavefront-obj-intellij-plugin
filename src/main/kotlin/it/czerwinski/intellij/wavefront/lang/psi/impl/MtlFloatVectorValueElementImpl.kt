@@ -30,4 +30,15 @@ abstract class MtlFloatVectorValueElementImpl(
 
     override val values: List<Float?>
         get() = valuesNodes.map { it.text.toFloatOrNull() }
+
+    override val base: Float?
+        get() = values.getOrNull(VALUE_INDEX_BASE)
+
+    override val gain: Float?
+        get() = values.getOrNull(VALUE_INDEX_GAIN)
+
+    companion object {
+        const val VALUE_INDEX_BASE = 0
+        const val VALUE_INDEX_GAIN = 1
+    }
 }

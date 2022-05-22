@@ -16,8 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.editor.ui
 
-import com.intellij.ui.ColorPanel
 import com.intellij.ui.components.JBLabel
+import it.czerwinski.intellij.common.ui.ColorLabel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import java.awt.Color
 import java.awt.Component
@@ -36,15 +36,14 @@ class MaterialPropertiesTableCellRenderer : TableCellRenderer {
         row: Int,
         column: Int
     ): Component = when (value) {
-        is String -> label(value)
-        is Float -> label(value.toString(), horizontalAlignment = SwingConstants.TRAILING)
-        is Color -> ColorPanel().apply { selectedColor = value }
-        is MtlIlluminationValueElement.Illumination -> label(value.description)
-        else -> label(value?.toString().orEmpty())
+        is String -> JBLabel(value)
+        is Float -> JBLabel(value.toString(), SwingConstants.TRAILING)
+        is Color -> ColorLabel(value)
+        is MtlIlluminationValueElement.Illumination -> JBLabel(value.description)
+        else -> JBLabel(value?.toString().orEmpty())
+    }.apply {
+        border = labelBorder
     }
-
-    private fun label(text: String, horizontalAlignment: Int = SwingConstants.LEADING): JBLabel =
-        JBLabel(text, horizontalAlignment).apply { border = labelBorder }
 
     companion object {
         private const val BORDER_HORIZONTAL = 4

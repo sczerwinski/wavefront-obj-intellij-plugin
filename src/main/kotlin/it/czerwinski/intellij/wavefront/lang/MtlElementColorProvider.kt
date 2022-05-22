@@ -19,16 +19,13 @@ class MtlElementColorProvider : ElementColorProvider {
 
     override fun setColorTo(element: PsiElement, color: Color) {
         val parentElement = element.parent
-        if (parentElement is MtlColorElement && parentElement.firstChild === element) {
+        if (parentElement is MtlColorElement && parentElement.firstChild === element && parentElement.color != color) {
             setColorTo(parentElement, color)
         }
     }
 
     private fun setColorTo(element: MtlColorElement, color: Color) {
-        val colorComponents = FloatArray(size = 3)
-        color.getRGBColorComponents(colorComponents)
-
-        val newColorNode = MtlElementFactory.createColorElement(element.project, colorComponents).node
+        val newColorNode = MtlElementFactory.createColorElement(element.project, color).node
         newColorNode.replaceChild(newColorNode.firstChildNode, element.node.firstChildNode)
 
         element.node.replaceAllChildrenToChildrenOf(newColorNode)

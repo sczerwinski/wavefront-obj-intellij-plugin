@@ -22,6 +22,7 @@ import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
@@ -40,6 +41,7 @@ import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTable
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTableModel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import java.awt.BorderLayout
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
@@ -48,17 +50,19 @@ import javax.swing.event.ListDataListener
 class MtlMaterialComponent(
     private val project: Project,
     private val file: VirtualFile,
-    editor: FileEditor
+    private val editor: FileEditor
 ) : JPanel(BorderLayout()), Zoomable, Refreshable, Disposable {
 
     private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
 
     private var myMtlFile: MtlFile? = null
 
-    private val myMaterialPreviewComponent = MtlMaterialPreviewComponent(project, editor)
+    private var myMaterialPreviewComponent = MtlMaterialPreviewComponent(project, editor)
 
     private val myMaterialComboBoxModel = MaterialComboBoxModel(emptyList())
     private val myMaterialPropertiesTableModel = MaterialPropertiesTableModel()
+
+    private val mySplitter: EditorSplitter
 
     val material: MtlMaterialElement? get() = myMaterialComboBoxModel.selectedItem as? MtlMaterialElement
 
@@ -114,19 +118,19 @@ class MtlMaterialComponent(
         }
         add(selectMaterialPanel, BorderLayout.BEFORE_FIRST_LINE)
 
-        val splitter = EditorSplitter(vertical = true)
-        splitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
-        splitter.firstComponent = myMaterialPreviewComponent
-        splitter.secondComponent = JBScrollPane(
-            MaterialPropertiesTable(myMaterialPropertiesTableModel, editor = editor)
-        )
+        mySplitter = EditorSplitter(vertical = true)
+        mySplitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
+        mySplitter.firstComponent = myMaterialPreviewComponent
 
-        add(splitter, BorderLayout.CENTER)
+        add(mySplitter, BorderLayout.CENTER)
     }
 
     fun initialize() {
         if (project.isInitialized) {
             initializeMtlFile()
+            mySplitter.secondComponent = JBScrollPane(
+                MaterialPropertiesTable(project, myMaterialPropertiesTableModel, editor = editor)
+            )
             myMaterialPreviewComponent.initialize()
         }
     }
@@ -178,14 +182,35 @@ class MtlMaterialComponent(
         val referencedFiles: List<PsiFile>
             get() = file.materials.flatMap { material -> material.texturePsiFiles }
 
-        private fun onPsiTreeChangeEvent(event: PsiTreeChangeEvent) {
-            if (event.file == file || event.file in referencedFiles) {
+        private fun handlePsiTreeChange(element: PsiElement?) {
+            if (element == file || element in referencedFiles || element.isTextureFile()) {
                 updateMtlFile(file)
             }
         }
 
+        override fun childAdded(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.child)
+        }
+
+        override fun childRemoved(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.child)
+        }
+
+        override fun childReplaced(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.oldChild)
+            handlePsiTreeChange(event.newChild)
+        }
+
         override fun childrenChanged(event: PsiTreeChangeEvent) {
-            onPsiTreeChangeEvent(event)
+            handlePsiTreeChange(event.file)
+        }
+
+        override fun childMoved(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.child)
+        }
+
+        override fun propertyChanged(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.element)
         }
     }
 }

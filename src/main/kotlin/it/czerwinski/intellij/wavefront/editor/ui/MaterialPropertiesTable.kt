@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.ui
 
 import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.SimpleListCellRenderer
 import com.intellij.ui.components.JBTextField
@@ -31,6 +32,7 @@ import javax.swing.table.TableColumnModel
 import javax.swing.table.TableModel
 
 class MaterialPropertiesTable(
+    project: Project,
     model: TableModel,
     columnModel: TableColumnModel? = null,
     editor: FileEditor? = null
@@ -48,7 +50,7 @@ class MaterialPropertiesTable(
 
     private val myFloatEditor = DefaultCellEditor(JBTextField()).apply { clickCountToStart = 1 }
 
-    private val myTextureEditor = DefaultCellEditor(ComboBox<String>().apply { isEditable = true })
+    private val myTextureEditor = TextureTableCellEditor(project)
 
     override fun getCellRenderer(row: Int, column: Int): TableCellRenderer = myRenderer
 

@@ -100,19 +100,19 @@ internal val materialProperties = listOf(
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.diffuse"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.diffuse.action"),
-        propertyKeyword = "map_Ka",
+        propertyKeyword = "map_Kd",
         elementGetter = { material -> material.diffuseColorMapElement }
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.specular"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.specular.action"),
-        propertyKeyword = "map_Ka",
+        propertyKeyword = "map_Ks",
         elementGetter = { material -> material.specularColorMapElement }
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.emission"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.emission.action"),
-        propertyKeyword = "map_Ka",
+        propertyKeyword = "map_Ke",
         elementGetter = { material -> material.emissionColorMapElement }
     ),
     MaterialProperty.MaterialTexture(

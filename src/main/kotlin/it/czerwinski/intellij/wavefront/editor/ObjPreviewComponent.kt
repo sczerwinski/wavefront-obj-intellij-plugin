@@ -25,6 +25,7 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
@@ -48,6 +49,7 @@ import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
+import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 import java.awt.BorderLayout
 
@@ -231,14 +233,35 @@ class ObjPreviewComponent(
                 mtlFile.materials.flatMap { material -> material.texturePsiFiles } + mtlFile
             }
 
-        private fun onPsiTreeChangeEvent(event: PsiTreeChangeEvent) {
-            if (event.file == file || event.file in referencedFiles) {
+        private fun handlePsiTreeChange(element: PsiElement?) {
+            if (element == file || element in referencedFiles || element.isTextureFile()) {
                 updateObjFile(file)
             }
         }
 
+        override fun childAdded(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.child)
+        }
+
+        override fun childRemoved(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.child)
+        }
+
+        override fun childReplaced(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.oldChild)
+            handlePsiTreeChange(event.newChild)
+        }
+
         override fun childrenChanged(event: PsiTreeChangeEvent) {
-            onPsiTreeChangeEvent(event)
+            handlePsiTreeChange(event.file)
+        }
+
+        override fun childMoved(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.child)
+        }
+
+        override fun propertyChanged(event: PsiTreeChangeEvent) {
+            handlePsiTreeChange(event.element)
         }
     }
 

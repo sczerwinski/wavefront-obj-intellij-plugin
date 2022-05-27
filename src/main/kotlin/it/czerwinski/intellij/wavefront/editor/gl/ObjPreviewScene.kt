@@ -24,7 +24,6 @@ import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
-import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.normalize
 import it.czerwinski.intellij.common.ui.ErrorLog
@@ -35,7 +34,6 @@ import it.czerwinski.intellij.wavefront.editor.gl.shaders.PBRShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.SolidShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.TexturedWireframeShader
 import it.czerwinski.intellij.wavefront.editor.gl.shaders.WireframeShader
-import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 import it.czerwinski.intellij.wavefront.editor.model.GLCameraModel
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
@@ -101,9 +99,6 @@ class ObjPreviewScene(
 
     override val showEnvironment: Boolean get() = shadingMethod == ShadingMethod.PBR
 
-    private lateinit var fallbackTexture: Texture
-    private lateinit var fallbackNormalmap: Texture
-
     private val modelMeshesManager = ModelMeshesManager()
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
@@ -116,25 +111,7 @@ class ObjPreviewScene(
 
     override fun initialize(gl: GlimpseAdapter) {
         super.initialize(gl)
-        createFallbackTextures(gl)
         createModelMeshes(gl)
-    }
-
-    private fun createFallbackTextures(gl: GlimpseAdapter) {
-        try {
-            val textures = Texture.Builder.getInstance(gl)
-                .addTexture(TextureResources.fallbackTextureImageSource)
-                .addTexture(TextureResources.fallbackNormalmapImageSource)
-                .generateMipmaps()
-                .build()
-            fallbackTexture = textures.first()
-            fallbackNormalmap = textures.last()
-        } catch (expected: Throwable) {
-            errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.createFallbackTextures.error"),
-                expected
-            )
-        }
     }
 
     private fun createModelMeshes(gl: GlimpseAdapter) {
@@ -365,8 +342,6 @@ class ObjPreviewScene(
     override fun dispose(gl: GlimpseAdapter) {
         super.dispose(gl)
         modelMeshesManager.dispose(gl)
-        fallbackTexture.dispose(gl)
-        fallbackNormalmap.dispose(gl)
     }
 
     override fun onDestroyError(gl: GlimpseAdapter, expected: Throwable) = Unit

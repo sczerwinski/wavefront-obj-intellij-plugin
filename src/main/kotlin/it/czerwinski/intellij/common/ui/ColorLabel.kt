@@ -14,8 +14,29 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.common.ui
 
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import com.intellij.ui.components.JBLabel
+import it.czerwinski.intellij.wavefront.lang.ColorIcon
+import java.awt.Color
 
-class ZUpVectorAction : UpVectorAction(UpVector.Z_UP)
+class ColorLabel(color: Color?) : JBLabel() {
+
+    private var myColor: Color? = null
+
+    var color: Color?
+        get() = myColor
+        set(value) {
+            updateColor(value)
+        }
+
+    init {
+        updateColor(color)
+    }
+
+    private fun updateColor(value: Color?) {
+        myColor = value
+        icon = value?.let { ColorIcon(it) }
+        text = color?.rgb?.toUInt()?.toString(radix = 16).orEmpty()
+    }
+}

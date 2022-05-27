@@ -26,36 +26,42 @@ import javax.swing.JPanel
  */
 class WavefrontObjSettingsComponent : SettingsComponent, WavefrontObjSettingsState.Holder {
 
-    private val objSplitEditorSettingsRow = ObjSplitEditorSettingsGroup()
-    private val objPreviewSettingsRow = ObjPreviewSettingsGroup()
+    private val objSplitEditorSettingsGroup = ObjSplitEditorSettingsGroup()
+    private val objPreviewSettingsGroup = ObjPreviewSettingsGroup()
+    private val mtlEditorSettingsGroup = MtlEditorSettingsGroup()
 
     private val mainPanel: JPanel = panel {
         group(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.title")) {
-            objSplitEditorSettingsRow.createGroupContents(this)
+            objSplitEditorSettingsGroup.createGroupContents(this)
         }
         group(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.title")) {
-            objPreviewSettingsRow.createGroupContents(this)
+            objPreviewSettingsGroup.createGroupContents(this)
+        }
+        group(WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.title")) {
+            mtlEditorSettingsGroup.createGroupContents(this)
         }
     }
 
     override var wavefrontObjSettings: WavefrontObjSettingsState
         get() = WavefrontObjSettingsState(
-            objPreviewSettings = objPreviewSettingsRow.objPreviewSettings,
-            defaultEditorLayout = objSplitEditorSettingsRow.defaultEditorLayout,
-            isVerticalSplit = objSplitEditorSettingsRow.isVerticalSplit
+            objPreviewSettings = objPreviewSettingsGroup.objPreviewSettings,
+            mtlEditorSettings = mtlEditorSettingsGroup.mtlEditorSettings,
+            defaultEditorLayout = objSplitEditorSettingsGroup.defaultEditorLayout,
+            isVerticalSplit = objSplitEditorSettingsGroup.isVerticalSplit
         )
         set(value) {
-            objPreviewSettingsRow.objPreviewSettings = value.objPreviewSettings
-            objSplitEditorSettingsRow.defaultEditorLayout = value.defaultEditorLayout
-            objSplitEditorSettingsRow.isVerticalSplit = value.isVerticalSplit
+            objPreviewSettingsGroup.objPreviewSettings = value.objPreviewSettings
+            mtlEditorSettingsGroup.mtlEditorSettings = value.mtlEditorSettings
+            objSplitEditorSettingsGroup.defaultEditorLayout = value.defaultEditorLayout
+            objSplitEditorSettingsGroup.isVerticalSplit = value.isVerticalSplit
         }
 
     override fun getComponent(): JComponent = mainPanel
 
-    override fun getPreferredFocusedComponent(): JComponent = objPreviewSettingsRow.getPreferredFocusedComponent()
+    override fun getPreferredFocusedComponent(): JComponent = objPreviewSettingsGroup.getPreferredFocusedComponent()
 
     override fun validateForm() {
-        objSplitEditorSettingsRow.validateForm()
-        objPreviewSettingsRow.validateForm()
+        objSplitEditorSettingsGroup.validateForm()
+        objPreviewSettingsGroup.validateForm()
     }
 }

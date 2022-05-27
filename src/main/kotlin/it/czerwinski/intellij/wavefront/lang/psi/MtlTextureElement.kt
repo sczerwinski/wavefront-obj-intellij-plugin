@@ -21,8 +21,12 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 
 interface MtlTextureElement : PsiElement {
+
     val textureFilenameNode: ASTNode?
     val textureFilename: String?
     val textureFile: PsiFile? get() = textureFiles.firstOrNull()
     val textureFiles: Collection<PsiFile>
+
+    val valueModifierOptionList: List<MtlValueModifierOption>
+    val valueModifierOptionElement: MtlValueModifierOption?
 }

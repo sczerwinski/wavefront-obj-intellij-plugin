@@ -20,6 +20,8 @@ import com.intellij.psi.PsiElement
 
 interface MtlFloatVectorValueElement : PsiElement {
     val values: List<Float?>
+    val base: Float?
+    val gain: Float?
 }
 
 val MtlFloatVectorValueElement.valuesString: String

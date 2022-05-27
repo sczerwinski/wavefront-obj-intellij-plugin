@@ -188,9 +188,7 @@ object MtlItemPresentationFactory {
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.illumination"
         ),
-        locationString = WavefrontObjBundle.message(
-            "fileTypes.mtl.structure.presentation.illumination.${illumination.value}"
-        )
+        locationString = illumination.value?.description.orEmpty()
     )
 
     private fun createPropertyPresentation(presentableText: String, locationString: String) =

@@ -14,8 +14,22 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.util.xmlb.annotations.Attribute
+import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-class WireframeShadingMethodAction : ShadingMethodAction(ShadingMethod.WIREFRAME)
+data class MtlEditorSettingsState(
+    @field:Attribute var defaultPreviewMesh: MaterialPreviewMesh = MaterialPreviewMesh.DEFAULT,
+    @field:Attribute var defaultShadingMethod: ShadingMethod = ShadingMethod.MTL_DEFAULT,
+) {
+
+    companion object {
+        val DEFAULT = MtlEditorSettingsState()
+    }
+
+    interface Holder {
+        var mtlEditorSettings: MtlEditorSettingsState
+    }
+}

@@ -23,6 +23,7 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
+import it.czerwinski.intellij.wavefront.lang.psi.MtlValueModifierOption
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureFiles
 
 abstract class MtlTextureElementImpl(
@@ -37,6 +38,9 @@ abstract class MtlTextureElementImpl(
 
     override val textureFiles: Collection<PsiFile>
         get() = textureFilename?.let { filename -> project.findMatchingTextureFiles(filename) }.orEmpty()
+
+    override val valueModifierOptionElement: MtlValueModifierOption?
+        get() = valueModifierOptionList.firstOrNull()
 
     override fun getReferences(): Array<PsiReference> =
         ReferenceProvidersRegistry.getReferencesFromProviders(this)

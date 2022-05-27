@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor
 
-import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
-
-class MaterialShadingMethodAction : ShadingMethodAction(ShadingMethod.MATERIAL)
+interface Refreshable {
+    fun refresh()
+}

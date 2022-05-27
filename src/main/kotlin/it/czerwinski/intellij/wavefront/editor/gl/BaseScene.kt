@@ -58,7 +58,7 @@ abstract class BaseScene(
             texturesManager.prepare(profile, project, filename)
         } catch (expected: Throwable) {
             errorLog.addError(
-                WavefrontObjBundle.message("editor.fileTypes.obj.preview.prepareTexture.error", filename),
+                WavefrontObjBundle.message("editor.common.preview.prepareTexture.error", filename),
                 expected
             )
         }

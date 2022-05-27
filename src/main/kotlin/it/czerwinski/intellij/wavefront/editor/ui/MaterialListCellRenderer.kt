@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor.ui
 
-import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import com.intellij.ui.SimpleListCellRenderer
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import javax.swing.ListCellRenderer
 
-class SolidShadingMethodAction : ShadingMethodAction(ShadingMethod.SOLID)
+@Suppress("FunctionName")
+fun MaterialListCellRenderer(): ListCellRenderer<MtlMaterialElement?> =
+    SimpleListCellRenderer.create("") { value -> value?.getName() }

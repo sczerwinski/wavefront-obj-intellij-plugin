@@ -21,12 +21,12 @@ import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.project.DumbAware
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-abstract class ShadingMethodAction(
+sealed class ShadingMethodAction(
     private val shadingMethod: ShadingMethod
-) : ObjPreviewFileEditorAction(), DumbAware, Toggleable {
+) : GLPreviewFileEditorAction(), DumbAware, Toggleable {
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         event.presentation.isEnabled = editor != null
 
@@ -36,11 +36,19 @@ abstract class ShadingMethodAction(
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findGLPreviewFileEditor(event)
 
         if (editor != null) {
             editor.shadingMethod = shadingMethod
             Toggleable.setSelected(event.presentation, true)
         }
     }
+
+    class Wireframe : ShadingMethodAction(ShadingMethod.WIREFRAME)
+
+    class Solid : ShadingMethodAction(ShadingMethod.SOLID)
+
+    class Material : ShadingMethodAction(ShadingMethod.MATERIAL)
+
+    class PBR : ShadingMethodAction(ShadingMethod.PBR)
 }

@@ -37,10 +37,8 @@ abstract class ObjPreviewFileEditorAction(
         findObjPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
     private fun findObjPreviewFileEditor(editor: FileEditor?): ObjPreviewEditor? =
-        if (editor is ObjPreviewEditor) editor
-        else findObjSplitEditor(editor)?.previewEditor
+        editor as? ObjPreviewEditor ?: findObjSplitEditor(editor)?.previewEditor
 
     private fun findObjSplitEditor(editor: FileEditor?): ObjSplitEditor? =
-        if (editor is ObjSplitEditor) editor
-        else SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? ObjSplitEditor
+        editor as? ObjSplitEditor ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? ObjSplitEditor
 }

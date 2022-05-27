@@ -16,18 +16,32 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.DumbAware
+import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.wavefront.editor.Refreshable
 
-class RefreshAction : ObjPreviewFileEditorAction(), DumbAware {
+class RefreshAction : AnAction(), DumbAware {
 
     override fun update(event: AnActionEvent) {
-        val editor = findObjPreviewFileEditor(event)
+        val editor = findRefreshableFileEditor(event)
 
         event.presentation.isEnabled = editor != null
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        findObjPreviewFileEditor(event)?.refresh()
+        findRefreshableFileEditor(event)?.refresh()
     }
+
+    private fun findRefreshableFileEditor(event: AnActionEvent): Refreshable? =
+        findRefreshableFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
+
+    private fun findRefreshableFileEditor(editor: FileEditor?): Refreshable? =
+        editor as? Refreshable ?: findSplitEditor(editor)?.previewEditor as? Refreshable
+
+    private fun findSplitEditor(editor: FileEditor?): SplitEditor<*>? =
+        editor as? SplitEditor<*> ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
 }

@@ -24,6 +24,15 @@ import javax.swing.*;
 public class WavefrontObjIcons {
 
     @NotNull
+    public static final Icon CUBE_MESH_ACTION = getIcon("/icons/editor_actions/cubeMesh.svg");
+
+    @NotNull
+    public static final Icon CYLINDER_MESH_ACTION = getIcon("/icons/editor_actions/cylinderMesh.svg");
+
+    @NotNull
+    public static final Icon SPHERE_MESH_ACTION = getIcon("/icons/editor_actions/sphereMesh.svg");
+
+    @NotNull
     public static final Icon WIREFRAME_SHADING_ACTION = getIcon("/icons/editor_actions/wireframeShading.svg");
 
     @NotNull

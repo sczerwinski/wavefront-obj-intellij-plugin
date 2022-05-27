@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.lang.psi.util
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FilenameIndex
@@ -50,3 +51,6 @@ fun Project.findMatchingTextureFiles(filename: String): List<PsiFile> =
 
 fun Project.findMatchingTextureVirtualFiles(filename: String): Collection<VirtualFile> =
     FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(this))
+
+fun PsiElement?.isTextureFile(): Boolean =
+    this is PsiFile && textureFilesExtensions.any { ext -> this.name.endsWith(".$ext", ignoreCase = true) }

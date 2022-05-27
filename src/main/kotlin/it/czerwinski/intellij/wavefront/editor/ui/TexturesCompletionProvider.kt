@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor.ui
 
-import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.ui.TextFieldWithAutoCompletionListProvider
 
-class YUpVectorAction : UpVectorAction(UpVector.Y_UP)
+class TexturesAutoCompletionProvider : TextFieldWithAutoCompletionListProvider<LookupElementBuilder>(emptyList()) {
+
+    override fun getLookupString(item: LookupElementBuilder): String = item.lookupString
+
+    override fun createLookupBuilder(item: LookupElementBuilder): LookupElementBuilder = item
+}

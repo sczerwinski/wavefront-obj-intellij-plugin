@@ -32,9 +32,12 @@ import it.czerwinski.intellij.common.editor.SplitEditor
 )
 data class WavefrontObjSettingsState(
     @field:Property override var objPreviewSettings: ObjPreviewSettingsState = ObjPreviewSettingsState.DEFAULT,
+    @field:Property override var mtlEditorSettings: MtlEditorSettingsState = MtlEditorSettingsState.DEFAULT,
     @field:Attribute var defaultEditorLayout: SplitEditor.Layout = SplitEditor.Layout.DEFAULT,
     @field:Attribute var isVerticalSplit: Boolean = DEFAULT_VERTICAL_SPLIT
-) : PersistentStateComponent<WavefrontObjSettingsState>, ObjPreviewSettingsState.Holder {
+) : PersistentStateComponent<WavefrontObjSettingsState>,
+    ObjPreviewSettingsState.Holder,
+    MtlEditorSettingsState.Holder {
 
     override fun getState(): WavefrontObjSettingsState = this
 
@@ -44,6 +47,7 @@ data class WavefrontObjSettingsState(
 
     fun setFrom(other: WavefrontObjSettingsState): WavefrontObjSettingsState {
         objPreviewSettings = other.objPreviewSettings
+        mtlEditorSettings = other.mtlEditorSettings
         defaultEditorLayout = other.defaultEditorLayout
         isVerticalSplit = other.isVerticalSplit
         return this

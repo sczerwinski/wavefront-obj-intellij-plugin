@@ -22,6 +22,34 @@ import graphics.glimpse.types.Vec3
 
 interface MtlMaterialElement : PsiElement {
 
+    val ambientColorElement: MtlColorElement?
+    val diffuseColorElement: MtlColorElement?
+    val specularColorElement: MtlColorElement?
+    val transmissionFilterElement: MtlColorElement?
+    val emissionColorElement: MtlColorElement?
+
+    val illuminationElement: MtlIlluminationValueElement?
+    val dissolveElement: MtlFloatValueElement?
+    val specularExponentElement: MtlFloatValueElement?
+    val sharpnessElement: MtlFloatValueElement?
+    val opticalDensityElement: MtlFloatValueElement?
+    val roughnessElement: MtlFloatValueElement?
+    val metalnessElement: MtlFloatValueElement?
+
+    val ambientColorMapElement: MtlTextureElement?
+    val diffuseColorMapElement: MtlTextureElement?
+    val specularColorMapElement: MtlTextureElement?
+    val emissionColorMapElement: MtlTextureElement?
+    val specularExponentMapElement: MtlTextureElement?
+    val dissolveMapElement: MtlTextureElement?
+    val displacementMapElement: MtlTextureElement?
+    val stencilDecalMapElement: MtlTextureElement?
+    val roughnessMapElement: MtlTextureElement?
+    val metalnessMapElement: MtlTextureElement?
+    val normalMapElement: MtlTextureElement?
+    val bumpMapElement: MtlTextureElement?
+    val reflectionMapElement: MtlTextureElement?
+
     val ambientColorVector: Vec3?
     val diffuseColorVector: Vec3?
     val specularColorVector: Vec3?

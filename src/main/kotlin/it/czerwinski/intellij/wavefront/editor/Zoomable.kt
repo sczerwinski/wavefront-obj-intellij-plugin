@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.actions
+package it.czerwinski.intellij.wavefront.editor
 
-import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
-
-class PBRShadingMethodAction : ShadingMethodAction(ShadingMethod.PBR)
+interface Zoomable {
+    fun zoomIn()
+    fun zoomOut()
+    fun zoomFit()
+}

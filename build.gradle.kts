@@ -39,6 +39,7 @@ kotlin {
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
     api("graphics.glimpse:glimpse-core:1.1.0")
+    api("graphics.glimpse:glimpse-obj:1.1.0")
     api("graphics.glimpse:glimpse-ui:1.1.0")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0")
 }
@@ -101,8 +102,16 @@ qodana {
 }
 
 tasks {
+
+    afterEvaluate {
+        named("kspKotlin") {
+            dependsOn(generateParserObj, generateParserMtl, generateLexerObj, generateLexerMtl)
+        }
+    }
+
     withType<JavaCompile> {
         sourceSets["main"].java.srcDirs(
+            "${project.projectDir}/src/main/kotlin",
             "${project.buildDir}/generated/source/lexer/obj",
             "${project.buildDir}/generated/source/lexer/mtl",
             "${project.buildDir}/generated/source/parser/obj",

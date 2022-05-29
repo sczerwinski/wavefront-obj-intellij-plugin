@@ -31,8 +31,6 @@
 - Update platform version to `2021.3.3`
 - `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
 
-### Deprecated
-
 ### Removed
 - Remove support for platform version `203.*`
 - Remove support for platform version `211.*`
@@ -50,8 +48,6 @@
 - Prevent long operations from running on UI thread
 - Workaround for unit tests not running
 - Add `kspKotlin` Gradle task dependencies
-
-### Security
 
 ## [1.1.2]
 ### Added
@@ -438,6 +434,7 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...main
+[1.2.0-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0-alpha.1
 [1.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1
 [1.1.1-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1-alpha.1

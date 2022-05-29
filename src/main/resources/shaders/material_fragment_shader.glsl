@@ -66,7 +66,7 @@ void main() {
 
     float alpha = diffTexColor.a;
 
-    if (alpha == 0) {
+    if (alpha == 0.0) {
         discard;
     }
 

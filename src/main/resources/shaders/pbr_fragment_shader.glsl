@@ -125,7 +125,7 @@ void main() {
     vec4 diffTexColor = texture2D(uDiffTex, texCoord);
     float alpha = diffTexColor.a;
 
-    if (alpha == 0) {
+    if (alpha == 0.0) {
         discard;
     }
 

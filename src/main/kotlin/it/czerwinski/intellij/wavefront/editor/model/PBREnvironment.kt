@@ -18,6 +18,8 @@ package it.czerwinski.intellij.wavefront.editor.model
 
 enum class PBREnvironment {
     INTERIOR,
+    OFFICE,
+    GARAGE,
     GARDEN,
     WOODS,
     PARK,

@@ -26,6 +26,10 @@ fun PBREnvironmentListCellRenderer(): SimpleListCellRenderer<PBREnvironment> =
         when (value) {
             PBREnvironment.INTERIOR ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.interior")
+            PBREnvironment.OFFICE ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.office")
+            PBREnvironment.GARAGE ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.garage")
             PBREnvironment.GARDEN ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.garden")
             PBREnvironment.WOODS ->

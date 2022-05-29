@@ -134,6 +134,10 @@ void main() {
 
     vec3 normal = normal(texCoord);
 
+    if (!gl_FrontFacing) {
+        normal = -normal;
+    }
+
     vec3 diffColor = diffTexColor.rgb * uDiffColor;
     vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
     vec3 envRadianceColor = texture2D(uRadianceTex, envTexCoord(normal)).rgb;

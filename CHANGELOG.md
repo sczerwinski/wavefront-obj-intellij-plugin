@@ -20,6 +20,7 @@
 - Use non-null values in editor state
 - Migrate to Kotlin UI DSL version 2
 - Move settings icon to the left toolbar in 3D preview
+- Disable face culling in 3D preview
 - Update GitHub Actions build pipeline
 - Upgrade Gradle Wrapper to `7.4.2`
 - Dependencies:

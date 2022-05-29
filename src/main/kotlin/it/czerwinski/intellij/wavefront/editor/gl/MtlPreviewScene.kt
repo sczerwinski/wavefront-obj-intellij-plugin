@@ -147,7 +147,7 @@ class MtlPreviewScene(
 
     override fun renderModel(gl: GlimpseAdapter) {
         val facesMesh = mesh ?: return
-        gl.glCullFace(FaceCullingMode.BACK)
+        gl.glCullFace(FaceCullingMode.DISABLED)
         when (shadingMethod) {
             ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh)
             ShadingMethod.PBR -> renderFacesPBR(gl, facesMesh)

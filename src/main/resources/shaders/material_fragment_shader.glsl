@@ -76,6 +76,10 @@ void main() {
     vec3 normal = normalize(texture2D(uNormalTex, texCoord).rgb * 2.0 - 1.0);
     normal = normalize(vec3(normal.x, normal.y, normal.z / uBumpMult));
 
+    if (!gl_FrontFacing) {
+        normal = -normal;
+    }
+
     float exposure = max(dot(normal, lightDir), 0.0);
 
     float exponent = (uSpecExpBase + texture2D(uSpecExpTex, texCoord).r * uSpecExpGain) * uSpecExp;

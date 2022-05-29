@@ -62,11 +62,23 @@ void main() {
         discard;
     }
 
+    vec4 diffTexColor = texture2D(uDiffTex, texCoord);
+
+    float alpha = diffTexColor.a;
+
+    if (alpha == 0.0) {
+        discard;
+    }
+
     vec3 lightDir = normalize(vLightPosTan - vPosTan);
     vec3 halfVector = normalize(lightDir + cameraDir);
 
     vec3 normal = normalize(texture2D(uNormalTex, texCoord).rgb * 2.0 - 1.0);
     normal = normalize(vec3(normal.x, normal.y, normal.z / uBumpMult));
+
+    if (!gl_FrontFacing) {
+        normal = -normal;
+    }
 
     float exposure = max(dot(normal, lightDir), 0.0);
 
@@ -74,11 +86,11 @@ void main() {
     float specular = pow(max(dot(normal, halfVector), 0.0), exponent);
 
     vec3 ambColor = texture2D(uAmbTex, texCoord).rgb * uAmbColor * 0.4;
-    vec3 diffColor = texture2D(uDiffTex, texCoord).rgb * uDiffColor;
+    vec3 diffColor = diffTexColor.rgb * uDiffColor;
     vec3 specColor = texture2D(uSpecTex, texCoord).rgb * uSpecColor;
     vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
 
     vec3 color = diffColor * exposure + ambColor * (1.0 - exposure) + specColor * specular + emissionColor;
 
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor = vec4(color, alpha);
 }

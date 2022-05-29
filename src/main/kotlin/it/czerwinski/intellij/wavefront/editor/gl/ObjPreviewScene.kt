@@ -137,7 +137,7 @@ class ObjPreviewScene(
     }
 
     override fun renderModel(gl: GlimpseAdapter) {
-        gl.glCullFace(FaceCullingMode.BACK)
+        gl.glCullFace(FaceCullingMode.DISABLED)
         if (modelChanged.getAndSet(false)) {
             createModelMeshes(gl)
         }

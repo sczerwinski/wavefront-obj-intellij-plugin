@@ -8,6 +8,7 @@
 - Material editor settings:
   - Default material preview mesh (cube, cylinder, sphere)
   - Default material type (Phong or PBR)
+- Support diffuse texture transparency in 3D preview
 - New OBJ file action
 - New MTL file action
 - Use JVM toolchain for configuring source/target compilation compatibility
@@ -19,6 +20,7 @@
 - Use non-null values in editor state
 - Migrate to Kotlin UI DSL version 2
 - Move settings icon to the left toolbar in 3D preview
+- Disable face culling in 3D preview
 - Update GitHub Actions build pipeline
 - Upgrade Gradle Wrapper to `7.4.2`
 - Dependencies:

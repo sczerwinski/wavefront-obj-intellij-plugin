@@ -4,6 +4,32 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.2.0-alpha.1]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.2.0-alpha.1]
+### Added
 - MTL material editor with preview
 - Material editor settings:
   - Default material preview mesh (cube, cylinder, sphere)

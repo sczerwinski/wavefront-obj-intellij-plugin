@@ -8,6 +8,7 @@
 - Material editor settings:
   - Default material preview mesh (cube, cylinder, sphere)
   - Default material type (Phong or PBR)
+- Support diffuse texture transparency in 3D preview
 - New OBJ file action
 - New MTL file action
 - Use JVM toolchain for configuring source/target compilation compatibility

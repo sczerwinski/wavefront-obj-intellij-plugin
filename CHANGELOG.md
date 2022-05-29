@@ -20,6 +20,9 @@
 - Migrate to Kotlin UI DSL version 2
 - Move settings icon to the left toolbar in 3D preview
 - Update GitHub Actions build pipeline
+- Upgrade Gradle Wrapper to `7.4.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.6.0`
 - Update platform version to `2021.3.3`
 - `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
 

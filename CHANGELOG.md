@@ -11,6 +11,9 @@
 - Support diffuse texture transparency in 3D preview
 - New OBJ file action
 - New MTL file action
+- Add environments for physically based shading method in 3D preview:
+  - Office (interior)
+  - Garage (interior)
 - Use JVM toolchain for configuring source/target compilation compatibility
 - Make sure GitHub Actions release jobs have write permissions
 - Add Qodana checks

@@ -74,7 +74,7 @@ jobs:
       # Publish test results
       - name: Publish Test Report
         if: ${{ always() && github.event_name == 'pull_request' }}
-        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
         with:
           files: ${{ github.workspace }}/build/test-results/**/*.xml
 

@@ -6,10 +6,13 @@
 ### Added
 
 ### Changed
+- Update platform version to `2022.1.4`
+- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2`
 
 ### Deprecated
 
 ### Removed
+- Remove support for platform version `213.*`
 
 ### Fixed
 

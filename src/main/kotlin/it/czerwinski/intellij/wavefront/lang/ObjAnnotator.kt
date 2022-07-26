@@ -23,6 +23,7 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
@@ -115,14 +116,22 @@ class ObjAnnotator : Annotator {
     ) {
         val materialFilenameNode = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)
         if (materialFilenameNode != null && element.mtlFile == null) {
-            val materialFilename = materialFilenameNode.text
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
                 WavefrontObjBundle.message("fileTypes.obj.annotation.warning.mtlFileNotFound")
             ).range(materialFilenameNode)
-                .withFix(ObjCreateMtlFileQuickFix(element.containingFile.containingDirectory, materialFilename))
+                .applyMaterialFileQuickFix(element)
                 .create()
         }
+    }
+
+    private fun AnnotationBuilder.applyMaterialFileQuickFix(element: ObjMaterialFileReference): AnnotationBuilder {
+        val containingDirectory = element.containingFile?.containingDirectory
+        val filename = element.filename
+        if (containingDirectory != null && filename != null) {
+            withFix(ObjCreateMtlFileQuickFix(containingDirectory, filename))
+        }
+        return this
     }
 
     private fun annotateMaterialReference(
@@ -139,14 +148,26 @@ class ObjAnnotator : Annotator {
                     HighlightSeverity.WARNING,
                     WavefrontObjBundle.message("fileTypes.obj.annotation.warning.materialNotFound")
                 ).range(materialNameNode)
-                    .withFixes(
-                        materialFiles.map { file ->
-                            ObjCreateMaterialQuickFix(element.containingFile, file, materialName)
-                        }
-                    )
+                    .applyMaterialQuickFixes(element, materialFiles, materialName)
                     .create()
             }
         }
+    }
+
+    private fun AnnotationBuilder.applyMaterialQuickFixes(
+        element: ObjMaterialReference,
+        materialFiles: Iterable<MtlFile>,
+        materialName: String
+    ): AnnotationBuilder {
+        val containingFile = element.containingFile
+        if (containingFile != null) {
+            withFixes(
+                materialFiles.map { file ->
+                    ObjCreateMaterialQuickFix(containingFile, file, materialName)
+                }
+            )
+        }
+        return this
     }
 
     private fun AnnotationBuilder.withFixes(fixes: Iterable<IntentionAction>): AnnotationBuilder {

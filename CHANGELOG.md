@@ -57,6 +57,53 @@
 - Add `kspKotlin` Gradle task dependencies
 - Fix possible `NullPointerException` in `ObjAnnotator`
 
+## [1.2.0-alpha.1]
+### Added
+- MTL material editor with preview
+- Material editor settings:
+  - Default material preview mesh (cube, cylinder, sphere)
+  - Default material type (Phong or PBR)
+- Support diffuse texture transparency in 3D preview
+- New OBJ file action
+- New MTL file action
+- Add environments for physically based shading method in 3D preview:
+  - Office (interior)
+  - Garage (interior)
+- Use JVM toolchain for configuring source/target compilation compatibility
+- Make sure GitHub Actions release jobs have write permissions
+- Add Qodana checks
+
+### Changed
+- Improved action and gutter icons to work with high contrast theme
+- Use non-null values in editor state
+- Migrate to Kotlin UI DSL version 2
+- Move settings icon to the left toolbar in 3D preview
+- Disable face culling in 3D preview
+- Update GitHub Actions build pipeline
+- Upgrade Gradle Wrapper to `7.4.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.6.0`
+- Update platform version to `2021.3.3`
+- `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
+
+### Removed
+- Remove support for platform version `203.*`
+- Remove support for platform version `211.*`
+- Remove support for platform version `212.*`
+- Remove detekt linter
+- Remove ktlint linter
+
+### Fixed
+- Replace usage of deprecated `UIUtil.getClientProperty` with direct call to `JComponent.getClientProperty`
+- Replace usage of deprecated `FilenameIndex.getFilesByName` with `FilenameIndex.getVirtualFilesByName`
+  and additional mapping using `PsiManager.findFile`
+- Replace usages of deprecated `Iterable.sumBy` with `Iterable.sumOf`
+- Replace usages of deprecated `String.toLowerCase` with `String.lowercase`
+- Replace usage of deprecated `Char.toInt` with `Char.code`
+- Prevent long operations from running on UI thread
+- Workaround for unit tests not running
+- Add `kspKotlin` Gradle task dependencies
+
 ## [1.1.2]
 ### Added
 - OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
@@ -442,6 +489,7 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...main
+[1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0
 [1.2.0-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0-alpha.1
 [1.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1

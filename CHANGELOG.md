@@ -4,19 +4,6 @@
 
 ## [Unreleased]
 ### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-## [1.2.0-alpha.1]
-### Added
 - MTL material editor with preview
 - Material editor settings:
   - Default material preview mesh (cube, cylinder, sphere)
@@ -61,6 +48,7 @@
 - Prevent long operations from running on UI thread
 - Workaround for unit tests not running
 - Add `kspKotlin` Gradle task dependencies
+- Fix possible `NullPointerException` in `ObjAnnotator`
 
 ## [1.1.2]
 ### Added

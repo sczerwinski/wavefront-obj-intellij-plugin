@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Add support for platform version `222.*`
 - MTL material editor with preview
 - Material editor settings:
   - Default material preview mesh (cube, cylinder, sphere)
@@ -27,9 +28,15 @@
 - Update GitHub Actions build pipeline
 - Upgrade Gradle Wrapper to `7.4.2`
 - Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `1.6.0`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.10`
+  - Upgrade `com.google.devtools.ksp` to `1.7.10-1.0.6`
+  - Upgrade `org.jetbrains.intellij` to `1.7.0`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.2`
+  - Upgrade `EnricoMi/publish-unit-test-result-action` to `v2`
+  - Upgrade `JetBrains/qodana-action` to `v2022.1.1`
 - Update platform version to `2021.3.3`
-- `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
+- `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1.3, 2022.2`
 
 ### Removed
 - Remove support for platform version `203.*`

@@ -74,7 +74,7 @@ jobs:
       # Publish test results
       - name: Publish Test Report
         if: ${{ always() && github.event_name == 'pull_request' }}
-        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
         with:
           files: ${{ github.workspace }}/build/test-results/**/*.xml
 
@@ -88,7 +88,7 @@ jobs:
 
       # Cache Plugin Verifier IDEs
       - name: Setup Plugin Verifier IDEs Cache
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3.0.5
         with:
           path: ${{ steps.properties.outputs.pluginVerifierHomeDir }}/ides
           key: plugin-verifier-${{ hashFiles('build/listProductsReleases.txt') }}
@@ -107,7 +107,7 @@ jobs:
 
       # Run Qodana inspections
       - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v5.1.0
+        uses: JetBrains/qodana-action@v2022.1.1
 
       # Collect Qodana results
       - name: Collect Qodana Results

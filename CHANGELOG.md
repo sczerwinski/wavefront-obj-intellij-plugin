@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.2.0]
+### Added
 - Add support for platform version `222.*`
 - MTL material editor with preview
 - Material editor settings:

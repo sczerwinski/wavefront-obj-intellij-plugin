@@ -55,7 +55,7 @@ class ObjSplitEditorSettingsGroup : SettingsGroup {
                     renderer = SplitEditorLayoutListCellRenderer()
                 ).component
             }
-            buttonGroup(title = WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {
+            buttonsGroup(title = WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {
                 row {
                     horizontalSplitCheckBox = radioButton(
                         WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split.horizontal")

@@ -19,11 +19,17 @@ package it.czerwinski.intellij.wavefront.lang
 import com.intellij.codeInsight.generation.actions.CommentByLineCommentAction
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.codeStyle.CodeStyleManager
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.containers.ContainerUtil
 
-class ObjCodeInsightTest : CodeInsightFixtureTestCase() {
+class ObjCodeInsightTest : BasePlatformTestCase() {
 
-    override val testDataPath: String = "src/test/testData/obj"
+    override fun getBasePath(): String = "src/test/testData/obj"
+
+    override fun setUp() {
+        super.setUp()
+        myFixture.testDataPath = basePath
+    }
 
     fun testAnnotator() {
         myFixture.configureByFiles("AnnotatorTestData.obj")
@@ -34,21 +40,21 @@ class ObjCodeInsightTest : CodeInsightFixtureTestCase() {
         myFixture.configureByFile("FormatterTestDataBefore.obj")
         WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
             CodeStyleManager.getInstance(project)
-                .reformatText(file, ContainerUtil.newArrayList(file.textRange))
+                .reformatText(myFixture.file, ContainerUtil.newArrayList(myFixture.file.textRange))
         }
         myFixture.checkResultByFile("FormatterTestDataExpected.obj")
     }
 
     fun testFolding() {
-        myFixture.testFolding("$testDataPath/FoldingTestData.obj")
+        myFixture.testFolding("$basePath/FoldingTestData.obj")
     }
 
     fun testCommenter() {
         myFixture.configureByText(ObjFileType, "<caret>f 1/2/3 4/5/6 7/8/9")
         val commentAction = CommentByLineCommentAction()
-        commentAction.actionPerformedImpl(project, editor)
+        commentAction.actionPerformedImpl(project, myFixture.editor)
         myFixture.checkResult("# f 1/2/3 4/5/6 7/8/9")
-        commentAction.actionPerformedImpl(project, editor)
+        commentAction.actionPerformedImpl(project, myFixture.editor)
         myFixture.checkResult("f 1/2/3 4/5/6 7/8/9")
     }
 }

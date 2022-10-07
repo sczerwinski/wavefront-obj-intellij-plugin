@@ -51,8 +51,8 @@ class MtlEditorSettingsGroup : SettingsGroup, MtlEditorSettingsState.Holder {
                 ).component
             }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.shadingMethod")) {
-                defaultShadingMethod = comboBox<ShadingMethod>(
-                    items = ShadingMethod.materialValues.toTypedArray(),
+                defaultShadingMethod = comboBox(
+                    items = ShadingMethod.materialValues,
                     renderer = MaterialShadingMethodListCellRenderer()
                 ).bindItem(
                     getter = { ShadingMethod.MTL_DEFAULT },

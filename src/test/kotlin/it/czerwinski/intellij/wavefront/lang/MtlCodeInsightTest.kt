@@ -19,11 +19,17 @@ package it.czerwinski.intellij.wavefront.lang
 import com.intellij.codeInsight.generation.actions.CommentByLineCommentAction
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.codeStyle.CodeStyleManager
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.containers.ContainerUtil
 
-class MtlCodeInsightTest : CodeInsightFixtureTestCase() {
+class MtlCodeInsightTest : BasePlatformTestCase() {
 
-    override val testDataPath: String = "src/test/testData/mtl"
+    override fun getBasePath(): String = "src/test/testData/mtl"
+
+    override fun setUp() {
+        super.setUp()
+        myFixture.testDataPath = basePath
+    }
 
     fun testAnnotator() {
         myFixture.configureByFiles("AnnotatorTestData.mtl")
@@ -34,21 +40,21 @@ class MtlCodeInsightTest : CodeInsightFixtureTestCase() {
         myFixture.configureByFile("FormatterTestDataBefore.mtl")
         WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
             CodeStyleManager.getInstance(project)
-                .reformatText(file, ContainerUtil.newArrayList(file.textRange))
+                .reformatText(myFixture.file, ContainerUtil.newArrayList(myFixture.file.textRange))
         }
         myFixture.checkResultByFile("FormatterTestDataExpected.mtl")
     }
 
     fun testFolding() {
-        myFixture.testFolding("$testDataPath/FoldingTestData.mtl")
+        myFixture.testFolding("$basePath/FoldingTestData.mtl")
     }
 
     fun testCommenter() {
         myFixture.configureByText(MtlFileType, "<caret>newmtl Marble")
         val commentAction = CommentByLineCommentAction()
-        commentAction.actionPerformedImpl(project, editor)
+        commentAction.actionPerformedImpl(project, myFixture.editor)
         myFixture.checkResult("# newmtl Marble")
-        commentAction.actionPerformedImpl(project, editor)
+        commentAction.actionPerformedImpl(project, myFixture.editor)
         myFixture.checkResult("newmtl Marble")
     }
 }

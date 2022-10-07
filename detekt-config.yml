@@ -4,7 +4,10 @@
 complexity:
   TooManyFunctions:
     thresholdInClasses: 20
+    thresholdInObjects: 20
 
 formatting:
+  ImportOrdering:
+    layout: '*'
   Indentation:
     active: true

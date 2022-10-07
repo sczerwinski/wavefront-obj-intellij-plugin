@@ -151,7 +151,7 @@ class MtlPreviewScene(
         when (shadingMethod) {
             ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh)
             ShadingMethod.PBR -> renderFacesPBR(gl, facesMesh)
-            else -> throw IllegalStateException("Material preview requires MATERIAL or PBR shading method")
+            else -> error("Material preview requires MATERIAL or PBR shading method")
         }
     }
 

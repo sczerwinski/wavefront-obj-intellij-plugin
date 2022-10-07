@@ -46,18 +46,20 @@ sealed class MaterialProperty<E : PsiElement, T> {
             WriteCommandAction.writeCommandAction(material.project, material.containingFile)
                 .withUndoConfirmationPolicy(UndoConfirmationPolicy.DO_NOT_REQUEST_CONFIRMATION)
                 .withName(actionName)
-                .run<Throwable> {
-                    val element = elementGetter(material)
-                    if (element != null) {
-                        if (value == null) {
-                            removeElement(material, element)
-                        } else {
-                            updateElement(material, element, value)
-                        }
-                    } else if (value != null) {
-                        addElement(material, value)
-                    }
-                }
+                .run<Throwable> { applyValue(material, value) }
+        }
+    }
+
+    private fun applyValue(material: MtlMaterialElement, value: T?) {
+        val element = elementGetter(material)
+        if (element != null) {
+            if (value == null) {
+                removeElement(material, element)
+            } else {
+                updateElement(material, element, value)
+            }
+        } else if (value != null) {
+            addElement(material, value)
         }
     }
 
@@ -219,7 +221,7 @@ sealed class MaterialProperty<E : PsiElement, T> {
                 base = element?.base ?: 0f,
                 gain = value
             )
-            else -> throw IllegalStateException("Invalid value index: $valueIndex")
+            else -> error("Invalid value index: $valueIndex")
         }.node
 
         override fun addElement(material: MtlMaterialElement, value: Float) {

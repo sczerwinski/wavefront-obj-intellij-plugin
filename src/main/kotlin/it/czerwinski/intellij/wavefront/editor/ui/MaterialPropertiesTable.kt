@@ -50,7 +50,7 @@ class MaterialPropertiesTable(
 
     private val myFloatEditor = DefaultCellEditor(JBTextField()).apply { clickCountToStart = 1 }
 
-    private val myTextureEditor = TextureTableCellEditor(project)
+    private val myTextureEditor = TextureTableCellEditor(project, parent = editor)
 
     override fun getCellRenderer(row: Int, column: Int): TableCellRenderer = myRenderer
 

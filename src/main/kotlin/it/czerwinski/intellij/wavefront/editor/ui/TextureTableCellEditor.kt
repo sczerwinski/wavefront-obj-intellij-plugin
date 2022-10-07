@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.ui
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
@@ -35,7 +36,10 @@ import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import java.awt.Component
 import javax.swing.JTable
 
-class TextureTableCellEditor(private val project: Project) : AbstractTableCellEditor() {
+class TextureTableCellEditor(
+    private val project: Project,
+    private val parent: Disposable?
+) : AbstractTableCellEditor() {
 
     private val myPsiTreeChangeListener = MyPsiTreeChangeListener()
 
@@ -45,11 +49,12 @@ class TextureTableCellEditor(private val project: Project) : AbstractTableCellEd
 
     init {
         updateTextureFiles()
-        PsiManager.getInstance(project).addPsiTreeChangeListener(myPsiTreeChangeListener, project)
+        PsiManager.getInstance(project)
+            .addPsiTreeChangeListener(myPsiTreeChangeListener, parent ?: project)
     }
 
     private fun updateTextureFiles() {
-        BackgroundTaskUtil.executeOnPooledThread(project) {
+        BackgroundTaskUtil.executeOnPooledThread(parent ?: project) {
             val items = runReadAction {
                 project.findAllTextureFiles().map { file ->
                     val root = ProjectFileIndex.getInstance(file.project)

@@ -7,6 +7,8 @@
 - Add detekt linter
 
 ### Changed
+- Change disposable parent from project to editor when possible
+- Remove events from PSI tree change listeners that slow down IDE
 - Update platform version to `2022.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3`
 - Dependencies:

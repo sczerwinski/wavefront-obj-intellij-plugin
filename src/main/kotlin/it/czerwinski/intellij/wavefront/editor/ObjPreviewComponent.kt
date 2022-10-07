@@ -239,29 +239,8 @@ class ObjPreviewComponent(
             }
         }
 
-        override fun childAdded(event: PsiTreeChangeEvent) {
-            handlePsiTreeChange(event.child)
-        }
-
-        override fun childRemoved(event: PsiTreeChangeEvent) {
-            handlePsiTreeChange(event.child)
-        }
-
-        override fun childReplaced(event: PsiTreeChangeEvent) {
-            handlePsiTreeChange(event.oldChild)
-            handlePsiTreeChange(event.newChild)
-        }
-
         override fun childrenChanged(event: PsiTreeChangeEvent) {
             handlePsiTreeChange(event.file)
-        }
-
-        override fun childMoved(event: PsiTreeChangeEvent) {
-            handlePsiTreeChange(event.child)
-        }
-
-        override fun propertyChanged(event: PsiTreeChangeEvent) {
-            handlePsiTreeChange(event.element)
         }
     }
 

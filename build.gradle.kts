@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
@@ -8,17 +9,17 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
+    id("com.google.devtools.ksp") version "1.7.20-1.0.6"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.7.0"
+    id("org.jetbrains.intellij") version "1.9.0"
     // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2021.2.2"
-    // Gradle Changelog Plugin
+    // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "1.3.1"
-    // Gradle Qodana Plugin
-    id("org.jetbrains.qodana") version "0.1.13"
+    // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
 }
 
 group = properties("pluginGroup")
@@ -32,7 +33,7 @@ repositories {
 // Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
 kotlin {
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
@@ -42,6 +43,7 @@ dependencies {
     api("graphics.glimpse:glimpse-obj:1.1.0")
     api("graphics.glimpse:glimpse-ui:1.1.0")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 }
 
 // Generate parsers and lexers before Kotlin compilation.
@@ -93,12 +95,11 @@ changelog {
     version.set(properties("pluginVersion"))
 }
 
-// Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
-qodana {
-    cachePath.set(projectDir.resolve(".qodana").canonicalPath)
-    reportPath.set(projectDir.resolve("build/reports/inspections").canonicalPath)
-    saveReport.set(true)
-    showReport.set(System.getenv("QODANA_SHOW_REPORT")?.toBoolean() ?: false)
+// Configure detekt plugin.
+// Read more: https://detekt.github.io/detekt/kotlindsl.html
+detekt {
+    config = files("./detekt-config.yml")
+    buildUponDefaultConfig = true
 }
 
 tasks {
@@ -120,9 +121,21 @@ tasks {
         )
     }
 
-    val test by getting(Test::class) {
-        isScanForTestClasses = false
-        include("**/*Test.class")
+    withType<Detekt> {
+        // Configure detekt reports.
+        // Read more: https://detekt.github.io/detekt/kotlindsl.html
+        reports {
+            html.required.set(false)
+            xml {
+                required.set(true)
+                outputLocation.set(file("build/reports/detekt.xml"))
+            }
+            txt.required.set(false)
+            sarif {
+                required.set(true)
+                outputLocation.set(file("build/reports/detekt.sarif.json"))
+            }
+        }
     }
 
     wrapper {

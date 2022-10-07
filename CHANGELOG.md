@@ -4,15 +4,23 @@
 
 ## [Unreleased]
 ### Added
+- Add detekt linter
 
 ### Changed
 - Update platform version to `2022.1.4`
-- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2`
+- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
+  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.6`
+  - Upgrade `org.jetbrains.intellij` to `1.9.0`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.10`
 
 ### Deprecated
 
 ### Removed
 - Remove support for platform version `213.*`
+- Remove Qodana checks
 
 ### Fixed
 

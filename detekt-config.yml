@@ -1,0 +1,13 @@
+# Default detekt configuration:
+# https://github.com/detekt/detekt/blob/master/detekt-core/src/main/resources/default-detekt-config.yml
+
+complexity:
+  TooManyFunctions:
+    thresholdInClasses: 20
+    thresholdInObjects: 20
+
+formatting:
+  ImportOrdering:
+    layout: '*'
+  Indentation:
+    active: true

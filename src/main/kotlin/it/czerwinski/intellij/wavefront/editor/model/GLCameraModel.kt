@@ -33,18 +33,18 @@ data class GLCameraModel(
     val x
         get() =
             upVector.vector.x * distance * sin(latitude) +
-                    upVector.vector.y * distance * cos(longitude) * cos(latitude) +
-                    upVector.vector.z * distance * sin(longitude) * cos(latitude)
+                upVector.vector.y * distance * cos(longitude) * cos(latitude) +
+                upVector.vector.z * distance * sin(longitude) * cos(latitude)
     val y
         get() =
             upVector.vector.x * distance * sin(longitude) * cos(latitude) +
-                    upVector.vector.y * distance * sin(latitude) +
-                    upVector.vector.z * distance * cos(longitude) * cos(latitude)
+                upVector.vector.y * distance * sin(latitude) +
+                upVector.vector.z * distance * cos(longitude) * cos(latitude)
     val z
         get() =
             upVector.vector.x * distance * cos(longitude) * cos(latitude) +
-                    upVector.vector.y * distance * sin(longitude) * cos(latitude) +
-                    upVector.vector.z * distance * sin(latitude)
+                upVector.vector.y * distance * sin(longitude) * cos(latitude) +
+                upVector.vector.z * distance * sin(latitude)
 
     val near get() = distance * NEAR_RATIO
     val far get() = distance * FAR_RATIO

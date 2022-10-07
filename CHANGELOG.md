@@ -23,6 +23,7 @@
 - Remove Qodana checks
 
 ### Fixed
+- Replace API usages deprecated in IDE version `2022.1`
 
 ### Security
 

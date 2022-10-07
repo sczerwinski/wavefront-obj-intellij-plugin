@@ -19,16 +19,12 @@
 - GitHub Actions:
   - Upgrade `actions/cache` to `v3.0.10`
 
-### Deprecated
-
 ### Removed
 - Remove support for platform version `213.*`
 - Remove Qodana checks
 
 ### Fixed
 - Replace API usages deprecated in IDE versions `2022.1` and `2022.2`
-
-### Security
 
 ## [1.2.0]
 ### Added
@@ -517,6 +513,7 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...main
+[1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1
 [1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0
 [1.2.0-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0-alpha.1
 [1.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...v1.1.2

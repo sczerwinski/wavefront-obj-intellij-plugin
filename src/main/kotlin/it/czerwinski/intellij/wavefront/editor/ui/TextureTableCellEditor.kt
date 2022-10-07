@@ -52,7 +52,7 @@ class TextureTableCellEditor(private val project: Project) : AbstractTableCellEd
         BackgroundTaskUtil.executeOnPooledThread(project) {
             val items = runReadAction {
                 project.findAllTextureFiles().map { file ->
-                    val root = ProjectFileIndex.SERVICE.getInstance(file.project)
+                    val root = ProjectFileIndex.getInstance(file.project)
                         .getContentRootForFile(file.virtualFile)
                     val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
                         ?: file.containingDirectory?.name

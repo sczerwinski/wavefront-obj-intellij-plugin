@@ -56,7 +56,7 @@ class TextureFileReference(
         myElement.project
             .findAllTextureFiles()
             .map { file ->
-                val root = ProjectFileIndex.SERVICE.getInstance(myElement.project)
+                val root = ProjectFileIndex.getInstance(myElement.project)
                     .getContentRootForFile(file.virtualFile)
                 val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
                     ?: file.containingDirectory?.name

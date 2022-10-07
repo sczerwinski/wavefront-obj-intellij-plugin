@@ -4,13 +4,14 @@
 
 ## [Unreleased]
 ### Added
+- Add support for platform version `223.*`
 - Add detekt linter
 
 ### Changed
 - Change disposable parent from project to editor when possible
 - Remove events from PSI tree change listeners that slow down IDE
 - Update platform version to `2022.1.4`
-- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3`
+- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3, 2022.3`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
   - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.6`

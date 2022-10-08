@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.2.1-eap.1]
+### Added
 - Add support for platform version `223.*`
 - Add detekt linter
 

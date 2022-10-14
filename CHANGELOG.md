@@ -6,6 +6,8 @@
 ### Added
 
 ### Changed
+- Dependencies:
+  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
 
 ### Deprecated
 

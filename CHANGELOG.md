@@ -6,12 +6,15 @@
 ### Added
 
 ### Changed
+- Dependencies:
+  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Replace usages of `registerPostStartupActivity` with `runAfterOpened`
 
 ### Security
 

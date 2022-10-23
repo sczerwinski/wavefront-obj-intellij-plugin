@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.actions
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.actionSystem.ex.ComboBoxAction
@@ -29,10 +30,17 @@ import javax.swing.JComponent
 
 class PBREnvironmentsComboBoxAction : ComboBoxAction() {
 
+    @Deprecated("Deprecated in IntelliJ platform version 223.*")
     override fun createPopupActionGroup(button: JComponent?): DefaultActionGroup = DefaultActionGroup(
         enumValues<PBREnvironment>()
             .map { environment -> PBREnvironmentAction(environment) }
     )
+
+    override fun createPopupActionGroup(button: JComponent, dataContext: DataContext): DefaultActionGroup =
+        DefaultActionGroup(
+            enumValues<PBREnvironment>()
+                .map { environment -> PBREnvironmentAction(environment) }
+        )
 
     override fun update(event: AnActionEvent) {
         val editor = findGLPreviewFileEditor(event)

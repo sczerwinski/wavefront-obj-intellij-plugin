@@ -15,6 +15,7 @@
 
 ### Fixed
 - Replace usages of `registerPostStartupActivity` with `runAfterOpened`
+- Override non-deprecated version of `createPopupActionGroup` in `PBREnvironmentsComboBoxAction`
 
 ### Security
 

@@ -3,21 +3,15 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
 - Dependencies:
   - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
-
-### Deprecated
-
-### Removed
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.11`
 
 ### Fixed
 - Replace usages of `registerPostStartupActivity` with `runAfterOpened`
 - Override non-deprecated version of `createPopupActionGroup` in `PBREnvironmentsComboBoxAction`
-
-### Security
 
 ## [1.2.1-eap.1]
 ### Added
@@ -529,7 +523,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...main
+[1.2.1-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1-eap.1...v1.2.1-eap.2
 [1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1
 [1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0
 [1.2.0-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0-alpha.1

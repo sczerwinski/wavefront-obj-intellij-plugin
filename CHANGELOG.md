@@ -12,6 +12,7 @@
 ### Removed
 
 ### Fixed
+- Replace usages of `registerPostStartupActivity` with `runAfterOpened`
 
 ### Security
 

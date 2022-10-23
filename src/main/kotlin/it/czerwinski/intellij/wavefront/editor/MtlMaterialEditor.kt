@@ -126,12 +126,7 @@ class MtlMaterialEditor(
     }
 
     fun initPreview() {
-        val startupManager = StartupManager.getInstance(project)
-        if (!startupManager.postStartupActivityPassed()) {
-            startupManager.registerPostStartupActivity {
-                myComponent.initialize()
-            }
-        } else {
+        StartupManager.getInstance(project).runAfterOpened {
             myComponent.initialize()
         }
     }

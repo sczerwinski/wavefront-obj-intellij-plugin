@@ -3,6 +3,19 @@
 # Wavefront OBJ IntelliJ Plugin Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.2.1-eap.2]
 ### Changed
 - Dependencies:
   - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`

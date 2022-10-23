@@ -6,6 +6,7 @@
 ### Added
 
 ### Changed
+- Update setting GitHub Actions output
 
 ### Deprecated
 

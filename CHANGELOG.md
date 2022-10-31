@@ -4,23 +4,32 @@
 
 ## [Unreleased]
 ### Added
+- Add support for platform version `223.*`
+- Add detekt linter
 
 ### Changed
+- Change disposable parent from project to editor when possible
+- Remove events from PSI tree change listeners that slow down IDE
+- Update platform version to `2022.1.4`
+- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3, 2022.3`
 - Update setting GitHub Actions output
-- Dependencies:
-  - Upgrade `org.jetbrains.changelog` to `1.3.1`
-- GitHub Actions:
-  - Upgrade `gradle/wrapper-validation-action` to `v1.0.5`
-
-### Deprecated
+- Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
+- Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
+- Upgrade `org.jetbrains.intellij` to `1.9.0`
+- Upgrade `org.jetbrains.changelog` to `2.0.0`
+- Upgrade `actions/cache` to `v3.0.11`
+- Upgrade `gradle/wrapper-validation-action` to `v1.0.5`
 
 ### Removed
+- Remove support for platform version `213.*`
+- Remove Qodana checks
 
 ### Fixed
+- Replace API usages deprecated in IDE versions `2022.1` and `2022.2`
+- Replace usages of `registerPostStartupActivity` with `runAfterOpened`
+- Override non-deprecated version of `createPopupActionGroup` in `PBREnvironmentsComboBoxAction`
 - Update deprecated property for `EnricoMi/publish-unit-test-result-action/composite` action
 - Fix changelog in release draft
-
-### Security
 
 ## [1.2.1-eap.2]
 ### Changed
@@ -543,7 +552,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...main
+[1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1
 [1.2.1-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1-eap.1...v1.2.1-eap.2
 [1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1
 [1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0

@@ -7,6 +7,10 @@
 
 ### Changed
 - Update setting GitHub Actions output
+- Dependencies:
+  - Upgrade `org.jetbrains.changelog` to `1.3.1`
+- GitHub Actions:
+  - Upgrade `gradle/wrapper-validation-action` to `v1.0.5`
 
 ### Deprecated
 

@@ -78,7 +78,7 @@ jobs:
         if: always()
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
         with:
-          files: ${{ github.workspace }}/build/test-results/**/*.xml
+          junit_files: ${{ github.workspace }}/build/test-results/**/*.xml
 
       # Annotate sources with detekt issues
       - name: Generate Detekt Annotations
@@ -168,13 +168,6 @@ jobs:
         with:
           name: plugin-artifact
           path: ./build/distributions/${{ steps.properties.outputs.artifact }}
-
-      # Publish test results
-      - name: Publish Test Report
-        if: ${{ always() && github.event_name == 'pull_request' }}
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        with:
-          files: ${{ github.workspace }}/build/test-results/**/*.xml
 
       # Collect Tests Result of failed tests
       - name: Collect Tests Result

@@ -17,6 +17,7 @@
 ### Removed
 
 ### Fixed
+- Update deprecated property for `EnricoMi/publish-unit-test-result-action/composite` action
 
 ### Security
 

@@ -41,7 +41,7 @@ dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
     api("graphics.glimpse:glimpse-core:1.1.0")
     api("graphics.glimpse:glimpse-obj:1.1.0")
-    api("graphics.glimpse:glimpse-ui:1.1.0")
+    api("graphics.glimpse:glimpse-ui:1.2.0")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 }

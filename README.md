@@ -1,9 +1,12 @@
-# Wavefront OBJ IntelliJ Plugin
+# Wavefront OBJ IntelliJ Plugin*
 
 ![Build][build_badge]
 [![Version][jb_version_badge]][jb_plugin_page]
 [![Downloads][jb_download_badge]][jb_plugin_page]
 [![Rating][jb_rating_badge]][jb_plugin_page]
+
+<sup>\*Also works with Android Studio, PyCharm, WebStorm,
+and other IDE's based on IntelliJ IDEA.</sup>
 
 <!-- Plugin description -->
 Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file).

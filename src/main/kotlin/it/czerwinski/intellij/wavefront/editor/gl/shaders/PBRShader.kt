@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
 import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
+import graphics.glimpse.shaders.annotations.Sampler2D
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
 import graphics.glimpse.textures.Texture
@@ -66,22 +67,22 @@ data class PBRShader(
     @Uniform(name = "uMetalness")
     val metalness: Float,
 
-    @Uniform(name = "uDiffTex")
+    @Sampler2D(name = "uDiffTex")
     val diffuseTexture: Texture,
 
-    @Uniform(name = "uEmissionTex")
+    @Sampler2D(name = "uEmissionTex")
     val emissionTexture: Texture,
 
-    @Uniform(name = "uRoughnessTex")
+    @Sampler2D(name = "uRoughnessTex")
     val roughnessTexture: Texture,
 
-    @Uniform(name = "uMetalnessTex")
+    @Sampler2D(name = "uMetalnessTex")
     val metalnessTexture: Texture,
 
-    @Uniform(name = "uNormalTex")
+    @Sampler2D(name = "uNormalTex")
     val normalmapTexture: Texture,
 
-    @Uniform(name = "uDispTex")
+    @Sampler2D(name = "uDispTex")
     val displacementTexture: Texture,
 
     @Uniform(name = "uDispGain")
@@ -90,10 +91,10 @@ data class PBRShader(
     @Uniform(name = "uDispQuality")
     val displacementQuality: Float,
 
-    @Uniform(name = "uReflectionTex")
+    @Sampler2D(name = "uReflectionTex")
     val reflectionTexture: Texture,
 
-    @Uniform(name = "uRadianceTex")
+    @Sampler2D(name = "uRadianceTex")
     val radianceTexture: Texture,
 
     @Uniform(name = "uCropTex")

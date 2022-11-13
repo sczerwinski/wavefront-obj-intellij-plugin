@@ -26,6 +26,9 @@ class PointsMesh constructor(
     override val buffers: List<Buffer>
 ) : Mesh {
 
+    override var isDisposed: Boolean = false
+        private set
+
     override fun useBuffer(gl: GlimpseAdapter, bufferIndex: Int) {
         buffers[bufferIndex].use(gl)
     }
@@ -36,5 +39,6 @@ class PointsMesh constructor(
 
     override fun dispose(gl: GlimpseAdapter) {
         gl.glDeleteBuffers(buffers.map { it.handle }.toIntArray())
+        isDisposed = true
     }
 }

@@ -9,9 +9,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.7.21"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.7.20-1.0.7"
+    id("com.google.devtools.ksp") version "1.7.21-1.0.8"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.9.0"
     // Gradle Grammar-Kit Plugin
@@ -39,10 +39,10 @@ kotlin {
 
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
-    api("graphics.glimpse:glimpse-core:1.1.0")
-    api("graphics.glimpse:glimpse-obj:1.1.0")
-    api("graphics.glimpse:glimpse-ui:1.1.0")
-    ksp("graphics.glimpse:glimpse-processor-ksp:1.1.0")
+    api("graphics.glimpse:glimpse-core:1.2.0")
+    api("graphics.glimpse:glimpse-obj:1.2.0")
+    api("graphics.glimpse:glimpse-ui:1.2.0")
+    ksp("graphics.glimpse:glimpse-processor-ksp:1.2.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 }
 

@@ -7,17 +7,24 @@
 ### Added
 
 ### Changed
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.21`
+  - Upgrade `com.google.devtools.ksp` to `1.7.21-1.0.8`
+  - Upgrade `glimpse-core` to `1.2.0`
+  - Upgrade `glimpse-obj` to `1.2.0`
+  - Upgrade `glimpse-ui` to `1.2.0`
+  - Upgrade `glimpse-processor-ksp` to `1.2.0`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Wrap file operations in read-actions
 
 ### Security
 
 ## [1.2.1] - 2022-10-31
-
 ### Added
 - Add support for platform version `223.*`
 - Add detekt linter
@@ -28,18 +35,14 @@
 - Update platform version to `2022.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3, 2022.3`
 - Update setting GitHub Actions output
-- Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
-- Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
-- Upgrade `org.jetbrains.intellij` to `1.9.0`
-- Upgrade `org.jetbrains.changelog` to `2.0.0`
-- Upgrade `actions/cache` to `v3.0.11`
-- Upgrade `gradle/wrapper-validation-action` to `v1.0.5`
-- - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
-- - Upgrade `actions/cache` to `v3.0.11`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
-  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.6`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
+  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
   - Upgrade `org.jetbrains.intellij` to `1.9.0`
-- - Upgrade `actions/cache` to `v3.0.10`
+  - Upgrade `org.jetbrains.changelog` to `2.0.0`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.11`
+  - Upgrade `gradle/wrapper-validation-action` to `v1.0.5`
 
 ### Removed
 - Remove support for platform version `213.*`
@@ -52,18 +55,18 @@
 - Update deprecated property for `EnricoMi/publish-unit-test-result-action/composite` action
 - Fix changelog in release draft
 
-## [1.2.1-eap.2]
-
+## [1.2.1-eap.2] - 2022-10-23
 ### Changed
-- - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
-- - Upgrade `actions/cache` to `v3.0.11`
+- Dependencies:
+  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.11`
 
 ### Fixed
 - Replace usages of `registerPostStartupActivity` with `runAfterOpened`
 - Override non-deprecated version of `createPopupActionGroup` in `PBREnvironmentsComboBoxAction`
 
-## [1.2.1-eap.1]
-
+## [1.2.1-eap.1] - 2022-10-08
 ### Added
 - Add support for platform version `223.*`
 - Add detekt linter
@@ -73,10 +76,12 @@
 - Remove events from PSI tree change listeners that slow down IDE
 - Update platform version to `2022.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3, 2022.3`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
   - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.6`
   - Upgrade `org.jetbrains.intellij` to `1.9.0`
-- - Upgrade `actions/cache` to `v3.0.10`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.10`
 
 ### Removed
 - Remove support for platform version `213.*`
@@ -85,17 +90,18 @@
 ### Fixed
 - Replace API usages deprecated in IDE versions `2022.1` and `2022.2`
 
-## [1.2.0]
-
+## [1.2.0] - 2022-07-26
 ### Added
 - Add support for platform version `222.*`
 - MTL material editor with preview
-- - Default material preview mesh (cube, cylinder, sphere)
+- Material editor settings:
+  - Default material preview mesh (cube, cylinder, sphere)
   - Default material type (Phong or PBR)
 - Support diffuse texture transparency in 3D preview
 - New OBJ file action
 - New MTL file action
-- - Office (interior)
+- Add environments for physically based shading method in 3D preview:
+  - Office (interior)
   - Garage (interior)
 - Use JVM toolchain for configuring source/target compilation compatibility
 - Make sure GitHub Actions release jobs have write permissions
@@ -109,10 +115,12 @@
 - Disable face culling in 3D preview
 - Update GitHub Actions build pipeline
 - Upgrade Gradle Wrapper to `7.4.2`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.10`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.10`
   - Upgrade `com.google.devtools.ksp` to `1.7.10-1.0.6`
   - Upgrade `org.jetbrains.intellij` to `1.7.0`
-- - Upgrade `actions/cache` to `v3.0.2`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.2`
   - Upgrade `EnricoMi/publish-unit-test-result-action` to `v2`
   - Upgrade `JetBrains/qodana-action` to `v2022.1.1`
 - Update platform version to `2021.3.3`
@@ -137,16 +145,17 @@
 - Add `kspKotlin` Gradle task dependencies
 - Fix possible `NullPointerException` in `ObjAnnotator`
 
-## [1.2.0-alpha.1]
-
+## [1.2.0-alpha.1] - 2022-05-29
 ### Added
 - MTL material editor with preview
-- - Default material preview mesh (cube, cylinder, sphere)
+- Material editor settings:
+  - Default material preview mesh (cube, cylinder, sphere)
   - Default material type (Phong or PBR)
 - Support diffuse texture transparency in 3D preview
 - New OBJ file action
 - New MTL file action
-- - Office (interior)
+- Add environments for physically based shading method in 3D preview:
+  - Office (interior)
   - Garage (interior)
 - Use JVM toolchain for configuring source/target compilation compatibility
 - Make sure GitHub Actions release jobs have write permissions
@@ -160,7 +169,8 @@
 - Disable face culling in 3D preview
 - Update GitHub Actions build pipeline
 - Upgrade Gradle Wrapper to `7.4.2`
-- - Upgrade `org.jetbrains.intellij` to `1.6.0`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.6.0`
 - Update platform version to `2021.3.3`
 - `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
 
@@ -182,14 +192,14 @@
 - Workaround for unit tests not running
 - Add `kspKotlin` Gradle task dependencies
 
-## [1.1.2]
-
+## [1.1.2] - 2022-04-30
 ### Added
 - OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
 - Display Number of triangles for each object and group in structure view
 
 ### Changed
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.21`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.21`
   - Upgrade `com.google.devtools.ksp` to `1.6.21-1.0.5`
   - Upgrade `org.jetbrains.intellij` to `1.5.3`
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.2`
@@ -198,7 +208,8 @@
   - Upgrade `glimpse-core` to `1.1.0`
   - Upgrade `glimpse-ui` to `1.1.0`
   - Upgrade `glimpse-processor-ksp` to `1.1.0`
-- - Upgrade `actions/cache` to `v3.0.2`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.0.2`
   - Upgrade `actions/download-artifact` to `v3`
   - Upgrade `actions/setup-java` to `v3`
   - Upgrade `github/codeql-action/upload-sarif` to `v2`
@@ -207,8 +218,7 @@
 - Change language IDs to `OBJ` and `MTL`.
 - Remove unnecessary abstract class `ObjLineElementImpl`.
 
-## [1.1.1]
-
+## [1.1.1] - 2022-03-13
 ### Added
 - Support for platform version `221.*`
 - Color preview markers in MTL files
@@ -219,12 +229,14 @@
 - PBR shader calculations in world space
 - Use pre-calculated bitangents in PBR shader
 - Upgrade Gradle Wrapper to `7.4.1`
-- - Upgrade `org.jetbrains.intellij` to `1.4.0`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.4.0`
   - Upgrade `com.google.devtools.ksp` to `1.6.10-1.0.4`
   - Upgrade `glimpse-core` to `1.1.0-ALPHA3`
   - Upgrade `glimpse-ui` to `1.1.0-ALPHA3`
   - Upgrade `glimpse-processor-ksp` to `1.1.0-ALPHA3`
-- - Upgrade `actions/checkout` to `v3`
+- GitHub Actions:
+  - Upgrade `actions/checkout` to `v3`
   - Upgrade `actions/upload-artifact` to `v3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1, 2022.1`
 
@@ -238,15 +250,15 @@
 ### Security
 - Sign plugin before publishing
 
-## [1.1.1-alpha.1]
-
+## [1.1.1-alpha.1] - 2022-01-23
 ### Added
 - Color preview markers in MTL files
 
 ### Changed
 - Line markers made configurable
 - PBR shader calculations in world space
-- - Upgrade `org.jetbrains.intellij` to `1.3.1`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.3.1`
 
 ### Fixed
 - Improve PBR shader calculations
@@ -257,10 +269,10 @@
 ### Security
 - Sign plugin before publishing
 
-## [1.1.0]
-
+## [1.1.0] - 2022-01-09
 ### Added
-- - roughness (`Pr` and `map_Pr`)
+- Extended MTL syntax for physically based rendering parameters:
+  - roughness (`Pr` and `map_Pr`)
   - metalness (`Pm` and `map_Pm`)
   - normal map (`norm`)
   - emission (`Ke` and `map_Ke`)
@@ -268,7 +280,8 @@
 
 ### Changed
 - Upgrade Gradle Wrapper to `7.3.3`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.10`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.10`
   - Replace `kapt` with `com.google.devtools.ksp` version `1.6.10-1.0.2`
   - Upgrade `org.jetbrains.intellij` to `1.3.0`
   - Upgrade `org.jetbrains.grammarkit` to `2021.2.1`
@@ -278,15 +291,15 @@
   - Upgrade `glimpse-core` to `1.1.0-ALPHA1`
   - Upgrade `glimpse-ui` to `1.1.0-ALPHA1`
   - Replace `glimpse-processor-java` with `glimpse-processor-ksp` version `1.1.0-ALPHA1`
-- - Upgrade `actions/cache` to `v2.1.7`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v2.1.7`
   - Upgrade `actions/upload-artifact` to `v2.3.1`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1`
 
 ### Fixed
 - Prevent texture loading on GL thread
 
-## [1.0.2]
-
+## [1.0.2] - 2021-11-09
 ### Added
 - Support for platform version `213.*`
 - Shader quality (float precision) setting
@@ -300,14 +313,16 @@
 ### Changed
 - Upload detekt report in GitHub Actions build after failure
 - Upgrade Gradle Wrapper to `7.2`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.31`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.31`
   - Upgrade `kapt` to `1.5.31`
   - Upgrade `org.jetbrains.intellij` to `1.2.1`
   - Upgrade `org.jetbrains.changelog` to `1.3.1`
   - Upgrade `detekt-formatting` to `1.18.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.1`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.0`
-- - Upgrade `actions/checkout` to `v2.4.0`
+- GitHub Actions:
+  - Upgrade `actions/checkout` to `v2.4.0`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`, `2021.3`
 - Gradle – Changelog plugin configuration update
 
@@ -316,20 +331,19 @@
 - Use `DynamicBundle` instead of `AbstractBundle` in `WavefrontObjBundle.kt`
 - Replace deprecated `ServiceManager.getService` with `Application.getService`
 
-## [1.0.1]
-
+## [1.0.1] - 2021-07-16
 ### Added
 - Support for platform version `212.*`
 
 ### Changed
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.21`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.21`
   - Upgrade `kapt` to `1.5.21`
   - Upgrade `org.jetbrains.intellij` to `1.1.3`
   - Upgrade `org.jetbrains.changelog` to `1.2.0`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`, `2021.2`
 
-## [1.0.0]
-
+## [1.0.0] - 2021-07-04
 ### Added
 - Support for textured lines
 - Support for multiple MTL filenames in `mtllib` statement
@@ -348,12 +362,14 @@
 - Use `gradle-grammarkit-plugin` to generate parsers and lexers
 - Remove reference to the `jcenter()` from Gradle configuration file
 - Upgrade Gradle Wrapper to `7.1`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.20`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.20`
   - Upgrade `kapt` to `1.5.20`
   - Upgrade `org.jetbrains.intellij` to `1.1.2`
   - Upgrade `detekt-formatting` to `1.17.1`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`
-- - Upgrade `gradle/wrapper-validation-action` to `v1.0.4`
+- GitHub Actions:
+  - Upgrade `gradle/wrapper-validation-action` to `v1.0.4`
   - Upgrade `actions/cache` to `v2.1.6`
   - Upgrade `actions/checkout` to `v2.3.4`
   - Upgrade `actions/upload-artifact` to `v2.2.4`
@@ -368,8 +384,7 @@
 - Improve UI messages
 - Require spaces after keywords, options and values
 
-## [0.3.2]
-
+## [0.3.2] - 2021-04-11
 ### Added
 - Support for relative indices in OBJ files (#95)
 - Refresh action in 3D preview
@@ -379,14 +394,15 @@
 - Use standard IDE error icons
 - Display 3D preview errors below the preview (#112)
 
-## [0.3.1]
-
+## [0.3.1] - 2021-04-08
 ### Added
 - Support for platform version `211.*`
 
 ### Changed
-- - Upgrade `kapt` to `1.4.32`
-- - Upgrade `actions/upload-artifact` to `v2.2.3`
+- Dependencies:
+  - Upgrade `kapt` to `1.4.32`
+- GitHub Actions:
+  - Upgrade `actions/upload-artifact` to `v2.2.3`
   - Upgrade `actions/setup-java` to `v2`
 - Update platform version to `2020.3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
@@ -403,23 +419,25 @@
 - Replace deprecated method `PsiManager.addPsiTreeChangeListener(...)`
 - Run `FilenameIndex.getFilesByName(...)` inside `runReadAction { ... }`
 
-## [0.3.0]
-
+## [0.3.0] - 2021-04-08
 ### Added
 - Wireframe shading in the 3D preview
 - Material shading in the 3D preview (material colors)
-- - `properties` shorthand function for accessing `gradle.properties` in a cleaner way
+- Build configuration:
+  - `properties` shorthand function for accessing `gradle.properties` in a cleaner way
   - Dependabot check for GitHub Actions used in workflow files
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.3`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.32`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.32`
   - Upgrade `org.jetbrains.intellij` to `0.7.2`
   - Upgrade `org.jetbrains.changelog` to `1.1.2`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.16.0`
   - Upgrade `detekt-formatting` to `1.16.0`
   - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.0.0`
-- - Upgrade `actions/upload-artifact` to `v2.2.2`
+- GitHub Actions:
+  - Upgrade `actions/upload-artifact` to `v2.2.2`
   - Upgrade `actions/cache` to `v2.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.3`
 - Update `changelog` Gradle plugin configuration
@@ -429,11 +447,11 @@
 - Provide list of available texture files to texture file reference
 - Fix `README.md` file resolution in the `build.gradle.kts`
 
-## [0.2.1]
-
+## [0.2.1] - 2021-02-05
 ### Added
 - Color settings for OBJ 3D preview colors for faces, lines and points.
-- - Default up vector
+- Settings for the 3D preview:
+  - Default up vector
   - Line width
   - Point size
 - Showing axes and grid on the 3D preview (both toggleable)
@@ -442,7 +460,8 @@
 
 ### Changed
 - Upgrade Gradle Wrapper to `6.8.1`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.30`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.30`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.2`
 
 ### Fixed
@@ -452,16 +471,17 @@
 - Refresh the 3D preview after the OBJ file edited
 - Use relative paths in MTL file references
 
-## [0.2.0]
-
+## [0.2.0] - 2021-01-31
 ### Added
 - Support for drawing lines in 3D preview
 - Support for drawing points in 3D preview
-- - Syntax highlighting
+- Support for MTL files:
+  - Syntax highlighting
   - Structure tree view
   - Code formatting
   - Code commenting
-- - Code completion
+- Navigation between OBJ and MTL files:
+  - Code completion
   - References
   - Usages
   - Renaming
@@ -471,8 +491,7 @@
 - Replace usages deprecated in platform version 2020.3 (if replacement available)
 - Fix errors after typing long keywords
 
-## [0.1.5]
-
+## [0.1.5] - 2021-01-28
 ### Added
 - Dependabot integration
 - Show `idea.log` logs of the run IDE in the Run console
@@ -480,7 +499,8 @@
 ### Changed
 - `build.gradle.kts`: simpler syntax for configuring `KotlinCompile`
 - Upgrade Gradle Wrapper to `6.8`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.21-2`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.21-2`
   - Upgrade `detekt-formatting` to `1.15.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.15.0`
   - Upgrade `org.jetbrains.changelog` to `1.0.1`
@@ -491,31 +511,30 @@
 - Return `Supplier<@Nls String>` instead of `String` in `MyBundle.messagePointer`
 - GitHub Actions: Use the correct property in the "Upload artifact" step
 
-## [0.1.4]
-
+## [0.1.4] - 2020-12-02
 ### Added
 - Predefined Run/Debug Configurations
 - Support for platform version 203.*
 
 ### Changed
-- - Upgrade `org.jetbrains.intellij` to `0.6.5`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `0.6.5`
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.20`
 
-## [0.1.3]
-
+## [0.1.3] - 2020-11-06
 ### Added
 - Setting: Disable 3D preview
 - Setting: Default layout
 
 ### Changed
 - Update `pluginVerifierIdeVersions` in the `gradle.properties` file
-- - Upgrade `org.jetbrains.intellij` to `0.6.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `0.6.2`
 
 ### Fixed
 - Not creating `GLPanel` before 3D preview set to visible
 
-## [0.1.2]
-
+## [0.1.2] - 2020-10-31
 ### Added
 - Fix default to opt-out of bundling Kotlin standard library in plugin distribution
 - Integration with [IntelliJ Plugin Verifier](https://github.com/JetBrains/intellij-plugin-verifier) through the [Gradle IntelliJ Plugin](https://github.com/JetBrains/gradle-intellij-plugin#plugin-verifier-dsl) `runPluginVerifier` task
@@ -524,7 +543,8 @@
 - Set default editor layout to text only
 - Update platform version to `2020.1`
 - Upgrade Gradle Wrapper to `6.7`
-- - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.10`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.10`
   - Upgrade `org.jetbrains.intellij` to `0.6.1`
   - Upgrade `org.jetbrains.changelog` to `0.6.2`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.14.2`
@@ -541,25 +561,25 @@
 - `pluginName` variable name collision with `intellij` closure getter in Gradle configuration
 - Using correct encoding of ellipsis character when initializing 3D preview
 
-## [0.1.1]
-
+## [0.1.1] - 2020-08-09
 ### Fixed
 - Correct link in plugin description
 
-## [0.1.0]
-
+## [0.1.0] - 2020-08-09
 ### Added
-- - Syntax highlighting
+- Support for Wavefront OBJ files
+  - Syntax highlighting
   - Structure tree view
   - Code formatting
   - Code commenting
-- - Rendering all faces using Gouraud shading model
+- Basic 3D preview of OBJ files
+  - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...main
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1
-[1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1
 [1.2.1-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1-eap.1...v1.2.1-eap.2
+[1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1
 [1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0
 [1.2.0-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0-alpha.1
 [1.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...v1.1.2

@@ -137,7 +137,9 @@ class MtlMaterialComponent(
 
     private fun initializeMtlFile() {
         val psiManager = PsiManager.getInstance(project)
-        val mtlFile = requireNotNull(psiManager.findFile(file) as? MtlFile)
+        val mtlFile = runReadAction {
+            requireNotNull(psiManager.findFile(file) as? MtlFile)
+        }
 
         psiTreeChangeListener?.let { listener -> psiManager.removePsiTreeChangeListener(listener) }
         psiTreeChangeListener = MyPsiTreeChangeListener(mtlFile)

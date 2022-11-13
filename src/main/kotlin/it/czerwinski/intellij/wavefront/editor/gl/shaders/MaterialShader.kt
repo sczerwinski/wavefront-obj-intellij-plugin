@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
 import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
+import graphics.glimpse.shaders.annotations.Sampler2D
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
 import graphics.glimpse.textures.Texture
@@ -65,19 +66,19 @@ data class MaterialShader(
     @Uniform(name = "uSpecExp")
     val specularExponent: Float,
 
-    @Uniform(name = "uAmbTex")
+    @Sampler2D(name = "uAmbTex")
     val ambientTexture: Texture,
 
-    @Uniform(name = "uDiffTex")
+    @Sampler2D(name = "uDiffTex")
     val diffuseTexture: Texture,
 
-    @Uniform(name = "uSpecTex")
+    @Sampler2D(name = "uSpecTex")
     val specularTexture: Texture,
 
-    @Uniform(name = "uEmissionTex")
+    @Sampler2D(name = "uEmissionTex")
     val emissionTexture: Texture,
 
-    @Uniform(name = "uSpecExpTex")
+    @Sampler2D(name = "uSpecExpTex")
     val specularExponentTexture: Texture,
 
     @Uniform(name = "uSpecExpBase")
@@ -86,13 +87,13 @@ data class MaterialShader(
     @Uniform(name = "uSpecExpGain")
     val specularExponentGain: Float,
 
-    @Uniform(name = "uNormalTex")
+    @Sampler2D(name = "uNormalTex")
     val normalmapTexture: Texture,
 
     @Uniform(name = "uBumpMult")
     val normalmapMultiplier: Float,
 
-    @Uniform(name = "uDispTex")
+    @Sampler2D(name = "uDispTex")
     val displacementTexture: Texture,
 
     @Uniform(name = "uDispGain")

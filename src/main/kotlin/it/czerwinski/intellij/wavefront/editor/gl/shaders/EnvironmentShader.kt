@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
 import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
+import graphics.glimpse.shaders.annotations.Sampler2D
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
 import graphics.glimpse.textures.Texture
@@ -33,6 +34,6 @@ data class EnvironmentShader(
     @Uniform(name = "uMVPMat")
     val mvpMatrix: Mat4,
 
-    @Uniform(name = "uEnvTexture")
+    @Sampler2D(name = "uEnvTexture")
     val environmentTexture: Texture,
 )

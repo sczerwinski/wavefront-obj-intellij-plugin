@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.gl.shaders
 
 import graphics.glimpse.shaders.annotations.Attribute
 import graphics.glimpse.shaders.annotations.AttributeRole
+import graphics.glimpse.shaders.annotations.Sampler2D
 import graphics.glimpse.shaders.annotations.ShaderParams
 import graphics.glimpse.shaders.annotations.Uniform
 import graphics.glimpse.textures.Texture
@@ -41,6 +42,6 @@ data class TexturedWireframeShader(
     @Uniform(name = "uColor")
     val color: Vec4,
 
-    @Uniform(name = "uTexture")
+    @Sampler2D(name = "uTexture")
     val texture: Texture,
 )

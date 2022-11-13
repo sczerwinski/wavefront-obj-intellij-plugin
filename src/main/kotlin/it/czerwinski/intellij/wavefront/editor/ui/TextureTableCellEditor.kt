@@ -45,7 +45,9 @@ class TextureTableCellEditor(
 
     private val myCompletionProvider = TexturesAutoCompletionProvider()
 
-    private val myComponent = TextFieldWithAutoCompletion(project, myCompletionProvider, true, "")
+    private val myComponent = runReadAction {
+        TextFieldWithAutoCompletion(project, myCompletionProvider, true, "")
+    }
 
     init {
         updateTextureFiles()

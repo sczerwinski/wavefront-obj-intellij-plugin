@@ -4,25 +4,16 @@
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.21`
-  - Upgrade `com.google.devtools.ksp` to `1.7.21-1.0.8`
-  - Upgrade `glimpse-core` to `1.2.0`
-  - Upgrade `glimpse-obj` to `1.2.0`
-  - Upgrade `glimpse-ui` to `1.2.0`
-  - Upgrade `glimpse-processor-ksp` to `1.2.0`
-
-### Deprecated
-
-### Removed
+- Upgrade `org.jetbrains.kotlin.jvm` to `1.7.21`
+- Upgrade `com.google.devtools.ksp` to `1.7.21-1.0.8`
+- Upgrade `glimpse-core` to `1.2.0`
+- Upgrade `glimpse-obj` to `1.2.0`
+- Upgrade `glimpse-ui` to `1.2.0`
+- Upgrade `glimpse-processor-ksp` to `1.2.0`
 
 ### Fixed
 - Wrap file operations in read-actions
-
-### Security
 
 ## [1.2.1] - 2022-10-31
 ### Added
@@ -576,7 +567,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...main
+[1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1
 [1.2.1-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1-eap.1...v1.2.1-eap.2
 [1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1

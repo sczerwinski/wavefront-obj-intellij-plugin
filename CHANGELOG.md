@@ -7,10 +7,24 @@
 ### Added
 
 ### Changed
+- Update platform version to `2022.2.3`
+- `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1`
+- Upgrade Java to `17`
+- Upgrade Gradle Wrapper to `7.6`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.0`
+  - Upgrade `com.google.devtools.ksp` to `1.8.0-1.0.7`
+  - Upgrade `org.jetbrains.intellij` to `1.12.0`
+  - Upgrade `org.jetbrains.grammarkit` to `2022.3`
+  - Upgrade `detekt-formatting` to `1.22.0`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.22.0`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.2.3`
 
 ### Deprecated
 
 ### Removed
+- Remove support for platform version `221.*`
 
 ### Fixed
 

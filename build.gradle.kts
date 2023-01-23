@@ -9,17 +9,17 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.21"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.7.21-1.0.8"
+    id("com.google.devtools.ksp") version "1.8.0-1.0.8"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.9.0"
+    id("org.jetbrains.intellij") version "1.12.0"
     // Gradle Grammar-Kit Plugin
-    id("org.jetbrains.grammarkit") version "2021.2.2"
+    id("org.jetbrains.grammarkit") version "2022.3"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 }
 
 group = properties("pluginGroup")
@@ -30,10 +30,10 @@ repositories {
     mavenCentral()
 }
 
-// Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
+// Set the JVM language level used to compile sources and generate files - Java 17 is required since 2022.2
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -43,7 +43,7 @@ dependencies {
     api("graphics.glimpse:glimpse-obj:1.2.0")
     api("graphics.glimpse:glimpse-ui:1.2.0")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.2.0")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
 }
 
 // Generate parsers and lexers before Kotlin compilation.
@@ -55,6 +55,10 @@ fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {
         pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.capitalize()}Parser.java")
         pathToPsiRoot.set("it/czerwinski/intellij/wavefront/lang/psi")
         purgeOldFiles.set(true)
+        sourceFile.convention(source.map { project.layout.projectDirectory.file(it) })
+        targetRootOutputDir.convention(targetRoot.map { project.layout.projectDirectory.dir(it) })
+        parserFile.convention(pathToParser.map { project.layout.projectDirectory.file("${targetRoot.get()}/$it") })
+        psiDir.convention(pathToPsiRoot.map { project.layout.projectDirectory.dir("${targetRoot.get()}/$it") })
         config()
     }
 

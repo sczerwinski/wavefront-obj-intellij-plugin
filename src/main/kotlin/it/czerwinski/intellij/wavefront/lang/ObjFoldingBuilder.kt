@@ -41,7 +41,6 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
-
             is ObjObject -> OBJECT_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
             is ObjGroup -> GROUP_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
 

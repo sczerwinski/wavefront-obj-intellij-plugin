@@ -28,6 +28,7 @@
 - Remove support for platform version `221.*`
 
 ### Fixed
+- Replace usages of internal method `StartupManager.runAfterOpened()` with a `StartupActivity`
 
 ### Security
 

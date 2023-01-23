@@ -39,7 +39,6 @@ class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
-
             is MtlMaterial -> MATERIAL_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
 
             else -> DEFAULT_PLACEHOLDER_TEXT

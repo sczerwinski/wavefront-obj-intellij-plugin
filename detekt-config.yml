@@ -7,7 +7,13 @@ complexity:
     thresholdInObjects: 20
 
 formatting:
+  AnnotationOnSeparateLine:
+    active: false
   ImportOrdering:
     layout: '*'
   Indentation:
     active: true
+  MultiLineIfElse:
+    active: false
+  SpacingBetweenDeclarationsWithAnnotations:
+    active: false

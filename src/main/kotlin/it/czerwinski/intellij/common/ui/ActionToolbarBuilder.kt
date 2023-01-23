@@ -93,7 +93,7 @@ class ActionToolbarBuilder {
         val group = actionManager.getAction(myActionGroupId) as ActionGroup
 
         val toolbar = actionManager.createActionToolbar(myPlace, group, myHorizontal)
-        myTargetComponent.get()?.also { component -> toolbar.setTargetComponent(component) }
+        myTargetComponent.get()?.also { component -> toolbar.targetComponent = component }
         toolbar.setReservePlaceAutoPopupIcon(false)
         return toolbar
     }

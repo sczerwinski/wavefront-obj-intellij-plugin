@@ -34,7 +34,7 @@ import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 import javax.swing.JComponent
 
 class MtlMaterialEditor(
-    private val project: Project,
+    project: Project,
     virtualFile: VirtualFile
 ) : PreviewEditor(), GLPreviewEditor {
 

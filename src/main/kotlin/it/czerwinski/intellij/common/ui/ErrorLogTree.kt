@@ -51,7 +51,7 @@ class ErrorLogTree(treeModel: ErrorLogTreeModel) : Tree(treeModel) {
             } else {
                 setText(emptyArray(), nodeText.orEmpty())
             }
-            setIcon(if (leaf) null else AllIcons.General.Error)
+            icon = if (leaf) null else AllIcons.General.Error
         }
     }
 }

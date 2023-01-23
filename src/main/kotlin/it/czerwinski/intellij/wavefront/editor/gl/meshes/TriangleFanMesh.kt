@@ -21,7 +21,7 @@ import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.buffers.Buffer
 import graphics.glimpse.meshes.Mesh
 
-class TriangleFanMesh constructor(
+class TriangleFanMesh(
     override val vertexCount: Int,
     override val buffers: List<Buffer>
 ) : Mesh {

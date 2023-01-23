@@ -33,7 +33,7 @@ import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 import javax.swing.JComponent
 
 class ObjPreviewEditor(
-    private val project: Project,
+    project: Project,
     virtualFile: VirtualFile
 ) : PreviewEditor(), GLPreviewEditor {
 

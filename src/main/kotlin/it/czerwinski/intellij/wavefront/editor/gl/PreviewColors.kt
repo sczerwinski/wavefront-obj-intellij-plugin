@@ -18,24 +18,24 @@ package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.editor.colors.ColorKey
 import com.intellij.openapi.editor.colors.EditorColorsManager
+import com.intellij.ui.JBColor
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
-import java.awt.Color
 
 internal object PreviewColors {
 
-    internal val COLOR_FACE: ColorKey = ColorKey.createColorKey("OBJ_3D_FACE", Color.LIGHT_GRAY)
-    internal val COLOR_LINE: ColorKey = ColorKey.createColorKey("OBJ_3D_LINE", Color.GRAY)
-    internal val COLOR_POINT: ColorKey = ColorKey.createColorKey("OBJ_3D_POINT", Color.GRAY)
+    internal val COLOR_FACE: ColorKey = ColorKey.createColorKey("OBJ_3D_FACE", JBColor.LIGHT_GRAY)
+    internal val COLOR_LINE: ColorKey = ColorKey.createColorKey("OBJ_3D_LINE", JBColor.GRAY)
+    internal val COLOR_POINT: ColorKey = ColorKey.createColorKey("OBJ_3D_POINT", JBColor.GRAY)
 
-    internal val COLOR_AXIS_X: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_X", Color.RED)
-    internal val COLOR_AXIS_Y: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_Y", Color.GREEN)
-    internal val COLOR_AXIS_Z: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_Z", Color.BLUE)
-    internal val COLOR_GRID: ColorKey = ColorKey.createColorKey("OBJ_3D_GRID", Color.GRAY)
+    internal val COLOR_AXIS_X: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_X", JBColor.RED)
+    internal val COLOR_AXIS_Y: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_Y", JBColor.GREEN)
+    internal val COLOR_AXIS_Z: ColorKey = ColorKey.createColorKey("OBJ_3D_AXIS_Z", JBColor.BLUE)
+    internal val COLOR_GRID: ColorKey = ColorKey.createColorKey("OBJ_3D_GRID", JBColor.GRAY)
 }
 
 fun Vec3(colorKey: ColorKey): Vec3 =
-    Vec3(color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: colorKey.defaultColor)
+    Vec4(color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: colorKey.defaultColor).toVec3()
 
 fun Vec4(colorKey: ColorKey, alpha: Float = 1f): Vec4 =
     Vec3(colorKey).toVec4(w = alpha)

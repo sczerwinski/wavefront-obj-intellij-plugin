@@ -25,6 +25,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 import java.awt.Color
 
+@Suppress("UseJBColor")
 abstract class MtlColorElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), MtlColorElement {

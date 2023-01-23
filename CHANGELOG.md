@@ -5,6 +5,20 @@
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.3.0-eap.1] - 2023-01-23
+
+### Added
 - Add support for platform version `231.*`
 
 ### Changed
@@ -601,6 +615,7 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...main
+[1.3.0-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...v1.3.0-eap.1
 [1.2.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1
 [1.2.1-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1-eap.1...v1.2.1-eap.2

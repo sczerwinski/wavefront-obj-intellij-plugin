@@ -7,6 +7,7 @@
 ### Added
 
 ### Changed
+- Upgrade Gradle Wrapper to `7.6`
 
 ### Deprecated
 

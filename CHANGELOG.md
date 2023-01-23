@@ -30,6 +30,9 @@
 ### Fixed
 - Replace usages of internal method `StartupManager.runAfterOpened()` with a `StartupActivity`
 - Override `getActionUpdateThread()` in existing implementations of `AnAction`
+- Use DPI-aware `JBEmptyBorder` instead of `EmptyBorder`
+- Use Darcula-aware `JBColor` instead of `Color` in color scheme
+- Minor grammar fixes in some descriptions
 
 ### Security
 

@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
@@ -25,6 +26,8 @@ import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.editor.Refreshable
 
 class RefreshAction : AnAction(), DumbAware {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(event: AnActionEvent) {
         val editor = findRefreshableFileEditor(event)

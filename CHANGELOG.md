@@ -29,6 +29,7 @@
 
 ### Fixed
 - Replace usages of internal method `StartupManager.runAfterOpened()` with a `StartupActivity`
+- Override `getActionUpdateThread()` in existing implementations of `AnAction`
 
 ### Security
 

@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
@@ -31,6 +32,14 @@ abstract class ZoomableFileEditorAction(
     @ActionDescription description: String? = null,
     icon: Icon? = null
 ) : AnAction(text, description, icon) {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
+
+    override fun update(event: AnActionEvent) {
+        val editor = findZoomableFileEditor(event)
+
+        event.presentation.isEnabled = editor != null
+    }
 
     protected fun findZoomableFileEditor(event: AnActionEvent): Zoomable? =
         findZoomableFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))

@@ -21,12 +21,6 @@ import com.intellij.openapi.project.DumbAware
 
 class ZoomFitAction : ZoomableFileEditorAction(), DumbAware {
 
-    override fun update(event: AnActionEvent) {
-        val editor = findZoomableFileEditor(event)
-
-        event.presentation.isEnabled = editor != null
-    }
-
     override fun actionPerformed(event: AnActionEvent) {
         findZoomableFileEditor(event)?.zoomFit()
     }

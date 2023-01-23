@@ -22,8 +22,6 @@
 - GitHub Actions:
   - Upgrade `actions/cache` to `v3.2.3`
 
-### Deprecated
-
 ### Removed
 - Remove support for platform version `221.*`
 
@@ -35,8 +33,6 @@
 - Use DPI-aware `JBEmptyBorder` instead of `EmptyBorder`
 - Use Darcula-aware `JBColor` instead of `Color` in color scheme
 - Minor grammar fixes in some descriptions
-
-### Security
 
 ## [1.2.2] - 2022-11-17
 

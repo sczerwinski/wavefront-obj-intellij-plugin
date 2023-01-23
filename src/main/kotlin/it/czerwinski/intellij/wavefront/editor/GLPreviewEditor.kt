@@ -23,5 +23,6 @@ interface GLPreviewEditor : Zoomable, Refreshable {
     var shadingMethod: ShadingMethod
     var environment: PBREnvironment
     var isCroppingTextures: Boolean
+    fun initPreview()
     fun toggleCropTextures()
 }

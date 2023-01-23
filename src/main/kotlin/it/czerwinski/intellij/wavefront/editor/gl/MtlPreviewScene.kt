@@ -37,6 +37,10 @@ import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import java.awt.Color
 
+/**
+ * 3D preview scene for a material.
+ */
+@Suppress("UseJBColor")
 class MtlPreviewScene(
     profile: GLProfile,
     animatorControl: GLAnimatorControl,

@@ -17,13 +17,13 @@
 package it.czerwinski.intellij.wavefront.editor.ui
 
 import com.intellij.ui.components.JBLabel
+import com.intellij.util.ui.JBEmptyBorder
 import it.czerwinski.intellij.common.ui.ColorLabel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import java.awt.Color
 import java.awt.Component
 import javax.swing.JTable
 import javax.swing.SwingConstants
-import javax.swing.border.EmptyBorder
 import javax.swing.table.TableCellRenderer
 
 class MaterialPropertiesTableCellRenderer : TableCellRenderer {
@@ -50,6 +50,6 @@ class MaterialPropertiesTableCellRenderer : TableCellRenderer {
         private const val BORDER_VERTICAL = 2
 
         private val labelBorder =
-            EmptyBorder(BORDER_VERTICAL, BORDER_HORIZONTAL, BORDER_VERTICAL, BORDER_HORIZONTAL)
+            JBEmptyBorder(BORDER_VERTICAL, BORDER_HORIZONTAL, BORDER_VERTICAL, BORDER_HORIZONTAL)
     }
 }

@@ -18,8 +18,8 @@ package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileEditorState
+import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.StartupManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.PreviewEditor
@@ -33,7 +33,7 @@ import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
 import javax.swing.JComponent
 
 class ObjPreviewEditor(
-    private val project: Project,
+    project: Project,
     virtualFile: VirtualFile
 ) : PreviewEditor(), GLPreviewEditor {
 
@@ -139,8 +139,8 @@ class ObjPreviewEditor(
             .subscribe(WavefrontObjSettingsState.SettingsChangedListener.TOPIC, settingsChangedListener)
     }
 
-    fun initPreview() {
-        StartupManager.getInstance(project).runAfterOpened {
+    override fun initPreview() {
+        BackgroundTaskUtil.executeOnPooledThread(this) {
             myComponent.initialize()
         }
     }

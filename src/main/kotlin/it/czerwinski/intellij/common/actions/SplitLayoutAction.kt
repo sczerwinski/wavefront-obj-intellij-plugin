@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.common.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
@@ -30,6 +31,8 @@ import it.czerwinski.intellij.common.editor.SplitEditor
 sealed class SplitLayoutAction(
     private val splitLayout: SplitEditor.Layout
 ) : AnAction(), DumbAware, Toggleable {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(event: AnActionEvent) {
         val editor = findObjSplitEditor(event)

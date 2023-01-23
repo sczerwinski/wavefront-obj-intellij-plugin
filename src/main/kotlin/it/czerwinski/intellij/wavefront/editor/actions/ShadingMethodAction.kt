@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.project.DumbAware
@@ -24,6 +25,8 @@ import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 sealed class ShadingMethodAction(
     private val shadingMethod: ShadingMethod
 ) : GLPreviewFileEditorAction(), DumbAware, Toggleable {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(event: AnActionEvent) {
         val editor = findGLPreviewFileEditor(event)

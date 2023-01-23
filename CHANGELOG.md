@@ -5,10 +5,11 @@
 ## [Unreleased]
 
 ### Added
+- Add support for platform version `231.*`
 
 ### Changed
 - Update platform version to `2022.2.3`
-- `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1`
+- `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1, 2023.1`
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:
@@ -27,6 +28,11 @@
 - Remove support for platform version `221.*`
 
 ### Fixed
+- Replace usages of internal method `StartupManager.runAfterOpened()` with a `StartupActivity`
+- Override `getActionUpdateThread()` in existing implementations of `AnAction`
+- Use DPI-aware `JBEmptyBorder` instead of `EmptyBorder`
+- Use Darcula-aware `JBColor` instead of `Color` in color scheme
+- Minor grammar fixes in some descriptions
 
 ### Security
 

@@ -45,6 +45,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 /**
  * 3D preview scene for an OBJ file.
  */
+@Suppress("UseJBColor")
 class ObjPreviewScene(
     profile: GLProfile,
     animatorControl: GLAnimatorControl,

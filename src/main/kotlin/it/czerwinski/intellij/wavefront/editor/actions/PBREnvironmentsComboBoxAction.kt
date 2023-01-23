@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.DefaultActionGroup
@@ -29,6 +30,8 @@ import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import javax.swing.JComponent
 
 class PBREnvironmentsComboBoxAction : ComboBoxAction() {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     @Deprecated("Deprecated in IntelliJ platform version 223.*")
     override fun createPopupActionGroup(button: JComponent?): DefaultActionGroup = DefaultActionGroup(

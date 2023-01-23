@@ -149,6 +149,8 @@
                 implementation="it.czerwinski.intellij.wavefront.editor.ObjSplitEditorProvider"/>
         <fileEditorProvider
                 implementation="it.czerwinski.intellij.wavefront.editor.MtlSplitEditorProvider"/>
+        <postStartupActivity
+                implementation="it.czerwinski.intellij.wavefront.editor.GLPreviewEditorsStartupActivity"/>
     </extensions>
 
     <actions>

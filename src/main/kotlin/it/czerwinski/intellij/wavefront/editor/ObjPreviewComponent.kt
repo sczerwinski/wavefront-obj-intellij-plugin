@@ -175,7 +175,9 @@ class ObjPreviewComponent(
 
     override fun onInitialize() {
         val psiManager = PsiManager.getInstance(project)
-        val objFile = requireNotNull(psiManager.findFile(file) as? ObjFile)
+        val objFile = runReadAction {
+            requireNotNull(psiManager.findFile(file) as? ObjFile)
+        }
 
         psiTreeChangeListener?.let { listener -> psiManager.removePsiTreeChangeListener(listener) }
         psiTreeChangeListener = MyPsiTreeChangeListener(objFile)

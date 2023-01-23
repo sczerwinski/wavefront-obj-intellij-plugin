@@ -1,1 +1,1 @@
-rootProject.name = "wavefront-obj-intellij-plugin"
+rootProject.name = "Wavefront OBJ IntelliJ Plugin"

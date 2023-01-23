@@ -5,10 +5,11 @@
 ## [Unreleased]
 
 ### Added
+- Add support for platform version `231.*`
 
 ### Changed
 - Update platform version to `2022.2.3`
-- `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1`
+- `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1, 2023.1`
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:

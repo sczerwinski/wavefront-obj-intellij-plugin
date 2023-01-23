@@ -22,6 +22,8 @@ import graphics.glimpse.buffers.toFloatBufferData
 import graphics.glimpse.meshes.Mesh
 import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 
 /**
  * GL model meshes manager.
@@ -72,8 +74,7 @@ class ModelMeshesManager {
                             .map { it.vertexIndex }
                             .zipWithNext()
                             .flatMap { (index1, index2) ->
-                                model.vertices[(index1.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                                    model.vertices[(index2.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                                getVertexPosition(model, index1) + getVertexPosition(model, index2)
                             }
                     }.toFloatBufferData()
                     val linesTextureCoordinatesData = part.lines.flatMap { line ->
@@ -81,8 +82,7 @@ class ModelMeshesManager {
                             .map { it.textureCoordinatesIndex }
                             .zipWithNext()
                             .flatMap { (index1, index2) ->
-                                model.textureCoordinates[(index1?.value ?: 1) - 1].coordinates.map { it ?: 0f } +
-                                    model.textureCoordinates[(index2?.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                                getTextureCoordinates(model, index1) + getTextureCoordinates(model, index2)
                             }
                     }.toFloatBufferData()
                     LinesMesh(
@@ -94,13 +94,27 @@ class ModelMeshesManager {
         )
     }
 
+    private fun getVertexPosition(model: GLModel, index: ObjVertexIndex?): List<Float> =
+        model.vertices
+            .getOrNull(index = (index?.value ?: 1) - 1)
+            ?.coordinates
+            ?.map { it ?: 0f }
+            ?: listOf(0f, 0f, 0f)
+
+    private fun getTextureCoordinates(model: GLModel, index: ObjTextureCoordinatesIndex?): List<Float> =
+        model.textureCoordinates
+            .getOrNull(index = (index?.value ?: 1) - 1)
+            ?.coordinates
+            ?.map { it ?: 0f }
+            ?: listOf(0f, 0f)
+
     private fun createPointsMeshes(gl: GlimpseAdapter, model: GLModel) {
         val bufferFactory = Buffer.Factory.newInstance(gl)
         myPointsMeshes.addAll(
             model.groupingElements.flatMap { element ->
                 element.materialParts.map { part ->
                     val pointsPositionsData = part.points.flatMap { point ->
-                        model.vertices[(point.vertexIndex.value ?: 1) - 1].coordinates.map { it ?: 0f }
+                        getVertexPosition(model, point.vertexIndex)
                     }.toFloatBufferData()
                     PointsMesh(
                         vertexCount = part.points.size,

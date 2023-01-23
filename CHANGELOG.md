@@ -28,6 +28,7 @@
 - Remove support for platform version `221.*`
 
 ### Fixed
+- Wrap file operations in read-actions
 - Replace usages of internal method `StartupManager.runAfterOpened()` with a `StartupActivity`
 - Override `getActionUpdateThread()` in existing implementations of `AnAction`
 - Use DPI-aware `JBEmptyBorder` instead of `EmptyBorder`

@@ -56,6 +56,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
     private lateinit var cropTexturesCheckBox: JBCheckBox
+    private lateinit var mipmappingCheckBox: JBCheckBox
     private lateinit var shaderQualityComboBox: ComboBox<ShaderQuality>
     private lateinit var displacementQualitySlider: JSlider
 
@@ -74,6 +75,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             lineWidth = lineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             pointSize = pointSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             cropTextures = cropTexturesCheckBox.isSelected,
+            mipmapping = mipmappingCheckBox.isSelected,
             shaderQuality = shaderQualityComboBox.item ?: ShaderQuality.DEFAULT,
             displacementQuality = displacementQualitySlider.value * DISPLACEMENT_QUALITY_FACTOR
         )
@@ -91,6 +93,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             lineWidthInput.text = value.lineWidth.toString()
             pointSizeInput.text = value.pointSize.toString()
             cropTexturesCheckBox.isSelected = value.cropTextures
+            mipmappingCheckBox.isSelected = value.mipmapping
             shaderQualityComboBox.item = value.shaderQuality
             displacementQualitySlider.value = (value.displacementQuality / DISPLACEMENT_QUALITY_FACTOR).roundToInt()
         }
@@ -187,6 +190,11 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
         row {
             cropTexturesCheckBox = checkBox(
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.cropTextures")
+            ).component
+        }
+        row {
+            mipmappingCheckBox = checkBox(
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.mipmapping")
             ).component
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality")) {

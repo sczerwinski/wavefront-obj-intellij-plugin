@@ -136,7 +136,7 @@ class ObjPreviewComponent(
         set(value) {
             val oldValue = field
             field = value
-            if (value.shaderQuality != oldValue.shaderQuality) {
+            if (value.needsFullRefresh(oldValue)) {
                 refresh()
             } else {
                 updateScene()

@@ -55,15 +55,19 @@ class TexturesManager {
      *
      * Creates the texture if it does not exist.
      */
-    operator fun get(gl: GlimpseAdapter, filename: String): Texture =
+    operator fun get(gl: GlimpseAdapter, filename: String, withMipmaps: Boolean): Texture =
         textures.getOrPut(filename) {
-            createTexture(gl, filename)
+            createTexture(gl, filename, withMipmaps)
         }
 
-    private fun createTexture(gl: GlimpseAdapter, filename: String): Texture =
+    private fun createTexture(gl: GlimpseAdapter, filename: String, withMipmaps: Boolean): Texture =
         Texture.Builder.getInstance(gl)
             .addTexture(imageSources.getOrElse(filename) { error("Image not loaded: $filename") })
-            .generateMipmaps()
+            .apply {
+                if (withMipmaps) {
+                    generateMipmaps()
+                }
+            }
             .build()
             .first()
 

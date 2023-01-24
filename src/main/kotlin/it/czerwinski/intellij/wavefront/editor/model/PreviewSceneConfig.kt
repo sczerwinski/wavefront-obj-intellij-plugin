@@ -27,8 +27,13 @@ data class PreviewSceneConfig(
     val lineWidth: Float = ObjPreviewSettingsState.DEFAULT_LINE_WIDTH,
     val pointSize: Float = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
     val shaderQuality: ShaderQuality = ShaderQuality.DEFAULT,
+    val mipmapping: Boolean = ObjPreviewSettingsState.DEFAULT_MIPMAPPING,
     val displacementQuality: Float = ObjPreviewSettingsState.DEFAULT_DISPLACEMENT_QUALITY
 ) {
+
+    fun needsFullRefresh(oldConfig: PreviewSceneConfig): Boolean =
+        shaderQuality != oldConfig.shaderQuality || mipmapping != oldConfig.mipmapping
+
     companion object {
         fun fromObjPreviewSettingsState(settings: ObjPreviewSettingsState): PreviewSceneConfig =
             PreviewSceneConfig(
@@ -40,6 +45,7 @@ data class PreviewSceneConfig(
                 settings.lineWidth,
                 settings.pointSize,
                 settings.shaderQuality,
+                settings.mipmapping,
                 settings.displacementQuality
             )
     }

@@ -126,6 +126,8 @@ abstract class PreviewScene(
             requestRender()
         }
 
+    override val mipmapping: Boolean get() = config.mipmapping
+
     private val fontScaling: Float get() = if (UIUtil.isRetina()) 2f else 1f
 
     protected val programExecutorsManager = ProgramExecutorsManager(errorLog)
@@ -193,7 +195,11 @@ abstract class PreviewScene(
             val fontTextures = textureBuilder
                 .addTexture(TextureResources.fontTextureImageSource)
                 .addTexture(TextureResources.boldFontTextureImageSource)
-                .generateMipmaps()
+                .apply {
+                    if (config.mipmapping) {
+                        generateMipmaps()
+                    }
+                }
                 .build()
             fontTexture = fontTextures.first()
             boldFontTexture = fontTextures.last()
@@ -210,7 +216,6 @@ abstract class PreviewScene(
             val textures = Texture.Builder.getInstance(gl)
                 .addTexture(TextureResources.fallbackTextureImageSource)
                 .addTexture(TextureResources.fallbackNormalmapImageSource)
-                .generateMipmaps()
                 .build()
             fallbackTexture = textures.first()
             fallbackNormalmap = textures.last()

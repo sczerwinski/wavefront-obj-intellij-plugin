@@ -21,7 +21,7 @@ import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.dsl.builder.Panel
 import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.settings.ui.SplitEditorLayoutListCellRenderer
+import it.czerwinski.intellij.wavefront.settings.ui.ObjSplitEditorLayoutListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
 import javax.swing.JComponent
 
@@ -52,7 +52,7 @@ class ObjSplitEditorSettingsGroup : SettingsGroup {
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
                 defaultEditorLayoutComboBox = enumComboBox(
                     defaultValue = SplitEditor.Layout.DEFAULT,
-                    renderer = SplitEditorLayoutListCellRenderer()
+                    renderer = ObjSplitEditorLayoutListCellRenderer()
                 ).component
             }
             buttonsGroup(title = WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.split")) {

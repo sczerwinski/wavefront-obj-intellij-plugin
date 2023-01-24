@@ -5,7 +5,8 @@
 ## [Unreleased]
 
 ### Added
-- Automatically preview material at caret 
+- Automatically preview material at caret
+- Settings for MTL file editor layout separate from OBJ file editor layout
 
 ### Changed
 

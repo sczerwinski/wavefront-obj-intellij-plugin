@@ -17,33 +17,62 @@
 package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.bindItem
+import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.settings.ui.MaterialPreviewMeshListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.MaterialShadingMethodListCellRenderer
+import it.czerwinski.intellij.wavefront.settings.ui.MtlSplitEditorLayoutListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
 import javax.swing.JComponent
 
 class MtlEditorSettingsGroup : SettingsGroup, MtlEditorSettingsState.Holder {
 
+    private lateinit var defaultEditorLayoutComboBox: ComboBox<SplitEditor.Layout>
+    private lateinit var verticalSplitCheckBox: JBRadioButton
+    private lateinit var horizontalSplitCheckBox: JBRadioButton
     private lateinit var defaultPreviewMesh: ComboBox<MaterialPreviewMesh>
     private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
 
     override var mtlEditorSettings: MtlEditorSettingsState
         get() = MtlEditorSettingsState(
+            defaultEditorLayout = defaultEditorLayoutComboBox.item ?: SplitEditor.Layout.DEFAULT,
+            isVerticalSplit = verticalSplitCheckBox.isSelected,
             defaultPreviewMesh = defaultPreviewMesh.item ?: MaterialPreviewMesh.DEFAULT,
             defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.MTL_DEFAULT
         )
         set(value) {
+            defaultEditorLayoutComboBox.item = value.defaultEditorLayout
+            verticalSplitCheckBox.isSelected = value.isVerticalSplit
+            horizontalSplitCheckBox.isSelected = !value.isVerticalSplit
             defaultPreviewMesh.item = value.defaultPreviewMesh
             defaultShadingMethod.item = value.defaultShadingMethod
         }
 
     override fun createGroupContents(panel: Panel) {
         with(panel) {
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.default")) {
+                defaultEditorLayoutComboBox = enumComboBox(
+                    defaultValue = SplitEditor.Layout.DEFAULT,
+                    renderer = MtlSplitEditorLayoutListCellRenderer()
+                ).component
+            }
+            buttonsGroup(title = WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.split")) {
+                row {
+                    horizontalSplitCheckBox = radioButton(
+                        WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.split.horizontal")
+                    ).component
+                }
+                row {
+                    verticalSplitCheckBox = radioButton(
+                        WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.split.vertical")
+                    ).component
+                }
+            }
             row(WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.previewMesh")) {
                 defaultPreviewMesh = enumComboBox(
                     defaultValue = MaterialPreviewMesh.DEFAULT,

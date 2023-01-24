@@ -5,6 +5,7 @@
 ## [Unreleased]
 
 ### Added
+- Automatically preview material at caret 
 
 ### Changed
 

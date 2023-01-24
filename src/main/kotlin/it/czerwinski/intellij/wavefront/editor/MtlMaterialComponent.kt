@@ -18,6 +18,8 @@ package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.editor.event.CaretEvent
+import com.intellij.openapi.editor.event.CaretListener
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
@@ -29,6 +31,7 @@ import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.dsl.builder.panel
+import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.common.ui.EditorSplitter
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
@@ -54,6 +57,7 @@ class MtlMaterialComponent(
 ) : JPanel(BorderLayout()), Zoomable, Refreshable, Disposable {
 
     private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
+    private val myCaretListener: MyCaretListener = MyCaretListener()
 
     private var myMtlFile: MtlFile? = null
 
@@ -126,6 +130,11 @@ class MtlMaterialComponent(
     }
 
     fun initialize() {
+        SplitEditor.KEY_CARET_MODEL[editor]?.apply {
+            removeCaretListener(myCaretListener)
+            addCaretListener(myCaretListener)
+        }
+
         if (project.isInitialized) {
             initializeMtlFile()
             mySplitter.secondComponent = JBScrollPane(
@@ -177,6 +186,13 @@ class MtlMaterialComponent(
 
     override fun dispose() {
         Disposer.dispose(myMaterialPreviewComponent)
+    }
+
+    private inner class MyCaretListener : CaretListener {
+
+        override fun caretPositionChanged(event: CaretEvent) {
+            myMaterialComboBoxModel.setSelectedItemAtOffset(event.editor.caretModel.offset)
+        }
     }
 
     private inner class MyPsiTreeChangeListener(private val file: MtlFile) : PsiTreeChangeAdapter() {

@@ -33,19 +33,30 @@ class MaterialComboBoxModel(
     override fun getElementAt(index: Int): MtlMaterialElement = myList[index]
 
     override fun setSelectedItem(anItem: Any?) {
-        mySelected = (anItem as? MtlMaterialElement).takeIf { it in myList } ?: myList.firstOrNull()
-        fireContentsChanged(this, 0, myList.size)
+        if (anItem != mySelected) {
+            mySelected = (anItem as? MtlMaterialElement).takeIf { it in myList } ?: myList.firstOrNull()
+            fireContentsChanged(this, 0, myList.size)
+        }
+    }
+
+    fun setSelectedItemAtOffset(offset: Int) {
+        val itemAtOffset = myList.lastOrNull { element -> element.textRange.startOffset <= offset }
+        if (itemAtOffset != null) {
+            selectedItem = itemAtOffset
+        }
     }
 
     override fun getSelectedItem(): Any? = mySelected
 
     fun updateMaterials(materials: Iterable<MtlMaterialElement>) {
-        val oldSize = myList.size
-        myList.clear()
-        myList.addAll(materials)
-        if (mySelected !in myList) {
-            mySelected = myList.firstOrNull()
+        if (myList != materials) {
+            val oldSize = myList.size
+            myList.clear()
+            myList.addAll(materials)
+            if (mySelected !in myList) {
+                mySelected = myList.firstOrNull()
+            }
+            fireContentsChanged(this, 0, max(oldSize, myList.size))
         }
-        fireContentsChanged(this, 0, max(oldSize, myList.size))
     }
 }

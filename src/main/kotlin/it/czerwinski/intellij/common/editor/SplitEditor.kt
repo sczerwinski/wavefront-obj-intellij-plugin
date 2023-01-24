@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.common.editor
 
+import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel
@@ -60,6 +61,7 @@ abstract class SplitEditor<P : FileEditor>(
     init {
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
+        previewEditor.putUserData(KEY_CARET_MODEL, textEditor.editor.caretModel)
         myComponent = SplitEditorComponent(textEditor, previewEditor)
     }
 
@@ -141,5 +143,6 @@ abstract class SplitEditor<P : FileEditor>(
 
     companion object {
         val KEY_PARENT_SPLIT_EDITOR: Key<SplitEditor<*>> = Key.create("SplitEditor.parentSplitEditor")
+        val KEY_CARET_MODEL: Key<CaretModel> = Key.create("SplitEditor.caretModel")
     }
 }

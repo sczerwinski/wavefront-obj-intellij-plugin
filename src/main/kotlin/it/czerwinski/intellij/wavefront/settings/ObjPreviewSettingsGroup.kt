@@ -22,6 +22,9 @@ import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.dsl.builder.Panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.gl.FaceCulling
+import it.czerwinski.intellij.wavefront.editor.gl.isBackCulling
+import it.czerwinski.intellij.wavefront.editor.gl.isFrontCulling
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
@@ -56,6 +59,9 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
     private lateinit var lineWidthInput: JBTextField
     private lateinit var pointSizeInput: JBTextField
     private lateinit var cropTexturesCheckBox: JBCheckBox
+    private lateinit var mipmappingCheckBox: JBCheckBox
+    private lateinit var frontFaceCullingCheckBox: JBCheckBox
+    private lateinit var backFaceCullingCheckBox: JBCheckBox
     private lateinit var shaderQualityComboBox: ComboBox<ShaderQuality>
     private lateinit var displacementQualitySlider: JSlider
 
@@ -74,6 +80,11 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             lineWidth = lineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             pointSize = pointSizeInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             cropTextures = cropTexturesCheckBox.isSelected,
+            mipmapping = mipmappingCheckBox.isSelected,
+            faceCulling = FaceCulling(
+                front = frontFaceCullingCheckBox.isSelected,
+                back = backFaceCullingCheckBox.isSelected
+            ),
             shaderQuality = shaderQualityComboBox.item ?: ShaderQuality.DEFAULT,
             displacementQuality = displacementQualitySlider.value * DISPLACEMENT_QUALITY_FACTOR
         )
@@ -91,6 +102,9 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             lineWidthInput.text = value.lineWidth.toString()
             pointSizeInput.text = value.pointSize.toString()
             cropTexturesCheckBox.isSelected = value.cropTextures
+            mipmappingCheckBox.isSelected = value.mipmapping
+            frontFaceCullingCheckBox.isSelected = value.faceCulling?.isFrontCulling == true
+            backFaceCullingCheckBox.isSelected = value.faceCulling?.isBackCulling == true
             shaderQualityComboBox.item = value.shaderQuality
             displacementQualitySlider.value = (value.displacementQuality / DISPLACEMENT_QUALITY_FACTOR).roundToInt()
         }
@@ -171,6 +185,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
         }
     }
 
+    @Suppress("LongMethod")
     private fun Panel.createAdvancedGroup() {
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
             lineWidthInput = textField(
@@ -188,6 +203,23 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             cropTexturesCheckBox = checkBox(
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.cropTextures")
             ).component
+        }
+        row {
+            mipmappingCheckBox = checkBox(
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.mipmapping")
+            ).component
+        }
+        buttonsGroup(title = WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.faceCulling")) {
+            row {
+                frontFaceCullingCheckBox = checkBox(
+                    WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.faceCulling.front")
+                ).component
+            }
+            row {
+                backFaceCullingCheckBox = checkBox(
+                    WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.faceCulling.back")
+                ).component
+            }
         }
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality")) {
             shaderQualityComboBox = enumComboBox(

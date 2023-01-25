@@ -21,7 +21,7 @@ import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 
 @Suppress("FunctionName")
-fun SplitEditorLayoutListCellRenderer(): SimpleListCellRenderer<SplitEditor.Layout> =
+fun ObjSplitEditorLayoutListCellRenderer(): SimpleListCellRenderer<SplitEditor.Layout> =
     SimpleListCellRenderer.create("") { value ->
         when (value) {
             SplitEditor.Layout.TEXT ->

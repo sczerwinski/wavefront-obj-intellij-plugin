@@ -50,6 +50,8 @@ abstract class BaseScene(
 
     private val texturesManager = TexturesManager()
 
+    protected abstract val mipmapping: Boolean
+
     /**
      * Loads texture image from a file with given [filename] before creating a texture.
      */
@@ -68,7 +70,7 @@ abstract class BaseScene(
      * Returns texture created from this file.
      */
     protected fun getTexture(gl: GlimpseAdapter, filename: String): Texture? = try {
-        texturesManager[gl, filename]
+        texturesManager[gl, filename, mipmapping]
     } catch (ignored: Throwable) {
         null
     }

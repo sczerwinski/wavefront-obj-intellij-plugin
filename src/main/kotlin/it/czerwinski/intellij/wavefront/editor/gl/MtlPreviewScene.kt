@@ -19,7 +19,6 @@ package it.czerwinski.intellij.wavefront.editor.gl
 import com.intellij.openapi.application.runReadAction
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
-import graphics.glimpse.FaceCullingMode
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
@@ -151,7 +150,6 @@ class MtlPreviewScene(
 
     override fun renderModel(gl: GlimpseAdapter) {
         val facesMesh = mesh ?: return
-        gl.glCullFace(FaceCullingMode.DISABLED)
         when (shadingMethod) {
             ShadingMethod.MATERIAL -> renderFacesMaterial(gl, facesMesh)
             ShadingMethod.PBR -> renderFacesPBR(gl, facesMesh)

@@ -34,16 +34,20 @@ class MtlSplitEditor(
         object : WavefrontObjSettingsState.SettingsChangedListener {
 
             override fun beforeSettingsChanged(newSettings: WavefrontObjSettingsState?) {
-                val oldDefaultLayout = WavefrontObjSettingsState.getInstance()?.defaultEditorLayout ?: Layout.DEFAULT
-                val oldVerticalSplit = WavefrontObjSettingsState.getInstance()?.isVerticalSplit
+                val mtlEditorSettings = WavefrontObjSettingsState.getInstance()?.mtlEditorSettings
+                val newMtlEditorSettings = newSettings?.mtlEditorSettings
+
+                val oldDefaultLayout = mtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
+                val oldVerticalSplit = mtlEditorSettings?.isVerticalSplit
                     ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
 
                 if (layout === oldDefaultLayout) {
-                    layout = newSettings?.defaultEditorLayout ?: Layout.DEFAULT
+                    layout = newMtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
                 }
 
                 if (mySplitVertically == oldVerticalSplit) {
-                    mySplitVertically = newSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+                    mySplitVertically = newMtlEditorSettings?.isVerticalSplit
+                        ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
                 }
             }
         }
@@ -63,10 +67,10 @@ class MtlSplitEditor(
     }
 
     private fun initializeFromSettings() {
-        val settings = WavefrontObjSettingsState.getInstance()
+        val mtlEditorSettings = WavefrontObjSettingsState.getInstance()?.mtlEditorSettings
 
-        layout = settings?.defaultEditorLayout ?: Layout.DEFAULT
-        mySplitVertically = settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+        layout = mtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
+        mySplitVertically = mtlEditorSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
     }
 
     private fun observeSettingsChanges() {

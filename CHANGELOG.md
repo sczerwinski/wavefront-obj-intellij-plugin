@@ -19,14 +19,8 @@
   - Upgrade `jogl-all-main` to `2.4.0-rc-20230123`
   - Upgrade `gluegen-rt-main` to `2.4.0-rc-20230123`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Fix attaching change notes to the plugin
-
-### Security
 
 ## [1.3.0-eap.1] - 2023-01-23
 
@@ -627,6 +621,7 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...main
+[1.3.0-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0-eap.1...v1.3.0-eap.2
 [1.3.0-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...v1.3.0-eap.1
 [1.2.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1

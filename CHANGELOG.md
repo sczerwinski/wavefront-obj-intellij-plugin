@@ -13,6 +13,7 @@
 ### Removed
 
 ### Fixed
+- Fix plugin change notes
 
 ### Security
 

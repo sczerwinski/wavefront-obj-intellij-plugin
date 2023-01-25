@@ -9,53 +9,63 @@
 and other IDE's based on IntelliJ IDEA.</sup>
 
 <!-- Plugin description -->
-Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
+Adds support for [Wavefront OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file)
+and MTL (material library) files.
 
 - OBJ file format syntax
 - MTL file format syntax
 - 3D preview of OBJ files
+- material editor
 <!-- Plugin description end -->
 
 ## Features
 
 ### Supported features
 
-- OBJ file format,
-- MTL file format,
-- navigation between OBJ and MTL files,
-- 3D preview of OBJ file:
-  - text only, preview only, or split,
-  - shader model selection: wireframe, solid, material,
-  - selection of up axis.
+Core features include:
+- OBJ file format support
+- MTL file format support
+- 3D preview of OBJ file
+- material editor with preview
 
 ## Supported operating systems
 
 3D preview is supported for:
 - Windows:
-  - i586
-  - AMD64
-- macOS
+  - x86-64
+- Mac OS X:
+  - x86-64
+  - AArch64 (since v1.3.0)
 - Linux:
-  - i586
-  - AMD64
-  - ARMv6hf
+  - x86-64
   - AArch64
 
 ## Installation
 
-- Using IDE built-in plugin system:
+### Using IDE Built-In Plugin System
 
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> >
-  <kbd>Search for "Wavefront OBJ"</kbd> > <kbd>Install Plugin</kbd>
+<kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> >
+<kbd>Search for "Wavefront OBJ"</kbd> > <kbd>Install Plugin</kbd>
 
-- Manually:
+### Manually
 
-  Download the
-  [latest release][latest_release]
-  and install it manually using:
-   
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> >
-  <kbd>Install plugin from disk...</kbd>
+Download the [latest release][latest_release] and install it manually using:
+
+<kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> >
+<kbd>Install plugin from disk...</kbd>
+
+### EAP Releases
+
+To install EAP version of the plugin, use:
+
+<kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> >
+<kbd>Manage Plugin Repositories...</kbd>
+
+and add the following URL to the list:
+
+```
+https://plugins.jetbrains.com/plugins/eap/list
+```
 
 ## Usage
 
@@ -84,7 +94,7 @@ file format and editor.
 
   <kbd>Preferences</kbd> > <kbd>Editor</kbd> > <kbd>Color Scheme</kbd> > <kbd>Wavefront MTL</kbd>
 
-- To change plugin configuration, use
+- To change plugin configuration, use:
 
   <kbd>Preferences</kbd> > <kbd>Languages & Frameworks</kbd> > <kbd>Wavefront OBJ</kbd>
 

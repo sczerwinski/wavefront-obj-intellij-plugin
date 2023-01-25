@@ -170,13 +170,13 @@ tasks {
             }.joinToString("\n").run { markdownToHTML(this) }
         )
 
-        // Get the latest available change notes from the changelog file
+        // Get the change notes from the changelog file
         changeNotes.set(
             provider {
                 changelog.renderItem(
                     changelog.run {
-                        getOrNull(properties("pluginVersion")) ?: getLatest()
-                    },
+                        getOrNull(properties("pluginVersion")) ?: getUnreleased()
+                    }.withHeader(false),
                     Changelog.OutputType.HTML
                 )
             }

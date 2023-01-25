@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
@@ -172,9 +173,12 @@ tasks {
         // Get the latest available change notes from the changelog file
         changeNotes.set(
             provider {
-                changelog.run {
-                    getOrNull(properties("pluginVersion")) ?: getLatest()
-                }.toHTML()
+                changelog.renderItem(
+                    changelog.run {
+                        getOrNull(properties("pluginVersion")) ?: getLatest()
+                    },
+                    Changelog.OutputType.HTML
+                )
             }
         )
     }

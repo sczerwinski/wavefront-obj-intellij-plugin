@@ -16,6 +16,8 @@
   - Upgrade `glimpse-obj` to `1.2.1`
   - Upgrade `glimpse-ui` to `1.2.1`
   - Upgrade `glimpse-processor-ksp` to `1.2.1`
+  - Upgrade `jogl-all-main` to `2.4.0-rc-20230123`
+  - Upgrade `gluegen-rt-main` to `2.4.0-rc-20230123`
 
 ### Deprecated
 

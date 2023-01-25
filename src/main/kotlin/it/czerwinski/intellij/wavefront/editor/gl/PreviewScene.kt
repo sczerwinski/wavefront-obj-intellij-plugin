@@ -257,7 +257,10 @@ abstract class PreviewScene(
 
     final override fun doRender(gl: GlimpseAdapter) {
         if (showEnvironment) renderEnvironment(gl)
+
+        gl.glCullFace(config.faceCulling)
         renderModel(gl)
+
         if (showAxes) renderAxes(gl)
         if (showGrid) renderGrid(gl)
         if (showAxes && config.showAxesLabels) renderAxesLabels(gl)

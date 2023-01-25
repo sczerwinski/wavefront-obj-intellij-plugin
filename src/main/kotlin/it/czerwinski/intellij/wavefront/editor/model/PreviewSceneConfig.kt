@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.model
 
+import graphics.glimpse.FaceCullingMode
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 
 data class PreviewSceneConfig(
@@ -28,6 +29,7 @@ data class PreviewSceneConfig(
     val pointSize: Float = ObjPreviewSettingsState.DEFAULT_POINT_SIZE,
     val shaderQuality: ShaderQuality = ShaderQuality.DEFAULT,
     val mipmapping: Boolean = ObjPreviewSettingsState.DEFAULT_MIPMAPPING,
+    val faceCulling: FaceCullingMode = ObjPreviewSettingsState.DEFAULT_FACE_CULLING,
     val displacementQuality: Float = ObjPreviewSettingsState.DEFAULT_DISPLACEMENT_QUALITY
 ) {
 
@@ -37,16 +39,17 @@ data class PreviewSceneConfig(
     companion object {
         fun fromObjPreviewSettingsState(settings: ObjPreviewSettingsState): PreviewSceneConfig =
             PreviewSceneConfig(
-                settings.axisLineWidth,
-                settings.showAxesLabels,
-                settings.axisLabelFontSize,
-                settings.showFineGrid,
-                settings.gridLineWidth,
-                settings.lineWidth,
-                settings.pointSize,
-                settings.shaderQuality,
-                settings.mipmapping,
-                settings.displacementQuality
+                axisLineWidth = settings.axisLineWidth,
+                showAxesLabels = settings.showAxesLabels,
+                axisLabelFontSize = settings.axisLabelFontSize,
+                showFineGrid = settings.showFineGrid,
+                gridLineWidth = settings.gridLineWidth,
+                lineWidth = settings.lineWidth,
+                pointSize = settings.pointSize,
+                shaderQuality = settings.shaderQuality,
+                mipmapping = settings.mipmapping,
+                faceCulling = settings.faceCulling ?: ObjPreviewSettingsState.DEFAULT_FACE_CULLING,
+                displacementQuality = settings.displacementQuality
             )
     }
 }

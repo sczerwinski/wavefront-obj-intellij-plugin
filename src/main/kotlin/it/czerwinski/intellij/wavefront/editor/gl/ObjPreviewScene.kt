@@ -19,7 +19,6 @@ package it.czerwinski.intellij.wavefront.editor.gl
 import com.intellij.openapi.application.runReadAction
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
-import graphics.glimpse.FaceCullingMode
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
@@ -138,7 +137,6 @@ class ObjPreviewScene(
     }
 
     override fun renderModel(gl: GlimpseAdapter) {
-        gl.glCullFace(FaceCullingMode.DISABLED)
         if (modelChanged.getAndSet(false)) {
             createModelMeshes(gl)
         }

@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.settings
 
 import com.intellij.util.xmlb.annotations.Attribute
+import graphics.glimpse.FaceCullingMode
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
@@ -37,6 +38,7 @@ data class ObjPreviewSettingsState(
     @field:Attribute var pointSize: Float = DEFAULT_POINT_SIZE,
     @field:Attribute var cropTextures: Boolean = DEFAULT_CROP_TEXTURES,
     @field:Attribute var mipmapping: Boolean = DEFAULT_MIPMAPPING,
+    @field:Attribute var faceCulling: FaceCullingMode? = DEFAULT_FACE_CULLING,
     @field:Attribute var shaderQuality: ShaderQuality = ShaderQuality.DEFAULT,
     @field:Attribute var displacementQuality: Float = DEFAULT_DISPLACEMENT_QUALITY,
 ) {
@@ -56,6 +58,7 @@ data class ObjPreviewSettingsState(
         const val DEFAULT_CROP_TEXTURES = false
         const val DEFAULT_MIPMAPPING = false
         const val DEFAULT_DISPLACEMENT_QUALITY = 7.5f
+        val DEFAULT_FACE_CULLING = FaceCullingMode.DISABLED
     }
 
     interface Holder {

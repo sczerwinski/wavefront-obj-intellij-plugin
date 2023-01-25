@@ -39,10 +39,10 @@ kotlin {
 
 dependencies {
     api(fileTree(mapOf("dir" to "jogamp-2.4-SNAPSHOT", "include" to listOf("*.jar"))))
-    api("graphics.glimpse:glimpse-core:1.2.0")
-    api("graphics.glimpse:glimpse-obj:1.2.0")
-    api("graphics.glimpse:glimpse-ui:1.2.0")
-    ksp("graphics.glimpse:glimpse-processor-ksp:1.2.0")
+    api("graphics.glimpse:glimpse-core:1.2.1")
+    api("graphics.glimpse:glimpse-obj:1.2.1")
+    api("graphics.glimpse:glimpse-ui:1.2.1")
+    ksp("graphics.glimpse:glimpse-processor-ksp:1.2.1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
 }
 

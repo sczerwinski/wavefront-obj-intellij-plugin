@@ -8,8 +8,14 @@
 - Automatically preview material at caret
 - Settings for MTL file editor layout separate from OBJ file editor layout
 - Setting for generating mipmaps for textures (on/off)
+- Setting for selecting face culling
 
 ### Changed
+- Dependencies:
+  - Upgrade `glimpse-core` to `1.2.1`
+  - Upgrade `glimpse-obj` to `1.2.1`
+  - Upgrade `glimpse-ui` to `1.2.1`
+  - Upgrade `glimpse-processor-ksp` to `1.2.1`
 
 ### Deprecated
 

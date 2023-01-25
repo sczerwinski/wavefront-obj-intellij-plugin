@@ -5,6 +5,20 @@
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.3.0-eap.2] - 2023-01-25
+
+### Added
 - Automatically preview material at caret
 - Settings for MTL file editor layout separate from OBJ file editor layout
 - Setting for generating mipmaps for textures (on/off)

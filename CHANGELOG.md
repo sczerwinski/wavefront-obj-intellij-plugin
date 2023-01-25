@@ -24,6 +24,7 @@
 ### Removed
 
 ### Fixed
+- Fix attaching change notes to the plugin
 
 ### Security
 

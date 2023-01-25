@@ -185,6 +185,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
         }
     }
 
+    @Suppress("LongMethod")
     private fun Panel.createAdvancedGroup() {
         row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.lineWidth")) {
             lineWidthInput = textField(

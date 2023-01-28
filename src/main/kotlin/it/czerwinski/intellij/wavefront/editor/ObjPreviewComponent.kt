@@ -188,27 +188,27 @@ class ObjPreviewComponent(
 
     private fun updateObjFile(objFile: ObjFile?) {
         myErrorLogSplitter.clearErrors()
-        runReadAction {
-            myModel = objFile?.let(GLModelFactory::create)
-            updateCameraModel { oldCameraModel ->
-                oldCameraModel.copy(
-                    distance = oldCameraModel.distance.coerceIn(
-                        minimumValue = modelSize * GLCameraModelFactory.DEFAULT_DISTANCE,
-                        maximumValue = modelSize * MAX_DISTANCE_FACTOR
-                    )
-                )
-            }
-            myStatusBar.text = if (objFile != null) {
-                WavefrontObjBundle.message(
-                    key = "editor.fileTypes.obj.preview.statusFormat",
-                    objFile.objectsCount,
-                    objFile.groupsCount,
-                    objFile.verticesCount,
-                    objFile.facesCount,
-                    objFile.trianglesCount
-                )
-            } else ""
+        myModel = runReadAction {
+            objFile?.let(GLModelFactory::create)
         }
+        updateCameraModel { oldCameraModel ->
+            oldCameraModel.copy(
+                distance = oldCameraModel.distance.coerceIn(
+                    minimumValue = modelSize * GLCameraModelFactory.DEFAULT_DISTANCE,
+                    maximumValue = modelSize * MAX_DISTANCE_FACTOR
+                )
+            )
+        }
+        myStatusBar.text = if (objFile != null) {
+            WavefrontObjBundle.message(
+                key = "editor.fileTypes.obj.preview.statusFormat",
+                objFile.objectsCount,
+                objFile.groupsCount,
+                objFile.verticesCount,
+                objFile.facesCount,
+                objFile.trianglesCount
+            )
+        } else ""
     }
 
     override fun createScene(glimpsePanel: GlimpsePanel, animator: AnimatorBase) {

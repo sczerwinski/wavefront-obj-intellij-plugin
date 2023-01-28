@@ -5,6 +5,7 @@
 ## [Unreleased]
 
 ### Added
+- Action for images: generate diffuse irradiance map
 
 ### Changed
 

@@ -1,0 +1,16 @@
+<idea-plugin>
+    <actions>
+        <!-- Textures -->
+        <group
+                id="WavefrontOBJ.Texture.IBL"
+                icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.IBL"
+                popup="true">
+            <action
+                    id="it.czerwinski.intellij.wavefront.actions.GenerateDiffuseIrradianceMapAction"
+                    class="it.czerwinski.intellij.wavefront.actions.GenerateDiffuseIrradianceMapAction"/>
+
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="EditSource"/>
+            <add-to-group group-id="Images.EditorPopupMenu" anchor="before" relative-to-action="Images.EditExternally"/>
+        </group>
+    </actions>
+</idea-plugin>

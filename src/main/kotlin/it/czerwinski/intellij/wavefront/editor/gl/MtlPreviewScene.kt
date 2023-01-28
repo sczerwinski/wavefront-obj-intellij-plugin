@@ -16,7 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
-import com.intellij.openapi.application.runReadAction
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
@@ -49,18 +48,16 @@ class MtlPreviewScene(
     var material: MtlMaterialElement? = null
         set(value) {
             field = value
-            runReadAction {
-                value?.ambientColorMap?.let { prepareTexture(value.project, it) }
-                value?.diffuseColorMap?.let { prepareTexture(value.project, it) }
-                value?.specularColorMap?.let { prepareTexture(value.project, it) }
-                value?.emissionColorMap?.let { prepareTexture(value.project, it) }
-                value?.specularExponentMap?.let { prepareTexture(value.project, it) }
-                value?.roughnessMap?.let { prepareTexture(value.project, it) }
-                value?.metalnessMap?.let { prepareTexture(value.project, it) }
-                value?.normalMap?.let { prepareTexture(value.project, it) }
-                value?.bumpMap?.let { prepareTexture(value.project, it) }
-                value?.displacementMap?.let { prepareTexture(value.project, it) }
-            }
+            value?.ambientColorMap?.let { prepareTexture(value.project, it) }
+            value?.diffuseColorMap?.let { prepareTexture(value.project, it) }
+            value?.specularColorMap?.let { prepareTexture(value.project, it) }
+            value?.emissionColorMap?.let { prepareTexture(value.project, it) }
+            value?.specularExponentMap?.let { prepareTexture(value.project, it) }
+            value?.roughnessMap?.let { prepareTexture(value.project, it) }
+            value?.metalnessMap?.let { prepareTexture(value.project, it) }
+            value?.normalMap?.let { prepareTexture(value.project, it) }
+            value?.bumpMap?.let { prepareTexture(value.project, it) }
+            value?.displacementMap?.let { prepareTexture(value.project, it) }
             requestRender()
         }
 

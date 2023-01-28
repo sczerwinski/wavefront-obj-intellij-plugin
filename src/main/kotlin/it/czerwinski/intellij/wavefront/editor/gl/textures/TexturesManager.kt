@@ -16,12 +16,15 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl.textures
 
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureImageSource
+import graphics.glimpse.textures.fromBufferedImage
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureVirtualFiles
+import javax.imageio.ImageIO
 
 /**
  * GL textures manager.
@@ -40,11 +43,11 @@ class TexturesManager {
      */
     fun prepare(profile: GLProfile, project: Project, filename: String) {
         if (imageSources[filename] == null) {
-            val file = project.findMatchingTextureVirtualFiles(filename).firstOrNull()
+            val file = runReadAction { project.findMatchingTextureVirtualFiles(filename).firstOrNull() }
             if (file != null) {
+                val bufferedImage = ImageIO.read(file.inputStream).mirrorY()
                 imageSources[filename] = textureImageSourceBuilder
-                    .withFilename(filename)
-                    .fromInputStream { file.inputStream }
+                    .fromBufferedImage(bufferedImage)
                     .buildPrepared(profile)
             }
         }

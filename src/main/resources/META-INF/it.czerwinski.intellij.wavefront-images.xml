@@ -11,6 +11,9 @@
             <action
                     id="GeneratePreFilteredEnvironmentMapsAction"
                     class="it.czerwinski.intellij.wavefront.actions.GeneratePreFilteredEnvironmentMapsAction"/>
+            <action
+                    id="GenerateBRDFIntegrationMapAction"
+                    class="it.czerwinski.intellij.wavefront.actions.GenerateBRDFIntegrationMapAction"/>
 
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="EditSource"/>
             <add-to-group group-id="Images.EditorPopupMenu" anchor="before" relative-to-action="Images.EditExternally"/>

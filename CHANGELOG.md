@@ -5,8 +5,10 @@
 ## [Unreleased]
 
 ### Added
-- Action for images: Generate Diffuse Irradiance Map
-- Action for images: Generate Pre-Filtered Environment Maps
+- Actions for images:
+  - Generate Diffuse Irradiance Map
+  - Generate Pre-Filtered Environment Maps
+  - Generate BRDF Integration Maps
 
 ### Changed
 

@@ -20,49 +20,47 @@ import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
-import it.czerwinski.intellij.wavefront.actions.gl.DiffuseIrradianceRenderer
+import it.czerwinski.intellij.wavefront.actions.gl.BRDFRenderer
 import it.czerwinski.intellij.wavefront.editor.gl.textures.toBufferedImage
 import java.awt.image.BufferedImage
 import java.awt.image.RenderedImage
 import java.io.File
 import javax.imageio.ImageIO
-import kotlin.math.max
 
-object DiffuseIrradianceMapGenerator {
+object BRDFIntegrationMapGenerator {
 
-    fun generate(inputFile: VirtualFile, samples: Int, outputSuffix: String): File {
-        val outputFile = getOutputFile(inputFile, outputSuffix)
-        generate(inputFile, samples, outputFile)
+    fun generate(inputFile: VirtualFile, size: Int, samples: Int, outputFilename: String): File {
+        val outputFile = getOutputFile(inputFile, outputFilename)
+        generate(size, samples, outputFile)
         return outputFile
     }
 
-    private fun getOutputFile(inputFile: VirtualFile, filenameSuffix: String): File {
-        val outputDir = LocalFileSystem.getInstance().getNioPath(inputFile.parent)?.toFile()
-        val outputFileName = "${inputFile.nameWithoutExtension}$filenameSuffix.${inputFile.extension}"
-        return File(outputDir, outputFileName)
+    private fun getOutputFile(inputFile: VirtualFile, outputFilename: String): File {
+        val outputDir = getOutputDir(inputFile)
+        return File(outputDir, outputFilename)
     }
 
-    private fun generate(inputFile: VirtualFile, samples: Int, outputFile: File) {
-        val diffuseIrradianceMap = generateDiffuseIrradianceMap(inputFile, samples)
-        if (diffuseIrradianceMap != null) {
+    private fun getOutputDir(inputFile: VirtualFile): File? {
+        val virtualDir = if (inputFile.isDirectory) inputFile else inputFile.parent
+        return LocalFileSystem.getInstance().getNioPath(virtualDir)?.toFile()
+    }
+
+    private fun generate(size: Int, samples: Int, outputFile: File) {
+        val brdfIntegrationMap = generateBRDFIntegrationMap(size, samples)
+        if (brdfIntegrationMap != null) {
             invokeLater {
-                saveDiffuseIrradianceMap(diffuseIrradianceMap, outputFile)
+                saveBRDFIntegrationMap(brdfIntegrationMap, outputFile)
             }
         }
     }
 
-    private fun generateDiffuseIrradianceMap(inputFile: VirtualFile, samples: Int): BufferedImage? {
-        val inputImage = ImageIO.read(inputFile.inputStream)
-        val outputHeight = max(inputImage.width / 2, inputImage.height)
-        val outputWidth = outputHeight * 2
-
-        val renderer = DiffuseIrradianceRenderer(inputImage, samples, outputWidth, outputHeight)
+    private fun generateBRDFIntegrationMap(size: Int, samples: Int): BufferedImage? {
+        val renderer = BRDFRenderer(samples, size, size)
         renderer.render()
-
         return renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
     }
 
-    private fun saveDiffuseIrradianceMap(image: RenderedImage, outputFile: File) {
+    private fun saveBRDFIntegrationMap(image: RenderedImage, outputFile: File) {
         runWriteAction {
             outputFile.delete()
             ImageIO.write(image, outputFile.extension, outputFile)

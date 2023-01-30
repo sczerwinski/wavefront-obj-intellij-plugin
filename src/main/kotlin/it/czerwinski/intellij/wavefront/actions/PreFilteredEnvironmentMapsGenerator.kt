@@ -83,6 +83,7 @@ object PreFilteredEnvironmentMapsGenerator {
 
     private fun savePreFilteredMap(image: RenderedImage, outputFile: File) {
         runWriteAction {
+            outputFile.delete()
             ImageIO.write(image, outputFile.extension, outputFile)
         }
     }

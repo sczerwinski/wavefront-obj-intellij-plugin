@@ -70,7 +70,7 @@ abstract class BaseGenerateMapDialog(
     private fun handleOutputFiles(outputFiles: List<File>) {
         val virtualOutputFile = runReadAction {
             val dirs = inputFiles.mapNotNull { it.parent }.distinct()
-            LocalFileSystem.getInstance().refreshFiles(dirs)
+            LocalFileSystem.getInstance().refreshFiles(inputFiles + dirs)
             VcsFileSystem.getInstance().refresh(true)
             LocalFileSystem.getInstance().findFileByIoFile(outputFiles.first())
         }

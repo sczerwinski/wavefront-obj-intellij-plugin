@@ -16,31 +16,26 @@
 
 package it.czerwinski.intellij.wavefront.actions.gl
 
-import com.intellij.openapi.application.runReadAction
 import graphics.glimpse.ClearableBufferType
 import graphics.glimpse.GlimpseAdapter
-import graphics.glimpse.buffers.toFloatBufferData
 import graphics.glimpse.createImage
-import graphics.glimpse.meshes.ArrayMeshData
 import graphics.glimpse.meshes.Mesh
 import graphics.glimpse.offscreen.OffscreenRenderer
+import graphics.glimpse.shaders.Program
 import graphics.glimpse.shaders.ProgramExecutor
-import graphics.glimpse.textures.Texture
-import graphics.glimpse.textures.TextureImageSource
-import graphics.glimpse.textures.TextureWrap
-import graphics.glimpse.textures.fromBufferedImage
+import graphics.glimpse.shaders.Shader
+import graphics.glimpse.shaders.ShaderType
 import graphics.glimpse.types.Vec4
 import java.awt.Image
-import java.awt.image.BufferedImage
 
-abstract class BaseMapRenderer<T>(
-    private val environmentImage: BufferedImage,
+class BRDFRenderer(
+    private val samples: Int,
     override val width: Int,
     override val height: Int
 ) : OffscreenRenderer(), MapRenderer {
 
     override var outputImage: Image? = null
-        protected set
+        private set
 
     override fun doRender(gl: GlimpseAdapter) {
         gl.glClearColor(Vec4(x = 0f, y = 0f, z = 0f, w = 0f))
@@ -48,10 +43,9 @@ abstract class BaseMapRenderer<T>(
         gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
 
         val programExecutor = createProgramExecutor(gl)
-        val mesh = Mesh.Factory.newInstance(gl).createMesh(quad)
-        val environmentTexture = createTexture(gl)
+        val mesh = Mesh.Factory.newInstance(gl).createMesh(BaseMapRenderer.quad)
 
-        val shaderParams = createShaderParams(environmentTexture)
+        val shaderParams = BRDF(samples)
 
         programExecutor.useProgram(gl)
         programExecutor.applyParams(gl, shaderParams)
@@ -59,36 +53,32 @@ abstract class BaseMapRenderer<T>(
 
         outputImage = gl.createImage(width = width, height = height)
 
-        environmentTexture.dispose(gl)
         mesh.dispose(gl)
         programExecutor.dispose(gl)
     }
 
-    protected abstract fun createProgramExecutor(gl: GlimpseAdapter): ProgramExecutor<T>
-
-    protected abstract fun createShaderParams(environmentTexture: Texture): T
-
-    private fun createTexture(gl: GlimpseAdapter) = runReadAction {
-        Texture.Builder.getInstance(gl)
-            .addTexture(
-                TextureImageSource.builder()
-                    .fromBufferedImage(environmentImage)
-                    .build()
+    private fun createProgramExecutor(gl: GlimpseAdapter): ProgramExecutor<BRDF> {
+        val classLoader = javaClass.classLoader
+        val shadersFactory = Shader.Factory.newInstance(gl)
+        val program = Program.Builder.newInstance(gl)
+            .withVertexShader(
+                shadersFactory.createShader(
+                    type = ShaderType.VERTEX_SHADER,
+                    source = classLoader.getResource(RESOURCE_VERTEX_SHADER)?.readText().orEmpty()
+                )
             )
-            .setTextureWrap(TextureWrap.REPEAT, TextureWrap.REPEAT)
+            .withFragmentShader(
+                shadersFactory.createShader(
+                    type = ShaderType.FRAGMENT_SHADER,
+                    source = classLoader.getResource(RESOURCE_FRAGMENT_SHADER)?.readText().orEmpty()
+                )
+            )
             .build()
-            .first()
+        return BRDFProgramExecutor(program)
     }
 
     companion object {
-
-        internal val quad = ArrayMeshData(
-            vertexCount = 6,
-            positionsData = listOf(-1f, -1f, -1f, 1f, 1f, 1f, -1f, -1f, 1f, 1f, 1f, -1f).toFloatBufferData(),
-            texCoordsData = listOf(0f, 0f, 0f, 1f, 1f, 1f, 0f, 0f, 1f, 1f, 1f, 0f).toFloatBufferData(),
-            normalsData = emptyList<Float>().toFloatBufferData(),
-            tangentsData = emptyList<Float>().toFloatBufferData(),
-            bitangentsData = emptyList<Float>().toFloatBufferData()
-        )
+        private const val RESOURCE_VERTEX_SHADER = "shaders/brdf_vertex_shader.glsl"
+        private const val RESOURCE_FRAGMENT_SHADER = "shaders/brdf_fragment_shader.glsl"
     }
 }

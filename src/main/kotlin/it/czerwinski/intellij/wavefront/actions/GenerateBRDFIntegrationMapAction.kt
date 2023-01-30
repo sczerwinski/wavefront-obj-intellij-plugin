@@ -21,29 +21,20 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.invokeLater
-import com.intellij.openapi.fileTypes.FileTypeRegistry
-import com.intellij.openapi.project.DumbAware
-import com.intellij.openapi.project.Project
-import it.czerwinski.intellij.wavefront.actions.ui.GenerateMapDialog
-import org.intellij.images.fileTypes.impl.ImageFileType
+import it.czerwinski.intellij.wavefront.actions.ui.GenerateBRDFIntegrationMapDialog
 
-abstract class BaseGenerateMapAction(
-    val dialog: (Project) -> GenerateMapDialog
-) : AnAction(), DumbAware {
+class GenerateBRDFIntegrationMapAction : AnAction() {
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project
-        val files = event.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
-            ?.filter { file ->
-                file != null && FileTypeRegistry.getInstance().isFileOfType(file, ImageFileType.INSTANCE)
-            }
-            .orEmpty()
+        val file = event.getData(CommonDataKeys.VIRTUAL_FILE)
+        val fileIsValid = file?.isDirectory == true || file?.parent?.isDirectory == true
 
-        if (project != null && files.isNotEmpty()) {
+        if (project != null && file != null && fileIsValid) {
             invokeLater {
-                dialog(project).show(files)
+                GenerateBRDFIntegrationMapDialog(project).show(listOf(file))
             }
         }
     }
@@ -51,9 +42,9 @@ abstract class BaseGenerateMapAction(
     override fun update(event: AnActionEvent) {
         val project = event.project
         val file = event.getData(CommonDataKeys.VIRTUAL_FILE)
-        val fileIsImage = file != null && FileTypeRegistry.getInstance().isFileOfType(file, ImageFileType.INSTANCE)
+        val fileIsValid = file?.isDirectory == true || file?.parent?.isDirectory == true
 
-        event.presentation.isEnabled = project != null && fileIsImage
-        event.presentation.isVisible = project != null && fileIsImage
+        event.presentation.isEnabled = project != null && fileIsValid
+        event.presentation.isVisible = project != null && fileIsValid
     }
 }

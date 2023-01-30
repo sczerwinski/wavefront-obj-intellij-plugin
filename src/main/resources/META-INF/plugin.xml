@@ -7,6 +7,11 @@
     <resource-bundle>messages.WavefrontObjBundle</resource-bundle>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends
+            optional="true"
+            config-file="it.czerwinski.intellij.wavefront-images.xml">
+        com.intellij.platform.images
+    </depends>
 
     <extensions defaultExtensionNs="com.intellij">
 

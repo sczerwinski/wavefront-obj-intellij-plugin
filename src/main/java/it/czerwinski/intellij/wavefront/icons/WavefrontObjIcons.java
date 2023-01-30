@@ -62,6 +62,9 @@ public class WavefrontObjIcons {
     @NotNull
     public static final Icon Z_UP_ACTION = getIcon("/icons/editor_actions/zUp.svg");
 
+    @NotNull
+    public static final Icon IBL = getIcon("/icons/editor_actions/ibl.svg");
+
     private static Icon getIcon(String path) {
         return IconLoader.getIcon(path, WavefrontObjIcons.class);
     }

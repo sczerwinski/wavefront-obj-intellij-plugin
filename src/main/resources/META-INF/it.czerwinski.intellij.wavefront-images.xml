@@ -1,0 +1,22 @@
+<idea-plugin>
+    <actions>
+        <!-- Textures -->
+        <group
+                id="WavefrontOBJ.Texture.IBL"
+                icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.IBL"
+                popup="true">
+            <action
+                    id="GenerateDiffuseIrradianceMapAction"
+                    class="it.czerwinski.intellij.wavefront.actions.GenerateDiffuseIrradianceMapAction"/>
+            <action
+                    id="GeneratePreFilteredEnvironmentMapsAction"
+                    class="it.czerwinski.intellij.wavefront.actions.GeneratePreFilteredEnvironmentMapsAction"/>
+            <action
+                    id="GenerateBRDFIntegrationMapAction"
+                    class="it.czerwinski.intellij.wavefront.actions.GenerateBRDFIntegrationMapAction"/>
+
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="EditSource"/>
+            <add-to-group group-id="Images.EditorPopupMenu" anchor="before" relative-to-action="Images.EditExternally"/>
+        </group>
+    </actions>
+</idea-plugin>

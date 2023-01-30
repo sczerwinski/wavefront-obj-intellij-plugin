@@ -16,7 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
-import com.intellij.openapi.application.runReadAction
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
@@ -55,19 +54,17 @@ class ObjPreviewScene(
         set(value) {
             field = value
             modelChanged.set(true)
-            runReadAction {
-                value?.materials?.forEach { material ->
-                    material?.ambientColorMap?.let { prepareTexture(material.project, it) }
-                    material?.diffuseColorMap?.let { prepareTexture(material.project, it) }
-                    material?.specularColorMap?.let { prepareTexture(material.project, it) }
-                    material?.emissionColorMap?.let { prepareTexture(material.project, it) }
-                    material?.specularExponentMap?.let { prepareTexture(material.project, it) }
-                    material?.roughnessMap?.let { prepareTexture(material.project, it) }
-                    material?.metalnessMap?.let { prepareTexture(material.project, it) }
-                    material?.normalMap?.let { prepareTexture(material.project, it) }
-                    material?.bumpMap?.let { prepareTexture(material.project, it) }
-                    material?.displacementMap?.let { prepareTexture(material.project, it) }
-                }
+            value?.materials?.forEach { material ->
+                material?.ambientColorMap?.let { prepareTexture(material.project, it) }
+                material?.diffuseColorMap?.let { prepareTexture(material.project, it) }
+                material?.specularColorMap?.let { prepareTexture(material.project, it) }
+                material?.emissionColorMap?.let { prepareTexture(material.project, it) }
+                material?.specularExponentMap?.let { prepareTexture(material.project, it) }
+                material?.roughnessMap?.let { prepareTexture(material.project, it) }
+                material?.metalnessMap?.let { prepareTexture(material.project, it) }
+                material?.normalMap?.let { prepareTexture(material.project, it) }
+                material?.bumpMap?.let { prepareTexture(material.project, it) }
+                material?.displacementMap?.let { prepareTexture(material.project, it) }
             }
             requestRender()
         }

@@ -45,6 +45,7 @@ kotlin {
 dependencies {
     api("graphics.glimpse:glimpse-core:1.2.1")
     api("graphics.glimpse:glimpse-obj:1.2.1")
+    api("graphics.glimpse:glimpse-offscreen:1.2.1")
     api("graphics.glimpse:glimpse-ui:1.2.1")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.2.1")
     implementation("org.jogamp.jogl:jogl-all-main:2.4.0-rc-20230123")

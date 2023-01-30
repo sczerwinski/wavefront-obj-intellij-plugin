@@ -6,8 +6,11 @@
                 icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.IBL"
                 popup="true">
             <action
-                    id="it.czerwinski.intellij.wavefront.actions.GenerateDiffuseIrradianceMapAction"
+                    id="GenerateDiffuseIrradianceMapAction"
                     class="it.czerwinski.intellij.wavefront.actions.GenerateDiffuseIrradianceMapAction"/>
+            <action
+                    id="GeneratePreFilteredEnvironmentMapsAction"
+                    class="it.czerwinski.intellij.wavefront.actions.GeneratePreFilteredEnvironmentMapsAction"/>
 
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="EditSource"/>
             <add-to-group group-id="Images.EditorPopupMenu" anchor="before" relative-to-action="Images.EditExternally"/>

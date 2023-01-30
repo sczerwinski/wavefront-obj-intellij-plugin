@@ -16,6 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.actions
 
-import it.czerwinski.intellij.wavefront.actions.ui.GenerateDiffuseIrradianceMapDialog
+import it.czerwinski.intellij.wavefront.actions.ui.GeneratePreFilteredEnvironmentMapsDialog
 
-class GenerateDiffuseIrradianceMapAction : BaseGenerateMapAction(::GenerateDiffuseIrradianceMapDialog)
+class GeneratePreFilteredEnvironmentMapsAction : BaseGenerateMapAction(::GeneratePreFilteredEnvironmentMapsDialog)

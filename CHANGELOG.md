@@ -5,7 +5,8 @@
 ## [Unreleased]
 
 ### Added
-- Action for images: generate diffuse irradiance map
+- Action for images: Generate Diffuse Irradiance Map
+- Action for images: Generate Pre-Filtered Environment Maps
 
 ### Changed
 

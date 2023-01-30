@@ -24,14 +24,15 @@ import graphics.glimpse.shaders.ShaderType
 import graphics.glimpse.textures.Texture
 import java.awt.image.BufferedImage
 
-class DiffuseIrradianceRenderer(
+class PreFilteredEnvironmentRenderer(
     environmentImage: BufferedImage,
+    private val roughness: Float,
     private val samples: Int,
     width: Int,
     height: Int
-) : BaseMapRenderer<DiffuseIrradiance>(environmentImage, width, height) {
+) : BaseMapRenderer<PreFilteredEnvironment>(environmentImage, width, height) {
 
-    override fun createProgramExecutor(gl: GlimpseAdapter): ProgramExecutor<DiffuseIrradiance> {
+    override fun createProgramExecutor(gl: GlimpseAdapter): ProgramExecutor<PreFilteredEnvironment> {
         val classLoader = javaClass.classLoader
         val shadersFactory = Shader.Factory.newInstance(gl)
         val program = Program.Builder.newInstance(gl)
@@ -48,14 +49,14 @@ class DiffuseIrradianceRenderer(
                 )
             )
             .build()
-        return DiffuseIrradianceProgramExecutor(program)
+        return PreFilteredEnvironmentProgramExecutor(program)
     }
 
-    override fun createShaderParams(environmentTexture: Texture): DiffuseIrradiance =
-        DiffuseIrradiance(environmentTexture, samples)
+    override fun createShaderParams(environmentTexture: Texture): PreFilteredEnvironment =
+        PreFilteredEnvironment(environmentTexture, roughness, samples)
 
     companion object {
-        private const val RESOURCE_VERTEX_SHADER = "shaders/diffuse_irradiance_vertex_shader.glsl"
-        private const val RESOURCE_FRAGMENT_SHADER = "shaders/diffuse_irradiance_fragment_shader.glsl"
+        private const val RESOURCE_VERTEX_SHADER = "shaders/pre-filtered_env_vertex_shader.glsl"
+        private const val RESOURCE_FRAGMENT_SHADER = "shaders/pre-filtered_env_fragment_shader.glsl"
     }
 }

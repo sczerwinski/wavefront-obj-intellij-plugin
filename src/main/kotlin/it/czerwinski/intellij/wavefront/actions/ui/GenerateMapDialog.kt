@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.actions
+package it.czerwinski.intellij.wavefront.actions.ui
 
-import it.czerwinski.intellij.wavefront.actions.ui.GenerateDiffuseIrradianceMapDialog
+import com.intellij.openapi.vfs.VirtualFile
 
-class GenerateDiffuseIrradianceMapAction : BaseGenerateMapAction(::GenerateDiffuseIrradianceMapDialog)
+interface GenerateMapDialog {
+
+    fun show(inputFiles: List<VirtualFile>)
+}

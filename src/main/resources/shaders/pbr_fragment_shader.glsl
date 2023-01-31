@@ -1,3 +1,6 @@
+#define REFLECTION_LEVELS 8
+#define MAX_ITERATIONS 1024
+
 uniform vec3 uCameraPos;
 uniform vec3 uLightPos;
 
@@ -14,8 +17,10 @@ uniform sampler2D uNormalTex;
 uniform sampler2D uDispTex;
 uniform float uDispGain;
 uniform float uDispQuality;
-uniform sampler2D uReflectionTex;
-uniform sampler2D uRadianceTex;
+uniform sampler2D uEnvTex;
+uniform sampler2D uIrradianceTex;
+uniform sampler2D uReflectionTex[REFLECTION_LEVELS];
+uniform sampler2D uBRDFTex;
 uniform int uCropTex;
 
 varying vec3 vPos;
@@ -26,8 +31,6 @@ varying vec2 vTexCoord;
 
 const float pi = 3.14159265358979323846;
 const float tau = 2.0 * pi;
-
-#define MAX_ITERATIONS 1024
 
 mat3 tbnMat() {
     vec3 normal = normalize(vNormal);
@@ -140,7 +143,7 @@ void main() {
 
     vec3 diffColor = diffTexColor.rgb * uDiffColor;
     vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
-    vec3 envRadianceColor = texture2D(uRadianceTex, envTexCoord(normal)).rgb;
+    vec3 envRadianceColor = texture2D(uIrradianceTex, envTexCoord(normal)).rgb;
 
     float roughness = texture2D(uRoughnessTex, texCoord).r * uRoughness;
     float metalness = texture2D(uMetalnessTex, texCoord).r * uMetalness;
@@ -158,12 +161,18 @@ void main() {
 
     vec3 specularFactor = specularFactor(baseSpecularColor, cameraDir, normal, roughness);
 
-    vec2 reflectTexCoord = envTexCoord(reflect(-cameraDir, normal));
-    float sharpness = pow(roughness, 0.5);
-    vec3 reflection = texture2D(uReflectionTex, reflectTexCoord).rgb * (1.0 - sharpness) +
-            texture2D(uRadianceTex, reflectTexCoord).rgb * sharpness;
+    vec2 brdfCoord = vec2(max(0.0, dot(cameraDir, normal)), roughness);
+    vec2 brdf = texture2D(uBRDFTex, brdfCoord).rg;
 
-    vec3 specularColor = specularFactor * reflection;
+    vec2 reflectTexCoord = envTexCoord(reflect(-cameraDir, normal));
+    float reflectionLevel = roughness * float(REFLECTION_LEVELS - 1);
+    int reflectionIndex = int(reflectionLevel);
+    float reflectionMix = reflectionLevel - float(reflectionIndex);
+    vec3 reflection1 = texture2D(uReflectionTex[reflectionIndex], reflectTexCoord).rgb;
+    vec3 reflection2 = texture2D(uReflectionTex[reflectionIndex + 1], reflectTexCoord).rgb;
+    vec3 reflection = reflection1 * (1.0 - reflectionMix) + reflection2 * reflectionMix;
+
+    vec3 specularColor = min(specularFactor * brdf.x + brdf.y, 1.0) * reflection;
 
     vec3 diffuseFactor = (vec3(1.0) - specularFactor) * (1.0 - metalness);
 

@@ -11,6 +11,7 @@
   - Generate BRDF Integration Maps
 
 ### Changed
+- Improve IBL in PBR shader
 
 ### Deprecated
 

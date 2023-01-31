@@ -24,6 +24,7 @@ import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureImageSource
 import graphics.glimpse.textures.fromBufferedImage
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureVirtualFiles
+import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 /**
@@ -45,10 +46,13 @@ class TexturesManager {
         if (imageSources[filename] == null) {
             val file = runReadAction { project.findMatchingTextureVirtualFiles(filename).firstOrNull() }
             if (file != null) {
-                val bufferedImage = ImageIO.read(file.inputStream).mirrorY()
+                val originalImage = ImageIO.read(file.inputStream)
+                val mirroredImage = originalImage.mirrorY(BufferedImage.TYPE_INT_ARGB)
                 imageSources[filename] = textureImageSourceBuilder
-                    .fromBufferedImage(bufferedImage)
+                    .fromBufferedImage(mirroredImage)
                     .buildPrepared(profile)
+                originalImage.flush()
+                mirroredImage.flush()
             }
         }
     }
@@ -63,9 +67,10 @@ class TexturesManager {
             createTexture(gl, filename, withMipmaps)
         }
 
-    private fun createTexture(gl: GlimpseAdapter, filename: String, withMipmaps: Boolean): Texture =
-        Texture.Builder.getInstance(gl)
-            .addTexture(imageSources.getOrElse(filename) { error("Image not loaded: $filename") })
+    private fun createTexture(gl: GlimpseAdapter, filename: String, withMipmaps: Boolean): Texture {
+        val imageSource = imageSources.getOrElse(filename) { error("Image not loaded: $filename") }
+        val texture = Texture.Builder.getInstance(gl)
+            .addTexture(imageSource)
             .apply {
                 if (withMipmaps) {
                     generateMipmaps()
@@ -73,11 +78,19 @@ class TexturesManager {
             }
             .build()
             .first()
+        imageSource.dispose()
+        return texture
+    }
 
     /**
      * Disposes all previously created textures.
      */
     fun dispose(gl: GlimpseAdapter) {
+        for (imageSource in imageSources.values) {
+            imageSource.dispose()
+        }
+        imageSources.clear()
+
         for (texture in textures.values) {
             texture.dispose(gl)
         }

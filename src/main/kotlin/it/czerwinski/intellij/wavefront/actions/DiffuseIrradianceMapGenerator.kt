@@ -47,6 +47,7 @@ object DiffuseIrradianceMapGenerator {
         if (diffuseIrradianceMap != null) {
             invokeLater {
                 saveDiffuseIrradianceMap(diffuseIrradianceMap, outputFile)
+                diffuseIrradianceMap.flush()
             }
         }
     }
@@ -59,7 +60,12 @@ object DiffuseIrradianceMapGenerator {
         val renderer = DiffuseIrradianceRenderer(inputImage, samples, outputWidth, outputHeight)
         renderer.render()
 
-        return renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
+        val outputImage = renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
+        inputImage.flush()
+        if (outputImage != renderer.outputImage) {
+            renderer.outputImage?.flush()
+        }
+        return outputImage
     }
 
     private fun saveDiffuseIrradianceMap(image: RenderedImage, outputFile: File) {

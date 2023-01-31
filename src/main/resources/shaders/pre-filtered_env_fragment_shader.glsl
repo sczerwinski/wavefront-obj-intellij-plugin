@@ -59,8 +59,8 @@ void main() {
 
     vec3 color = vec3(0.0);
     float weightSum = 0.0;
-    for (float theta = 0.0; theta < half_pi; theta += thetaStep) {
-        for (float phi = 0.0; phi < tau; phi += phiStep) {
+    for (float theta = 0.0001; theta < half_pi; theta += thetaStep) {
+        for (float phi = 0.0001; phi < tau; phi += phiStep) {
             vec3 direction = roughnessDirection(phi, theta / half_pi, tbnMat, coeficient);
             vec3 envDir = normalize(2.0 * dot(normal, direction) * direction - normal);
             vec2 envDirSpherical = vec3ToSpherical(envDir);

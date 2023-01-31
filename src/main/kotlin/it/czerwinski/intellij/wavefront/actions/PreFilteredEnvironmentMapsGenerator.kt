@@ -61,6 +61,7 @@ object PreFilteredEnvironmentMapsGenerator {
         if (preFilteredMap != null) {
             invokeLater {
                 savePreFilteredMap(preFilteredMap, outputFile)
+                preFilteredMap.flush()
             }
         }
     }
@@ -78,7 +79,12 @@ object PreFilteredEnvironmentMapsGenerator {
         val renderer = PreFilteredEnvironmentRenderer(inputImage, roughness, samples, outputWidth, outputHeight)
         renderer.render()
 
-        return renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
+        val outputImage = renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
+        inputImage.flush()
+        if (outputImage != renderer.outputImage) {
+            renderer.outputImage?.flush()
+        }
+        return outputImage
     }
 
     private fun savePreFilteredMap(image: RenderedImage, outputFile: File) {

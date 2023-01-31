@@ -244,8 +244,10 @@ class MtlPreviewScene(
                 displacementTexture = material?.displacementMap?.let { getTexture(gl, it) } ?: fallbackTexture,
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
-                reflectionTexture = environmentTexture,
-                radianceTexture = radianceTexture,
+                environmentTexture = environmentTexture,
+                irradianceTexture = irradianceTexture,
+                reflectionTextures = reflectionTextureLevels,
+                brdfTexture = brdfTexture,
                 cropTexture = cropTextures
             ),
             facesMesh

@@ -134,8 +134,13 @@ abstract class PreviewScene(
 
     private lateinit var environmentTextures: List<Texture>
     protected val environmentTexture: Texture get() = environmentTextures[environment.ordinal]
-    private lateinit var radianceTextures: List<Texture>
-    protected val radianceTexture: Texture get() = radianceTextures[environment.ordinal]
+    private lateinit var irradianceTextures: List<Texture>
+    protected val irradianceTexture: Texture get() = irradianceTextures[environment.ordinal]
+    private lateinit var reflectionTextures: List<List<Texture>>
+    protected val reflectionTextureLevels: List<Texture>
+        get() = listOf(environmentTexture) + reflectionTextures[environment.ordinal]
+    protected lateinit var brdfTexture: Texture
+
     private lateinit var fontTexture: Texture
     private lateinit var boldFontTexture: Texture
 
@@ -182,15 +187,32 @@ abstract class PreviewScene(
                 .setTextureWrap(TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
                 .build()
 
-            radianceTextures = textureBuilder
+            irradianceTextures = Texture.Builder.getInstance(gl)
                 .apply {
-                    for (textureImageSource in TextureResources.radianceTextureImageSources) {
+                    for (textureImageSource in TextureResources.irradianceTextureImageSources) {
                         addTexture(textureImageSource)
                     }
                 }
                 .setTextureFilter(TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
                 .setTextureWrap(TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
                 .build()
+
+            reflectionTextures = TextureResources.reflectionTextureImageSources.map { singleImageSources ->
+                Texture.Builder.getInstance(gl)
+                    .apply {
+                        for (textureImageSource in singleImageSources) {
+                            addTexture(textureImageSource)
+                        }
+                    }
+                    .setTextureFilter(TextureMinFilter.LINEAR, TextureMagFilter.LINEAR)
+                    .setTextureWrap(TextureWrap.REPEAT, TextureWrap.CLAMP_TO_EDGE)
+                    .build()
+            }
+
+            brdfTexture = textureBuilder
+                .addTexture(TextureResources.brdfTextureImageSource)
+                .build()
+                .first()
 
             val fontTextures = textureBuilder
                 .addTexture(TextureResources.fontTextureImageSource)
@@ -359,8 +381,9 @@ abstract class PreviewScene(
         axisConeMesh.dispose(gl)
         gridMesh.dispose(gl)
         fineGridMesh.dispose(gl)
-        val textures =
-            environmentTextures + radianceTextures + fontTexture + boldFontTexture + fallbackTexture + fallbackNormalmap
+        val textures = environmentTextures + irradianceTextures + reflectionTextures.flatten() + brdfTexture +
+            fontTexture + boldFontTexture +
+            fallbackTexture + fallbackNormalmap
         for (texture in textures) {
             texture.dispose(gl)
         }

@@ -75,14 +75,14 @@ jobs:
 
       # Publish test results
       - name: Publish Test Report
-        if: always()
+        if: ${{ always() }}
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
         with:
           junit_files: ${{ github.workspace }}/build/test-results/**/*.xml
 
       # Annotate sources with detekt issues
       - name: Generate Detekt Annotations
-        if: always()
+        if: ${{ always() }}
         uses: jwgmeligmeyling/checkstyle-github-action@master
         with:
           name: Detekt Report
@@ -91,7 +91,7 @@ jobs:
 
       # Upload detekt results
       - name: Upload Detekt Report
-        if: always()
+        if: ${{ always() }}
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ github.workspace }}/build/reports/detekt.sarif.json
@@ -235,7 +235,7 @@ jobs:
   # If accepted and published, release workflow would be triggered
   releaseDraft:
     name: Release Draft
-    if: github.event_name != 'pull_request'
+    if: ${{ github.event_name != 'pull_request' }}
     needs: [build, verify]
     runs-on: ubuntu-latest
     steps:

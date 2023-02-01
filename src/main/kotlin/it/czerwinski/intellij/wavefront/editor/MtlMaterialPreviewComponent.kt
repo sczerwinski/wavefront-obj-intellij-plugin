@@ -21,7 +21,6 @@ import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.invokeLater
-import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.jogamp.opengl.util.AnimatorBase
 import graphics.glimpse.ui.GlimpsePanel
@@ -113,7 +112,8 @@ class MtlMaterialPreviewComponent(
     override fun onInitialize() = Unit
 
     override fun createScene(glimpsePanel: GlimpsePanel, animator: AnimatorBase) {
-        myScene = MtlPreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
+        myScene = MtlPreviewScene(glimpsePanel.glProfile, parent = this, animator, myErrorLogSplitter)
+            .apply { addLoadingListener { _, loading -> if (loading) startLoading() else stopLoading() } }
         myScene.material = myMaterial
     }
 
@@ -135,12 +135,8 @@ class MtlMaterialPreviewComponent(
     fun updateMaterial(material: MtlMaterialElement?) {
         myErrorLogSplitter.clearErrors()
         myMaterial = material
-        startLoading()
-        BackgroundTaskUtil.executeOnPooledThread(this) {
-            if (::myScene.isInitialized) {
-                myScene.material = myMaterial
-            }
-            stopLoading()
+        if (::myScene.isInitialized) {
+            myScene.material = myMaterial
         }
     }
 

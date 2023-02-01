@@ -22,22 +22,35 @@ import graphics.glimpse.textures.fromResource
 
 object TextureResources {
 
-    private const val ENVIRONMENT_TEXTURES_COUNT = 8
-    private const val ENVIRONMENT_TEXTURE_RESOURCE_FORMAT = "/textures/environment%d.jpg"
-    private const val RADIANCE_TEXTURE_RESOURCE_FORMAT = "/textures/radiance%d.jpg"
+    private const val ENVIRONMENTS_COUNT = 8
+    internal const val REFLECTION_LEVELS_COUNT = 8
 
+    private const val ENVIRONMENT_TEXTURE_RESOURCE_FORMAT = "/textures/environment%d.jpg"
+    private const val IRRADIANCE_TEXTURE_RESOURCE_FORMAT = "/textures/environment%d.irradiance.jpg"
+    private const val REFLECTION_TEXTURE_RESOURCE_FORMAT = "/textures/environment%d.reflection%d.jpg"
+
+    private const val BRDF_TEXTURE_RESOURCE = "/textures/brdf.png"
     private const val FONT_TEXTURE_RESOURCE = "/textures/jb_mono.png"
     private const val BOLD_FONT_TEXTURE_RESOURCE = "/textures/jb_mono_bold.png"
     private const val FALLBACK_TEXTURE_RESOURCE = "/textures/fallback_texture.png"
     private const val FALLBACK_NORMALMAP_RESOURCE = "/textures/fallback_normalmap.png"
 
-    var environmentTextureImageSources: List<TextureImageSource> = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
-        getTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(index))
+    var environmentTextureImageSources: List<TextureImageSource> = (1..ENVIRONMENTS_COUNT).map { env ->
+        getTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(env))
     }
 
-    var radianceTextureImageSources: List<TextureImageSource> = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
-        getTextureImageSource(RADIANCE_TEXTURE_RESOURCE_FORMAT.format(index))
+    var irradianceTextureImageSources: List<TextureImageSource> = (1..ENVIRONMENTS_COUNT).map { env ->
+        getTextureImageSource(IRRADIANCE_TEXTURE_RESOURCE_FORMAT.format(env))
     }
+
+    var reflectionTextureImageSources: List<List<TextureImageSource>> = (1..ENVIRONMENTS_COUNT).map { env ->
+        (1 until REFLECTION_LEVELS_COUNT).map { level ->
+            getTextureImageSource(REFLECTION_TEXTURE_RESOURCE_FORMAT.format(env, level))
+        }
+    }
+
+    var brdfTextureImageSource: TextureImageSource = getTextureImageSource(BRDF_TEXTURE_RESOURCE)
+        private set
 
     var fontTextureImageSource: TextureImageSource = getTextureImageSource(FONT_TEXTURE_RESOURCE)
         private set
@@ -57,11 +70,16 @@ object TextureResources {
             .build()
 
     fun prepare(profile: GLProfile) {
-        environmentTextureImageSources = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
-            getPreparedTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(index), profile)
+        environmentTextureImageSources = (1..ENVIRONMENTS_COUNT).map { env ->
+            getPreparedTextureImageSource(ENVIRONMENT_TEXTURE_RESOURCE_FORMAT.format(env), profile)
         }
-        radianceTextureImageSources = (1..ENVIRONMENT_TEXTURES_COUNT).map { index ->
-            getPreparedTextureImageSource(RADIANCE_TEXTURE_RESOURCE_FORMAT.format(index), profile)
+        irradianceTextureImageSources = (1..ENVIRONMENTS_COUNT).map { env ->
+            getPreparedTextureImageSource(IRRADIANCE_TEXTURE_RESOURCE_FORMAT.format(env), profile)
+        }
+        reflectionTextureImageSources = (1..ENVIRONMENTS_COUNT).map { env ->
+            (1 until REFLECTION_LEVELS_COUNT).map { level ->
+                getPreparedTextureImageSource(REFLECTION_TEXTURE_RESOURCE_FORMAT.format(env, level), profile)
+            }
         }
         fontTextureImageSource = getPreparedTextureImageSource(FONT_TEXTURE_RESOURCE, profile)
         boldFontTextureImageSource = getPreparedTextureImageSource(BOLD_FONT_TEXTURE_RESOURCE, profile)

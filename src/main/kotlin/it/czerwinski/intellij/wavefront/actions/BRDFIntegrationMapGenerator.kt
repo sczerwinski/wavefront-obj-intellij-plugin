@@ -50,6 +50,7 @@ object BRDFIntegrationMapGenerator {
         if (brdfIntegrationMap != null) {
             invokeLater {
                 saveBRDFIntegrationMap(brdfIntegrationMap, outputFile)
+                brdfIntegrationMap.flush()
             }
         }
     }
@@ -57,7 +58,11 @@ object BRDFIntegrationMapGenerator {
     private fun generateBRDFIntegrationMap(size: Int, samples: Int): BufferedImage? {
         val renderer = BRDFRenderer(samples, size, size)
         renderer.render()
-        return renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
+        val outputImage = renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
+        if (outputImage != renderer.outputImage) {
+            renderer.outputImage?.flush()
+        }
+        return outputImage
     }
 
     private fun saveBRDFIntegrationMap(image: RenderedImage, outputFile: File) {

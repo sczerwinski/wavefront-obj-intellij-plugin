@@ -16,6 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
@@ -41,24 +43,23 @@ import java.awt.Color
 @Suppress("UseJBColor")
 class MtlPreviewScene(
     profile: GLProfile,
+    parent: Disposable,
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
-) : PreviewScene(profile, animatorControl, errorLog) {
+) : PreviewScene(profile, parent, animatorControl, errorLog) {
 
     var material: MtlMaterialElement? = null
         set(value) {
             field = value
-            value?.ambientColorMap?.let { prepareTexture(value.project, it) }
-            value?.diffuseColorMap?.let { prepareTexture(value.project, it) }
-            value?.specularColorMap?.let { prepareTexture(value.project, it) }
-            value?.emissionColorMap?.let { prepareTexture(value.project, it) }
-            value?.specularExponentMap?.let { prepareTexture(value.project, it) }
-            value?.roughnessMap?.let { prepareTexture(value.project, it) }
-            value?.metalnessMap?.let { prepareTexture(value.project, it) }
-            value?.normalMap?.let { prepareTexture(value.project, it) }
-            value?.bumpMap?.let { prepareTexture(value.project, it) }
-            value?.displacementMap?.let { prepareTexture(value.project, it) }
-            requestRender()
+            if (value != null) {
+                notifyLoading(loading = true)
+                BackgroundTaskUtil.executeOnPooledThread(parent) {
+                    materialTexturesProvider = MaterialTexturesProvider(value)
+                    materialTexturesProvider.prepare()
+                    requestRender()
+                    notifyLoading(loading = false)
+                }
+            }
         }
 
     override val modelSize: Float = MODEL_SIZE
@@ -94,6 +95,8 @@ class MtlPreviewScene(
     private val meshesManager = MtlPreviewMeshesManager()
 
     private val mesh: Mesh? get() = meshesManager.getMesh(previewMesh)
+
+    private lateinit var materialTexturesProvider: MaterialTexturesProvider
 
     init {
         try {
@@ -156,19 +159,8 @@ class MtlPreviewScene(
 
     @Suppress("ComplexMethod")
     private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh) {
-        val ambientTexture = material?.ambientColorMap?.let { getTexture(gl, it) }
-        val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
-        val emissionTexture = material?.emissionColorMap?.let { getTexture(gl, it) }
-
-        val roughnessTexture = material?.roughnessMap?.let { getTexture(gl, it) }
-        val metalnessTexture = material?.metalnessMap?.let { getTexture(gl, it) }
-        val normalTexture = material?.normalMap?.let { getTexture(gl, it) }
-        val specularColorTexture = material?.specularColorMap?.let { getTexture(gl, it) }
-        val specularExponentTexture = material?.specularExponentMap?.let { getTexture(gl, it) }
-        val bumpTexture = material?.bumpMap?.let { getTexture(gl, it) }
-
         val fallbackEmissionColor =
-            graphics.glimpse.types.Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
+            graphics.glimpse.types.Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
         val fallbackColor = graphics.glimpse.types.Vec3(color = Color.WHITE)
 
@@ -185,16 +177,16 @@ class MtlPreviewScene(
                 specularColor = material?.specularColorVector ?: fallbackColor,
                 emissionColor = emissionColor,
                 specularExponent = material?.specularExponent ?: 1f,
-                ambientTexture = ambientTexture ?: diffuseTexture ?: fallbackTexture,
-                diffuseTexture = diffuseTexture ?: fallbackTexture,
-                specularTexture = specularColorTexture ?: metalnessTexture ?: fallbackTexture,
-                emissionTexture = emissionTexture ?: fallbackTexture,
-                specularExponentTexture = specularExponentTexture ?: roughnessTexture ?: fallbackTexture,
+                ambientTexture = materialTexturesProvider.ambientTexture(gl),
+                diffuseTexture = materialTexturesProvider.diffuseTexture(gl),
+                specularTexture = materialTexturesProvider.specularTexture(gl),
+                emissionTexture = materialTexturesProvider.emissionTexture(gl),
+                specularExponentTexture = materialTexturesProvider.specularExponentTexture(gl),
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
-                normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,
+                normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f,
-                displacementTexture = material?.displacementMap?.let { getTexture(gl, it) } ?: fallbackTexture,
+                displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
                 cropTexture = cropTextures
@@ -205,17 +197,8 @@ class MtlPreviewScene(
 
     @Suppress("ComplexMethod")
     private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh) {
-        val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
-        val emissionTexture = material?.emissionColorMap?.let { getTexture(gl, it) }
-        val roughnessTexture = material?.roughnessMap?.let { getTexture(gl, it) }
-        val metalnessTexture = material?.metalnessMap?.let { getTexture(gl, it) }
-        val normalTexture = material?.normalMap?.let { getTexture(gl, it) }
-        val specularColorTexture = material?.specularColorMap?.let { getTexture(gl, it) }
-        val specularExponentTexture = material?.specularExponentMap?.let { getTexture(gl, it) }
-        val bumpTexture = material?.bumpMap?.let { getTexture(gl, it) }
-
         val fallbackEmissionColor =
-            graphics.glimpse.types.Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
+            graphics.glimpse.types.Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
 
         val cameraDirection = normalize(camera.eye)
@@ -236,16 +219,18 @@ class MtlPreviewScene(
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,
-                diffuseTexture = diffuseTexture ?: fallbackTexture,
-                emissionTexture = emissionTexture ?: fallbackTexture,
-                roughnessTexture = roughnessTexture ?: specularExponentTexture ?: fallbackTexture,
-                metalnessTexture = metalnessTexture ?: specularColorTexture ?: fallbackTexture,
-                normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,
-                displacementTexture = material?.displacementMap?.let { getTexture(gl, it) } ?: fallbackTexture,
+                diffuseTexture = materialTexturesProvider.diffuseTexture(gl),
+                emissionTexture = materialTexturesProvider.emissionTexture(gl),
+                roughnessTexture = materialTexturesProvider.roughnessTexture(gl),
+                metalnessTexture = materialTexturesProvider.metalnessTexture(gl),
+                normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
+                displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
-                reflectionTexture = environmentTexture,
-                radianceTexture = radianceTexture,
+                environmentTexture = environmentTexture,
+                irradianceTexture = irradianceTexture,
+                reflectionTextures = reflectionTextureLevels,
+                brdfTexture = brdfTexture,
                 cropTexture = cropTextures
             ),
             facesMesh

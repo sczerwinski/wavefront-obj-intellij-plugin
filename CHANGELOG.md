@@ -5,61 +5,37 @@
 ## [Unreleased]
 
 ### Added
+- Add support for platform version `231.*`
+- Automatically preview material at caret
+- Settings for MTL file editor layout separate from OBJ file editor layout
+- Setting for generating mipmaps for textures (on/off)
+- Setting for selecting face culling
 - Actions for images:
   - Generate Diffuse Irradiance Map
   - Generate Pre-Filtered Environment Maps
   - Generate BRDF Integration Maps
 
 ### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-- Fix plugin change notes
-
-### Security
-
-## [1.3.0-eap.2] - 2023-01-25
-
-### Added
-- Automatically preview material at caret
-- Settings for MTL file editor layout separate from OBJ file editor layout
-- Setting for generating mipmaps for textures (on/off)
-- Setting for selecting face culling
-
-### Changed
-- Dependencies:
-  - Upgrade `glimpse-core` to `1.2.1`
-  - Upgrade `glimpse-obj` to `1.2.1`
-  - Upgrade `glimpse-ui` to `1.2.1`
-  - Upgrade `glimpse-processor-ksp` to `1.2.1`
-  - Upgrade `jogl-all-main` to `2.4.0-rc-20230123`
-  - Upgrade `gluegen-rt-main` to `2.4.0-rc-20230123`
-
-### Fixed
-- Fix attaching change notes to the plugin
-
-## [1.3.0-eap.1] - 2023-01-23
-
-### Added
-- Add support for platform version `231.*`
-
-### Changed
+- Improve IBL in PBR shader
 - Update platform version to `2022.2.3`
 - `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1, 2023.1`
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.0`
-  - Upgrade `com.google.devtools.ksp` to `1.8.0-1.0.7`
+  - Upgrade `com.google.devtools.ksp` to `1.8.0-1.0.9`
   - Upgrade `org.jetbrains.intellij` to `1.12.0`
   - Upgrade `org.jetbrains.grammarkit` to `2022.3`
-  - Upgrade `detekt-formatting` to `1.22.0`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.22.0`
+  - Upgrade `glimpse-core` to `1.2.1`
+  - Upgrade `glimpse-obj` to `1.2.1`
+  - Upgrade `glimpse-ui` to `1.2.1`
+  - Upgrade `glimpse-processor-ksp` to `1.2.1`
+  - Upgrade `jogl-all-main` to `2.4.0`
+  - Upgrade `gluegen-rt-main` to `2.4.0`
+  - Upgrade `detekt-formatting` to `1.22.0`
 - GitHub Actions:
-  - Upgrade `actions/cache` to `v3.2.3`
+  - Upgrade `actions/cache` to `v3.2.4`
 
 ### Removed
 - Remove support for platform version `221.*`
@@ -72,6 +48,7 @@
 - Use DPI-aware `JBEmptyBorder` instead of `EmptyBorder`
 - Use Darcula-aware `JBColor` instead of `Color` in color scheme
 - Minor grammar fixes in some descriptions
+- Fix plugin change notes
 
 ## [1.2.2] - 2022-11-17
 
@@ -88,6 +65,7 @@
 - Wrap file operations in read-actions
 
 ## [1.2.1] - 2022-10-31
+
 ### Added
 - Add support for platform version `223.*`
 - Add detekt linter
@@ -118,42 +96,8 @@
 - Update deprecated property for `EnricoMi/publish-unit-test-result-action/composite` action
 - Fix changelog in release draft
 
-## [1.2.1-eap.2] - 2022-10-23
-### Changed
-- Dependencies:
-  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.11`
-
-### Fixed
-- Replace usages of `registerPostStartupActivity` with `runAfterOpened`
-- Override non-deprecated version of `createPopupActionGroup` in `PBREnvironmentsComboBoxAction`
-
-## [1.2.1-eap.1] - 2022-10-08
-### Added
-- Add support for platform version `223.*`
-- Add detekt linter
-
-### Changed
-- Change disposable parent from project to editor when possible
-- Remove events from PSI tree change listeners that slow down IDE
-- Update platform version to `2022.1.4`
-- `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3, 2022.3`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
-  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.6`
-  - Upgrade `org.jetbrains.intellij` to `1.9.0`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.10`
-
-### Removed
-- Remove support for platform version `213.*`
-- Remove Qodana checks
-
-### Fixed
-- Replace API usages deprecated in IDE versions `2022.1` and `2022.2`
-
 ## [1.2.0] - 2022-07-26
+
 ### Added
 - Add support for platform version `222.*`
 - MTL material editor with preview
@@ -208,54 +152,8 @@
 - Add `kspKotlin` Gradle task dependencies
 - Fix possible `NullPointerException` in `ObjAnnotator`
 
-## [1.2.0-alpha.1] - 2022-05-29
-### Added
-- MTL material editor with preview
-- Material editor settings:
-  - Default material preview mesh (cube, cylinder, sphere)
-  - Default material type (Phong or PBR)
-- Support diffuse texture transparency in 3D preview
-- New OBJ file action
-- New MTL file action
-- Add environments for physically based shading method in 3D preview:
-  - Office (interior)
-  - Garage (interior)
-- Use JVM toolchain for configuring source/target compilation compatibility
-- Make sure GitHub Actions release jobs have write permissions
-- Add Qodana checks
-
-### Changed
-- Improved action and gutter icons to work with high contrast theme
-- Use non-null values in editor state
-- Migrate to Kotlin UI DSL version 2
-- Move settings icon to the left toolbar in 3D preview
-- Disable face culling in 3D preview
-- Update GitHub Actions build pipeline
-- Upgrade Gradle Wrapper to `7.4.2`
-- Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `1.6.0`
-- Update platform version to `2021.3.3`
-- `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1`
-
-### Removed
-- Remove support for platform version `203.*`
-- Remove support for platform version `211.*`
-- Remove support for platform version `212.*`
-- Remove detekt linter
-- Remove ktlint linter
-
-### Fixed
-- Replace usage of deprecated `UIUtil.getClientProperty` with direct call to `JComponent.getClientProperty`
-- Replace usage of deprecated `FilenameIndex.getFilesByName` with `FilenameIndex.getVirtualFilesByName`
-  and additional mapping using `PsiManager.findFile`
-- Replace usages of deprecated `Iterable.sumBy` with `Iterable.sumOf`
-- Replace usages of deprecated `String.toLowerCase` with `String.lowercase`
-- Replace usage of deprecated `Char.toInt` with `Char.code`
-- Prevent long operations from running on UI thread
-- Workaround for unit tests not running
-- Add `kspKotlin` Gradle task dependencies
-
 ## [1.1.2] - 2022-04-30
+
 ### Added
 - OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
 - Display Number of triangles for each object and group in structure view
@@ -282,6 +180,7 @@
 - Remove unnecessary abstract class `ObjLineElementImpl`.
 
 ## [1.1.1] - 2022-03-13
+
 ### Added
 - Support for platform version `221.*`
 - Color preview markers in MTL files
@@ -313,26 +212,8 @@
 ### Security
 - Sign plugin before publishing
 
-## [1.1.1-alpha.1] - 2022-01-23
-### Added
-- Color preview markers in MTL files
-
-### Changed
-- Line markers made configurable
-- PBR shader calculations in world space
-- Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `1.3.1`
-
-### Fixed
-- Improve PBR shader calculations
-- Fix displacement step calculation
-- Refresh 3D preview when any of the MTL and texture files referenced by OBJ file changes
-- Fix 3D preview issues when loading a project with multiple OBJ files open
-
-### Security
-- Sign plugin before publishing
-
 ## [1.1.0] - 2022-01-09
+
 ### Added
 - Extended MTL syntax for physically based rendering parameters:
   - roughness (`Pr` and `map_Pr`)
@@ -363,6 +244,7 @@
 - Prevent texture loading on GL thread
 
 ## [1.0.2] - 2021-11-09
+
 ### Added
 - Support for platform version `213.*`
 - Shader quality (float precision) setting
@@ -395,6 +277,7 @@
 - Replace deprecated `ServiceManager.getService` with `Application.getService`
 
 ## [1.0.1] - 2021-07-16
+
 ### Added
 - Support for platform version `212.*`
 
@@ -407,6 +290,7 @@
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`, `2021.2`
 
 ## [1.0.0] - 2021-07-04
+
 ### Added
 - Support for textured lines
 - Support for multiple MTL filenames in `mtllib` statement
@@ -448,6 +332,7 @@
 - Require spaces after keywords, options and values
 
 ## [0.3.2] - 2021-04-11
+
 ### Added
 - Support for relative indices in OBJ files (#95)
 - Refresh action in 3D preview
@@ -458,6 +343,7 @@
 - Display 3D preview errors below the preview (#112)
 
 ## [0.3.1] - 2021-04-08
+
 ### Added
 - Support for platform version `211.*`
 
@@ -483,6 +369,7 @@
 - Run `FilenameIndex.getFilesByName(...)` inside `runReadAction { ... }`
 
 ## [0.3.0] - 2021-04-08
+
 ### Added
 - Wireframe shading in the 3D preview
 - Material shading in the 3D preview (material colors)
@@ -511,6 +398,7 @@
 - Fix `README.md` file resolution in the `build.gradle.kts`
 
 ## [0.2.1] - 2021-02-05
+
 ### Added
 - Color settings for OBJ 3D preview colors for faces, lines and points.
 - Settings for the 3D preview:
@@ -535,6 +423,7 @@
 - Use relative paths in MTL file references
 
 ## [0.2.0] - 2021-01-31
+
 ### Added
 - Support for drawing lines in 3D preview
 - Support for drawing points in 3D preview
@@ -555,6 +444,7 @@
 - Fix errors after typing long keywords
 
 ## [0.1.5] - 2021-01-28
+
 ### Added
 - Dependabot integration
 - Show `idea.log` logs of the run IDE in the Run console
@@ -575,6 +465,7 @@
 - GitHub Actions: Use the correct property in the "Upload artifact" step
 
 ## [0.1.4] - 2020-12-02
+
 ### Added
 - Predefined Run/Debug Configurations
 - Support for platform version 203.*
@@ -585,6 +476,7 @@
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.20`
 
 ## [0.1.3] - 2020-11-06
+
 ### Added
 - Setting: Disable 3D preview
 - Setting: Default layout
@@ -598,6 +490,7 @@
 - Not creating `GLPanel` before 3D preview set to visible
 
 ## [0.1.2] - 2020-10-31
+
 ### Added
 - Fix default to opt-out of bundling Kotlin standard library in plugin distribution
 - Integration with [IntelliJ Plugin Verifier](https://github.com/JetBrains/intellij-plugin-verifier) through the [Gradle IntelliJ Plugin](https://github.com/JetBrains/gradle-intellij-plugin#plugin-verifier-dsl) `runPluginVerifier` task
@@ -625,10 +518,12 @@
 - Using correct encoding of ellipsis character when initializing 3D preview
 
 ## [0.1.1] - 2020-08-09
+
 ### Fixed
 - Correct link in plugin description
 
 ## [0.1.0] - 2020-08-09
+
 ### Added
 - Support for Wavefront OBJ files
   - Syntax highlighting
@@ -640,17 +535,11 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...main
-[1.3.0-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0-eap.1...v1.3.0-eap.2
-[1.3.0-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...v1.3.0-eap.1
 [1.2.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1
-[1.2.1-eap.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1-eap.1...v1.2.1-eap.2
-[1.2.1-eap.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1-eap.1
 [1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0
-[1.2.0-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0-alpha.1
 [1.1.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1
-[1.1.1-alpha.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.0...v1.1.1-alpha.1
 [1.1.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.0.0...v1.0.1

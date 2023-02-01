@@ -16,7 +16,9 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.colors.EditorColorsManager
+import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
@@ -30,12 +32,14 @@ import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Base 3D scene.
  */
 abstract class BaseScene(
     private val profile: GLProfile,
+    protected val parent: Disposable,
     animatorControl: GLAnimatorControl,
     protected val errorLog: ErrorLog
 ) : GlimpseCallback,
@@ -52,10 +56,12 @@ abstract class BaseScene(
 
     protected abstract val mipmapping: Boolean
 
+    private val loadingListeners = mutableListOf<LoadingListener>()
+
     /**
      * Loads texture image from a file with given [filename] before creating a texture.
      */
-    protected fun prepareTexture(project: Project, filename: String) {
+    private fun prepareTexture(project: Project, filename: String) {
         try {
             texturesManager.prepare(profile, project, filename)
         } catch (expected: Throwable) {
@@ -69,7 +75,7 @@ abstract class BaseScene(
     /**
      * Returns texture created from this file.
      */
-    protected fun getTexture(gl: GlimpseAdapter, filename: String): Texture? = try {
+    private fun getTexture(gl: GlimpseAdapter, filename: String): Texture? = try {
         texturesManager[gl, filename, mipmapping]
     } catch (ignored: Throwable) {
         null
@@ -174,4 +180,84 @@ abstract class BaseScene(
      * Handles errors that occurred while disposing OpenGL objects.
      */
     protected abstract fun onDestroyError(gl: GlimpseAdapter, expected: Throwable)
+
+    /**
+     * Adds given loading status [listener] to this scene.
+     */
+    fun addLoadingListener(listener: LoadingListener) {
+        loadingListeners += listener
+    }
+
+    /**
+     * Removes given loading status [listener] from this scene.
+     */
+    fun removeLoadingListener(listener: LoadingListener) {
+        loadingListeners -= listener
+    }
+
+    protected fun notifyLoading(loading: Boolean) {
+        for (listener in loadingListeners) {
+            listener.onLoading(scene = this, loading)
+        }
+    }
+
+    /**
+     * Loading status listener.
+     */
+    fun interface LoadingListener {
+
+        /**
+         * Called when [loading] status of given [scene] has changed.
+         */
+        fun onLoading(scene: BaseScene, loading: Boolean)
+    }
+
+    /**
+     * Cacheable texture provider.
+     */
+    protected inner class TextureProvider(
+        private val project: Project,
+        private val paths: List<String>,
+        private val fallbackTexture: () -> Texture
+    ) {
+
+        /**
+         * Returns `true` if this texture provider always uses fallback texture.
+         */
+        val isFallback: Boolean get() = paths.isEmpty()
+
+        private val isPreparing = AtomicBoolean(false)
+
+        /**
+         * Prepares this texture.
+         */
+        fun prepare() {
+            if (isPreparing.compareAndSet(false, true)) {
+                for (path in paths) {
+                    prepareTexture(project, path)
+                }
+                isPreparing.set(false)
+            }
+        }
+
+        /**
+         * Returns this texture if prepared.
+         *
+         * If the texture is not prepared, initializes its preparation.
+         */
+        fun get(gl: GlimpseAdapter): Texture {
+            val texture = paths.asSequence()
+                .mapNotNull { path -> getTexture(gl, path) }
+                .firstOrNull()
+            if (paths.isNotEmpty() && texture == null) {
+                notifyLoading(loading = true)
+                BackgroundTaskUtil.executeOnPooledThread(parent) {
+                    prepare()
+                    requestRender()
+                    notifyLoading(loading = false)
+                }
+            }
+            return texture ?: fallbackTexture()
+        }
+    }
 }

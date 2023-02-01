@@ -25,6 +25,7 @@ import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
+import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 
 @ShaderParams(
     attributes = [
@@ -91,11 +92,17 @@ data class PBRShader(
     @Uniform(name = "uDispQuality")
     val displacementQuality: Float,
 
-    @Sampler2D(name = "uReflectionTex")
-    val reflectionTexture: Texture,
+    @Sampler2D(name = "uEnvTex")
+    val environmentTexture: Texture,
 
-    @Sampler2D(name = "uRadianceTex")
-    val radianceTexture: Texture,
+    @Sampler2D(name = "uIrradianceTex")
+    val irradianceTexture: Texture,
+
+    @Sampler2D(name = "uReflectionTex", size = TextureResources.REFLECTION_LEVELS_COUNT)
+    val reflectionTextures: List<Texture>,
+
+    @Sampler2D(name = "uBRDFTex")
+    val brdfTexture: Texture,
 
     @Uniform(name = "uCropTex")
     val cropTexture: Boolean,

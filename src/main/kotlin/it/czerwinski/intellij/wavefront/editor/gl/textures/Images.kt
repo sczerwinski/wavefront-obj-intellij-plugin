@@ -37,12 +37,15 @@ fun Image.toBufferedImage(type: Int): BufferedImage =
         bufferedImage
     }
 
-fun BufferedImage.mirrorY(): BufferedImage {
-    val outputImage = UIUtil.createImage(null, width, height, type)
+/**
+ * Mirrors this [Image] along Y axis and returns as a [BufferedImage] of the given [type].
+ */
+fun Image.mirrorY(type: Int): BufferedImage {
+    val outputImage = UIUtil.createImage(null, getWidth(null), getHeight(null), type)
 
     with(outputImage.createGraphics()) {
         scale(1.0, -1.0)
-        drawImage(this@mirrorY, 0, -height, null)
+        drawImage(this@mirrorY, 0, -getHeight(null), null)
         dispose()
     }
 

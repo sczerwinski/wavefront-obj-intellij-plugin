@@ -54,8 +54,8 @@ void main() {
     float scale = 0.0;
     float bias = 0.0;
 
-    for (float theta = 0.0; theta < half_pi; theta += thetaStep) {
-        for (float phi = 0.0; phi < tau; phi += phiStep) {
+    for (float theta = 0.0001; theta < half_pi; theta += thetaStep) {
+        for (float phi = 0.0001; phi < tau; phi += phiStep) {
             vec3 direction = roughnessDirection(phi, theta / half_pi, tbnMat, coeficient);
             vec3 envDir = normalize(2.0 * dot(cameraDir, direction) * direction - cameraDir);
 
@@ -65,7 +65,7 @@ void main() {
 
             if (cosEnvDir > 0.0) {
                 float geometry = geometry(normal, cameraDir, envDir, roughness);
-                float geometryFactor = (geometry * cosCameraDir) / (cosDir * max(0.0001, cosAngle));
+                float geometryFactor = (geometry * cosCameraDir) / max(0.0001, (cosDir * cosAngle));
                 float cameraDirFactor = pow(1.0 - cosCameraDir, 5.0);
 
                 scale += (1.0 - cameraDirFactor) * geometryFactor;

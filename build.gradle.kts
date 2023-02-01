@@ -49,7 +49,7 @@ dependencies {
     api("graphics.glimpse:glimpse-ui:1.2.1")
     ksp("graphics.glimpse:glimpse-processor-ksp:1.2.1")
     implementation("org.jogamp.jogl:jogl-all-main:2.4.0-rc-20230123")
-    implementation("org.jogamp.gluegen:gluegen-rt-main:2.4.0-rc-20230123")
+    implementation("org.jogamp.gluegen:gluegen-rt-main:2.4.0-rc-20230131")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
 }
 

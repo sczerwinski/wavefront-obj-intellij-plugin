@@ -40,12 +40,12 @@ interface MtlMaterialElement : PsiElement {
     val diffuseColorMapElement: MtlTextureElement?
     val specularColorMapElement: MtlTextureElement?
     val emissionColorMapElement: MtlTextureElement?
-    val specularExponentMapElement: MtlTextureElement?
-    val dissolveMapElement: MtlTextureElement?
-    val displacementMapElement: MtlTextureElement?
-    val stencilDecalMapElement: MtlTextureElement?
-    val roughnessMapElement: MtlTextureElement?
-    val metalnessMapElement: MtlTextureElement?
+    val specularExponentMapElement: MtlScalarTextureElement?
+    val dissolveMapElement: MtlScalarTextureElement?
+    val displacementMapElement: MtlScalarTextureElement?
+    val stencilDecalMapElement: MtlScalarTextureElement?
+    val roughnessMapElement: MtlScalarTextureElement?
+    val metalnessMapElement: MtlScalarTextureElement?
     val normalMapElement: MtlTextureElement?
     val bumpMapElement: MtlTextureElement?
     val reflectionMapElement: MtlTextureElement?
@@ -71,12 +71,16 @@ interface MtlMaterialElement : PsiElement {
     val specularExponentMap: String?
     val specularExponentBase: Float?
     val specularExponentGain: Float?
+    val specularExponentChannel: MtlScalarChannel?
     val dissolveMap: String?
     val displacementMap: String?
     val displacementGain: Float?
+    val displacementChannel: MtlScalarChannel?
     val stencilDecalMap: String?
     val roughnessMap: String?
+    val roughnessChannel: MtlScalarChannel?
     val metalnessMap: String?
+    val metalnessChannel: MtlScalarChannel?
     val normalMap: String?
     val bumpMap: String?
     val bumpMapMultiplier: Float?

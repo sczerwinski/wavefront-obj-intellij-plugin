@@ -87,6 +87,9 @@ data class MaterialShader(
     @Uniform(name = "uSpecExpGain")
     val specularExponentGain: Float,
 
+    @Uniform(name = "uSpecExpChan")
+    val specularExponentChannel: Int,
+
     @Sampler2D(name = "uNormalTex")
     val normalmapTexture: Texture,
 
@@ -101,6 +104,9 @@ data class MaterialShader(
 
     @Uniform(name = "uDispQuality")
     val displacementQuality: Float,
+
+    @Uniform(name = "uDispChan")
+    val displacementChannel: Int,
 
     @Uniform(name = "uCropTex")
     val cropTexture: Boolean,

@@ -11,11 +11,13 @@ uniform sampler2D uEmissionTex;
 uniform sampler2D uSpecExpTex;
 uniform float uSpecExpBase;
 uniform float uSpecExpGain;
+uniform int uSpecExpChan;
 uniform sampler2D uNormalTex;
 uniform float uBumpMult;
 uniform sampler2D uDispTex;
 uniform float uDispGain;
 uniform float uDispQuality;
+uniform int uDispChan;
 uniform int uCropTex;
 
 varying vec3 vPosTan;
@@ -25,8 +27,15 @@ varying vec2 vTexCoord;
 
 #define MAX_ITERATIONS 1024
 
+float channel(int channel, vec4 color) {
+    if (channel == 0) return color.r;
+    if (channel == 1) return color.g;
+    if (channel == 2) return color.b;
+    return color.r;
+}
+
 float displacement(vec2 texCoord) {
-    return 1.0 - texture2D(uDispTex, texCoord).r;
+    return 1.0 - channel(uDispChan, texture2D(uDispTex, texCoord));
 }
 
 vec2 displacedTexCoord(vec3 cameraDir) {
@@ -82,7 +91,7 @@ void main() {
 
     float exposure = max(dot(normal, lightDir), 0.0);
 
-    float exponent = (uSpecExpBase + texture2D(uSpecExpTex, texCoord).r * uSpecExpGain) * uSpecExp;
+    float exponent = (uSpecExpBase + channel(uSpecExpChan, texture2D(uSpecExpTex, texCoord)) * uSpecExpGain) * uSpecExp;
     float specular = pow(max(dot(normal, halfVector), 0.0), exponent);
 
     vec3 ambColor = texture2D(uAmbTex, texCoord).rgb * uAmbColor * 0.4;

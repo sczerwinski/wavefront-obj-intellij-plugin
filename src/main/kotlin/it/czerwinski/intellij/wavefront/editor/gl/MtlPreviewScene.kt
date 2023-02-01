@@ -35,6 +35,7 @@ import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import it.czerwinski.intellij.wavefront.lang.psi.toInt
 import java.awt.Color
 
 /**
@@ -184,11 +185,13 @@ class MtlPreviewScene(
                 specularExponentTexture = materialTexturesProvider.specularExponentTexture(gl),
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
+                specularExponentChannel = material?.specularExponentChannel.toInt(),
                 normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f,
                 displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
+                displacementChannel = material?.displacementChannel.toInt(),
                 cropTexture = cropTextures
             ),
             facesMesh
@@ -222,11 +225,14 @@ class MtlPreviewScene(
                 diffuseTexture = materialTexturesProvider.diffuseTexture(gl),
                 emissionTexture = materialTexturesProvider.emissionTexture(gl),
                 roughnessTexture = materialTexturesProvider.roughnessTexture(gl),
+                roughnessChannel = material?.roughnessChannel.toInt(),
                 metalnessTexture = materialTexturesProvider.metalnessTexture(gl),
+                metalnessChannel = material?.metalnessChannel.toInt(),
                 normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
                 displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
+                displacementChannel = material?.displacementChannel.toInt(),
                 environmentTexture = environmentTexture,
                 irradianceTexture = irradianceTexture,
                 reflectionTextures = reflectionTextureLevels,

@@ -16,6 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
@@ -46,27 +48,31 @@ import java.util.concurrent.atomic.AtomicBoolean
 @Suppress("UseJBColor")
 class ObjPreviewScene(
     profile: GLProfile,
+    parent: Disposable,
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
-) : PreviewScene(profile, animatorControl, errorLog) {
+) : PreviewScene(profile, parent, animatorControl, errorLog) {
 
     var model: GLModel? = null
         set(value) {
             field = value
             modelChanged.set(true)
-            value?.materials?.forEach { material ->
-                material?.ambientColorMap?.let { prepareTexture(material.project, it) }
-                material?.diffuseColorMap?.let { prepareTexture(material.project, it) }
-                material?.specularColorMap?.let { prepareTexture(material.project, it) }
-                material?.emissionColorMap?.let { prepareTexture(material.project, it) }
-                material?.specularExponentMap?.let { prepareTexture(material.project, it) }
-                material?.roughnessMap?.let { prepareTexture(material.project, it) }
-                material?.metalnessMap?.let { prepareTexture(material.project, it) }
-                material?.normalMap?.let { prepareTexture(material.project, it) }
-                material?.bumpMap?.let { prepareTexture(material.project, it) }
-                material?.displacementMap?.let { prepareTexture(material.project, it) }
+            notifyLoading(loading = true)
+            BackgroundTaskUtil.executeOnPooledThread(parent) {
+                materialTexturesProviders = model?.materials
+                    ?.mapNotNull { material ->
+                        val name = material?.getName().orEmpty()
+                        val provider = material?.let(::MaterialTexturesProvider)
+                        if (provider == null) null else name to provider
+                    }
+                    ?.toMap()
+                    .orEmpty()
+                for ((_, provider) in materialTexturesProviders) {
+                    provider.prepare()
+                }
+                requestRender()
+                notifyLoading(loading = false)
             }
-            requestRender()
         }
 
     private val modelChanged: AtomicBoolean = AtomicBoolean(false)
@@ -97,6 +103,8 @@ class ObjPreviewScene(
     override val showEnvironment: Boolean get() = shadingMethod == ShadingMethod.PBR
 
     private val modelMeshesManager = ModelMeshesManager()
+
+    private lateinit var materialTexturesProviders: Map<String, MaterialTexturesProvider>
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
@@ -180,18 +188,10 @@ class ObjPreviewScene(
     @Suppress("ComplexMethod")
     private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
-        val ambientTexture = material?.ambientColorMap?.let { getTexture(gl, it) }
-        val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
-        val emissionTexture = material?.emissionColorMap?.let { getTexture(gl, it) }
+        val materialName = material?.getName().orEmpty()
+        val materialTexturesProvider = materialTexturesProviders[materialName] ?: return
 
-        val roughnessTexture = material?.roughnessMap?.let { getTexture(gl, it) }
-        val metalnessTexture = material?.metalnessMap?.let { getTexture(gl, it) }
-        val normalTexture = material?.normalMap?.let { getTexture(gl, it) }
-        val specularColorTexture = material?.specularColorMap?.let { getTexture(gl, it) }
-        val specularExponentTexture = material?.specularExponentMap?.let { getTexture(gl, it) }
-        val bumpTexture = material?.bumpMap?.let { getTexture(gl, it) }
-
-        val fallbackEmissionColor = Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
         val fallbackColor = Vec3(color = Color.WHITE)
 
@@ -208,16 +208,16 @@ class ObjPreviewScene(
                 specularColor = material?.specularColorVector ?: fallbackColor,
                 emissionColor = emissionColor,
                 specularExponent = material?.specularExponent ?: 1f,
-                ambientTexture = ambientTexture ?: diffuseTexture ?: fallbackTexture,
-                diffuseTexture = diffuseTexture ?: fallbackTexture,
-                specularTexture = specularColorTexture ?: metalnessTexture ?: fallbackTexture,
-                emissionTexture = emissionTexture ?: fallbackTexture,
-                specularExponentTexture = specularExponentTexture ?: roughnessTexture ?: fallbackTexture,
+                ambientTexture = materialTexturesProvider.ambientTexture(gl),
+                diffuseTexture = materialTexturesProvider.diffuseTexture(gl),
+                specularTexture = materialTexturesProvider.specularTexture(gl),
+                emissionTexture = materialTexturesProvider.emissionTexture(gl),
+                specularExponentTexture = materialTexturesProvider.specularExponentTexture(gl),
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
-                normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,
+                normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f,
-                displacementTexture = material?.displacementMap?.let { getTexture(gl, it) } ?: fallbackTexture,
+                displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
                 cropTexture = cropTextures
@@ -229,17 +229,10 @@ class ObjPreviewScene(
     @Suppress("ComplexMethod")
     private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
+        val materialName = material?.getName().orEmpty()
+        val materialTexturesProvider = materialTexturesProviders[materialName] ?: return
 
-        val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
-        val emissionTexture = material?.emissionColorMap?.let { getTexture(gl, it) }
-        val roughnessTexture = material?.roughnessMap?.let { getTexture(gl, it) }
-        val metalnessTexture = material?.metalnessMap?.let { getTexture(gl, it) }
-        val normalTexture = material?.normalMap?.let { getTexture(gl, it) }
-        val specularColorTexture = material?.specularColorMap?.let { getTexture(gl, it) }
-        val specularExponentTexture = material?.specularExponentMap?.let { getTexture(gl, it) }
-        val bumpTexture = material?.bumpMap?.let { getTexture(gl, it) }
-
-        val fallbackEmissionColor = Vec3(if (emissionTexture != null) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
 
         val cameraDirection = normalize(camera.eye)
@@ -260,12 +253,12 @@ class ObjPreviewScene(
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,
-                diffuseTexture = diffuseTexture ?: fallbackTexture,
-                emissionTexture = emissionTexture ?: fallbackTexture,
-                roughnessTexture = roughnessTexture ?: specularExponentTexture ?: fallbackTexture,
-                metalnessTexture = metalnessTexture ?: specularColorTexture ?: fallbackTexture,
-                normalmapTexture = normalTexture ?: bumpTexture ?: fallbackNormalmap,
-                displacementTexture = material?.displacementMap?.let { getTexture(gl, it) } ?: fallbackTexture,
+                diffuseTexture = materialTexturesProvider.diffuseTexture(gl),
+                emissionTexture = materialTexturesProvider.emissionTexture(gl),
+                roughnessTexture = materialTexturesProvider.roughnessTexture(gl),
+                metalnessTexture = materialTexturesProvider.metalnessTexture(gl),
+                normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
+                displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
                 environmentTexture = environmentTexture,
@@ -301,8 +294,8 @@ class ObjPreviewScene(
 
     private fun renderLinesTextured(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
-        val ambientTexture = material?.ambientColorMap?.let { getTexture(gl, it) }
-        val diffuseTexture = material?.diffuseColorMap?.let { getTexture(gl, it) }
+        val materialName = material?.getName().orEmpty()
+        val materialTexturesProvider = materialTexturesProviders[materialName] ?: return
 
         val color = material?.diffuseColorVector ?: material?.ambientColorVector ?: Vec3(color = Color.WHITE)
 
@@ -312,7 +305,7 @@ class ObjPreviewScene(
             TexturedWireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * upVector.modelMatrix,
                 color = color.toVec4(w = 1f),
-                texture = diffuseTexture ?: ambientTexture ?: fallbackTexture
+                texture = materialTexturesProvider.diffuseTexture(gl)
             ),
             linesMesh
         )

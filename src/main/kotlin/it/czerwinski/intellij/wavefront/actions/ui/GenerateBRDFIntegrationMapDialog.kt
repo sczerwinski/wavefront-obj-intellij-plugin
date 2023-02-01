@@ -168,7 +168,7 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
         private const val DEFAULT_FILENAME = "brdf.png"
 
         private const val SIZE_MIN = 6
-        private const val SIZE_MAX = 12
+        private const val SIZE_MAX = 10
         private const val SIZE_MINOR_TICK = 1
         private const val SIZE_MAJOR_TICK = 2
 

@@ -79,6 +79,7 @@ class TexturesManager {
             .build()
             .first()
         imageSource.dispose()
+        imageSources -= filename
         return texture
     }
 

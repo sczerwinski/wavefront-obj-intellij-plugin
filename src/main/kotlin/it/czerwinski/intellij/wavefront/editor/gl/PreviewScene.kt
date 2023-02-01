@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.colors.ColorKey
 import com.intellij.util.ui.UIUtil
 import com.jogamp.opengl.GLAnimatorControl
@@ -53,6 +54,7 @@ import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 
 /**
  * Base 3D preview scene.
@@ -61,9 +63,10 @@ import it.czerwinski.intellij.wavefront.editor.model.UpVector
  */
 abstract class PreviewScene(
     profile: GLProfile,
+    parent: Disposable,
     animatorControl: GLAnimatorControl,
     errorLog: ErrorLog
-) : BaseScene(profile, animatorControl, errorLog) {
+) : BaseScene(profile, parent, animatorControl, errorLog) {
 
     /**
      * Environment for physically based rendering.
@@ -145,7 +148,9 @@ abstract class PreviewScene(
     private lateinit var boldFontTexture: Texture
 
     protected lateinit var fallbackTexture: Texture
+        private set
     protected lateinit var fallbackNormalmap: Texture
+        private set
 
     private lateinit var environmentMesh: Mesh
     private lateinit var axisMesh: Mesh
@@ -388,6 +393,92 @@ abstract class PreviewScene(
             texture.dispose(gl)
         }
         programExecutorsManager.dispose(gl)
+    }
+
+    @Suppress("LongParameterList")
+    protected inner class MaterialTexturesProvider private constructor(
+        private val ambientTextureProvider: TextureProvider,
+        private val diffuseTextureProvider: TextureProvider,
+        private val specularTextureProvider: TextureProvider,
+        private val emissionTextureProvider: TextureProvider,
+        private val specularExponentTextureProvider: TextureProvider,
+        private val roughnessTextureProvider: TextureProvider,
+        private val metalnessTextureProvider: TextureProvider,
+        private val normalmapTextureProvider: TextureProvider,
+        private val displacementTextureProvider: TextureProvider
+    ) {
+
+        constructor(material: MtlMaterialElement) : this(
+            ambientTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.ambientColorMap, material.diffuseColorMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            diffuseTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.diffuseColorMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            specularTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.specularColorMap, material.metalnessMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            emissionTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.emissionColorMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            specularExponentTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.specularExponentMap, material.roughnessMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            roughnessTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.roughnessMap, material.specularExponentMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            metalnessTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.metalnessMap, material.specularColorMap),
+                fallbackTexture = { fallbackTexture }
+            ),
+            normalmapTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.normalMap, material.bumpMap),
+                fallbackTexture = { fallbackNormalmap }
+            ),
+            displacementTextureProvider = TextureProvider(
+                project = material.project,
+                paths = listOfNotNull(material.displacementMap),
+                fallbackTexture = { fallbackTexture }
+            )
+        )
+
+        val hasEmission get() = !emissionTextureProvider.isFallback
+
+        fun ambientTexture(gl: GlimpseAdapter): Texture = ambientTextureProvider.get(gl)
+        fun diffuseTexture(gl: GlimpseAdapter): Texture = diffuseTextureProvider.get(gl)
+        fun specularTexture(gl: GlimpseAdapter): Texture = specularTextureProvider.get(gl)
+        fun emissionTexture(gl: GlimpseAdapter): Texture = emissionTextureProvider.get(gl)
+        fun specularExponentTexture(gl: GlimpseAdapter): Texture = specularExponentTextureProvider.get(gl)
+        fun roughnessTexture(gl: GlimpseAdapter): Texture = roughnessTextureProvider.get(gl)
+        fun metalnessTexture(gl: GlimpseAdapter): Texture = metalnessTextureProvider.get(gl)
+        fun normalmapTexture(gl: GlimpseAdapter): Texture = normalmapTextureProvider.get(gl)
+        fun displacementTexture(gl: GlimpseAdapter): Texture = displacementTextureProvider.get(gl)
+
+        fun prepare() {
+            ambientTextureProvider.prepare()
+            diffuseTextureProvider.prepare()
+            specularTextureProvider.prepare()
+            emissionTextureProvider.prepare()
+            specularExponentTextureProvider.prepare()
+            roughnessTextureProvider.prepare()
+            metalnessTextureProvider.prepare()
+            normalmapTextureProvider.prepare()
+            displacementTextureProvider.prepare()
+        }
     }
 
     companion object {

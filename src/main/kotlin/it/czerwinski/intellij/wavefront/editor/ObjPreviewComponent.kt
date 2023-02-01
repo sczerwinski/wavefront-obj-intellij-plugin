@@ -22,7 +22,6 @@ import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
-import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
@@ -77,10 +76,8 @@ class ObjPreviewComponent(
     private var myModel: GLModel? = null
         set(value) {
             field = value
-            BackgroundTaskUtil.executeOnPooledThread(this) {
-                if (::myScene.isInitialized) {
-                    myScene.model = value
-                }
+            if (::myScene.isInitialized) {
+                myScene.model = value
             }
         }
 
@@ -212,7 +209,8 @@ class ObjPreviewComponent(
     }
 
     override fun createScene(glimpsePanel: GlimpsePanel, animator: AnimatorBase) {
-        myScene = ObjPreviewScene(glimpsePanel.glProfile, animator, myErrorLogSplitter)
+        myScene = ObjPreviewScene(glimpsePanel.glProfile, parent = this, animator, myErrorLogSplitter)
+            .apply { addLoadingListener { _, loading -> if (loading) startLoading() else stopLoading() } }
         myScene.model = myModel
     }
 

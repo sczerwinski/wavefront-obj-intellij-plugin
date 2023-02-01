@@ -26,6 +26,8 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
+import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
@@ -53,12 +55,13 @@ abstract class MtlMaterialElementImpl(
     override val diffuseColorMapElement: MtlTextureElement? get() = material?.diffuseColorMapList?.firstOrNull()
     override val specularColorMapElement: MtlTextureElement? get() = material?.specularColorMapList?.firstOrNull()
     override val emissionColorMapElement: MtlTextureElement? get() = material?.emissionColorMapList?.firstOrNull()
-    override val specularExponentMapElement: MtlTextureElement? get() = material?.specularExponentMapList?.firstOrNull()
-    override val dissolveMapElement: MtlTextureElement? get() = material?.dissolveMapList?.firstOrNull()
-    override val displacementMapElement: MtlTextureElement? get() = material?.displacementMapList?.firstOrNull()
-    override val stencilDecalMapElement: MtlTextureElement? get() = material?.stencilDecalMapList?.firstOrNull()
-    override val roughnessMapElement: MtlTextureElement? get() = material?.roughnessMapList?.firstOrNull()
-    override val metalnessMapElement: MtlTextureElement? get() = material?.metalnessMapList?.firstOrNull()
+    override val specularExponentMapElement: MtlScalarTextureElement?
+        get() = material?.specularExponentMapList?.firstOrNull()
+    override val dissolveMapElement: MtlScalarTextureElement? get() = material?.dissolveMapList?.firstOrNull()
+    override val displacementMapElement: MtlScalarTextureElement? get() = material?.displacementMapList?.firstOrNull()
+    override val stencilDecalMapElement: MtlScalarTextureElement? get() = material?.stencilDecalMapList?.firstOrNull()
+    override val roughnessMapElement: MtlScalarTextureElement? get() = material?.roughnessMapList?.firstOrNull()
+    override val metalnessMapElement: MtlScalarTextureElement? get() = material?.metalnessMapList?.firstOrNull()
     override val normalMapElement: MtlTextureElement? get() = material?.normalMapList?.firstOrNull()
     override val bumpMapElement: MtlTextureElement? get() = material?.bumpMapList?.firstOrNull()
     override val reflectionMapElement: MtlTextureElement? get() = material?.reflectionMapList?.firstOrNull()
@@ -84,12 +87,16 @@ abstract class MtlMaterialElementImpl(
     override val specularExponentMap: String? get() = specularExponentMapElement?.textureFilename
     override val specularExponentBase: Float? get() = specularExponentMapElement?.valueModifierOptionElement?.base
     override val specularExponentGain: Float? get() = specularExponentMapElement?.valueModifierOptionElement?.gain
+    override val specularExponentChannel: MtlScalarChannel? get() = specularExponentMapElement?.scalarChannel
     override val dissolveMap: String? get() = dissolveMapElement?.textureFilename
     override val displacementMap: String? get() = displacementMapElement?.textureFilename
     override val displacementGain: Float? get() = displacementMapElement?.valueModifierOptionElement?.gain
+    override val displacementChannel: MtlScalarChannel? get() = displacementMapElement?.scalarChannel
     override val stencilDecalMap: String? get() = stencilDecalMapElement?.textureFilename
     override val roughnessMap: String? get() = roughnessMapElement?.textureFilename
+    override val roughnessChannel: MtlScalarChannel? get() = roughnessMapElement?.scalarChannel
     override val metalnessMap: String? get() = metalnessMapElement?.textureFilename
+    override val metalnessChannel: MtlScalarChannel? get() = metalnessMapElement?.scalarChannel
     override val normalMap: String? get() = normalMapElement?.textureFilename
     override val bumpMap: String? get() = bumpMapElement?.textureFilename
     override val bumpMapMultiplier: Float?

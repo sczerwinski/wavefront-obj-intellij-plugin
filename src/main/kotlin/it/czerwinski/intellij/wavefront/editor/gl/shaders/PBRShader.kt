@@ -77,8 +77,14 @@ data class PBRShader(
     @Sampler2D(name = "uRoughnessTex")
     val roughnessTexture: Texture,
 
+    @Uniform(name = "uRoughnessChan")
+    val roughnessChannel: Int,
+
     @Sampler2D(name = "uMetalnessTex")
     val metalnessTexture: Texture,
+
+    @Uniform(name = "uMetalnessChan")
+    val metalnessChannel: Int,
 
     @Sampler2D(name = "uNormalTex")
     val normalmapTexture: Texture,
@@ -91,6 +97,9 @@ data class PBRShader(
 
     @Uniform(name = "uDispQuality")
     val displacementQuality: Float,
+
+    @Uniform(name = "uDispChan")
+    val displacementChannel: Int,
 
     @Sampler2D(name = "uEnvTex")
     val environmentTexture: Texture,

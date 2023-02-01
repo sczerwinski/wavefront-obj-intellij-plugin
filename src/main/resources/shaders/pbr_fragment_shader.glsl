@@ -12,11 +12,14 @@ uniform float uMetalness;
 uniform sampler2D uDiffTex;
 uniform sampler2D uEmissionTex;
 uniform sampler2D uRoughnessTex;
+uniform int uRoughnessChan;
 uniform sampler2D uMetalnessTex;
+uniform int uMetalnessChan;
 uniform sampler2D uNormalTex;
 uniform sampler2D uDispTex;
 uniform float uDispGain;
 uniform float uDispQuality;
+uniform int uDispChan;
 uniform sampler2D uEnvTex;
 uniform sampler2D uIrradianceTex;
 uniform sampler2D uReflectionTex[REFLECTION_LEVELS];
@@ -43,8 +46,15 @@ vec3 normal(vec2 texCoord) {
     return normalize(tbnMat() * normalize(texture2D(uNormalTex, texCoord).rgb * 2.0 - 1.0));
 }
 
+float channel(int channel, vec4 color) {
+    if (channel == 0) return color.r;
+    if (channel == 1) return color.g;
+    if (channel == 2) return color.b;
+    return color.r;
+}
+
 float displacement(vec2 texCoord) {
-    return 1.0 - texture2D(uDispTex, texCoord).r;
+    return 1.0 - channel(uDispChan, texture2D(uDispTex, texCoord));
 }
 
 vec2 displacedTexCoord(vec3 cameraDir) {
@@ -145,8 +155,8 @@ void main() {
     vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
     vec3 envRadianceColor = texture2D(uIrradianceTex, envTexCoord(normal)).rgb;
 
-    float roughness = texture2D(uRoughnessTex, texCoord).r * uRoughness;
-    float metalness = texture2D(uMetalnessTex, texCoord).r * uMetalness;
+    float roughness = channel(uRoughnessChan, texture2D(uRoughnessTex, texCoord)) * uRoughness;
+    float metalness = channel(uMetalnessChan, texture2D(uMetalnessTex, texCoord)) * uMetalness;
 
     vec3 baseSpecularColor = baseSpecularColor(diffColor, metalness);
 
@@ -167,7 +177,7 @@ void main() {
     vec2 reflectTexCoord = envTexCoord(reflect(-cameraDir, normal));
     float reflectionLevel = roughness * float(REFLECTION_LEVELS - 1);
     int reflectionIndex = int(reflectionLevel);
-    float reflectionMix = reflectionLevel - float(reflectionIndex);
+    float reflectionMix = reflectionLevel - floor(reflectionLevel);
     vec3 reflection1 = texture2D(uReflectionTex[reflectionIndex], reflectTexCoord).rgb;
     vec3 reflection2 = texture2D(uReflectionTex[reflectionIndex + 1], reflectTexCoord).rgb;
     vec3 reflection = reflection1 * (1.0 - reflectionMix) + reflection2 * reflectionMix;

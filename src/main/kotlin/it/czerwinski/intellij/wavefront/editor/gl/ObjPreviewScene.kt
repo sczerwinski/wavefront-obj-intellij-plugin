@@ -39,6 +39,7 @@ import it.czerwinski.intellij.wavefront.editor.model.GLModel
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
+import it.czerwinski.intellij.wavefront.lang.psi.toInt
 import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -215,11 +216,13 @@ class ObjPreviewScene(
                 specularExponentTexture = materialTexturesProvider.specularExponentTexture(gl),
                 specularExponentBase = material?.specularExponentBase ?: 0f,
                 specularExponentGain = material?.specularExponentGain ?: 1f,
+                specularExponentChannel = material?.specularExponentChannel.toInt(),
                 normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
                 normalmapMultiplier = material?.bumpMapMultiplier ?: 1f,
                 displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
+                displacementChannel = material?.displacementChannel.toInt(),
                 cropTexture = cropTextures
             ),
             facesMesh
@@ -256,11 +259,14 @@ class ObjPreviewScene(
                 diffuseTexture = materialTexturesProvider.diffuseTexture(gl),
                 emissionTexture = materialTexturesProvider.emissionTexture(gl),
                 roughnessTexture = materialTexturesProvider.roughnessTexture(gl),
+                roughnessChannel = material?.roughnessChannel.toInt(),
                 metalnessTexture = materialTexturesProvider.metalnessTexture(gl),
+                metalnessChannel = material?.metalnessChannel.toInt(),
                 normalmapTexture = materialTexturesProvider.normalmapTexture(gl),
                 displacementTexture = materialTexturesProvider.displacementTexture(gl),
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
+                displacementChannel = material?.displacementChannel.toInt(),
                 environmentTexture = environmentTexture,
                 irradianceTexture = irradianceTexture,
                 reflectionTextures = reflectionTextureLevels,

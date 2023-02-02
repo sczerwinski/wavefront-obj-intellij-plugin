@@ -176,11 +176,11 @@ void main() {
 
     vec2 reflectTexCoord = envTexCoord(reflect(-cameraDir, normal));
     float reflectionLevel = roughness * float(REFLECTION_LEVELS - 1);
-    int reflectionIndex = int(reflectionLevel);
-    float reflectionMix = reflectionLevel - floor(reflectionLevel);
+    int reflectionIndex = int(max(0.0, min(float(REFLECTION_LEVELS - 2), reflectionLevel)));
+    float reflectionMix = max(0.0, min(1.0, reflectionLevel - float(reflectionIndex)));
     vec3 reflection1 = texture2D(uReflectionTex[reflectionIndex], reflectTexCoord).rgb;
     vec3 reflection2 = texture2D(uReflectionTex[reflectionIndex + 1], reflectTexCoord).rgb;
-    vec3 reflection = reflection1 * (1.0 - reflectionMix) + reflection2 * reflectionMix;
+    vec3 reflection = mix(reflection1, reflection2, reflectionMix);
 
     vec3 specularColor = min(specularFactor * brdf.x + brdf.y, 1.0) * reflection;
 

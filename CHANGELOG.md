@@ -15,6 +15,9 @@
   - Generate Diffuse Irradiance Map
   - Generate Pre-Filtered Environment Maps
   - Generate BRDF Integration Maps
+- Add environments for physically based shading method in 3D preview:
+  - Beach (day)
+  - Alley (night)
 
 ### Changed
 - Improve IBL in PBR shader

@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.command.impl.DummyProject
 import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
@@ -220,6 +221,15 @@ abstract class BaseScene(
         private val paths: List<String>,
         private val fallbackTexture: () -> Texture
     ) {
+
+        /**
+         * Fallback texture provider.
+         */
+        constructor(fallbackTexture: () -> Texture) : this(
+            project = DummyProject.getInstance(),
+            paths = emptyList(),
+            fallbackTexture = fallbackTexture
+        )
 
         /**
          * Returns `true` if this texture provider always uses fallback texture.

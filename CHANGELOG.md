@@ -23,8 +23,8 @@
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.0`
-  - Upgrade `com.google.devtools.ksp` to `1.8.0-1.0.9`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.10`
+  - Upgrade `com.google.devtools.ksp` to `1.8.10-1.0.9`
   - Upgrade `org.jetbrains.intellij` to `1.12.0`
   - Upgrade `org.jetbrains.grammarkit` to `2022.3`
   - Upgrade `io.gitlab.arturbosch.detekt` to `1.22.0`

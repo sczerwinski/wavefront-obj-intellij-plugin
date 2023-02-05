@@ -152,6 +152,9 @@ abstract class PreviewScene(
     protected lateinit var fallbackNormalmap: Texture
         private set
 
+    private val fallbackTextureProvider: TextureProvider by lazy { TextureProvider { fallbackTexture } }
+    private val fallbackNormalmapProvider: TextureProvider by lazy { TextureProvider { fallbackNormalmap } }
+
     private lateinit var environmentMesh: Mesh
     private lateinit var axisMesh: Mesh
     private lateinit var axisConeMesh: Mesh
@@ -454,6 +457,18 @@ abstract class PreviewScene(
                 paths = listOfNotNull(material.displacementMap),
                 fallbackTexture = { fallbackTexture }
             )
+        )
+
+        constructor() : this(
+            ambientTextureProvider = fallbackTextureProvider,
+            diffuseTextureProvider = fallbackTextureProvider,
+            specularTextureProvider = fallbackTextureProvider,
+            emissionTextureProvider = fallbackTextureProvider,
+            specularExponentTextureProvider = fallbackTextureProvider,
+            roughnessTextureProvider = fallbackTextureProvider,
+            metalnessTextureProvider = fallbackTextureProvider,
+            normalmapTextureProvider = fallbackNormalmapProvider,
+            displacementTextureProvider = fallbackTextureProvider
         )
 
         val hasEmission get() = !emissionTextureProvider.isFallback

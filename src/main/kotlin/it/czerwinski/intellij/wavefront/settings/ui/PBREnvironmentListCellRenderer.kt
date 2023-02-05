@@ -36,10 +36,14 @@ fun PBREnvironmentListCellRenderer(): SimpleListCellRenderer<PBREnvironment> =
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.woods")
             PBREnvironment.PARK ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.park")
+            PBREnvironment.BEACH ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.beach")
             PBREnvironment.NIGHT ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.night")
             PBREnvironment.CITY_SQUARE ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.city_square")
+            PBREnvironment.ALLEY ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.alley")
             else ->
                 null
         }

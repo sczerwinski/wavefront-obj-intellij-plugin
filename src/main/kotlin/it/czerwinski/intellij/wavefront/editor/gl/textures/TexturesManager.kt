@@ -44,16 +44,16 @@ class TexturesManager {
      */
     fun prepare(profile: GLProfile, project: Project, filename: String) {
         if (imageSources[filename] == null) {
-            val file = runReadAction { project.findMatchingTextureVirtualFiles(filename).firstOrNull() }
-            if (file != null) {
-                val originalImage = ImageIO.read(file.inputStream)
-                val mirroredImage = originalImage.mirrorY(BufferedImage.TYPE_INT_ARGB)
-                imageSources[filename] = textureImageSourceBuilder
-                    .fromBufferedImage(mirroredImage)
-                    .buildPrepared(profile)
-                originalImage.flush()
-                mirroredImage.flush()
+            val file = checkNotNull(runReadAction { project.findMatchingTextureVirtualFiles(filename).firstOrNull() }) {
+                "Could not find texture file: $filename"
             }
+            val originalImage = ImageIO.read(file.inputStream)
+            val mirroredImage = originalImage.mirrorY(BufferedImage.TYPE_INT_ARGB)
+            imageSources[filename] = textureImageSourceBuilder
+                .fromBufferedImage(mirroredImage)
+                .buildPrepared(profile)
+            originalImage.flush()
+            mirroredImage.flush()
         }
     }
 

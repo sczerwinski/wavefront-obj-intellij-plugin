@@ -63,14 +63,7 @@ abstract class BaseScene(
      * Loads texture image from a file with given [filename] before creating a texture.
      */
     private fun prepareTexture(project: Project, filename: String) {
-        try {
-            texturesManager.prepare(profile, project, filename)
-        } catch (expected: Throwable) {
-            errorLog.addError(
-                WavefrontObjBundle.message("editor.common.preview.prepareTexture.error", filename),
-                expected
-            )
-        }
+        texturesManager.prepare(profile, project, filename)
     }
 
     /**
@@ -238,13 +231,23 @@ abstract class BaseScene(
 
         private val isPreparing = AtomicBoolean(false)
 
+        private val errors = mutableSetOf<String>()
+
         /**
          * Prepares this texture.
          */
         fun prepare() {
             if (isPreparing.compareAndSet(false, true)) {
-                for (path in paths) {
-                    prepareTexture(project, path)
+                for (path in paths - errors) {
+                    try {
+                        prepareTexture(project, path)
+                    } catch (expected: Throwable) {
+                        errors.add(path)
+                        errorLog.addError(
+                            WavefrontObjBundle.message("editor.common.preview.prepareTexture.error", path),
+                            expected
+                        )
+                    }
                 }
                 isPreparing.set(false)
             }
@@ -259,7 +262,7 @@ abstract class BaseScene(
             val texture = paths.asSequence()
                 .mapNotNull { path -> getTexture(gl, path) }
                 .firstOrNull()
-            if (paths.isNotEmpty() && texture == null) {
+            if ((paths - errors).isNotEmpty() && texture == null) {
                 notifyLoading(loading = true)
                 BackgroundTaskUtil.executeOnPooledThread(parent) {
                     prepare()

@@ -1,4 +1,13 @@
 <idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService
+                serviceImplementation="it.czerwinski.intellij.wavefront.actions.state.GenerateDiffuseIrradianceMapDialogState"/>
+        <projectService
+                serviceImplementation="it.czerwinski.intellij.wavefront.actions.state.GeneratePreFilteredEnvironmentMapsDialogState"/>
+        <projectService
+                serviceImplementation="it.czerwinski.intellij.wavefront.actions.state.GenerateBRDFIntegrationMapDialogState"/>
+    </extensions>
+
     <actions>
         <!-- Textures -->
         <group

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="it.czerwinski.intellij.wavefront.actions.ui.GenerateBRDFIntegrationMapDialog" samples="400" />
+  <component name="it.czerwinski.intellij.wavefront.actions.ui.GenerateDiffuseIrradianceMapDialog" samples="200" />
+  <component name="it.czerwinski.intellij.wavefront.actions.ui.GeneratePreFilteredEnvironmentMapsDialog" levels="7" samples="400" />
+</project>

@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.actions.ui
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileTypes.FileTypeRegistry
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
@@ -25,6 +26,7 @@ import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.actions.BRDFIntegrationMapGenerator
+import it.czerwinski.intellij.wavefront.actions.state.GenerateBRDFIntegrationMapDialogState
 import it.czerwinski.intellij.wavefront.settings.ui.textField
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
@@ -36,6 +38,8 @@ import javax.swing.JSlider
 import org.intellij.images.fileTypes.ImageFileTypeManager
 
 class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog(project) {
+
+    private val myState = project.service<GenerateBRDFIntegrationMapDialogState>()
 
     private var sizeTextField: JBTextField? = null
     private var sizeSlider: JSlider? = null
@@ -62,7 +66,7 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
             label = WavefrontObjBundle.message(key = "action.GenerateBRDFIntegrationMapAction.size")
         ) {
             sizeTextField = textField(
-                defaultValue = 1 shl DEFAULT_SIZE,
+                defaultValue = 1 shl myState.size,
                 columns = (1 shl SIZE_MAX).toString().length
             ).component
             sizeTextField?.isEditable = false
@@ -73,7 +77,7 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
                 minorTickSpacing = SIZE_MINOR_TICK,
                 majorTickSpacing = SIZE_MAJOR_TICK
             ).component
-            sizeSlider?.value = DEFAULT_SIZE
+            sizeSlider?.value = myState.size
             sizeSlider?.labelTable = Hashtable(sizeLabels.mapValues { (_, label) -> JLabel(label) })
 
             sizeSlider?.addChangeListener {
@@ -87,7 +91,7 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
             label = WavefrontObjBundle.message(key = "action.GenerateBRDFIntegrationMapAction.samples")
         ) {
             samplesTextField = textField(
-                defaultValue = DEFAULT_SAMPLES,
+                defaultValue = myState.samples,
                 columns = SAMPLES_MAX.toString().length
             ).component
             samplesSlider = slider(
@@ -96,7 +100,7 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
                 minorTickSpacing = SAMPLES_MINOR_TICK,
                 majorTickSpacing = SAMPLES_MAJOR_TICK
             ).component
-            samplesSlider?.value = DEFAULT_SAMPLES
+            samplesSlider?.value = myState.samples
 
             samplesSlider?.addChangeListener { samplesTextField?.text = samplesSlider?.value?.toString().orEmpty() }
             samplesTextField?.addFocusListener(
@@ -123,7 +127,7 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
             label = WavefrontObjBundle.message(key = "action.GenerateBRDFIntegrationMapAction.filename")
         ) {
             filenameTextField = textField(
-                defaultValue = DEFAULT_FILENAME,
+                defaultValue = myState.filename,
                 columns = FILENAME_COLUMNS
             ).component
         }
@@ -154,19 +158,26 @@ class GenerateBRDFIntegrationMapDialog(project: Project) : BaseGenerateMapDialog
         return if (errorText != null) ValidationInfo(errorText, filenameTextField) else super.doValidate()
     }
 
-    override fun processFile(inputFile: VirtualFile): List<File> {
-        val size = 1 shl (sizeSlider?.value ?: DEFAULT_SIZE)
-        val samples = samplesSlider?.value ?: DEFAULT_SAMPLES
-        val filename = filenameTextField?.text ?: DEFAULT_FILENAME
-
-        return listOf(BRDFIntegrationMapGenerator.generate(inputFile, size, samples, filename))
+    override fun beforeProcessFiles() {
+        val newState = GenerateBRDFIntegrationMapDialogState(
+            size = sizeSlider?.value ?: myState.size,
+            samples = samplesSlider?.value ?: myState.samples,
+            filename = filenameTextField?.text ?: myState.filename
+        )
+        myState.setFrom(newState)
     }
 
-    companion object {
-        private const val DEFAULT_SIZE = 9
-        private const val DEFAULT_SAMPLES = 100
-        private const val DEFAULT_FILENAME = "brdf.png"
+    override fun processFile(inputFile: VirtualFile): List<File> =
+        listOf(
+            BRDFIntegrationMapGenerator.generate(
+                inputFile = inputFile,
+                size = 1 shl myState.size,
+                samples = myState.samples,
+                outputFilename = myState.filename
+            )
+        )
 
+    companion object {
         private const val SIZE_MIN = 6
         private const val SIZE_MAX = 10
         private const val SIZE_MINOR_TICK = 1

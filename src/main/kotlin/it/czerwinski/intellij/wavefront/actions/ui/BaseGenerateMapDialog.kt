@@ -47,6 +47,7 @@ abstract class BaseGenerateMapDialog(
     }
 
     override fun doOKAction() {
+        beforeProcessFiles()
         CoroutineScope(Job() + Dispatchers.Unconfined).launch {
             @Suppress("UnstableApiUsage")
             val outputFiles = withModalProgressIndicator(project, progressIndicatorTitle) {
@@ -64,6 +65,8 @@ abstract class BaseGenerateMapDialog(
 
         super.doOKAction()
     }
+
+    protected abstract fun beforeProcessFiles()
 
     protected abstract fun processFile(inputFile: VirtualFile): List<File>
 

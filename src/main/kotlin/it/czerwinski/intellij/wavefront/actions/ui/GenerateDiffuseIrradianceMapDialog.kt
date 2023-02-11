@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.actions.ui
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.openapi.vfs.VirtualFile
@@ -24,6 +25,7 @@ import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.actions.DiffuseIrradianceMapGenerator
+import it.czerwinski.intellij.wavefront.actions.state.GenerateDiffuseIrradianceMapDialogState
 import it.czerwinski.intellij.wavefront.settings.ui.textField
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
@@ -32,6 +34,8 @@ import javax.swing.JComponent
 import javax.swing.JSlider
 
 class GenerateDiffuseIrradianceMapDialog(project: Project) : BaseGenerateMapDialog(project) {
+
+    private val myState = project.service<GenerateDiffuseIrradianceMapDialogState>()
 
     private var samplesTextField: JBTextField? = null
     private var samplesSlider: JSlider? = null
@@ -55,7 +59,7 @@ class GenerateDiffuseIrradianceMapDialog(project: Project) : BaseGenerateMapDial
             label = WavefrontObjBundle.message(key = "action.GenerateDiffuseIrradianceMapAction.samples")
         ) {
             samplesTextField = textField(
-                defaultValue = DEFAULT_SAMPLES,
+                defaultValue = myState.samples,
                 columns = SAMPLES_MAX.toString().length
             ).component
             samplesSlider = slider(
@@ -64,7 +68,7 @@ class GenerateDiffuseIrradianceMapDialog(project: Project) : BaseGenerateMapDial
                 minorTickSpacing = SAMPLES_MINOR_TICK,
                 majorTickSpacing = SAMPLES_MAJOR_TICK
             ).component
-            samplesSlider?.value = DEFAULT_SAMPLES
+            samplesSlider?.value = myState.samples
 
             samplesSlider?.addChangeListener { samplesTextField?.text = samplesSlider?.value?.toString().orEmpty() }
             samplesTextField?.addFocusListener(
@@ -91,8 +95,8 @@ class GenerateDiffuseIrradianceMapDialog(project: Project) : BaseGenerateMapDial
             label = WavefrontObjBundle.message(key = "action.GenerateDiffuseIrradianceMapAction.suffix")
         ) {
             suffixTextField = textField(
-                defaultValue = DEFAULT_SUFFIX,
-                columns = DEFAULT_SUFFIX.length
+                defaultValue = myState.suffix,
+                columns = myState.suffix.length
             ).component
         }
     }
@@ -108,17 +112,18 @@ class GenerateDiffuseIrradianceMapDialog(project: Project) : BaseGenerateMapDial
             super.doValidate()
         }
 
-    override fun processFile(inputFile: VirtualFile): List<File> {
-        val samples = samplesSlider?.value ?: DEFAULT_SAMPLES
-        val outputSuffix = suffixTextField?.text ?: DEFAULT_SUFFIX
-
-        return listOf(DiffuseIrradianceMapGenerator.generate(inputFile, samples, outputSuffix))
+    override fun beforeProcessFiles() {
+        val newState = GenerateDiffuseIrradianceMapDialogState(
+            samples = samplesSlider?.value ?: myState.samples,
+            suffix = suffixTextField?.text ?: myState.suffix
+        )
+        myState.setFrom(newState)
     }
 
-    companion object {
-        private const val DEFAULT_SAMPLES = 100
-        private const val DEFAULT_SUFFIX = ".irradiance"
+    override fun processFile(inputFile: VirtualFile): List<File> =
+        listOf(DiffuseIrradianceMapGenerator.generate(inputFile, myState.samples, myState.suffix))
 
+    companion object {
         private const val SAMPLES_MIN = 50
         private const val SAMPLES_MAX = 200
         private const val SAMPLES_MINOR_TICK = 10

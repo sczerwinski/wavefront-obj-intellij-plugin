@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.actions.ui
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.openapi.vfs.VirtualFile
@@ -24,6 +25,7 @@ import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.actions.PreFilteredEnvironmentMapsGenerator
+import it.czerwinski.intellij.wavefront.actions.state.GeneratePreFilteredEnvironmentMapsDialogState
 import it.czerwinski.intellij.wavefront.settings.ui.textField
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
@@ -35,6 +37,8 @@ import kotlin.math.log2
 import kotlin.math.min
 
 class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateMapDialog(project) {
+
+    private val myState = project.service<GeneratePreFilteredEnvironmentMapsDialogState>()
 
     private var levelsTextField: JBTextField? = null
     private var levelsSlider: JSlider? = null
@@ -61,7 +65,7 @@ class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateM
             label = WavefrontObjBundle.message(key = "action.GeneratePreFilteredEnvironmentMapsAction.levels")
         ) {
             levelsTextField = textField(
-                defaultValue = DEFAULT_LEVELS,
+                defaultValue = myState.levels,
                 columns = LEVELS_MAX.toString().length
             ).component
             levelsSlider = slider(
@@ -70,7 +74,7 @@ class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateM
                 minorTickSpacing = LEVELS_MINOR_TICK,
                 majorTickSpacing = LEVELS_MAJOR_TICK
             ).component
-            levelsSlider?.value = DEFAULT_LEVELS
+            levelsSlider?.value = myState.levels
 
             levelsSlider?.addChangeListener { levelsTextField?.text = levelsSlider?.value?.toString().orEmpty() }
             levelsTextField?.addFocusListener(
@@ -100,7 +104,7 @@ class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateM
             label = WavefrontObjBundle.message(key = "action.GeneratePreFilteredEnvironmentMapsAction.samples")
         ) {
             samplesTextField = textField(
-                defaultValue = DEFAULT_SAMPLES,
+                defaultValue = myState.samples,
                 columns = SAMPLES_MAX.toString().length
             ).component
             samplesSlider = slider(
@@ -109,7 +113,7 @@ class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateM
                 minorTickSpacing = SAMPLES_MINOR_TICK,
                 majorTickSpacing = SAMPLES_MAJOR_TICK
             ).component
-            samplesSlider?.value = DEFAULT_SAMPLES
+            samplesSlider?.value = myState.samples
 
             samplesSlider?.addChangeListener { samplesTextField?.text = samplesSlider?.value?.toString().orEmpty() }
             samplesTextField?.addFocusListener(
@@ -136,8 +140,8 @@ class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateM
             label = WavefrontObjBundle.message(key = "action.GeneratePreFilteredEnvironmentMapsAction.suffix")
         ) {
             suffixTextField = textField(
-                defaultValue = DEFAULT_SUFFIX,
-                columns = DEFAULT_SUFFIX.length
+                defaultValue = myState.suffix,
+                columns = myState.suffix.length
             ).component
         }
     }
@@ -192,19 +196,19 @@ class GeneratePreFilteredEnvironmentMapsDialog(project: Project) : BaseGenerateM
             super.doValidate()
         }
 
-    override fun processFile(inputFile: VirtualFile): List<File> {
-        val levels = levelsSlider?.value ?: DEFAULT_LEVELS
-        val samples = samplesSlider?.value ?: DEFAULT_SAMPLES
-        val outputSuffix = suffixTextField?.text ?: DEFAULT_SUFFIX
-
-        return PreFilteredEnvironmentMapsGenerator.generate(inputFile, levels, samples, outputSuffix)
+    override fun beforeProcessFiles() {
+        val newState = GeneratePreFilteredEnvironmentMapsDialogState(
+            levels = levelsSlider?.value ?: myState.levels,
+            samples = samplesSlider?.value ?: myState.samples,
+            suffix = suffixTextField?.text ?: myState.suffix
+        )
+        myState.setFrom(newState)
     }
 
-    companion object {
-        private const val DEFAULT_LEVELS = 8
-        private const val DEFAULT_SAMPLES = 100
-        private const val DEFAULT_SUFFIX = ".reflection"
+    override fun processFile(inputFile: VirtualFile): List<File> =
+        PreFilteredEnvironmentMapsGenerator.generate(inputFile, myState.levels, myState.samples, myState.suffix)
 
+    companion object {
         private const val MIN_OUTPUT_HEIGHT = 4
 
         private const val LEVELS_MIN = 2

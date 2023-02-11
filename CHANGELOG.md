@@ -6,6 +6,7 @@
 
 ### Added
 - Add support for platform version `231.*`
+- Add support for Apple M1 processor (macOS AArch64)
 - Automatically preview material at caret
 - Add support for scalar map channel option (`-imfchan`) in 3D preview (only RGB)
 - Settings for MTL file editor layout separate from OBJ file editor layout

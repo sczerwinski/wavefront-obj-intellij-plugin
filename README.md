@@ -33,9 +33,9 @@ Core features include:
 3D preview is supported for:
 - Windows:
   - x86-64
-- Mac OS X:
+- macOS:
   - x86-64
-  - AArch64 (since v1.3.0)
+  - AArch64 (since v1.3.0 [EAP])
 - Linux:
   - x86-64
   - AArch64
@@ -109,3 +109,4 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 [jb_plugin_page]: https://plugins.jetbrains.com/plugin/14843-wavefront-obj
 [latest_release]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/releases/latest
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
+[EAP]: #eap-releases

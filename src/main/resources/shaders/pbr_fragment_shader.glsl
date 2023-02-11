@@ -20,7 +20,6 @@ uniform sampler2D uDispTex;
 uniform float uDispGain;
 uniform float uDispQuality;
 uniform int uDispChan;
-uniform sampler2D uEnvTex;
 uniform sampler2D uIrradianceTex;
 uniform sampler2D uReflectionTex[REFLECTION_LEVELS];
 uniform sampler2D uBRDFTex;

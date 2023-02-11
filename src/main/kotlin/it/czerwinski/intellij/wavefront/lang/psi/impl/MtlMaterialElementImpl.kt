@@ -26,6 +26,8 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTextureElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
@@ -64,7 +66,7 @@ abstract class MtlMaterialElementImpl(
     override val metalnessMapElement: MtlScalarTextureElement? get() = material?.metalnessMapList?.firstOrNull()
     override val normalMapElement: MtlTextureElement? get() = material?.normalMapList?.firstOrNull()
     override val bumpMapElement: MtlTextureElement? get() = material?.bumpMapList?.firstOrNull()
-    override val reflectionMapElement: MtlTextureElement? get() = material?.reflectionMapList?.firstOrNull()
+    override val reflectionMapElement: MtlReflectionTextureElement? get() = material?.reflectionMapList?.firstOrNull()
 
     override val ambientColorVector: Vec3? get() = ambientColorElement?.colorVector
     override val diffuseColorVector: Vec3? get() = diffuseColorElement?.colorVector
@@ -102,6 +104,7 @@ abstract class MtlMaterialElementImpl(
     override val bumpMapMultiplier: Float?
         get() = material?.bumpMapList?.firstOrNull()?.bumpMultiplierOptionList?.firstOrNull()?.value
     override val reflectionMap: String? get() = reflectionMapElement?.textureFilename
+    override val reflectionMapType: MtlReflectionType? get() = reflectionMapElement?.reflectionType
 
     override val texturePsiFiles: List<PsiFile>
         get() = material

@@ -24,6 +24,7 @@ import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
+import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.normalize
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
@@ -98,6 +99,15 @@ class MtlPreviewScene(
     private val mesh: Mesh? get() = meshesManager.getMesh(previewMesh)
 
     private lateinit var materialTexturesProvider: MaterialTexturesProvider
+
+    override var materialEnvironmentTexture: Texture? = null
+        private set
+
+    override var materialIrradianceTexture: Texture? = null
+        private set
+
+    override var materialReflectionTextures: List<Texture> = emptyList()
+        private set
 
     init {
         try {
@@ -233,14 +243,20 @@ class MtlPreviewScene(
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
                 displacementChannel = material?.displacementChannel.toInt(),
-                environmentTexture = environmentTexture,
-                irradianceTexture = irradianceTexture,
-                reflectionTextures = reflectionTextureLevels,
+                irradianceTexture = materialIrradianceTexture ?: irradianceTexture,
+                reflectionTextures = materialReflectionTextures.takeUnless { it.isEmpty() } ?: reflectionTextureLevels,
                 brdfTexture = brdfTexture,
                 cropTexture = cropTextures
             ),
             facesMesh
         )
+    }
+
+    override fun prepareEnvironment(gl: GlimpseAdapter) {
+        materialEnvironmentTexture = materialTexturesProvider.environmentTexture(gl)
+        materialIrradianceTexture = materialTexturesProvider.irradianceTexture(gl)
+        materialReflectionTextures = listOf(materialEnvironmentTexture ?: environmentTexture) +
+            materialTexturesProvider.reflectionTextures(gl)
     }
 
     override fun onRenderError(gl: GlimpseAdapter, error: Throwable) {

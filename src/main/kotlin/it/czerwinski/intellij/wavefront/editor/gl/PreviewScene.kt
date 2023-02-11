@@ -55,6 +55,7 @@ import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 
 /**
  * Base 3D preview scene.
@@ -137,11 +138,17 @@ abstract class PreviewScene(
 
     private lateinit var environmentTextures: List<Texture>
     protected val environmentTexture: Texture get() = environmentTextures[environment.ordinal]
+    protected open val materialEnvironmentTexture: Texture? get() = null
+
     private lateinit var irradianceTextures: List<Texture>
     protected val irradianceTexture: Texture get() = irradianceTextures[environment.ordinal]
+    protected open val materialIrradianceTexture: Texture? get() = null
+
     private lateinit var reflectionTextures: List<List<Texture>>
     protected val reflectionTextureLevels: List<Texture>
         get() = listOf(environmentTexture) + reflectionTextures[environment.ordinal]
+    protected open val materialReflectionTextures: List<Texture> get() = emptyList()
+
     protected lateinit var brdfTexture: Texture
 
     private lateinit var fontTexture: Texture
@@ -152,8 +159,8 @@ abstract class PreviewScene(
     protected lateinit var fallbackNormalmap: Texture
         private set
 
-    private val fallbackTextureProvider: TextureProvider by lazy { TextureProvider { fallbackTexture } }
-    private val fallbackNormalmapProvider: TextureProvider by lazy { TextureProvider { fallbackNormalmap } }
+    private val fallbackTextureProvider: TextureProvider by lazy { FallbackTextureProvider { fallbackTexture } }
+    private val fallbackNormalmapProvider: TextureProvider by lazy { FallbackTextureProvider { fallbackNormalmap } }
 
     private lateinit var environmentMesh: Mesh
     private lateinit var axisMesh: Mesh
@@ -297,6 +304,7 @@ abstract class PreviewScene(
     }
 
     private fun renderEnvironment(gl: GlimpseAdapter) {
+        prepareEnvironment(gl)
         gl.glCullFace(FaceCullingMode.DISABLED)
         val scale = magnitude(camera.eye) * ENVIRONMENT_CUBE_RATIO
         val modelMatrix = translation(camera.eye) * scale(scale)
@@ -304,12 +312,17 @@ abstract class PreviewScene(
             gl,
             EnvironmentShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * modelMatrix,
-                environmentTexture = environmentTexture
+                environmentTexture = materialEnvironmentTexture ?: environmentTexture
             ),
             environmentMesh
         )
         gl.glClear(ClearableBufferType.DEPTH_BUFFER)
     }
+
+    /**
+     * Prepares environment before rendering.
+     */
+    protected abstract fun prepareEnvironment(gl: GlimpseAdapter)
 
     /**
      * Renders the actual model being the subject of this preview.
@@ -408,55 +421,91 @@ abstract class PreviewScene(
         private val roughnessTextureProvider: TextureProvider,
         private val metalnessTextureProvider: TextureProvider,
         private val normalmapTextureProvider: TextureProvider,
-        private val displacementTextureProvider: TextureProvider
+        private val displacementTextureProvider: TextureProvider,
+        private val environmentTextureProvider: TextureProvider,
+        private val irradianceTextureProvider: TextureProvider,
+        private val reflectionTextureProviders: List<TextureProvider>
     ) {
 
         constructor(material: MtlMaterialElement) : this(
-            ambientTextureProvider = TextureProvider(
+            ambientTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.ambientColorMap, material.diffuseColorMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            diffuseTextureProvider = TextureProvider(
+            diffuseTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.diffuseColorMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            specularTextureProvider = TextureProvider(
+            specularTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.specularColorMap, material.metalnessMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            emissionTextureProvider = TextureProvider(
+            emissionTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.emissionColorMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            specularExponentTextureProvider = TextureProvider(
+            specularExponentTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.specularExponentMap, material.roughnessMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            roughnessTextureProvider = TextureProvider(
+            roughnessTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.roughnessMap, material.specularExponentMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            metalnessTextureProvider = TextureProvider(
+            metalnessTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.metalnessMap, material.specularColorMap),
                 fallbackTexture = { fallbackTexture }
             ),
-            normalmapTextureProvider = TextureProvider(
+            normalmapTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.normalMap, material.bumpMap),
                 fallbackTexture = { fallbackNormalmap }
             ),
-            displacementTextureProvider = TextureProvider(
+            displacementTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.displacementMap),
                 fallbackTexture = { fallbackTexture }
-            )
+            ),
+            environmentTextureProvider = FileTextureProvider(
+                project = material.project,
+                paths = listOfNotNull(
+                    material.reflectionMap?.takeIf { material.reflectionMapType == MtlReflectionType.SPHERE }
+                ),
+                fallbackTexture = { environmentTexture }
+            ),
+            irradianceTextureProvider = listOfNotNull(
+                material.reflectionMap?.takeIf { material.reflectionMapType == MtlReflectionType.SPHERE }
+            ).firstOrNull()?.let { filename ->
+                GeneratedTextureProvider(
+                    key = "$filename\$irradiance",
+                    bufferedImageProvider = DiffuseIrradianceBufferedImageProvider(material.project, filename),
+                    fallbackTexture = { irradianceTexture }
+                )
+            } ?: FallbackTextureProvider { irradianceTexture },
+            reflectionTextureProviders = listOfNotNull(
+                material.reflectionMap?.takeIf { material.reflectionMapType == MtlReflectionType.SPHERE }
+            ).firstOrNull()?.let { filename ->
+                (1 until TextureResources.REFLECTION_LEVELS_COUNT).map { index ->
+                    GeneratedTextureProvider(
+                        key = "$filename\$reflection$index",
+                        bufferedImageProvider = PreFilteredEnvironmentBufferedImageProvider(
+                            project = material.project,
+                            environmentTextureFilename = filename,
+                            roughness = index.toFloat() / (TextureResources.REFLECTION_LEVELS_COUNT - 1).toFloat()
+                        ),
+                        fallbackTexture = { reflectionTextureLevels[index] }
+                    )
+                }
+            } ?: (1 until TextureResources.REFLECTION_LEVELS_COUNT).map { index ->
+                FallbackTextureProvider { reflectionTextureLevels[index] }
+            }
         )
 
         constructor() : this(
@@ -468,10 +517,16 @@ abstract class PreviewScene(
             roughnessTextureProvider = fallbackTextureProvider,
             metalnessTextureProvider = fallbackTextureProvider,
             normalmapTextureProvider = fallbackNormalmapProvider,
-            displacementTextureProvider = fallbackTextureProvider
+            displacementTextureProvider = fallbackTextureProvider,
+            environmentTextureProvider = FallbackTextureProvider { environmentTexture },
+            irradianceTextureProvider = FallbackTextureProvider { irradianceTexture },
+            reflectionTextureProviders = (1 until TextureResources.REFLECTION_LEVELS_COUNT).map { index ->
+                FallbackTextureProvider { reflectionTextureLevels[index] }
+            }
         )
 
         val hasEmission get() = !emissionTextureProvider.isFallback
+        val hasEnvironment get() = !environmentTextureProvider.isFallback
 
         fun ambientTexture(gl: GlimpseAdapter): Texture = ambientTextureProvider.get(gl)
         fun diffuseTexture(gl: GlimpseAdapter): Texture = diffuseTextureProvider.get(gl)
@@ -482,6 +537,9 @@ abstract class PreviewScene(
         fun metalnessTexture(gl: GlimpseAdapter): Texture = metalnessTextureProvider.get(gl)
         fun normalmapTexture(gl: GlimpseAdapter): Texture = normalmapTextureProvider.get(gl)
         fun displacementTexture(gl: GlimpseAdapter): Texture = displacementTextureProvider.get(gl)
+        fun environmentTexture(gl: GlimpseAdapter): Texture = environmentTextureProvider.get(gl)
+        fun irradianceTexture(gl: GlimpseAdapter): Texture = irradianceTextureProvider.get(gl)
+        fun reflectionTextures(gl: GlimpseAdapter): List<Texture> = reflectionTextureProviders.map { it.get(gl) }
 
         fun prepare() {
             ambientTextureProvider.prepare()
@@ -493,6 +551,11 @@ abstract class PreviewScene(
             metalnessTextureProvider.prepare()
             normalmapTextureProvider.prepare()
             displacementTextureProvider.prepare()
+            environmentTextureProvider.prepare()
+            irradianceTextureProvider.prepare()
+            for (textureProvider in reflectionTextureProviders) {
+                textureProvider.prepare()
+            }
         }
     }
 

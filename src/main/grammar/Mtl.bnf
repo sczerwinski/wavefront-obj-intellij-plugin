@@ -163,8 +163,8 @@ bumpMap ::= (BUMP_MAP_KEYWORD bumpMapOptions_ TEXTURE_FILE) {
 }
 
 reflectionMap ::= (REFLECTION_MAP_KEYWORD reflectionMapOptions_ TEXTURE_FILE) {
-  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlTextureElementImpl"
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlReflectionTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTextureElement"
 }
 
 private colorMapOptions_ ::= (

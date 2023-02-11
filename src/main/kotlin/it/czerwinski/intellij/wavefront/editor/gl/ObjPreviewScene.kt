@@ -24,6 +24,7 @@ import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
+import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.normalize
 import it.czerwinski.intellij.common.ui.ErrorLog
@@ -106,6 +107,15 @@ class ObjPreviewScene(
     private val modelMeshesManager = ModelMeshesManager()
 
     private lateinit var materialTexturesProviders: Map<String, MaterialTexturesProvider>
+
+    override var materialEnvironmentTexture: Texture? = null
+        private set
+
+    override var materialIrradianceTexture: Texture? = null
+        private set
+
+    override var materialReflectionTextures: List<Texture> = emptyList()
+        private set
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
@@ -267,9 +277,8 @@ class ObjPreviewScene(
                 displacementGain = material?.displacementGain ?: 1f,
                 displacementQuality = config.displacementQuality,
                 displacementChannel = material?.displacementChannel.toInt(),
-                environmentTexture = environmentTexture,
-                irradianceTexture = irradianceTexture,
-                reflectionTextures = reflectionTextureLevels,
+                irradianceTexture = materialIrradianceTexture ?: irradianceTexture,
+                reflectionTextures = materialReflectionTextures.takeUnless { it.isEmpty() } ?: reflectionTextureLevels,
                 brdfTexture = brdfTexture,
                 cropTexture = cropTextures
             ),
@@ -281,6 +290,7 @@ class ObjPreviewScene(
         when (shadingMethod) {
             ShadingMethod.WIREFRAME,
             ShadingMethod.SOLID -> renderLinesWireframe(gl, linesMesh)
+
             ShadingMethod.MATERIAL,
             ShadingMethod.PBR -> renderLinesTextured(gl, linesMesh, index)
         }
@@ -327,6 +337,25 @@ class ObjPreviewScene(
             ),
             pointsMesh
         )
+    }
+
+    override fun prepareEnvironment(gl: GlimpseAdapter) {
+        materialEnvironmentTexture = materialTexturesProviders.values.asSequence()
+            .filter { materialTexturesProvider -> materialTexturesProvider.hasEnvironment }
+            .map { materialTexturesProvider -> materialTexturesProvider.environmentTexture(gl) }
+            .firstOrNull()
+        materialIrradianceTexture = materialTexturesProviders.values.asSequence()
+            .filter { materialTexturesProvider -> materialTexturesProvider.hasEnvironment }
+            .map { materialTexturesProvider -> materialTexturesProvider.irradianceTexture(gl) }
+            .firstOrNull()
+        materialReflectionTextures = materialTexturesProviders.values.asSequence()
+            .filter { materialTexturesProvider -> materialTexturesProvider.hasEnvironment }
+            .map { materialTexturesProvider ->
+                listOf(materialEnvironmentTexture ?: environmentTexture) +
+                    materialTexturesProvider.reflectionTextures(gl)
+            }
+            .firstOrNull()
+            .orEmpty()
     }
 
     override fun onRenderError(gl: GlimpseAdapter, error: Throwable) {

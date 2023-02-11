@@ -17,7 +17,6 @@
 package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.command.impl.DummyProject
 import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
@@ -28,11 +27,13 @@ import graphics.glimpse.ClearableBufferType
 import graphics.glimpse.DepthTestFunction
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.GlimpseCallback
+import graphics.glimpse.textures.BufferedImageProvider
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
+import java.awt.image.BufferedImage
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -64,6 +65,13 @@ abstract class BaseScene(
      */
     private fun prepareTexture(project: Project, filename: String) {
         texturesManager.prepare(profile, project, filename)
+    }
+
+    /**
+     * Creates texture image using a [BufferedImage] provided by given [bufferedImageProvider].
+     */
+    private fun prepareTexture(key: String, bufferedImageProvider: BufferedImageProvider) {
+        texturesManager.prepare(profile, key, bufferedImageProvider)
     }
 
     /**
@@ -209,34 +217,56 @@ abstract class BaseScene(
     /**
      * Cacheable texture provider.
      */
-    protected inner class TextureProvider(
-        private val project: Project,
-        private val paths: List<String>,
-        private val fallbackTexture: () -> Texture
-    ) {
-
-        /**
-         * Fallback texture provider.
-         */
-        constructor(fallbackTexture: () -> Texture) : this(
-            project = DummyProject.getInstance(),
-            paths = emptyList(),
-            fallbackTexture = fallbackTexture
-        )
+    interface TextureProvider {
 
         /**
          * Returns `true` if this texture provider always uses fallback texture.
          */
-        val isFallback: Boolean get() = paths.isEmpty()
+        val isFallback: Boolean
+
+        /**
+         * Prepares this texture.
+         */
+        fun prepare()
+
+        /**
+         * Returns this texture if prepared.
+         *
+         * If the texture is not prepared, initializes its preparation.
+         */
+        fun get(gl: GlimpseAdapter): Texture
+    }
+
+    /**
+     * Fallback texture provider.
+     */
+    protected class FallbackTextureProvider(
+        private val fallbackTexture: () -> Texture
+    ) : TextureProvider {
+
+        override val isFallback: Boolean = true
+
+        override fun prepare() = Unit
+
+        override fun get(gl: GlimpseAdapter): Texture = fallbackTexture()
+    }
+
+    /**
+     * File texture provider.
+     */
+    protected inner class FileTextureProvider(
+        private val project: Project,
+        private val paths: List<String>,
+        private val fallbackTexture: () -> Texture
+    ) : TextureProvider {
+
+        override val isFallback: Boolean get() = paths.isEmpty()
 
         private val isPreparing = AtomicBoolean(false)
 
         private val errors = mutableSetOf<String>()
 
-        /**
-         * Prepares this texture.
-         */
-        fun prepare() {
+        override fun prepare() {
             if (isPreparing.compareAndSet(false, true)) {
                 for (path in paths - errors) {
                     try {
@@ -253,16 +283,55 @@ abstract class BaseScene(
             }
         }
 
-        /**
-         * Returns this texture if prepared.
-         *
-         * If the texture is not prepared, initializes its preparation.
-         */
-        fun get(gl: GlimpseAdapter): Texture {
+        override fun get(gl: GlimpseAdapter): Texture {
             val texture = paths.asSequence()
                 .mapNotNull { path -> getTexture(gl, path) }
                 .firstOrNull()
             if ((paths - errors).isNotEmpty() && texture == null) {
+                notifyLoading(loading = true)
+                BackgroundTaskUtil.executeOnPooledThread(parent) {
+                    prepare()
+                    requestRender()
+                    notifyLoading(loading = false)
+                }
+            }
+            return texture ?: fallbackTexture()
+        }
+    }
+
+    /**
+     * Generated texture provider.
+     */
+    protected inner class GeneratedTextureProvider(
+        private val key: String,
+        private val bufferedImageProvider: BufferedImageProvider,
+        private val fallbackTexture: () -> Texture
+    ) : TextureProvider {
+
+        override val isFallback: Boolean = false
+
+        private val isPreparing = AtomicBoolean(false)
+
+        private val isError = AtomicBoolean(false)
+
+        override fun prepare() {
+            if (isPreparing.compareAndSet(false, true) && !isError.get()) {
+                try {
+                    prepareTexture(key, bufferedImageProvider)
+                } catch (expected: Throwable) {
+                    isError.set(true)
+                    errorLog.addError(
+                        WavefrontObjBundle.message("editor.common.preview.generateTexture.error", key),
+                        expected
+                    )
+                }
+                isPreparing.set(false)
+            }
+        }
+
+        override fun get(gl: GlimpseAdapter): Texture {
+            val texture = getTexture(gl, key)
+            if (!isError.get() && texture == null) {
                 notifyLoading(loading = true)
                 BackgroundTaskUtil.executeOnPooledThread(parent) {
                     prepare()

@@ -20,6 +20,7 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
+import graphics.glimpse.textures.BufferedImageProvider
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.textures.TextureImageSource
 import graphics.glimpse.textures.fromBufferedImage
@@ -43,13 +44,26 @@ class TexturesManager {
      * This method can be executed without GL thread.
      */
     fun prepare(profile: GLProfile, project: Project, filename: String) {
-        if (imageSources[filename] == null) {
+        prepare(profile = profile, key = filename) bufferedImageProvider@{
             val file = checkNotNull(runReadAction { project.findMatchingTextureVirtualFiles(filename).firstOrNull() }) {
                 "Could not find texture file: $filename"
             }
-            val originalImage = ImageIO.read(file.inputStream)
+            return@bufferedImageProvider ImageIO.read(file.inputStream)
+        }
+    }
+
+    /**
+     * Creates texture image using a [BufferedImage] provided by given [bufferedImageProvider].
+     *
+     * This method can be executed without GL thread.
+     */
+    fun prepare(profile: GLProfile, key: String, bufferedImageProvider: BufferedImageProvider) {
+        if (imageSources[key] == null) {
+            val originalImage = checkNotNull(bufferedImageProvider.createBufferedImage()) {
+                "Provided BufferedImage cannot be null"
+            }
             val mirroredImage = originalImage.mirrorY(BufferedImage.TYPE_INT_ARGB)
-            imageSources[filename] = textureImageSourceBuilder
+            imageSources[key] = textureImageSourceBuilder
                 .fromBufferedImage(mirroredImage)
                 .buildPrepared(profile)
             originalImage.flush()

@@ -101,9 +101,6 @@ data class PBRShader(
     @Uniform(name = "uDispChan")
     val displacementChannel: Int,
 
-    @Sampler2D(name = "uEnvTex")
-    val environmentTexture: Texture,
-
     @Sampler2D(name = "uIrradianceTex")
     val irradianceTexture: Texture,
 

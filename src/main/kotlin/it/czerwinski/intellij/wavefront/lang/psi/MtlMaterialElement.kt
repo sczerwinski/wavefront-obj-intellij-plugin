@@ -48,7 +48,7 @@ interface MtlMaterialElement : PsiElement {
     val metalnessMapElement: MtlScalarTextureElement?
     val normalMapElement: MtlTextureElement?
     val bumpMapElement: MtlTextureElement?
-    val reflectionMapElement: MtlTextureElement?
+    val reflectionMapElement: MtlReflectionTextureElement?
 
     val ambientColorVector: Vec3?
     val diffuseColorVector: Vec3?
@@ -85,6 +85,7 @@ interface MtlMaterialElement : PsiElement {
     val bumpMap: String?
     val bumpMapMultiplier: Float?
     val reflectionMap: String?
+    val reflectionMapType: MtlReflectionType?
 
     val texturePsiFiles: List<PsiFile>
 

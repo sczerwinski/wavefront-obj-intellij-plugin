@@ -4,6 +4,7 @@
 [![Version][jb_version_badge]][jb_plugin_page]
 [![Downloads][jb_download_badge]][jb_plugin_page]
 [![Rating][jb_rating_badge]][jb_plugin_page]
+![GitHub][licence_badge]
 
 <sup>\*Also works with Android Studio, PyCharm, WebStorm,
 and other IDE's based on IntelliJ IDEA.</sup>
@@ -14,8 +15,11 @@ and MTL (material library) files.
 
 - OBJ file format syntax
 - MTL file format syntax
-- 3D preview of OBJ files
+- 3D preview
 - material editor
+
+PBR environments and [documentation](https://plugins.jetbrains.com/plugin/14843-wavefront-obj/documentation)
+of the plugin were created using assets from [ambientCG.com](https://ambientcg.com/) (CC0).
 <!-- Plugin description end -->
 
 ## Features
@@ -106,6 +110,7 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 [jb_version_badge]: https://img.shields.io/jetbrains/plugin/v/14843-wavefront-obj
 [jb_download_badge]: https://img.shields.io/jetbrains/plugin/d/14843-wavefront-obj
 [jb_rating_badge]: https://img.shields.io/jetbrains/plugin/r/rating/14843-wavefront-obj
+[licence_badge]: https://img.shields.io/github/license/sczerwinski/wavefront-obj-intellij-plugin
 [jb_plugin_page]: https://plugins.jetbrains.com/plugin/14843-wavefront-obj
 [latest_release]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/releases/latest
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template

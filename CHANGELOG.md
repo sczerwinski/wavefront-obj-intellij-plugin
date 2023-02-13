@@ -41,7 +41,7 @@
   - Upgrade `gluegen-rt-main` to `2.4.0`
   - Upgrade `detekt-formatting` to `1.22.0`
 - GitHub Actions:
-  - Upgrade `actions/cache` to `v3.2.4`
+  - Upgrade `actions/cache` to `v3.2.5`
 
 ### Removed
 - Remove support for platform version `221.*`

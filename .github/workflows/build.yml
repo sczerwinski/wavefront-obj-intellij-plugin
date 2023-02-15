@@ -216,9 +216,13 @@ jobs:
         run: |
           PROPERTIES="$(./gradlew properties --console=plain -q)"
           IDE_VERSIONS="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | base64)"
+          PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:")"
+          PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:")"
 
           echo "ideVersions=$IDE_VERSIONS" >> $GITHUB_OUTPUT
           echo "pluginVerifierHomeDir=~/.pluginVerifier" >> $GITHUB_OUTPUT
+          echo "pluginGroup=$PLUGIN_GROUP" >> $GITHUB_OUTPUT
+          echo "pluginVersion=$PLUGIN_VERSION" >> $GITHUB_OUTPUT
 
       # Cache Plugin Verifier IDEs
       - name: Setup Plugin Verifier IDEs Cache
@@ -230,6 +234,20 @@ jobs:
       # Run IntelliJ Plugin Verifier action using GitHub Action
       - name: Verify Plugin
         run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=${{ steps.properties.outputs.pluginVerifierHomeDir }}
+
+      # Consolidate Plugin Verifier results
+      - name: Consolidate Verifier Report
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          ./.github/scripts/verifier-report ${{ steps.properties.outputs.pluginGroup }} ${{ steps.properties.outputs.pluginVersion }}
+
+      # Publish Plugin Verifier results
+      - name: Publish Verifier Report
+        if: ${{ always() }}
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-path: ${{ github.workspace }}/build/reports/pluginVerifier.md
 
   # Prepare a draft release for GitHub Releases page for the manual verification
   # If accepted and published, release workflow would be triggered

@@ -42,6 +42,7 @@
   - Upgrade `detekt-formatting` to `1.22.0`
 - GitHub Actions:
   - Upgrade `actions/cache` to `v3.2.5`
+  - Replace `jwgmeligmeyling/checkstyle-github-action` with `Juuxel/publish-checkstyle-report`
 
 ### Removed
 - Remove support for platform version `221.*`

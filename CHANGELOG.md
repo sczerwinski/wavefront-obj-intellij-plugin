@@ -23,8 +23,8 @@
 
 ### Changed
 - Improve IBL in PBR shader
-- Update platform version to `2022.2.3`
-- `pluginVerifierIdeVersions` – upgrade to `2022.2.3, 2022.3.1, 2023.1`
+- Update platform version to `2022.2.4`
+- `pluginVerifierIdeVersions` – upgrade to `2022.2.4, 2022.3.2, 2023.1`
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:

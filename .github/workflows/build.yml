@@ -238,7 +238,7 @@ jobs:
       # Publish Plugin Verifier results
       - name: Publish Verifier Report
         if: ${{ always() }}
-        uses: sczerwinski/publish-intellij-plugin-verifier-report@v1.0.0
+        uses: sczerwinski/publish-intellij-plugin-verifier-report@v1.1.0
         with:
           plugin-id: ${{ steps.properties.outputs.pluginGroup }}
           plugin-version: ${{ steps.properties.outputs.pluginVersion }}

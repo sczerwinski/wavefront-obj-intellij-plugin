@@ -78,6 +78,30 @@ object MtlElementFactory {
             .getChildrenOfType<MtlValueModifierOption>().single()
     }
 
+    fun createScalarChannelOption(project: Project, value: MtlScalarChannel): MtlScalarChannelOption {
+        val file = createFile(project, text = "newmtl temp\ndisp -imfchan ${value.optionValue} filename.png")
+        return (file.firstChild as MtlMaterial)
+            .getChildrenOfType<MtlScalarTextureElement>().single()
+            .getChildrenOfType<MtlScalarChannelOption>().single()
+    }
+
+    fun createReflectionTextureElement(
+        project: Project,
+        reflectionType: MtlReflectionType = MtlReflectionType.SPHERE,
+        filename: String
+    ): MtlReflectionTextureElement {
+        val file = createFile(project, text = "newmtl temp\nrefl -type ${reflectionType.name.lowercase()} $filename")
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlReflectionTextureElement>().single()
+    }
+
+    fun createReflectionTypeOption(
+        project: Project,
+        reflectionType: MtlReflectionType = MtlReflectionType.SPHERE
+    ): MtlReflectionTypeOption {
+        return createReflectionTextureElement(project, reflectionType, filename = "filename.png")
+            .getChildrenOfType<MtlReflectionTypeOption>().single()
+    }
+
     fun createCRLF(project: Project): PsiElement {
         val file = createFile(project, text = "\n")
         return file.firstChild

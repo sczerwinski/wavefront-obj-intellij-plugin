@@ -16,6 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+
 enum class MtlReflectionType {
     SPHERE,
     CUBE_TOP,
@@ -24,6 +26,9 @@ enum class MtlReflectionType {
     CUBE_BACK,
     CUBE_LEFT,
     CUBE_RIGHT;
+
+    val description: String =
+        WavefrontObjBundle.message("fileTypes.mtl.structure.presentation.reflectionType.${name.lowercase()}")
 
     companion object {
 

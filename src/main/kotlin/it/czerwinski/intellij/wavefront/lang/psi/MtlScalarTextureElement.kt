@@ -21,5 +21,5 @@ interface MtlScalarTextureElement : MtlTextureElement {
     val scalarChannelOptionList: List<MtlScalarChannelOption>
     val scalarChannelOptionElement: MtlScalarChannelOption?
 
-    val scalarChannel: MtlScalarChannel
+    val scalarChannel: MtlScalarChannel?
 }

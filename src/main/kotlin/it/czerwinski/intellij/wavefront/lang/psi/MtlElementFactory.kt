@@ -78,6 +78,23 @@ object MtlElementFactory {
             .getChildrenOfType<MtlValueModifierOption>().single()
     }
 
+    fun createReflectionTextureElement(
+        project: Project,
+        reflectionType: MtlReflectionType,
+        filename: String
+    ): MtlReflectionTextureElement {
+        val file = createFile(project, text = "newmtl temp\nrefl -type ${reflectionType.name.lowercase()} $filename")
+        return (file.firstChild as MtlMaterial).getChildrenOfType<MtlReflectionTextureElement>().single()
+    }
+
+    fun createReflectionTypeOption(
+        project: Project,
+        reflectionType: MtlReflectionType
+    ): MtlReflectionTypeOption {
+        return createReflectionTextureElement(project, reflectionType, filename = "filename.png")
+            .getChildrenOfType<MtlReflectionTypeOption>().single()
+    }
+
     fun createCRLF(project: Project): PsiElement {
         val file = createFile(project, text = "\n")
         return file.firstChild

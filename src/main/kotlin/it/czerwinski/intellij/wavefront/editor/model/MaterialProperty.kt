@@ -25,6 +25,9 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTextureElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTypeOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlValueModifierOption
 import java.awt.Color
@@ -236,6 +239,73 @@ sealed class MaterialProperty<E : PsiElement, T> {
         companion object {
             const val VALUE_INDEX_BASE = 0
             const val VALUE_INDEX_GAIN = 1
+        }
+    }
+
+    data class MaterialReflectionTexture(
+        @Nls override val label: String,
+        @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
+    ) : MaterialProperty<MtlTextureElement, String>() {
+
+        override val propertyKeyword: String = "refl"
+
+        override val elementGetter: (MtlMaterialElement) -> MtlTextureElement? =
+            MtlMaterialElement::reflectionMapElement
+
+        override fun getValue(material: MtlMaterialElement?): String? =
+            material?.let(elementGetter)?.textureFilename
+
+        override fun setValue(material: MtlMaterialElement?, value: Any?) {
+            setValueWriteCommandAction(material, (value as? String)?.takeUnless { it.isBlank() })
+        }
+
+        override fun updateElement(material: MtlMaterialElement, element: MtlTextureElement, value: String) {
+            val newTextureNode = MtlElementFactory.createTextureElement(material.project, value).node
+            element.node.replaceChild(element.node.lastChildNode, newTextureNode.lastChildNode)
+        }
+
+        override fun addElement(material: MtlMaterialElement, value: String) {
+            val newTextureNode = MtlElementFactory.createReflectionTextureElement(
+                project = material.project,
+                reflectionType = MtlReflectionType.SPHERE,
+                filename = value
+            ).node
+            material.node.addChild(MtlElementFactory.createCRLF(material.project).node)
+            material.node.addChild(newTextureNode)
+        }
+    }
+
+    data class MaterialReflectionTextureType(
+        @Nls override val label: String,
+        @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
+        override val propertyKeyword: String,
+        val parentElementGetter: (MtlMaterialElement) -> MtlReflectionTextureElement?,
+        override val elementGetter: (MtlMaterialElement) -> MtlReflectionTypeOption?
+    ) : MaterialProperty<MtlReflectionTypeOption, MtlReflectionType>() {
+
+        override fun getValue(material: MtlMaterialElement?): MtlReflectionType? =
+            MtlReflectionType.fromValue(material?.let(elementGetter)?.value)
+
+        override fun setValue(material: MtlMaterialElement?, value: Any?) {
+            setValueWriteCommandAction(material, MtlReflectionType.fromValue(value?.toString()))
+        }
+
+        override fun updateElement(
+            material: MtlMaterialElement,
+            element: MtlReflectionTypeOption,
+            value: MtlReflectionType
+        ) {
+            val newReflectionTypeOption = MtlElementFactory.createReflectionTypeOption(material.project, value)
+            element.node.replaceAllChildrenToChildrenOf(newReflectionTypeOption.node)
+        }
+
+        override fun addElement(material: MtlMaterialElement, value: MtlReflectionType) {
+            val textureElement = parentElementGetter(material)
+            val textureNode = textureElement?.node
+            if (textureNode != null) {
+                val newValueModifierNode = MtlElementFactory.createReflectionTypeOption(material.project, value)
+                textureNode.addChild(newValueModifierNode.node, textureNode.lastChildNode)
+            }
         }
     }
 }

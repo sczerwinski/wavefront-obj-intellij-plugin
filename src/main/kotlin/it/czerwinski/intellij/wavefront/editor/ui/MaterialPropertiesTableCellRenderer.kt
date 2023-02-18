@@ -20,6 +20,7 @@ import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBEmptyBorder
 import it.czerwinski.intellij.common.ui.ColorLabel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import java.awt.Color
 import java.awt.Component
 import javax.swing.JTable
@@ -40,6 +41,7 @@ class MaterialPropertiesTableCellRenderer : TableCellRenderer {
         is Float -> JBLabel(value.toString(), SwingConstants.TRAILING)
         is Color -> ColorLabel(value)
         is MtlIlluminationValueElement.Illumination -> JBLabel(value.description)
+        is MtlReflectionType -> JBLabel(value.description)
         else -> JBLabel(value?.toString().orEmpty())
     }.apply {
         border = labelBorder

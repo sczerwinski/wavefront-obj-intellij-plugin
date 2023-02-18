@@ -51,6 +51,7 @@
 ### Fixed
 - Fix error in 3D preview of a line without texture coordinates
 - Wrap file operations in read-actions
+- Fix error when adding reflection texture via material editor
 - Replace usages of internal method `StartupManager.runAfterOpened()` with a `StartupActivity`
 - Override `getActionUpdateThread()` in existing implementations of `AnAction`
 - Use DPI-aware `JBEmptyBorder` instead of `EmptyBorder`

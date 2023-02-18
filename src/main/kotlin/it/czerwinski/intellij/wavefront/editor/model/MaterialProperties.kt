@@ -187,10 +187,15 @@ internal val materialProperties = listOf(
         propertyKeyword = "bump",
         elementGetter = { material -> material.bumpMapElement }
     ),
-    MaterialProperty.MaterialTexture(
+    MaterialProperty.MaterialReflectionTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.reflection"),
-        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.reflection.action"),
-        propertyKeyword = "refl",
-        elementGetter = { material -> material.reflectionMapElement }
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.reflection.action")
+    ),
+    MaterialProperty.MaterialReflectionTextureType(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.reflection.type"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.reflectionType.action"),
+        propertyKeyword = "map_Ns",
+        parentElementGetter = { material -> material.reflectionMapElement },
+        elementGetter = { material -> material.reflectionMapElement?.reflectionTypeOptionElement }
     )
 )

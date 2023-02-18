@@ -16,20 +16,21 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-enum class MtlScalarChannel {
-    RED,
-    GREEN,
-    BLUE;
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+
+enum class MtlScalarChannel(val optionValue: String) {
+    RED(optionValue = "r"),
+    GREEN(optionValue = "g"),
+    BLUE(optionValue = "b");
+
+    val description: String =
+        WavefrontObjBundle.message("fileTypes.mtl.structure.presentation.scalarChannel.$optionValue")
 
     companion object {
         val DEFAULT = RED
 
-        fun fromValue(value: String?): MtlScalarChannel = when (value) {
-            "r" -> RED
-            "g" -> GREEN
-            "b" -> BLUE
-            else -> DEFAULT
-        }
+        fun fromValue(value: String?): MtlScalarChannel? =
+            enumValues<MtlScalarChannel>().firstOrNull { channel -> channel.optionValue == value }
     }
 }
 

@@ -28,6 +28,9 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTypeOption
+import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
+import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannelOption
+import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlValueModifierOption
 import java.awt.Color
@@ -242,6 +245,40 @@ sealed class MaterialProperty<E : PsiElement, T> {
         }
     }
 
+    data class MaterialTextureScalarChannel(
+        @Nls override val label: String,
+        @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
+        override val propertyKeyword: String,
+        val parentElementGetter: (MtlMaterialElement) -> MtlScalarTextureElement?,
+        override val elementGetter: (MtlMaterialElement) -> MtlScalarChannelOption?
+    ) : MaterialProperty<MtlScalarChannelOption, MtlScalarChannel>() {
+
+        override fun getValue(material: MtlMaterialElement?): MtlScalarChannel? =
+            MtlScalarChannel.fromValue(material?.let(elementGetter)?.value)
+
+        override fun setValue(material: MtlMaterialElement?, value: Any?) {
+            setValueWriteCommandAction(material, value as? MtlScalarChannel)
+        }
+
+        override fun updateElement(
+            material: MtlMaterialElement,
+            element: MtlScalarChannelOption,
+            value: MtlScalarChannel
+        ) {
+            val newScalarChannelOption = MtlElementFactory.createScalarChannelOption(material.project, value)
+            element.node.replaceAllChildrenToChildrenOf(newScalarChannelOption.node)
+        }
+
+        override fun addElement(material: MtlMaterialElement, value: MtlScalarChannel) {
+            val textureElement = parentElementGetter(material)
+            val textureNode = textureElement?.node
+            if (textureNode != null) {
+                val newScalarChannelOption = MtlElementFactory.createScalarChannelOption(material.project, value)
+                textureNode.addChild(newScalarChannelOption.node, textureNode.lastChildNode)
+            }
+        }
+    }
+
     data class MaterialReflectionTexture(
         @Nls override val label: String,
         @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
@@ -260,14 +297,16 @@ sealed class MaterialProperty<E : PsiElement, T> {
         }
 
         override fun updateElement(material: MtlMaterialElement, element: MtlTextureElement, value: String) {
-            val newTextureNode = MtlElementFactory.createTextureElement(material.project, value).node
+            val newTextureNode = MtlElementFactory.createReflectionTextureElement(
+                project = material.project,
+                filename = value
+            ).node
             element.node.replaceChild(element.node.lastChildNode, newTextureNode.lastChildNode)
         }
 
         override fun addElement(material: MtlMaterialElement, value: String) {
             val newTextureNode = MtlElementFactory.createReflectionTextureElement(
                 project = material.project,
-                reflectionType = MtlReflectionType.SPHERE,
                 filename = value
             ).node
             material.node.addChild(MtlElementFactory.createCRLF(material.project).node)
@@ -287,7 +326,7 @@ sealed class MaterialProperty<E : PsiElement, T> {
             MtlReflectionType.fromValue(material?.let(elementGetter)?.value)
 
         override fun setValue(material: MtlMaterialElement?, value: Any?) {
-            setValueWriteCommandAction(material, MtlReflectionType.fromValue(value?.toString()))
+            setValueWriteCommandAction(material, value as? MtlReflectionType)
         }
 
         override fun updateElement(
@@ -303,8 +342,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
             val textureElement = parentElementGetter(material)
             val textureNode = textureElement?.node
             if (textureNode != null) {
-                val newValueModifierNode = MtlElementFactory.createReflectionTypeOption(material.project, value)
-                textureNode.addChild(newValueModifierNode.node, textureNode.lastChildNode)
+                val newReflectionTypeOption = MtlElementFactory.createReflectionTypeOption(material.project, value)
+                textureNode.addChild(newReflectionTypeOption.node, textureNode.lastChildNode)
             }
         }
     }

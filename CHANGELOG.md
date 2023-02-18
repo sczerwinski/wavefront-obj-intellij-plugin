@@ -8,8 +8,9 @@
 - Add support for platform version `231.*`
 - Add support for Apple M1 processor (macOS AArch64)
 - Automatically preview material at caret
-- Add support for scalar map channel option (`-imfchan`) in 3D preview (only RGB)
+- Add support for scalar map channel option (`-imfchan`) in 3D preview and material editor (only RGB)
 - Add support for spherical reflection map (`refl -type sphere`) in 3D preview
+- Add support for reflection map type option in material editor
 - Settings for MTL file editor layout separate from OBJ file editor layout
 - Setting for generating mipmaps for textures (on/off)
 - Setting for selecting face culling

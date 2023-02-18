@@ -26,6 +26,7 @@ import it.czerwinski.intellij.wavefront.editor.model.MaterialProperty
 import it.czerwinski.intellij.wavefront.editor.model.materialProperties
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
+import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
 import javax.swing.DefaultCellEditor
 import javax.swing.table.TableCellEditor
 import javax.swing.table.TableCellRenderer
@@ -53,6 +54,12 @@ class MaterialPropertiesTable(
 
     private val myTextureEditor = TextureTableCellEditor(project, parent = editor)
 
+    private val myScalarChannelEditor = DefaultCellEditor(
+        ComboBox((listOf(null) + enumValues<MtlScalarChannel>()).toTypedArray()).apply {
+            renderer = SimpleListCellRenderer.create("") { value -> value?.description }
+        }
+    )
+
     private val myReflectionTypeEditor = DefaultCellEditor(
         ComboBox((listOf(null) + enumValues<MtlReflectionType>()).toTypedArray()).apply {
             renderer = SimpleListCellRenderer.create("") { value -> value?.description }
@@ -66,6 +73,7 @@ class MaterialPropertiesTable(
         is MaterialProperty.MaterialIlluminationValue -> myIlluminationEditor
         is MaterialProperty.MaterialFloatValue -> myFloatEditor
         is MaterialProperty.MaterialTexture -> myTextureEditor
+        is MaterialProperty.MaterialTextureScalarChannel -> myScalarChannelEditor
         is MaterialProperty.MaterialTextureValueModifier -> myFloatEditor
         is MaterialProperty.MaterialReflectionTexture -> myTextureEditor
         is MaterialProperty.MaterialReflectionTextureType -> myReflectionTypeEditor

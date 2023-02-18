@@ -121,6 +121,13 @@ internal val materialProperties = listOf(
         propertyKeyword = "map_Ns",
         elementGetter = { material -> material.specularExponentMapElement }
     ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.specularExponent.imfchan"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.colorChannel.action"),
+        propertyKeyword = "map_Ns",
+        parentElementGetter = { material -> material.specularExponentMapElement },
+        elementGetter = { material -> material.specularExponentMapElement?.scalarChannelOptionElement }
+    ),
     MaterialProperty.MaterialTextureValueModifier(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.specularExponent.base"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.valueModifier.action"),
@@ -143,11 +150,25 @@ internal val materialProperties = listOf(
         propertyKeyword = "map_d",
         elementGetter = { material -> material.dissolveMapElement }
     ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.dissolve.imfchan"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.colorChannel.action"),
+        propertyKeyword = "map_d",
+        parentElementGetter = { material -> material.dissolveMapElement },
+        elementGetter = { material -> material.dissolveMapElement?.scalarChannelOptionElement }
+    ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.displacement"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.displacement.action"),
         propertyKeyword = "disp",
         elementGetter = { material -> material.displacementMapElement }
+    ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.displacement.imfchan"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.colorChannel.action"),
+        propertyKeyword = "disp",
+        parentElementGetter = { material -> material.displacementMapElement },
+        elementGetter = { material -> material.displacementMapElement?.scalarChannelOptionElement }
     ),
     MaterialProperty.MaterialTextureValueModifier(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.displacement.gain"),
@@ -163,17 +184,38 @@ internal val materialProperties = listOf(
         propertyKeyword = "decal",
         elementGetter = { material -> material.stencilDecalMapElement }
     ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.stencilDecal.imfchan"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.colorChannel.action"),
+        propertyKeyword = "decal",
+        parentElementGetter = { material -> material.stencilDecalMapElement },
+        elementGetter = { material -> material.stencilDecalMapElement?.scalarChannelOptionElement }
+    ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.roughness"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.roughness.action"),
         propertyKeyword = "map_Pr",
         elementGetter = { material -> material.roughnessMapElement }
     ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.roughness.imfchan"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.colorChannel.action"),
+        propertyKeyword = "map_Pr",
+        parentElementGetter = { material -> material.roughnessMapElement },
+        elementGetter = { material -> material.roughnessMapElement?.scalarChannelOptionElement }
+    ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.metalness"),
         actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.metalness.action"),
         propertyKeyword = "map_Pm",
         elementGetter = { material -> material.metalnessMapElement }
+    ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.metalness.imfchan"),
+        actionName = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.colorChannel.action"),
+        propertyKeyword = "map_Pm",
+        parentElementGetter = { material -> material.metalnessMapElement },
+        elementGetter = { material -> material.metalnessMapElement?.scalarChannelOptionElement }
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("editor.fileTypes.mtl.material.texture.normalmap"),

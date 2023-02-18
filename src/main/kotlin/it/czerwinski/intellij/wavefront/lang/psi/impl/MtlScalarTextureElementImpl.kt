@@ -28,6 +28,6 @@ abstract class MtlScalarTextureElementImpl(
     override val scalarChannelOptionElement: MtlScalarChannelOption?
         get() = scalarChannelOptionList.firstOrNull()
 
-    override val scalarChannel: MtlScalarChannel
+    override val scalarChannel: MtlScalarChannel?
         get() = MtlScalarChannel.fromValue(scalarChannelOptionElement?.value)
 }

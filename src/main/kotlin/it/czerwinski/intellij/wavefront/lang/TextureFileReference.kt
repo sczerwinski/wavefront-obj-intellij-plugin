@@ -17,7 +17,6 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.vfs.VfsUtil
@@ -30,6 +29,7 @@ import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.ResolveResult
 import com.intellij.util.ProcessingContext
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllTextureFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureFiles
@@ -62,7 +62,7 @@ class TextureFileReference(
                     ?: file.containingDirectory?.name
                 LookupElementBuilder.create(file.name)
                     .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
-                    .withTypeText(typeText, AllIcons.Nodes.Folder, false)
+                    .withTypeText(typeText, Icons.General.Folder, false)
             }
             .toTypedArray()
 

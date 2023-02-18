@@ -17,7 +17,6 @@
 package it.czerwinski.intellij.wavefront.editor.ui
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
@@ -30,6 +29,7 @@ import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.TextFieldWithAutoCompletion
 import com.intellij.util.ui.AbstractTableCellEditor
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.MTL_TEXTURE_ICON
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllTextureFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
@@ -65,7 +65,7 @@ class TextureTableCellEditor(
                         ?: file.containingDirectory?.name
                     LookupElementBuilder.create(file.name)
                         .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
-                        .withTypeText(typeText, AllIcons.Nodes.Folder, false)
+                        .withTypeText(typeText, Icons.General.Folder, false)
                 }
             }
             invokeLater {

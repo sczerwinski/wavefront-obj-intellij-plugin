@@ -20,9 +20,11 @@
 - Add environments for physically based shading method in 3D preview:
   - Beach (day)
   - Alley (night)
+- Toggle editor split layout orientation with toolbar action
 
 ### Changed
 - Improve IBL in PBR shader
+- Convert all remaining Java code to Kotlin
 - Update platform version to `2022.2.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.2.4, 2022.3.2, 2023.1`
 - Upgrade Java to `17`

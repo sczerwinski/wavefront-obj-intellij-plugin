@@ -45,8 +45,8 @@ class MtlSplitEditor(
                     layout = newMtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
                 }
 
-                if (mySplitVertically == oldVerticalSplit) {
-                    mySplitVertically = newMtlEditorSettings?.isVerticalSplit
+                if (isSplitVertically == oldVerticalSplit) {
+                    isSplitVertically = newMtlEditorSettings?.isVerticalSplit
                         ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
                 }
             }
@@ -70,7 +70,7 @@ class MtlSplitEditor(
         val mtlEditorSettings = WavefrontObjSettingsState.getInstance()?.mtlEditorSettings
 
         layout = mtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
-        mySplitVertically = mtlEditorSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+        isSplitVertically = mtlEditorSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
     }
 
     private fun observeSettingsChanges() {

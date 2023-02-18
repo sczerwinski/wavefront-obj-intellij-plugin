@@ -16,9 +16,9 @@
 
 package it.czerwinski.intellij.common.ui
 
-import com.intellij.icons.AllIcons
 import com.intellij.ui.MultilineTreeCellRenderer
 import com.intellij.ui.treeStructure.Tree
+import it.czerwinski.intellij.wavefront.icons.Icons
 import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
 
@@ -51,7 +51,7 @@ class ErrorLogTree(treeModel: ErrorLogTreeModel) : Tree(treeModel) {
             } else {
                 setText(emptyArray(), nodeText.orEmpty())
             }
-            icon = if (leaf) null else AllIcons.General.Error
+            icon = if (leaf) null else Icons.General.Error
         }
     }
 }

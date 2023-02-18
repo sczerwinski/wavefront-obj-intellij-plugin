@@ -44,8 +44,8 @@ class ObjSplitEditor(
                     layout = newSettings?.defaultEditorLayout ?: Layout.DEFAULT
                 }
 
-                if (mySplitVertically == oldVerticalSplit) {
-                    mySplitVertically = newSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+                if (isSplitVertically == oldVerticalSplit) {
+                    isSplitVertically = newSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
                 }
             }
         }
@@ -68,7 +68,7 @@ class ObjSplitEditor(
         val settings = WavefrontObjSettingsState.getInstance()
 
         layout = settings?.defaultEditorLayout ?: Layout.DEFAULT
-        mySplitVertically = settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+        isSplitVertically = settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
     }
 
     private fun observeSettingsChanges() {

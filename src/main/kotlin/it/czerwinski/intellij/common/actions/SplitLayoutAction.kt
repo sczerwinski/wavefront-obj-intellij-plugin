@@ -24,6 +24,7 @@ import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.DumbAware
 import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.wavefront.icons.Icons
 
 /**
  * An action for split editor layout selection.
@@ -71,7 +72,28 @@ sealed class SplitLayoutAction(
     /**
      * An action for selecting text and preview layout.
      */
-    class TextAndPreview : SplitLayoutAction(SplitEditor.Layout.SPLIT)
+    class TextAndPreview : SplitLayoutAction(SplitEditor.Layout.SPLIT) {
+
+        override fun update(event: AnActionEvent) {
+            super.update(event)
+
+            val editor = findObjSplitEditor(event)
+
+            event.presentation.icon = when (editor?.isSplitVertically) {
+                true -> Icons.Layout.EditorPreviewVertical
+                else -> Icons.Layout.EditorPreviewHorizontal
+            }
+        }
+
+        override fun actionPerformed(event: AnActionEvent) {
+            if (Toggleable.isSelected(event.presentation)) {
+                val editor = findObjSplitEditor(event)
+                editor?.apply { isSplitVertically = !isSplitVertically }
+            } else {
+                super.actionPerformed(event)
+            }
+        }
+    }
 
     /**
      * An action for selecting preview layout.

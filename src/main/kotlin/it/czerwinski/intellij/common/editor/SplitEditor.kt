@@ -52,7 +52,7 @@ abstract class SplitEditor<P : FileEditor>(
     /**
      * Indicates whether text and preview editors are split vertically.
      */
-    protected var mySplitVertically: Boolean
+    var isSplitVertically: Boolean
         get() = myComponent.isSplitVertically
         set(value) {
             myComponent.isSplitVertically = value

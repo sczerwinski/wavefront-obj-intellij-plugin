@@ -18,11 +18,11 @@
 
 package it.czerwinski.intellij.wavefront.lang.structure
 
-import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_POLYGON_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_QUAD_ICON
 import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_TRIANGLE_ICON
@@ -279,7 +279,7 @@ object ObjItemPresentationFactory {
             errorMessage
         ),
         locationString = elementText,
-        icon = AllIcons.General.Error
+        icon = Icons.General.Error
     )
 
     private fun createPresentation(

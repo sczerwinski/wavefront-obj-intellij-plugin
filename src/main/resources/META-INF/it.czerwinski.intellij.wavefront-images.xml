@@ -12,7 +12,7 @@
         <!-- Textures -->
         <group
                 id="WavefrontOBJ.Texture.IBL"
-                icon="it.czerwinski.intellij.wavefront.icons.WavefrontObjIcons.IBL"
+                icon="it.czerwinski.intellij.wavefront.icons.Icons.Generator.IBL"
                 popup="true">
             <action
                     id="GenerateDiffuseIrradianceMapAction"

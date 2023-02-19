@@ -40,11 +40,14 @@ class MaterialComboBoxModel(
     }
 
     fun setSelectedItemAtOffset(offset: Int) {
-        val itemAtOffset = myList.lastOrNull { element -> element.textRange.startOffset <= offset }
+        val itemAtOffset = findItemAtOffset(offset)
         if (itemAtOffset != null) {
             selectedItem = itemAtOffset
         }
     }
+
+    fun findItemAtOffset(offset: Int): MtlMaterialElement? =
+        myList.lastOrNull { element -> element.textRange.startOffset <= offset }
 
     override fun getSelectedItem(): Any? = mySelected
 

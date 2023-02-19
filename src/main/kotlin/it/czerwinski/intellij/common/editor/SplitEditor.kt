@@ -59,6 +59,7 @@ abstract class SplitEditor<P : FileEditor>(
         }
 
     init {
+        this.putUserData(KEY_CARET_MODEL, textEditor.editor.caretModel)
         textEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_PARENT_SPLIT_EDITOR, this)
         previewEditor.putUserData(KEY_CARET_MODEL, textEditor.editor.caretModel)

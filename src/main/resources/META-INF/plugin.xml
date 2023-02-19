@@ -158,6 +158,19 @@
                 implementation="it.czerwinski.intellij.wavefront.editor.GLPreviewEditorsStartupActivity"/>
     </extensions>
 
+    <!-- ToolWindow -->
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow
+                id="MaterialPropertiesToolWindow"
+                icon="it.czerwinski.intellij.wavefront.icons.Icons.ToolWindow.Material"
+                anchor="right"
+                secondary="false"
+                factoryClass="it.czerwinski.intellij.wavefront.tools.MaterialPropertiesToolWindowFactory"/>
+        <projectService
+                serviceInterface="it.czerwinski.intellij.wavefront.tools.MaterialPropertiesViewFactory"
+                serviceImplementation="it.czerwinski.intellij.wavefront.tools.MaterialPropertiesViewFactoryImpl"/>
+    </extensions>
+
     <actions>
         <!-- Split editor -->
         <group

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.tools.ui
 
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBEmptyBorder
@@ -22,6 +22,7 @@ import it.czerwinski.intellij.common.ui.ColorLabel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
+import it.czerwinski.intellij.wavefront.tools.model.materialProperties
 import java.awt.Color
 import java.awt.Component
 import javax.swing.JTable
@@ -47,6 +48,7 @@ class MaterialPropertiesTableCellRenderer : TableCellRenderer {
         else -> JBLabel(value?.toString().orEmpty())
     }.apply {
         border = labelBorder
+        materialProperties[row].applyStyle(component = this)
     }
 
     companion object {

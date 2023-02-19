@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.tools.model
 
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.command.UndoConfirmationPolicy
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiElement
+import com.intellij.refactoring.RefactoringFactory
+import com.intellij.ui.components.JBLabel
+import com.intellij.util.ui.UIUtil
 import it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTypeOption
@@ -34,6 +38,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlValueModifierOption
 import java.awt.Color
+import java.awt.Font
 import org.jetbrains.annotations.Nls
 
 sealed class MaterialProperty<E : PsiElement, T> {
@@ -78,6 +83,39 @@ sealed class MaterialProperty<E : PsiElement, T> {
     protected abstract fun updateElement(material: MtlMaterialElement, element: E, value: T)
 
     protected abstract fun addElement(material: MtlMaterialElement, value: T)
+
+    open fun applyStyle(component: JBLabel) = Unit
+
+    data class MaterialName(
+        @Nls override val label: String,
+        @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
+        override val propertyKeyword: String,
+        override val elementGetter: (MtlMaterialElement) -> MtlMaterialIdentifierElement?
+    ) : MaterialProperty<MtlMaterialIdentifierElement, String>() {
+
+        override fun getValue(material: MtlMaterialElement?): String? =
+            material?.let(elementGetter)?.name
+
+        override fun setValue(material: MtlMaterialElement?, value: Any?) {
+            material?.let(elementGetter)?.let { element ->
+                RefactoringFactory.getInstance(element.project)
+                    ?.createRename(element, value as? String)
+                    ?.run()
+            }
+        }
+
+        override fun updateElement(material: MtlMaterialElement, element: MtlMaterialIdentifierElement, value: String) {
+            throw UnsupportedOperationException("Cannot update material name element")
+        }
+
+        override fun addElement(material: MtlMaterialElement, value: String) {
+            throw UnsupportedOperationException("Cannot add material name element")
+        }
+
+        override fun applyStyle(component: JBLabel) {
+            component.font = component.font.deriveFont(Font.BOLD)
+        }
+    }
 
     data class MaterialColor(
         @Nls override val label: String,
@@ -239,6 +277,10 @@ sealed class MaterialProperty<E : PsiElement, T> {
             }
         }
 
+        override fun applyStyle(component: JBLabel) {
+            component.fontColor = UIUtil.FontColor.BRIGHTER
+        }
+
         companion object {
             const val VALUE_INDEX_BASE = 0
             const val VALUE_INDEX_GAIN = 1
@@ -276,6 +318,10 @@ sealed class MaterialProperty<E : PsiElement, T> {
                 val newScalarChannelOption = MtlElementFactory.createScalarChannelOption(material.project, value)
                 textureNode.addChild(newScalarChannelOption.node, textureNode.lastChildNode)
             }
+        }
+
+        override fun applyStyle(component: JBLabel) {
+            component.fontColor = UIUtil.FontColor.BRIGHTER
         }
     }
 
@@ -345,6 +391,10 @@ sealed class MaterialProperty<E : PsiElement, T> {
                 val newReflectionTypeOption = MtlElementFactory.createReflectionTypeOption(material.project, value)
                 textureNode.addChild(newReflectionTypeOption.node, textureNode.lastChildNode)
             }
+        }
+
+        override fun applyStyle(component: JBLabel) {
+            component.fontColor = UIUtil.FontColor.BRIGHTER
         }
     }
 }

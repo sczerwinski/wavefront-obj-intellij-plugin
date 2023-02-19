@@ -29,10 +29,9 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
-import com.intellij.ui.components.JBScrollPane
+import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.common.editor.SplitEditor
-import it.czerwinski.intellij.common.ui.EditorSplitter
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
@@ -40,11 +39,8 @@ import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialComboBoxModel
 import it.czerwinski.intellij.wavefront.editor.ui.MaterialListCellRenderer
-import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTable
-import it.czerwinski.intellij.wavefront.editor.ui.MaterialPropertiesTableModel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
-import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import java.awt.BorderLayout
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
@@ -64,9 +60,6 @@ class MtlMaterialComponent(
     private var myMaterialPreviewComponent = MtlMaterialPreviewComponent(project, editor)
 
     private val myMaterialComboBoxModel = MaterialComboBoxModel(emptyList())
-    private val myMaterialPropertiesTableModel = MaterialPropertiesTableModel()
-
-    private val mySplitter: EditorSplitter
 
     val material: MtlMaterialElement? get() = myMaterialComboBoxModel.selectedItem as? MtlMaterialElement
 
@@ -109,8 +102,15 @@ class MtlMaterialComponent(
                 override fun intervalRemoved(e: ListDataEvent?) = Unit
 
                 override fun contentsChanged(e: ListDataEvent?) {
-                    myMaterialPropertiesTableModel.updateMaterial(material)
-                    myMaterialPreviewComponent.updateMaterial(material)
+                    val selectedMaterial = material
+
+                    val caretModel = SplitEditor.KEY_CARET_MODEL[editor]
+                    val materialAtCaret = myMaterialComboBoxModel.findItemAtOffset(caretModel.offset)
+                    if (selectedMaterial != null && selectedMaterial != materialAtCaret) {
+                        caretModel.moveToOffset(selectedMaterial.startOffset)
+                    }
+
+                    myMaterialPreviewComponent.updateMaterial(selectedMaterial)
                 }
             }
         )
@@ -122,11 +122,7 @@ class MtlMaterialComponent(
         }
         add(selectMaterialPanel, BorderLayout.BEFORE_FIRST_LINE)
 
-        mySplitter = EditorSplitter(vertical = true)
-        mySplitter.splitterProportionKey = "${javaClass.simpleName}.Proportion"
-        mySplitter.firstComponent = myMaterialPreviewComponent
-
-        add(mySplitter, BorderLayout.CENTER)
+        add(myMaterialPreviewComponent, BorderLayout.CENTER)
     }
 
     fun initialize() {
@@ -137,9 +133,6 @@ class MtlMaterialComponent(
 
         if (project.isInitialized) {
             initializeMtlFile()
-            mySplitter.secondComponent = JBScrollPane(
-                MaterialPropertiesTable(project, myMaterialPropertiesTableModel, editor = editor)
-            )
             myMaterialPreviewComponent.initialize()
         }
     }
@@ -201,7 +194,7 @@ class MtlMaterialComponent(
             get() = file.materials.flatMap { material -> material.texturePsiFiles }
 
         private fun handlePsiTreeChange(element: PsiElement?) {
-            if (element == file || element in referencedFiles || element.isTextureFile()) {
+            if (element == file || element in referencedFiles) {
                 updateMtlFile(file)
             }
         }

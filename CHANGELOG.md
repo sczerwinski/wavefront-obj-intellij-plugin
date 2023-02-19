@@ -26,6 +26,7 @@
 ### Changed
 - Improve IBL in PBR shader
 - Convert all remaining Java code to Kotlin
+- Move material properties to a tool window
 - Update platform version to `2022.2.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.2.4, 2022.3.2, 2023.1`
 - Upgrade Java to `17`

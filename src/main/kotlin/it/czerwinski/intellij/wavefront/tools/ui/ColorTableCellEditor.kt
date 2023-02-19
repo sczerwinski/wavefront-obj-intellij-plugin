@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.tools.ui
 
 import com.intellij.openapi.application.invokeLater
-import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.ui.ColorPicker
 import com.intellij.ui.ColorPickerListener
 import com.intellij.util.ui.AbstractTableCellEditor
 import it.czerwinski.intellij.common.ui.ColorTextField
 import java.awt.Color
 import java.awt.Component
+import javax.swing.JComponent
 import javax.swing.JTable
 
 class ColorTableCellEditor(
-    private val editor: FileEditor? = null,
+    private val preferredFocusedComponent: JComponent? = null,
     private val enableOpacity: Boolean = false,
     private val opacityInPercent: Boolean = false
 ) : AbstractTableCellEditor() {
@@ -46,7 +46,7 @@ class ColorTableCellEditor(
         myComponent.selectedColor = value as? Color
         invokeLater {
             showColorPickerDialog(value as? Color)
-            editor?.preferredFocusedComponent?.requestFocus()
+            preferredFocusedComponent?.requestFocus()
         }
         return myComponent
     }

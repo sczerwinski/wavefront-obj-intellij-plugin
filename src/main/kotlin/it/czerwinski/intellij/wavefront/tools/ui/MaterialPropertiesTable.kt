@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.tools.ui
 
-import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.SimpleListCellRenderer
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.table.JBTable
-import it.czerwinski.intellij.wavefront.editor.model.MaterialProperty
-import it.czerwinski.intellij.wavefront.editor.model.materialProperties
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
+import it.czerwinski.intellij.wavefront.tools.model.MaterialProperty
+import it.czerwinski.intellij.wavefront.tools.model.materialProperties
 import javax.swing.DefaultCellEditor
+import javax.swing.JComponent
 import javax.swing.table.TableCellEditor
 import javax.swing.table.TableCellRenderer
 import javax.swing.table.TableColumnModel
@@ -36,13 +37,16 @@ import javax.swing.table.TableModel
 class MaterialPropertiesTable(
     project: Project,
     model: TableModel,
+    parent: Disposable,
     columnModel: TableColumnModel? = null,
-    editor: FileEditor? = null
+    preferredFocusedComponent: JComponent? = null
 ) : JBTable(model, columnModel) {
 
     private val myRenderer = MaterialPropertiesTableCellRenderer()
 
-    private val myColorEditor = ColorTableCellEditor(editor)
+    private val myNameEditor = DefaultCellEditor(JBTextField()).apply { clickCountToStart = 1 }
+
+    private val myColorEditor = ColorTableCellEditor(preferredFocusedComponent)
 
     private val myIlluminationEditor = DefaultCellEditor(
         ComboBox((listOf(null) + enumValues<MtlIlluminationValueElement.Illumination>()).toTypedArray()).apply {
@@ -52,7 +56,7 @@ class MaterialPropertiesTable(
 
     private val myFloatEditor = DefaultCellEditor(JBTextField()).apply { clickCountToStart = 1 }
 
-    private val myTextureEditor = TextureTableCellEditor(project, parent = editor)
+    private val myTextureEditor = TextureTableCellEditor(project, parent)
 
     private val myScalarChannelEditor = DefaultCellEditor(
         ComboBox((listOf(null) + enumValues<MtlScalarChannel>()).toTypedArray()).apply {
@@ -69,6 +73,7 @@ class MaterialPropertiesTable(
     override fun getCellRenderer(row: Int, column: Int): TableCellRenderer = myRenderer
 
     override fun getCellEditor(row: Int, column: Int): TableCellEditor = when (materialProperties[row]) {
+        is MaterialProperty.MaterialName -> myNameEditor
         is MaterialProperty.MaterialColor -> myColorEditor
         is MaterialProperty.MaterialIlluminationValue -> myIlluminationEditor
         is MaterialProperty.MaterialFloatValue -> myFloatEditor

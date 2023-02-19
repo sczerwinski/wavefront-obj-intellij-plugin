@@ -25,7 +25,6 @@ import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
 import graphics.glimpse.textures.Texture
-import graphics.glimpse.types.normalize
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.MtlPreviewMeshesManager
@@ -214,11 +213,6 @@ class MtlPreviewScene(
             graphics.glimpse.types.Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
 
-        val cameraDirection = normalize(camera.eye)
-        val cameraUpVector = normalize(vector = graphics.glimpse.types.Vec3.unitZ - cameraDirection * cameraDirection.z)
-        val cameraLeftVector = normalize(vector = cameraDirection cross cameraUpVector)
-        val lightPosition = (cameraDirection + cameraUpVector + cameraLeftVector) * CAMERA_DISTANCE
-
         programExecutorsManager.renderPBR(
             gl,
             PBRShader(
@@ -227,7 +221,6 @@ class MtlPreviewScene(
                 modelMatrix = upVector.modelMatrix,
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
-                lightPosition = lightPosition,
                 diffuseColor = material?.diffuseColorVector ?: graphics.glimpse.types.Vec3(color = Color.WHITE),
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
@@ -275,6 +268,5 @@ class MtlPreviewScene(
 
     companion object {
         const val MODEL_SIZE = 1f
-        private const val CAMERA_DISTANCE = 10f
     }
 }

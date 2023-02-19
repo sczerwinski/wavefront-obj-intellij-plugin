@@ -43,6 +43,7 @@ object Icons {
     }
 
     object Mesh {
+        @JvmField val Plane = getIcon(path = "/icons/editor_actions/planeMesh.svg")
         @JvmField val Cube = getIcon(path = "/icons/editor_actions/cubeMesh.svg")
         @JvmField val Cylinder = getIcon(path = "/icons/editor_actions/cylinderMesh.svg")
         @JvmField val Sphere = getIcon(path = "/icons/editor_actions/sphereMesh.svg")
@@ -69,6 +70,12 @@ object Icons {
 
     object ToolWindow {
         @JvmField val Material = getIcon(path = "/icons/editor_actions/materialProperties.svg")
+    }
+
+    object Filter {
+        @JvmField val Unsupported = AllIcons.General.ExclMark
+        @JvmField val Material = getIcon(path = "/icons/editor_actions/materialShading.svg")
+        @JvmField val PBR = getIcon(path = "/icons/editor_actions/pbrShading.svg")
     }
 
     object Generator {

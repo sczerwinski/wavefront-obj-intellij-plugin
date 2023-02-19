@@ -25,8 +25,8 @@ import com.intellij.ui.table.JBTable
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
+import it.czerwinski.intellij.wavefront.tools.model.MaterialPropertiesModel
 import it.czerwinski.intellij.wavefront.tools.model.MaterialProperty
-import it.czerwinski.intellij.wavefront.tools.model.materialProperties
 import javax.swing.DefaultCellEditor
 import javax.swing.JComponent
 import javax.swing.table.TableCellEditor
@@ -41,6 +41,8 @@ class MaterialPropertiesTable(
     columnModel: TableColumnModel? = null,
     preferredFocusedComponent: JComponent? = null
 ) : JBTable(model, columnModel) {
+
+    private val myMaterialPropertiesModel = MaterialPropertiesModel.getInstance()
 
     private val myRenderer = MaterialPropertiesTableCellRenderer()
 
@@ -72,15 +74,16 @@ class MaterialPropertiesTable(
 
     override fun getCellRenderer(row: Int, column: Int): TableCellRenderer = myRenderer
 
-    override fun getCellEditor(row: Int, column: Int): TableCellEditor = when (materialProperties[row]) {
-        is MaterialProperty.MaterialName -> myNameEditor
-        is MaterialProperty.MaterialColor -> myColorEditor
-        is MaterialProperty.MaterialIlluminationValue -> myIlluminationEditor
-        is MaterialProperty.MaterialFloatValue -> myFloatEditor
-        is MaterialProperty.MaterialTexture -> myTextureEditor
-        is MaterialProperty.MaterialTextureScalarChannel -> myScalarChannelEditor
-        is MaterialProperty.MaterialTextureValueModifier -> myFloatEditor
-        is MaterialProperty.MaterialReflectionTexture -> myTextureEditor
-        is MaterialProperty.MaterialReflectionTextureType -> myReflectionTypeEditor
-    }
+    override fun getCellEditor(row: Int, column: Int): TableCellEditor =
+        when (myMaterialPropertiesModel.materialProperties[row]) {
+            is MaterialProperty.MaterialName -> myNameEditor
+            is MaterialProperty.MaterialColor -> myColorEditor
+            is MaterialProperty.MaterialIlluminationValue -> myIlluminationEditor
+            is MaterialProperty.MaterialFloatValue -> myFloatEditor
+            is MaterialProperty.MaterialTexture -> myTextureEditor
+            is MaterialProperty.MaterialTextureScalarChannel -> myScalarChannelEditor
+            is MaterialProperty.MaterialTextureValueModifier -> myFloatEditor
+            is MaterialProperty.MaterialReflectionTexture -> myTextureEditor
+            is MaterialProperty.MaterialReflectionTextureType -> myReflectionTypeEditor
+        }
 }

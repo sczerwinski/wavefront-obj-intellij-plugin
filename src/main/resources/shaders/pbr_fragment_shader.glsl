@@ -2,7 +2,6 @@
 #define MAX_ITERATIONS 1024
 
 uniform vec3 uCameraPos;
-uniform vec3 uLightPos;
 
 uniform vec3 uDiffColor;
 uniform vec3 uEmissionColor;
@@ -90,39 +89,13 @@ vec2 envTexCoord(vec3 direction) {
     return texCoord;
 }
 
-float normalDistribution(vec3 normal, vec3 halfVector, float roughness) {
-    float coefficient = roughness * roughness;
-    float exposure = max(dot(normal, halfVector), 0.0);
-    float divisor = exposure * exposure * (coefficient - 1.0) + 1.0;
-    return coefficient / (pi * divisor * divisor);
-}
-
-float geometryFactor(vec3 normal, vec3 direction, float roughness) {
-    float parameter = (roughness + 1.0) * (roughness + 1.0) / 8.0;
-    float exposure = max(dot(normal, direction), 0.0);
-    return exposure / (exposure * (1.0 - parameter) + parameter);
-}
-
-float geometry(vec3 normal, vec3 cameraDir, vec3 lightDir, float roughness) {
-    return geometryFactor(normal, cameraDir, roughness) * geometryFactor(normal, lightDir, roughness);
-}
-
 vec3 baseSpecularColor(vec3 diffColor, float metalness) {
     return mix(vec3(0.04), diffColor, metalness);
-}
-
-vec3 specularFactor(vec3 baseSpecularColor, vec3 cameraDir, vec3 vector) {
-    float factor = 1.0 - min(1.0, max(dot(cameraDir, vector), 0.0001));
-    return baseSpecularColor + (1.0 - baseSpecularColor) * pow(factor, 5.0);
 }
 
 vec3 specularFactor(vec3 baseSpecularColor, vec3 cameraDir, vec3 vector, float roughness) {
     float factor = 1.0 - min(1.0, max(dot(cameraDir, vector), 0.0001));
     return baseSpecularColor + (max(vec3(1.0 - roughness), baseSpecularColor) - baseSpecularColor) * pow(factor, 5.0);
-}
-
-float specularDivider(vec3 normal, vec3 cameraDir, vec3 lightDir) {
-    return 4.0 * min(1.0, max(max(dot(normal, cameraDir), 0.0) * max(dot(normal, lightDir), 0.0), 0.0001));
 }
 
 void main() {
@@ -141,9 +114,6 @@ void main() {
         discard;
     }
 
-    vec3 lightDir = normalize(uLightPos - vPos);
-    vec3 halfVector = normalize(lightDir + cameraDir);
-
     vec3 normal = normal(texCoord);
 
     if (!gl_FrontFacing) {
@@ -158,15 +128,6 @@ void main() {
     float metalness = channel(uMetalnessChan, texture2D(uMetalnessTex, texCoord)) * uMetalness;
 
     vec3 baseSpecularColor = baseSpecularColor(diffColor, metalness);
-
-    float normalDistribution = normalDistribution(normal, halfVector, roughness);
-    float geometry = geometry(normal, cameraDir, lightDir, roughness);
-
-    vec3 lightSpecularFactor = specularFactor(baseSpecularColor, cameraDir, halfVector);
-    vec3 lightDiffuseFactor = (vec3(1.0) - lightSpecularFactor) * (1.0 - metalness);
-
-    vec3 specularFromLight = normalDistribution * geometry * lightSpecularFactor / specularDivider(normal, cameraDir, lightDir);
-    vec3 colorFromLight = (lightDiffuseFactor * diffColor / pi + specularFromLight) * max(dot(normal, lightDir), 0.0);
 
     vec3 specularFactor = specularFactor(baseSpecularColor, cameraDir, normal, roughness);
 
@@ -187,7 +148,7 @@ void main() {
 
     vec3 ambColor = diffuseFactor * envRadianceColor * diffColor;
 
-    vec3 color = colorFromLight + ambColor + specularColor + emissionColor;
+    vec3 color = ambColor + specularColor + emissionColor;
 
     gl_FragColor = vec4(color, alpha);
 }

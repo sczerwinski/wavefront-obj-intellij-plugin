@@ -24,6 +24,8 @@ import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 fun MaterialPreviewMeshListCellRenderer(): SimpleListCellRenderer<MaterialPreviewMesh> =
     SimpleListCellRenderer.create("") { value ->
         when (value) {
+            MaterialPreviewMesh.PLANE ->
+                WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.previewMesh.plane")
             MaterialPreviewMesh.CUBE ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.previewMesh.cube")
             MaterialPreviewMesh.CYLINDER ->

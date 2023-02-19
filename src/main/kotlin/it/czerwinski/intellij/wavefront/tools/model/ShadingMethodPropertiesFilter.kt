@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.model
+package it.czerwinski.intellij.wavefront.tools.model
 
-enum class MaterialPreviewMesh {
-    PLANE,
-    CUBE,
-    CYLINDER,
-    SPHERE;
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+
+enum class ShadingMethodPropertiesFilter(
+    private val predicate: (Set<ShadingMethod>) -> Boolean
+) {
+    Unsupported(predicate = { shadingMethods -> shadingMethods.isEmpty() }),
+    Material(predicate = { shadingMethods -> ShadingMethod.MATERIAL in shadingMethods }),
+    PBR(predicate = { shadingMethods -> ShadingMethod.PBR in shadingMethods });
+
+    fun matches(shadingMethods: Set<ShadingMethod>): Boolean = predicate(shadingMethods)
 
     companion object {
-        val DEFAULT = SPHERE
+        val DEFAULT_SET = setOf(Material, PBR)
     }
 }

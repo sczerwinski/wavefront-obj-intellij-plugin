@@ -23,6 +23,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.refactoring.RefactoringFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.UIUtil
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement
@@ -47,6 +48,7 @@ sealed class MaterialProperty<E : PsiElement, T> {
     @get:Nls(capitalization = Nls.Capitalization.Title) abstract val actionName: String
     abstract val propertyKeyword: String
     abstract val elementGetter: (MtlMaterialElement) -> E?
+    abstract val shadingMethods: Set<ShadingMethod>
 
     abstract fun getValue(material: MtlMaterialElement?): T?
 
@@ -93,6 +95,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         override val elementGetter: (MtlMaterialElement) -> MtlMaterialIdentifierElement?
     ) : MaterialProperty<MtlMaterialIdentifierElement, String>() {
 
+        override val shadingMethods: Set<ShadingMethod> = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
+
         override fun getValue(material: MtlMaterialElement?): String? =
             material?.let(elementGetter)?.name
 
@@ -121,7 +125,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         @Nls override val label: String,
         @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
         override val propertyKeyword: String,
-        override val elementGetter: (MtlMaterialElement) -> MtlColorElement?
+        override val elementGetter: (MtlMaterialElement) -> MtlColorElement?,
+        override val shadingMethods: Set<ShadingMethod> = emptySet()
     ) : MaterialProperty<MtlColorElement, Color>() {
 
         override fun getValue(material: MtlMaterialElement?): Color? =
@@ -151,6 +156,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         override val elementGetter: (MtlMaterialElement) -> MtlIlluminationValueElement?
     ) : MaterialProperty<MtlIlluminationValueElement, MtlIlluminationValueElement.Illumination>() {
 
+        override val shadingMethods: Set<ShadingMethod> = emptySet()
+
         override fun getValue(material: MtlMaterialElement?): MtlIlluminationValueElement.Illumination? =
             material?.let(elementGetter)?.value
 
@@ -179,7 +186,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         @Nls override val label: String,
         @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
         override val propertyKeyword: String,
-        override val elementGetter: (MtlMaterialElement) -> MtlFloatValueElement?
+        override val elementGetter: (MtlMaterialElement) -> MtlFloatValueElement?,
+        override val shadingMethods: Set<ShadingMethod> = emptySet()
     ) : MaterialProperty<MtlFloatValueElement, Float>() {
 
         override fun getValue(material: MtlMaterialElement?): Float? =
@@ -207,7 +215,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         @Nls override val label: String,
         @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
         override val propertyKeyword: String,
-        override val elementGetter: (MtlMaterialElement) -> MtlTextureElement?
+        override val elementGetter: (MtlMaterialElement) -> MtlTextureElement?,
+        override val shadingMethods: Set<ShadingMethod> = emptySet()
     ) : MaterialProperty<MtlTextureElement, String>() {
 
         override fun getValue(material: MtlMaterialElement?): String? =
@@ -235,6 +244,7 @@ sealed class MaterialProperty<E : PsiElement, T> {
         override val propertyKeyword: String,
         val parentElementGetter: (MtlMaterialElement) -> MtlTextureElement?,
         override val elementGetter: (MtlMaterialElement) -> MtlValueModifierOption?,
+        override val shadingMethods: Set<ShadingMethod> = emptySet(),
         val valueIndex: Int
     ) : MaterialProperty<MtlValueModifierOption, Float>() {
 
@@ -292,7 +302,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
         override val propertyKeyword: String,
         val parentElementGetter: (MtlMaterialElement) -> MtlScalarTextureElement?,
-        override val elementGetter: (MtlMaterialElement) -> MtlScalarChannelOption?
+        override val elementGetter: (MtlMaterialElement) -> MtlScalarChannelOption?,
+        override val shadingMethods: Set<ShadingMethod> = emptySet()
     ) : MaterialProperty<MtlScalarChannelOption, MtlScalarChannel>() {
 
         override fun getValue(material: MtlMaterialElement?): MtlScalarChannel? =
@@ -327,13 +338,15 @@ sealed class MaterialProperty<E : PsiElement, T> {
 
     data class MaterialReflectionTexture(
         @Nls override val label: String,
-        @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String,
+        @Nls(capitalization = Nls.Capitalization.Title) override val actionName: String
     ) : MaterialProperty<MtlTextureElement, String>() {
 
         override val propertyKeyword: String = "refl"
 
         override val elementGetter: (MtlMaterialElement) -> MtlTextureElement? =
             MtlMaterialElement::reflectionMapElement
+
+        override val shadingMethods: Set<ShadingMethod> = setOf(ShadingMethod.PBR)
 
         override fun getValue(material: MtlMaterialElement?): String? =
             material?.let(elementGetter)?.textureFilename
@@ -367,6 +380,8 @@ sealed class MaterialProperty<E : PsiElement, T> {
         val parentElementGetter: (MtlMaterialElement) -> MtlReflectionTextureElement?,
         override val elementGetter: (MtlMaterialElement) -> MtlReflectionTypeOption?
     ) : MaterialProperty<MtlReflectionTypeOption, MtlReflectionType>() {
+
+        override val shadingMethods: Set<ShadingMethod> = setOf(ShadingMethod.PBR)
 
         override fun getValue(material: MtlMaterialElement?): MtlReflectionType? =
             MtlReflectionType.fromValue(material?.let(elementGetter)?.value)

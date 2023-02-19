@@ -5,6 +5,20 @@
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.3.0] - 2023-02-19
+
+### Added
 - Add support for platform version `231.*`
 - Add support for Apple M1 processor (macOS AArch64)
 - Automatically preview material at caret
@@ -17,12 +31,10 @@
 - Setting for generating mipmaps for textures (on/off)
 - Setting for selecting face culling
 - Actions for images:
-- -
   - Generate Diffuse Irradiance Map
   - Generate Pre-Filtered Environment Maps
   - Generate BRDF Integration Maps
 - Add environments for physically based shading method in 3D preview:
-- -
   - Beach (day)
   - Alley (night)
 - Toggle editor split layout orientation with toolbar action
@@ -36,7 +48,6 @@
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:
-- -
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.10`
   - Upgrade `com.google.devtools.ksp` to `1.8.10-1.0.9`
   - Upgrade `org.jetbrains.intellij` to `1.13.0`
@@ -50,7 +61,6 @@
   - Upgrade `gluegen-rt-main` to `2.4.0`
   - Upgrade `detekt-formatting` to `1.22.0`
 - GitHub Actions:
-- -
   - Upgrade `actions/cache` to `v3.2.5`
 
 ### Removed

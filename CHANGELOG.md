@@ -51,6 +51,7 @@
 
 ### Removed
 - Remove support for platform version `221.*`
+- Remove additional light source from PBR shader
 
 ### Fixed
 - Fix error in 3D preview of a line without texture coordinates

@@ -62,6 +62,8 @@ sealed class PreviewMeshAction(
     private fun findMtlSplitEditor(editor: FileEditor?): MtlSplitEditor? =
         editor as? MtlSplitEditor ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? MtlSplitEditor
 
+    class Plane : PreviewMeshAction(MaterialPreviewMesh.PLANE)
+
     class Cube : PreviewMeshAction(MaterialPreviewMesh.CUBE)
 
     class Cylinder : PreviewMeshAction(MaterialPreviewMesh.CYLINDER)

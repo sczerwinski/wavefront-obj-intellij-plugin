@@ -43,6 +43,7 @@ object Icons {
     }
 
     object Mesh {
+        @JvmField val Plane = getIcon(path = "/icons/editor_actions/planeMesh.svg")
         @JvmField val Cube = getIcon(path = "/icons/editor_actions/cubeMesh.svg")
         @JvmField val Cylinder = getIcon(path = "/icons/editor_actions/cylinderMesh.svg")
         @JvmField val Sphere = getIcon(path = "/icons/editor_actions/sphereMesh.svg")

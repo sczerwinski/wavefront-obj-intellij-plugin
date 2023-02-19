@@ -276,6 +276,10 @@
                 id="MtlMaterialPreviewComponent.Toolbar"
                 class="com.intellij.openapi.actionSystem.DefaultActionGroup">
             <action
+                    id="MtlMaterialPreviewComponent.Toolbar.PreviewMeshAction.Plane"
+                    class="it.czerwinski.intellij.wavefront.editor.actions.PreviewMeshAction$Plane"
+                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Mesh.Plane"/>
+            <action
                     id="MtlMaterialPreviewComponent.Toolbar.PreviewMeshAction.Cube"
                     class="it.czerwinski.intellij.wavefront.editor.actions.PreviewMeshAction$Cube"
                     icon="it.czerwinski.intellij.wavefront.icons.Icons.Mesh.Cube"/>

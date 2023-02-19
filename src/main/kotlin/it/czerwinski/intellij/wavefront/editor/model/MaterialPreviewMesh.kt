@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor.model
 
 enum class MaterialPreviewMesh {
+    PLANE,
     CUBE,
     CYLINDER,
     SPHERE;

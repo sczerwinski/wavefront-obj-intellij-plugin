@@ -17,10 +17,12 @@
 - Setting for generating mipmaps for textures (on/off)
 - Setting for selecting face culling
 - Actions for images:
+- -
   - Generate Diffuse Irradiance Map
   - Generate Pre-Filtered Environment Maps
   - Generate BRDF Integration Maps
 - Add environments for physically based shading method in 3D preview:
+- -
   - Beach (day)
   - Alley (night)
 - Toggle editor split layout orientation with toolbar action
@@ -34,6 +36,7 @@
 - Upgrade Java to `17`
 - Upgrade Gradle Wrapper to `7.6`
 - Dependencies:
+- -
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.10`
   - Upgrade `com.google.devtools.ksp` to `1.8.10-1.0.9`
   - Upgrade `org.jetbrains.intellij` to `1.13.0`
@@ -47,6 +50,7 @@
   - Upgrade `gluegen-rt-main` to `2.4.0`
   - Upgrade `detekt-formatting` to `1.22.0`
 - GitHub Actions:
+- -
   - Upgrade `actions/cache` to `v3.2.5`
 
 ### Removed
@@ -548,7 +552,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0...main
+[1.3.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.1.2...v1.2.0

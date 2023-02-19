@@ -14,7 +14,26 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.state
+package it.czerwinski.intellij.wavefront.tools.model
 
-const val APPLICATION_STATE_FILENAME = "wavefrontObj.xml"
-const val PROJECT_STATE_FILENAME = "wavefrontObj.xml"
+import com.intellij.openapi.components.service
+import com.intellij.psi.PsiElement
+
+interface MaterialPropertiesModel {
+
+    val materialProperties: List<MaterialProperty<out PsiElement, out Any?>>
+
+    fun addMaterialPropertiesListener(listener: MaterialPropertiesListener)
+
+    fun removeMaterialPropertiesListener(listener: MaterialPropertiesListener)
+
+    fun interface MaterialPropertiesListener {
+
+        fun materialPropertiesChanged()
+    }
+
+    companion object {
+
+        fun getInstance(): MaterialPropertiesModel = service()
+    }
+}

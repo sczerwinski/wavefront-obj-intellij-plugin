@@ -11,6 +11,7 @@
 - Add support for scalar map channel option (`-imfchan`) in 3D preview and material editor (only RGB)
 - Add support for spherical reflection map (`refl -type sphere`) in 3D preview
 - Add support for reflection map type option in material editor
+- Add filtering of material properties visibility
 - Settings for MTL file editor layout separate from OBJ file editor layout
 - Setting for generating mipmaps for textures (on/off)
 - Setting for selecting face culling

@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.tools
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.event.CaretEvent
@@ -52,7 +53,7 @@ class MaterialPropertiesViewWrapper(
 
     private val myMessageBusConnection = project.messageBus.connect(disposable)
 
-    private val myTableModel = MaterialPropertiesTableModel()
+    private val myTableModel = MaterialPropertiesTableModel(disposable)
     private val myTable = MaterialPropertiesTable(
         project = project,
         model = myTableModel,
@@ -64,6 +65,8 @@ class MaterialPropertiesViewWrapper(
 
         val contentFactory = ContentFactory.getInstance()
         val tableContent = contentFactory.createContent(JBScrollPane(myTable), null, false)
+
+        toolWindow.setTitleActions(listOf(ActionManager.getInstance().getAction(TITLE_ACTIONS_GROUP)))
 
         toolWindow.contentManager.addContent(tableContent)
 
@@ -166,5 +169,9 @@ class MaterialPropertiesViewWrapper(
             private fun findMaterialAtOffset(offset: Int): MtlMaterialElement? =
                 myMaterials.lastOrNull { material -> material.textRange.startOffset <= offset }
         }
+    }
+
+    companion object {
+        private const val TITLE_ACTIONS_GROUP = "MaterialPropertiesToolWindow.Toolbar"
     }
 }

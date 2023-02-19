@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.state
+package it.czerwinski.intellij.wavefront.tools.state
 
-const val APPLICATION_STATE_FILENAME = "wavefrontObj.xml"
-const val PROJECT_STATE_FILENAME = "wavefrontObj.xml"
+import com.intellij.util.messages.Topic
+
+interface MaterialPropertiesFilterListener {
+
+    fun filterChanged(newFilter: MaterialPropertiesFilter)
+
+    companion object {
+        val TOPIC = Topic.create(
+            "MaterialPropertiesFilterChanged",
+            MaterialPropertiesFilterListener::class.java
+        )
+    }
+}

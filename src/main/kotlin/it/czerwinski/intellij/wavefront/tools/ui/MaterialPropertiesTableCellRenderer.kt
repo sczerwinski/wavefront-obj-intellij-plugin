@@ -22,7 +22,7 @@ import it.czerwinski.intellij.common.ui.ColorLabel
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
-import it.czerwinski.intellij.wavefront.tools.model.materialProperties
+import it.czerwinski.intellij.wavefront.tools.model.MaterialPropertiesModel
 import java.awt.Color
 import java.awt.Component
 import javax.swing.JTable
@@ -30,6 +30,8 @@ import javax.swing.SwingConstants
 import javax.swing.table.TableCellRenderer
 
 class MaterialPropertiesTableCellRenderer : TableCellRenderer {
+
+    private val myMaterialPropertiesModel = MaterialPropertiesModel.getInstance()
 
     override fun getTableCellRendererComponent(
         table: JTable?,
@@ -48,7 +50,7 @@ class MaterialPropertiesTableCellRenderer : TableCellRenderer {
         else -> JBLabel(value?.toString().orEmpty())
     }.apply {
         border = labelBorder
-        materialProperties[row].applyStyle(component = this)
+        myMaterialPropertiesModel.materialProperties[row].applyStyle(component = this)
     }
 
     companion object {

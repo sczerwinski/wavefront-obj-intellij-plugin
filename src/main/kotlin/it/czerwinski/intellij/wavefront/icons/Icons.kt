@@ -71,6 +71,12 @@ object Icons {
         @JvmField val Material = getIcon(path = "/icons/editor_actions/materialProperties.svg")
     }
 
+    object Filter {
+        @JvmField val Unsupported = AllIcons.General.ExclMark
+        @JvmField val Material = getIcon(path = "/icons/editor_actions/materialShading.svg")
+        @JvmField val PBR = getIcon(path = "/icons/editor_actions/pbrShading.svg")
+    }
+
     object Generator {
         @JvmField val IBL = getIcon(path = "/icons/editor_actions/ibl.svg")
     }

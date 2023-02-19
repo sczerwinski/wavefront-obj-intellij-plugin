@@ -169,6 +169,11 @@
         <projectService
                 serviceInterface="it.czerwinski.intellij.wavefront.tools.MaterialPropertiesViewFactory"
                 serviceImplementation="it.czerwinski.intellij.wavefront.tools.MaterialPropertiesViewFactoryImpl"/>
+        <applicationService
+                serviceImplementation="it.czerwinski.intellij.wavefront.tools.state.MaterialPropertiesFilter"/>
+        <applicationService
+                serviceInterface="it.czerwinski.intellij.wavefront.tools.model.MaterialPropertiesModel"
+                serviceImplementation="it.czerwinski.intellij.wavefront.tools.model.MaterialPropertiesModelImpl"/>
     </extensions>
 
     <actions>
@@ -322,6 +327,23 @@
                     id="MtlMaterialPreviewComponent.Toolbar.ShowSettingsAction"
                     class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
                     icon="it.czerwinski.intellij.wavefront.icons.Icons.General.Settings"/>
+        </group>
+        <!-- Material Properties tool window -->
+        <group
+                id="MaterialPropertiesToolWindow.Toolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="MaterialPropertiesToolWindow.Toolbar.ShadingMethodPropertiesAction.Unsupported"
+                    class="it.czerwinski.intellij.wavefront.tools.actions.ShadingMethodPropertiesAction$Unsupported"
+                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Filter.Unsupported"/>
+            <action
+                    id="MaterialPropertiesToolWindow.Toolbar.ShadingMethodPropertiesAction.Material"
+                    class="it.czerwinski.intellij.wavefront.tools.actions.ShadingMethodPropertiesAction$Material"
+                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Filter.Material"/>
+            <action
+                    id="MaterialPropertiesToolWindow.Toolbar.ShadingMethodPropertiesAction.PBR"
+                    class="it.czerwinski.intellij.wavefront.tools.actions.ShadingMethodPropertiesAction$PBR"
+                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Filter.PBR"/>
         </group>
         <!-- New file -->
         <action

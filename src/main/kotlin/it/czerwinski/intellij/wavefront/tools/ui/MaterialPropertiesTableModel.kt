@@ -16,23 +16,36 @@
 
 package it.czerwinski.intellij.wavefront.tools.ui
 
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.util.Disposer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
-import it.czerwinski.intellij.wavefront.tools.model.materialProperties
+import it.czerwinski.intellij.wavefront.tools.model.MaterialPropertiesModel
 import javax.swing.table.AbstractTableModel
 
 class MaterialPropertiesTableModel(
+    parent: Disposable,
     material: MtlMaterialElement? = null
-) : AbstractTableModel() {
+) : AbstractTableModel(), Disposable {
+
+    private val myMaterialPropertiesModel = MaterialPropertiesModel.getInstance()
+    private val myMaterialPropertiesListener = MaterialPropertiesModel.MaterialPropertiesListener {
+        fireTableDataChanged()
+    }
 
     private var myMaterial: MtlMaterialElement? = material
+
+    init {
+        myMaterialPropertiesModel.addMaterialPropertiesListener(myMaterialPropertiesListener)
+        Disposer.register(parent, this)
+    }
 
     fun updateMaterial(material: MtlMaterialElement?) {
         myMaterial = material
         fireTableDataChanged()
     }
 
-    override fun getRowCount(): Int = materialProperties.size
+    override fun getRowCount(): Int = myMaterialPropertiesModel.materialProperties.size
 
     override fun getColumnCount(): Int = COLUMNS_COUNT
 
@@ -45,7 +58,7 @@ class MaterialPropertiesTableModel(
     override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean = columnIndex == COLUMN_VALUE
 
     override fun getValueAt(rowIndex: Int, columnIndex: Int): Any? {
-        val property = materialProperties[rowIndex]
+        val property = myMaterialPropertiesModel.materialProperties[rowIndex]
         return when (columnIndex) {
             COLUMN_LABEL -> property.label
             COLUMN_VALUE -> property.getValue(myMaterial)
@@ -54,7 +67,11 @@ class MaterialPropertiesTableModel(
     }
 
     override fun setValueAt(aValue: Any?, rowIndex: Int, columnIndex: Int) {
-        materialProperties[rowIndex].setValue(myMaterial, aValue)
+        myMaterialPropertiesModel.materialProperties[rowIndex].setValue(myMaterial, aValue)
+    }
+
+    override fun dispose() {
+        myMaterialPropertiesModel.removeMaterialPropertiesListener(myMaterialPropertiesListener)
     }
 
     companion object {

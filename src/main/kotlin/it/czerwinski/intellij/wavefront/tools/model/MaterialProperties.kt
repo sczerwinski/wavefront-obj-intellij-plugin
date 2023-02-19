@@ -17,8 +17,9 @@
 package it.czerwinski.intellij.wavefront.tools.model
 
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
-internal val materialProperties = listOf(
+internal val allMaterialProperties = listOf(
     MaterialProperty.MaterialName(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.string.name"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.string.name.action"),
@@ -29,19 +30,22 @@ internal val materialProperties = listOf(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.ambient"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.ambient.action"),
         propertyKeyword = "Ka",
-        elementGetter = { material -> material.ambientColorElement }
+        elementGetter = { material -> material.ambientColorElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialColor(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.diffuse"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.diffuse.action"),
         propertyKeyword = "Kd",
-        elementGetter = { material -> material.diffuseColorElement }
+        elementGetter = { material -> material.diffuseColorElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialColor(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.specular"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.specular.action"),
         propertyKeyword = "Ks",
-        elementGetter = { material -> material.specularColorElement }
+        elementGetter = { material -> material.specularColorElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialColor(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.transmissionFilter"),
@@ -55,7 +59,8 @@ internal val materialProperties = listOf(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.emission"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.emission.action"),
         propertyKeyword = "Ke",
-        elementGetter = { material -> material.emissionColorElement }
+        elementGetter = { material -> material.emissionColorElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialIlluminationValue(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.illumination"),
@@ -75,7 +80,8 @@ internal val materialProperties = listOf(
             "toolwindow.MaterialPropertiesToolWindow.value.specularExponent.action"
         ),
         propertyKeyword = "Ns",
-        elementGetter = { material -> material.specularExponentElement }
+        elementGetter = { material -> material.specularExponentElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialFloatValue(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.sharpness"),
@@ -93,37 +99,43 @@ internal val materialProperties = listOf(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.roughness"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.roughness.action"),
         propertyKeyword = "Pr",
-        elementGetter = { material -> material.roughnessElement }
+        elementGetter = { material -> material.roughnessElement },
+        shadingMethods = setOf(ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialFloatValue(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.metalness"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.metalness.action"),
         propertyKeyword = "Pm",
-        elementGetter = { material -> material.metalnessElement }
+        elementGetter = { material -> material.metalnessElement },
+        shadingMethods = setOf(ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.ambient"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.ambient.action"),
         propertyKeyword = "map_Ka",
-        elementGetter = { material -> material.ambientColorMapElement }
+        elementGetter = { material -> material.ambientColorMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.diffuse"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.diffuse.action"),
         propertyKeyword = "map_Kd",
-        elementGetter = { material -> material.diffuseColorMapElement }
+        elementGetter = { material -> material.diffuseColorMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.specular"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.specular.action"),
         propertyKeyword = "map_Ks",
-        elementGetter = { material -> material.specularColorMapElement }
+        elementGetter = { material -> material.specularColorMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.emission"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.emission.action"),
         propertyKeyword = "map_Ke",
-        elementGetter = { material -> material.emissionColorMapElement }
+        elementGetter = { material -> material.emissionColorMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.specularExponent"),
@@ -131,14 +143,16 @@ internal val materialProperties = listOf(
             "toolwindow.MaterialPropertiesToolWindow.texture.specularExponent.action"
         ),
         propertyKeyword = "map_Ns",
-        elementGetter = { material -> material.specularExponentMapElement }
+        elementGetter = { material -> material.specularExponentMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialTextureScalarChannel(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.specularExponent.imfchan"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.colorChannel.action"),
         propertyKeyword = "map_Ns",
         parentElementGetter = { material -> material.specularExponentMapElement },
-        elementGetter = { material -> material.specularExponentMapElement?.scalarChannelOptionElement }
+        elementGetter = { material -> material.specularExponentMapElement?.scalarChannelOptionElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL)
     ),
     MaterialProperty.MaterialTextureValueModifier(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.specularExponent.base"),
@@ -146,6 +160,7 @@ internal val materialProperties = listOf(
         propertyKeyword = "map_Ns",
         parentElementGetter = { material -> material.specularExponentMapElement },
         elementGetter = { material -> material.specularExponentMapElement?.valueModifierOptionElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL),
         valueIndex = MaterialProperty.MaterialTextureValueModifier.VALUE_INDEX_BASE
     ),
     MaterialProperty.MaterialTextureValueModifier(
@@ -154,6 +169,7 @@ internal val materialProperties = listOf(
         propertyKeyword = "map_Ns",
         parentElementGetter = { material -> material.specularExponentMapElement },
         elementGetter = { material -> material.specularExponentMapElement?.valueModifierOptionElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL),
         valueIndex = MaterialProperty.MaterialTextureValueModifier.VALUE_INDEX_GAIN
     ),
     MaterialProperty.MaterialTexture(
@@ -173,14 +189,16 @@ internal val materialProperties = listOf(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.displacement"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.displacement.action"),
         propertyKeyword = "disp",
-        elementGetter = { material -> material.displacementMapElement }
+        elementGetter = { material -> material.displacementMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTextureScalarChannel(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.displacement.imfchan"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.colorChannel.action"),
         propertyKeyword = "disp",
         parentElementGetter = { material -> material.displacementMapElement },
-        elementGetter = { material -> material.displacementMapElement?.scalarChannelOptionElement }
+        elementGetter = { material -> material.displacementMapElement?.scalarChannelOptionElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTextureValueModifier(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.displacement.gain"),
@@ -188,6 +206,7 @@ internal val materialProperties = listOf(
         propertyKeyword = "disp",
         parentElementGetter = { material -> material.displacementMapElement },
         elementGetter = { material -> material.displacementMapElement?.valueModifierOptionElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR),
         valueIndex = MaterialProperty.MaterialTextureValueModifier.VALUE_INDEX_GAIN
     ),
     MaterialProperty.MaterialTexture(
@@ -207,33 +226,38 @@ internal val materialProperties = listOf(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.roughness"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.roughness.action"),
         propertyKeyword = "map_Pr",
-        elementGetter = { material -> material.roughnessMapElement }
+        elementGetter = { material -> material.roughnessMapElement },
+        shadingMethods = setOf(ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTextureScalarChannel(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.roughness.imfchan"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.colorChannel.action"),
         propertyKeyword = "map_Pr",
         parentElementGetter = { material -> material.roughnessMapElement },
-        elementGetter = { material -> material.roughnessMapElement?.scalarChannelOptionElement }
+        elementGetter = { material -> material.roughnessMapElement?.scalarChannelOptionElement },
+        shadingMethods = setOf(ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.metalness"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.metalness.action"),
         propertyKeyword = "map_Pm",
-        elementGetter = { material -> material.metalnessMapElement }
+        elementGetter = { material -> material.metalnessMapElement },
+        shadingMethods = setOf(ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTextureScalarChannel(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.metalness.imfchan"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.colorChannel.action"),
         propertyKeyword = "map_Pm",
         parentElementGetter = { material -> material.metalnessMapElement },
-        elementGetter = { material -> material.metalnessMapElement?.scalarChannelOptionElement }
+        elementGetter = { material -> material.metalnessMapElement?.scalarChannelOptionElement },
+        shadingMethods = setOf(ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.normalmap"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.normalmap.action"),
         propertyKeyword = "norm",
-        elementGetter = { material -> material.normalMapElement }
+        elementGetter = { material -> material.normalMapElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.bump"),

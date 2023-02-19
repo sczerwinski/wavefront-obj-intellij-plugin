@@ -26,6 +26,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannel
@@ -38,6 +39,9 @@ abstract class MtlMaterialElementImpl(
 ) : ASTWrapperPsiElement(node), MtlMaterialElement {
 
     private val material: MtlMaterial? get() = this as? MtlMaterial
+
+    override val identifierElement: MtlMaterialIdentifierElement?
+        get() = material?.materialIdentifierList?.firstOrNull()
 
     override val ambientColorElement: MtlColorElement? get() = material?.ambientColorList?.firstOrNull()
     override val diffuseColorElement: MtlColorElement? get() = material?.diffuseColorList?.firstOrNull()

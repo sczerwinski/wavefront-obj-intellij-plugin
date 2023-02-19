@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.tools.ui
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.ui.TextFieldWithAutoCompletionListProvider

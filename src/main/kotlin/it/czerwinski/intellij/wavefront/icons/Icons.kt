@@ -67,6 +67,10 @@ object Icons {
         @JvmField val Z = getIcon(path = "/icons/editor_actions/zUp.svg")
     }
 
+    object ToolWindow {
+        @JvmField val Material = getIcon(path = "/icons/editor_actions/materialProperties.svg")
+    }
+
     object Generator {
         @JvmField val IBL = getIcon(path = "/icons/editor_actions/ibl.svg")
     }

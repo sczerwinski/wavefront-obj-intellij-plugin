@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.tools.ui
 
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.editor.model.materialProperties
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
+import it.czerwinski.intellij.wavefront.tools.model.materialProperties
 import javax.swing.table.AbstractTableModel
 
 class MaterialPropertiesTableModel(
@@ -37,8 +37,8 @@ class MaterialPropertiesTableModel(
     override fun getColumnCount(): Int = COLUMNS_COUNT
 
     override fun getColumnName(column: Int): String? = when (column) {
-        COLUMN_LABEL -> WavefrontObjBundle.message("editor.fileTypes.mtl.material.properties.column.label")
-        COLUMN_VALUE -> WavefrontObjBundle.message("editor.fileTypes.mtl.material.properties.column.value")
+        COLUMN_LABEL -> WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.column.label")
+        COLUMN_VALUE -> WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.column.value")
         else -> null
     }
 

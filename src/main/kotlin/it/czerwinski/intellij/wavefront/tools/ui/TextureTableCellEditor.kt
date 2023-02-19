@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.editor.ui
+package it.czerwinski.intellij.wavefront.tools.ui
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.Disposable
@@ -34,6 +34,7 @@ import it.czerwinski.intellij.wavefront.lang.MTL_TEXTURE_ICON
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllTextureFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import java.awt.Component
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JTable
 
 class TextureTableCellEditor(
@@ -49,6 +50,8 @@ class TextureTableCellEditor(
         TextFieldWithAutoCompletion(project, myCompletionProvider, true, "")
     }
 
+    private val requiresUpdate = AtomicBoolean(true)
+
     init {
         updateTextureFiles()
         PsiManager.getInstance(project)
@@ -56,20 +59,22 @@ class TextureTableCellEditor(
     }
 
     private fun updateTextureFiles() {
-        BackgroundTaskUtil.executeOnPooledThread(parent ?: project) {
-            val items = runReadAction {
-                project.findAllTextureFiles().map { file ->
-                    val root = ProjectFileIndex.getInstance(file.project)
-                        .getContentRootForFile(file.virtualFile)
-                    val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
-                        ?: file.containingDirectory?.name
-                    LookupElementBuilder.create(file.name)
-                        .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
-                        .withTypeText(typeText, Icons.General.Folder, false)
+        if (requiresUpdate.compareAndSet(true, false)) {
+            BackgroundTaskUtil.executeOnPooledThread(parent ?: project) {
+                val items = runReadAction {
+                    project.findAllTextureFiles().map { file ->
+                        val root = ProjectFileIndex.getInstance(file.project)
+                            .getContentRootForFile(file.virtualFile)
+                        val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
+                            ?: file.containingDirectory?.name
+                        LookupElementBuilder.create(file.name)
+                            .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
+                            .withTypeText(typeText, Icons.General.Folder, false)
+                    }
                 }
-            }
-            invokeLater {
-                myCompletionProvider.setItems(items)
+                invokeLater {
+                    myCompletionProvider.setItems(items)
+                }
             }
         }
     }
@@ -83,6 +88,7 @@ class TextureTableCellEditor(
         row: Int,
         column: Int
     ): Component {
+        updateTextureFiles()
         myComponent.text = (value as? String).orEmpty()
         return myComponent
     }
@@ -91,37 +97,37 @@ class TextureTableCellEditor(
 
         override fun childAdded(event: PsiTreeChangeEvent) {
             if (event.child.isTextureFile()) {
-                updateTextureFiles()
+                requiresUpdate.set(true)
             }
         }
 
         override fun childRemoved(event: PsiTreeChangeEvent) {
             if (event.child.isTextureFile()) {
-                updateTextureFiles()
+                requiresUpdate.set(true)
             }
         }
 
         override fun childReplaced(event: PsiTreeChangeEvent) {
             if (event.oldChild.isTextureFile() || event.newChild.isTextureFile()) {
-                updateTextureFiles()
+                requiresUpdate.set(true)
             }
         }
 
         override fun childrenChanged(event: PsiTreeChangeEvent) {
             if (event.file.isTextureFile()) {
-                updateTextureFiles()
+                requiresUpdate.set(true)
             }
         }
 
         override fun childMoved(event: PsiTreeChangeEvent) {
             if (event.child.isTextureFile()) {
-                updateTextureFiles()
+                requiresUpdate.set(true)
             }
         }
 
         override fun propertyChanged(event: PsiTreeChangeEvent) {
             if (event.element.isTextureFile()) {
-                updateTextureFiles()
+                requiresUpdate.set(true)
             }
         }
     }

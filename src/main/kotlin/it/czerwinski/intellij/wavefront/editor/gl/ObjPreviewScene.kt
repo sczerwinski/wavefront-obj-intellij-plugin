@@ -199,7 +199,7 @@ class ObjPreviewScene(
     private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh, index: Int) {
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
         val materialName = material?.getName().orEmpty()
-        val materialTexturesProvider = materialTexturesProviders[materialName] ?: return
+        val materialTexturesProvider = materialTexturesProviders[materialName] ?: MaterialTexturesProvider()
 
         val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
@@ -304,7 +304,7 @@ class ObjPreviewScene(
     private fun renderLinesTextured(gl: GlimpseAdapter, linesMesh: Mesh, index: Int) {
         val material: MtlMaterial? = model?.materials?.getOrNull(index)
         val materialName = material?.getName().orEmpty()
-        val materialTexturesProvider = materialTexturesProviders[materialName] ?: return
+        val materialTexturesProvider = materialTexturesProviders[materialName] ?: MaterialTexturesProvider()
 
         val color = material?.diffuseColorVector ?: material?.ambientColorVector ?: Vec3(color = Color.WHITE)
 

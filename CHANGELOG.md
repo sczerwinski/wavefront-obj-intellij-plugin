@@ -14,6 +14,7 @@
 
 ### Fixed
 - Fix solid shading for OBJ files without texture coordinates
+- Fix rendering of material shading preview for OBJ files without material
 
 ### Security
 

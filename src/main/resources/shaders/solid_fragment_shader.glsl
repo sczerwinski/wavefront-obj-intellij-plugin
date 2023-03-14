@@ -1,11 +1,10 @@
 uniform vec3 uColor;
 
-varying vec3 vPosTan;
-varying vec3 vLightPosTan;
+varying vec3 vNormal;
+varying vec3 vLightDir;
 
 void main() {
-    vec3 lightDir = normalize(vLightPosTan - vPosTan);
-    float exposure = max(lightDir.z, 0.0) * 0.6 + 0.4;
+    float exposure = max(dot(vNormal, vLightDir), 0.0) * 0.7 + 0.3;
 
     gl_FragColor = vec4(uColor * exposure, 1.0);
 }

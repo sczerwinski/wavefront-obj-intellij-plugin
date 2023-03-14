@@ -13,6 +13,7 @@
 ### Removed
 
 ### Fixed
+- Fix solid shading for OBJ files without texture coordinates
 
 ### Security
 

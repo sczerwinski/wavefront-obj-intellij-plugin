@@ -28,7 +28,6 @@ import graphics.glimpse.types.Vec3
     attributes = [
         Attribute(name = "aPos", role = AttributeRole.POSITIONS, vectorSize = 3),
         Attribute(name = "aNormal", role = AttributeRole.NORMALS, vectorSize = 3),
-        Attribute(name = "aTangent", role = AttributeRole.TANGENTS, vectorSize = 3),
     ]
 )
 data class SolidShader(

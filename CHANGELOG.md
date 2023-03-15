@@ -7,6 +7,12 @@
 ### Added
 
 ### Changed
+- Dependencies:
+  - Upgrade `org.jetbrains.intellij` to `1.13.2`
+  - Upgrade `org.jetbrains.grammarkit` to `2022.3.1`
+- GitHub Actions:
+  - Upgrade `actions/cache` to `v3.3.1`
+  - Upgrade `gradle/wrapper-validation-action` to `v1.0.6`
 
 ### Deprecated
 

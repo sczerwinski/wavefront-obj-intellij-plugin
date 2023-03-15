@@ -51,12 +51,15 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 import java.awt.BorderLayout
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ObjPreviewComponent(
     private val project: Project,
     private val file: VirtualFile,
     parent: Disposable
 ) : ZoomablePreviewComponent(project, parent) {
+
+    private val isInitialized = AtomicBoolean(false)
 
     private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
 
@@ -171,16 +174,18 @@ class ObjPreviewComponent(
     }
 
     override fun onInitialize() {
-        val psiManager = PsiManager.getInstance(project)
-        val objFile = runReadAction {
-            requireNotNull(psiManager.findFile(file) as? ObjFile)
+        if (isInitialized.compareAndSet(false, true)) {
+            val psiManager = PsiManager.getInstance(project)
+            val objFile = runReadAction {
+                requireNotNull(psiManager.findFile(file) as? ObjFile)
+            }
+
+            psiTreeChangeListener?.let { listener -> psiManager.removePsiTreeChangeListener(listener) }
+            psiTreeChangeListener = MyPsiTreeChangeListener(objFile)
+            psiTreeChangeListener?.let { listener -> psiManager.addPsiTreeChangeListener(listener, this) }
+
+            updateObjFile(objFile)
         }
-
-        psiTreeChangeListener?.let { listener -> psiManager.removePsiTreeChangeListener(listener) }
-        psiTreeChangeListener = MyPsiTreeChangeListener(objFile)
-        psiTreeChangeListener?.let { listener -> psiManager.addPsiTreeChangeListener(listener, this) }
-
-        updateObjFile(objFile)
     }
 
     private fun updateObjFile(objFile: ObjFile?) {

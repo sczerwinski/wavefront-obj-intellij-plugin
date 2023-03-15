@@ -25,6 +25,7 @@ import graphics.glimpse.cameras.TargetCamera
 import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
 import graphics.glimpse.textures.Texture
+import graphics.glimpse.types.Vec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.MtlPreviewMeshesManager
@@ -89,7 +90,7 @@ class MtlPreviewScene(
             requestRender()
         }
 
-    override val upVector: UpVector = UpVector.Z_UP
+    override val upVector: UpVector = cameraModel?.upVector ?: UpVector.DEFAULT
 
     override val showEnvironment: Boolean get() = shadingMethod == ShadingMethod.PBR
 
@@ -121,11 +122,7 @@ class MtlPreviewScene(
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
-            camera = TargetCamera(
-                upVector.modelMatrix.toMat3() * graphics.glimpse.types.Vec3(x, y, z),
-                graphics.glimpse.types.Vec3.nullVector,
-                graphics.glimpse.types.Vec3.unitZ
-            )
+            camera = TargetCamera(upVector.modelMatrix.toMat3() * Vec3(x, y, z), Vec3.nullVector, Vec3.unitZ)
             lens = PerspectiveLens(fovY(aspect), aspect, near, far)
         }
         requestRender()
@@ -169,10 +166,9 @@ class MtlPreviewScene(
 
     @Suppress("ComplexMethod")
     private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh) {
-        val fallbackEmissionColor =
-            graphics.glimpse.types.Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
-        val fallbackColor = graphics.glimpse.types.Vec3(color = Color.WHITE)
+        val fallbackColor = Vec3(color = Color.WHITE)
 
         programExecutorsManager.renderMaterial(
             gl,
@@ -209,8 +205,7 @@ class MtlPreviewScene(
 
     @Suppress("ComplexMethod")
     private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh) {
-        val fallbackEmissionColor =
-            graphics.glimpse.types.Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
 
         programExecutorsManager.renderPBR(
@@ -221,7 +216,7 @@ class MtlPreviewScene(
                 modelMatrix = upVector.modelMatrix,
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
-                diffuseColor = material?.diffuseColorVector ?: graphics.glimpse.types.Vec3(color = Color.WHITE),
+                diffuseColor = material?.diffuseColorVector ?: Vec3(color = Color.WHITE),
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,

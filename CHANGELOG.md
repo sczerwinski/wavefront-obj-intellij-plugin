@@ -17,6 +17,7 @@
 - Fix rendering of material shading preview for OBJ files without material
 - Fix two-way navigation between MTL text editor and material preview
 - Fix displacement glitch after OBJ preview refreshing
+- Fix displacement calculations for material shading
 
 ### Security
 

@@ -1,3 +1,7 @@
+#define MAX_ITERATIONS 1024
+
+uniform vec3 uCameraPos;
+
 uniform vec3 uAmbColor;
 uniform vec3 uDiffColor;
 uniform vec3 uSpecColor;
@@ -20,12 +24,22 @@ uniform float uDispQuality;
 uniform int uDispChan;
 uniform int uCropTex;
 
-varying vec3 vPosTan;
-varying vec3 vCameraPosTan;
-varying vec3 vLightPosTan;
+varying vec3 vPos;
+varying vec3 vNormal;
+varying vec3 vTangent;
+varying vec3 vBitangent;
 varying vec2 vTexCoord;
 
-#define MAX_ITERATIONS 1024
+mat3 tbnMat() {
+    vec3 normal = normalize(vNormal);
+    vec3 tangent = normalize(vTangent);
+    vec3 bitangent = normalize(vBitangent);
+    return mat3(tangent, bitangent, normal);
+}
+
+vec3 normal(vec2 texCoord) {
+    return normalize(tbnMat() * normalize(texture2D(uNormalTex, texCoord).rgb * 2.0 - 1.0));
+}
 
 float channel(int channel, vec4 color) {
     if (channel == 0) return color.r;
@@ -39,8 +53,12 @@ float displacement(vec2 texCoord) {
 }
 
 vec2 displacedTexCoord(vec3 cameraDir) {
-    float depthStep = pow(2.0, -uDispQuality) / max(dot(vec3(0.0, 0.0, 1.0), cameraDir), 0.01);
-    vec2 texCoordDisplacementStep = cameraDir.xy * uDispGain * depthStep;
+    vec3 normal = normalize(vNormal);
+    vec3 tangent = normalize(vTangent);
+    vec3 bitangent = normalize(vBitangent);
+
+    float depthStep = pow(2.0, -uDispQuality) / max(dot(normal, cameraDir), 0.01);
+    vec2 texCoordDisplacementStep = vec2(dot(tangent, cameraDir), dot(bitangent, cameraDir)) * uDispGain * depthStep;
 
     vec2 newTexCoord = vTexCoord;
     vec2 oldTexCoord = vTexCoord;
@@ -63,7 +81,7 @@ vec2 displacedTexCoord(vec3 cameraDir) {
 }
 
 void main() {
-    vec3 cameraDir = normalize(vCameraPosTan - vPosTan);
+    vec3 cameraDir = normalize(uCameraPos - vPos);
 
     vec2 texCoord = displacedTexCoord(cameraDir);
 
@@ -79,7 +97,12 @@ void main() {
         discard;
     }
 
-    vec3 lightDir = normalize(vLightPosTan - vPosTan);
+    cameraDir = normalize(uCameraPos);
+    vec3 cameraUp = tbnMat() * vec3(0.0, 0.0, 1.0);
+    vec3 cameraLeft = normalize(cross(cameraDir, cameraUp));
+    cameraUp = cross(cameraLeft, cameraDir);
+    vec3 lightDir = normalize(cameraDir * 2.0 + cameraLeft + cameraUp);
+
     vec3 halfVector = normalize(lightDir + cameraDir);
 
     vec3 normal = normalize(texture2D(uNormalTex, texCoord).rgb * 2.0 - 1.0);

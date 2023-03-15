@@ -14,9 +14,9 @@ plugins {
     // Kotlin Symbol Processing
     id("com.google.devtools.ksp") version "1.8.10-1.0.9"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.0"
+    id("org.jetbrains.intellij") version "1.13.2"
     // Gradle Grammar-Kit Plugin
-    id("org.jetbrains.grammarkit") version "2022.3"
+    id("org.jetbrains.grammarkit") version "2022.3.1"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
@@ -57,21 +57,18 @@ dependencies {
 // Read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
 fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {}) =
     task<GenerateParserTask>("generateParser${suffix.capitalize()}") {
-        source.set("src/main/grammar/${suffix.capitalize()}.bnf")
+        sourceFile.set(file("src/main/grammar/${suffix.capitalize()}.bnf"))
         targetRoot.set("${project.buildDir}/generated/source/parser/$suffix")
         pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.capitalize()}Parser.java")
         pathToPsiRoot.set("it/czerwinski/intellij/wavefront/lang/psi")
         purgeOldFiles.set(true)
-        sourceFile.convention(source.map { project.layout.projectDirectory.file(it) })
         targetRootOutputDir.convention(targetRoot.map { project.layout.projectDirectory.dir(it) })
-        parserFile.convention(pathToParser.map { project.layout.projectDirectory.file("${targetRoot.get()}/$it") })
-        psiDir.convention(pathToPsiRoot.map { project.layout.projectDirectory.dir("${targetRoot.get()}/$it") })
         config()
     }
 
 fun generateLexerTask(suffix: String, config: GenerateLexerTask.() -> Unit = {}) =
     task<GenerateLexerTask>("generateLexer${suffix.capitalize()}") {
-        source.set("src/main/grammar/${suffix.capitalize()}.flex")
+        sourceFile.set(file("src/main/grammar/${suffix.capitalize()}.flex"))
         targetDir.set("${project.buildDir}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang")
         targetClass.set("${suffix.capitalize()}Lexer")
         purgeOldFiles.set(true)

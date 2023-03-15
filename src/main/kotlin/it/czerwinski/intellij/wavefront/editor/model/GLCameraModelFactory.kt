@@ -31,6 +31,6 @@ object GLCameraModelFactory {
         longitude = longitude,
         latitude = latitude,
         fov = fov,
-        upVector = UpVector.Z_UP
+        upVector = UpVector.DEFAULT
     )
 }

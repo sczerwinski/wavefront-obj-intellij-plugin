@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.editor.event.CaretEvent
 import com.intellij.openapi.editor.event.CaretListener
@@ -107,7 +108,9 @@ class MtlMaterialComponent(
                     val caretModel = SplitEditor.KEY_CARET_MODEL[editor]
                     val materialAtCaret = myMaterialComboBoxModel.findItemAtOffset(caretModel.offset)
                     if (selectedMaterial != null && selectedMaterial != materialAtCaret) {
-                        caretModel.moveToOffset(selectedMaterial.startOffset)
+                        invokeLater {
+                            caretModel.moveToOffset(selectedMaterial.startOffset)
+                        }
                     }
 
                     myMaterialPreviewComponent.updateMaterial(selectedMaterial)
@@ -153,7 +156,11 @@ class MtlMaterialComponent(
     private fun updateMtlFile(mtlFile: MtlFile?) {
         runReadAction {
             myMtlFile = mtlFile
-            myMaterialComboBoxModel.updateMaterials(mtlFile?.materials.orEmpty())
+            myMaterialComboBoxModel.updateMaterials(
+                materials = mtlFile?.materials.orEmpty(),
+                caretOffset = SplitEditor.KEY_CARET_MODEL[editor].offset
+            )
+            myMaterialPreviewComponent.updateMaterial(material)
         }
     }
 

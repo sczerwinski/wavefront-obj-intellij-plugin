@@ -51,15 +51,29 @@ class MaterialComboBoxModel(
 
     override fun getSelectedItem(): Any? = mySelected
 
-    fun updateMaterials(materials: Iterable<MtlMaterialElement>) {
+    fun updateMaterials(materials: Iterable<MtlMaterialElement>, caretOffset: Int) {
         if (myList != materials) {
             val oldSize = myList.size
-            myList.clear()
-            myList.addAll(materials)
-            if (mySelected !in myList) {
-                mySelected = myList.firstOrNull()
-            }
+            updateList(materials)
+            updateSelection(caretOffset)
             fireContentsChanged(this, 0, max(oldSize, myList.size))
+        } else if (myList.map(MtlMaterialElement::getName) != materials.map(MtlMaterialElement::getName)) {
+            fireContentsChanged(this, 0, myList.size)
+        }
+    }
+
+    private fun updateList(materials: Iterable<MtlMaterialElement>) {
+        myList.clear()
+        myList.addAll(materials)
+    }
+
+    private fun updateSelection(caretOffset: Int) {
+        val itemAtOffset = findItemAtOffset(caretOffset)
+        if (itemAtOffset != null) {
+            mySelected = itemAtOffset
+        }
+        if (mySelected !in myList) {
+            mySelected = myList.firstOrNull()
         }
     }
 }

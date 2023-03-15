@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.3.1] - 2023-03-15
+
 ### Changed
 - Dependencies:
   - Upgrade `org.jetbrains.intellij` to `1.13.2`
@@ -565,7 +579,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.1...main
+[1.3.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.0...v1.2.1

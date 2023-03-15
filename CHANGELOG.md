@@ -4,8 +4,6 @@
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
 - Dependencies:
   - Upgrade `org.jetbrains.intellij` to `1.13.2`
@@ -14,18 +12,12 @@
   - Upgrade `actions/cache` to `v3.3.1`
   - Upgrade `gradle/wrapper-validation-action` to `v1.0.6`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Fix solid shading for OBJ files without texture coordinates
 - Fix rendering of material shading preview for OBJ files without material
 - Fix two-way navigation between MTL text editor and material preview
 - Fix displacement glitch after OBJ preview refreshing
 - Fix displacement calculations for material shading
-
-### Security
 
 ## [1.3.0] - 2023-02-19
 

@@ -21,6 +21,7 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
@@ -38,7 +39,7 @@ class ObjMaterialLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     override fun getName(): String = myName
 
-    override fun getIcon(): Icon = OBJ_MATERIAL_ICON
+    override fun getIcon(): Icon = Icons.Structure.Obj.Material
 
     override fun collectNavigationMarkers(
         element: PsiElement,

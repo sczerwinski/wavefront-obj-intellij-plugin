@@ -23,14 +23,14 @@ import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.PreviewColors
-import it.czerwinski.intellij.wavefront.lang.OBJ_FILE_ICON
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter
 import javax.swing.Icon
 
 class ObjColorSettingsPage : ColorSettingsPage {
 
     override fun getIcon(): Icon =
-        OBJ_FILE_ICON
+        Icons.Structure.Obj.File
 
     override fun getHighlighter(): SyntaxHighlighter =
         ObjSyntaxHighlighter()

@@ -17,7 +17,7 @@
 package it.czerwinski.intellij.common.ui
 
 import com.intellij.ui.components.JBLabel
-import it.czerwinski.intellij.wavefront.lang.ColorIcon
+import it.czerwinski.intellij.wavefront.icons.Icons
 import java.awt.Color
 
 class ColorLabel(color: Color?) : JBLabel() {
@@ -36,7 +36,7 @@ class ColorLabel(color: Color?) : JBLabel() {
 
     private fun updateColor(value: Color?) {
         myColor = value
-        icon = value?.let { ColorIcon(it) }
+        icon = value?.let(Icons::ColorIcon)
         text = color?.rgb?.toUInt()?.toString(radix = 16).orEmpty()
     }
 }

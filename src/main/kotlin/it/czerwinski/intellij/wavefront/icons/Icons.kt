@@ -18,68 +18,113 @@ package it.czerwinski.intellij.wavefront.icons
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.IconLoader
+import com.intellij.util.ui.ColorIcon
+import java.awt.Color
 import javax.swing.Icon
 
 object Icons {
 
+    private const val ColorIconSize = 14
+    private const val ColorIconColorSize = 12
+
+    fun ColorIcon(color: Color): ColorIcon = ColorIcon(ColorIconSize, ColorIconColorSize, color, false)
+
     object General {
         @JvmField val Refresh = AllIcons.Actions.Refresh
         @JvmField val Settings = AllIcons.General.Settings
-        @JvmField val Error = AllIcons.General.Error
+        @JvmField val Error = AllIcons.General.BalloonError
         @JvmField val Folder = AllIcons.Nodes.Folder
     }
 
     object Zoom {
-        @JvmField val In = AllIcons.General.ZoomIn
-        @JvmField val Out = AllIcons.General.ZoomOut
+        @JvmField val In = AllIcons.Graph.ZoomIn
+        @JvmField val Out = AllIcons.Graph.ZoomOut
         @JvmField val Fit = AllIcons.General.FitContent
     }
 
     object Layout {
         @JvmField val EditorOnly = AllIcons.General.LayoutEditorOnly
         @JvmField val EditorPreviewHorizontal = AllIcons.General.LayoutEditorPreview
-        @JvmField val EditorPreviewVertical = getIcon(path = "/icons/editor_actions/layoutEditorPreviewVertical.svg")
+        @JvmField val EditorPreviewVertical = getIcon(path = "/icons/actions/editorPreviewVertical.svg")
         @JvmField val PreviewOnly = AllIcons.General.LayoutPreviewOnly
     }
 
     object Mesh {
-        @JvmField val Plane = getIcon(path = "/icons/editor_actions/planeMesh.svg")
-        @JvmField val Cube = getIcon(path = "/icons/editor_actions/cubeMesh.svg")
-        @JvmField val Cylinder = getIcon(path = "/icons/editor_actions/cylinderMesh.svg")
-        @JvmField val Sphere = getIcon(path = "/icons/editor_actions/sphereMesh.svg")
+        @JvmField val Plane = getIcon(path = "/icons/actions/planeMesh.svg")
+        @JvmField val Cube = getIcon(path = "/icons/actions/cubeMesh.svg")
+        @JvmField val Cylinder = getIcon(path = "/icons/actions/cylinderMesh.svg")
+        @JvmField val Sphere = getIcon(path = "/icons/actions/sphereMesh.svg")
     }
 
     object Shading {
-        @JvmField val Wireframe = getIcon(path = "/icons/editor_actions/wireframeShading.svg")
-        @JvmField val Solid = getIcon(path = "/icons/editor_actions/solidShading.svg")
-        @JvmField val Material = getIcon(path = "/icons/editor_actions/materialShading.svg")
-        @JvmField val PBR = getIcon(path = "/icons/editor_actions/pbrShading.svg")
+        @JvmField val Wireframe = getIcon(path = "/icons/actions/wireframeShading.svg")
+        @JvmField val Solid = getIcon(path = "/icons/actions/solidShading.svg")
+        @JvmField val Material = getIcon(path = "/icons/actions/materialShading.svg")
+        @JvmField val PBR = getIcon(path = "/icons/actions/pbrShading.svg")
     }
 
     object Toggle {
-        @JvmField val CropTextures = getIcon(path = "/icons/editor_actions/cropTextures.svg")
-        @JvmField val Axes = getIcon(path = "/icons/editor_actions/axes.svg")
-        @JvmField val Grid = getIcon(path = "/icons/editor_actions/grid.svg")
+        @JvmField val CropTextures = getIcon(path = "/icons/actions/cropTextures.svg")
+        @JvmField val Axes = getIcon(path = "/icons/actions/axes.svg")
+        @JvmField val Grid = AllIcons.Graph.Grid
     }
 
     object Axis {
-        @JvmField val X = getIcon(path = "/icons/editor_actions/xUp.svg")
-        @JvmField val Y = getIcon(path = "/icons/editor_actions/yUp.svg")
-        @JvmField val Z = getIcon(path = "/icons/editor_actions/zUp.svg")
+        @JvmField val X = getIcon(path = "/icons/actions/xUp.svg")
+        @JvmField val Y = getIcon(path = "/icons/actions/yUp.svg")
+        @JvmField val Z = getIcon(path = "/icons/actions/zUp.svg")
     }
 
     object ToolWindow {
-        @JvmField val Material = getIcon(path = "/icons/editor_actions/materialProperties.svg")
+        @JvmField val Material = getIcon(path = "/icons/actions/materialProperties.svg")
     }
 
     object Filter {
-        @JvmField val Unsupported = AllIcons.General.ExclMark
-        @JvmField val Material = getIcon(path = "/icons/editor_actions/materialShading.svg")
-        @JvmField val PBR = getIcon(path = "/icons/editor_actions/pbrShading.svg")
+        @JvmField val Unsupported = AllIcons.General.ShowWarning
+        @JvmField val Material = getIcon(path = "/icons/actions/materialShading.svg")
+        @JvmField val PBR = getIcon(path = "/icons/actions/pbrShading.svg")
     }
 
     object Generator {
-        @JvmField val IBL = getIcon(path = "/icons/editor_actions/ibl.svg")
+        @JvmField val IBL = getIcon(path = "/icons/actions/ibl.svg")
+    }
+
+    object Structure {
+
+        object Mtl {
+            @JvmField val File: Icon = getIcon(path = "/icons/structure/mtlFile.svg")
+
+            @JvmField val Material: Icon = getIcon(path = "/icons/structure/mtlMaterial.svg")
+
+            @JvmField val Property: Icon = getIcon(path = "/icons/structure/mtlProperty.svg")
+            @JvmField val Texture: Icon = getIcon(path = "/icons/structure/mtlTexture.svg")
+            @JvmField val Option: Icon = getIcon(path = "/icons/structure/mtlOption.svg")
+        }
+
+        object Obj {
+            @JvmField val File: Icon = getIcon(path = "/icons/structure/objFile.svg")
+
+            @JvmField val Object: Icon = getIcon(path = "/icons/structure/objObject.svg")
+            @JvmField val Group: Icon = getIcon(path = "/icons/structure/objGroup.svg")
+
+            @JvmField val Vertex: Icon = getIcon(path = "/icons/structure/objVertex.svg")
+            @JvmField val TextureCoordinates: Icon = getIcon(path = "/icons/structure/objTextureCoordinates.svg")
+            @JvmField val VertexNormal: Icon = getIcon(path = "/icons/structure/objVertexNormal.svg")
+
+            @JvmField val FaceTriangle: Icon = getIcon(path = "/icons/structure/objFaceTriangle.svg")
+            @JvmField val FaceQuad: Icon = getIcon(path = "/icons/structure/objFaceQuad.svg")
+            @JvmField val FacePolygon: Icon = getIcon(path = "/icons/structure/objFacePolygon.svg")
+            @JvmField val Line: Icon = getIcon(path = "/icons/structure/objLine.svg")
+            @JvmField val Point: Icon = getIcon(path = "/icons/structure/objPoint.svg")
+
+            val FaceVertex: Icon get() = Vertex
+            val LineVertex: Icon get() = Vertex
+
+            @JvmField val SmoothingGroup: Icon = getIcon(path = "/icons/structure/objSmoothing.svg")
+
+            val MaterialFile: Icon get() = Mtl.File
+            val Material: Icon get() = Mtl.Material
+        }
     }
 
     private fun getIcon(path: String): Icon =

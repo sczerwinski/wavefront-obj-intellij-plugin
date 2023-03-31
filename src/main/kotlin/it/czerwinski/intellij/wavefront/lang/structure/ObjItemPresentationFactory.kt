@@ -23,22 +23,6 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.icons.Icons
-import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_POLYGON_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_QUAD_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_TRIANGLE_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_FACE_VERTEX_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_FILE_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_GROUP_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_LINE_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_LINE_VERTEX_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_FILE_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_MATERIAL_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_OBJECT_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_POINT_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_SMOOTHING_GROUP_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_TEXTURE_COORDINATES_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_VERTEX_ICON
-import it.czerwinski.intellij.wavefront.lang.OBJ_VERTEX_NORMAL_ICON
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceVertex
@@ -101,7 +85,7 @@ object ObjItemPresentationFactory {
 
     private fun createPresentation(file: ObjFile): ItemPresentation = createPresentation(
         presentableText = file.name,
-        icon = OBJ_FILE_ICON
+        icon = Icons.Structure.Obj.File
     )
 
     private fun createPresentation(obj: ObjObject): ItemPresentation = createPresentation(
@@ -112,7 +96,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.object.triangles",
             obj.trianglesCount
         ),
-        icon = OBJ_OBJECT_ICON
+        icon = Icons.Structure.Obj.Object
     )
 
     private fun createPresentation(group: ObjGroup): ItemPresentation = createPresentation(
@@ -123,7 +107,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.group.triangles",
             group.trianglesCount
         ),
-        icon = OBJ_GROUP_ICON
+        icon = Icons.Structure.Obj.Group
     )
 
     private fun createPresentation(vertex: ObjVertex): ItemPresentation = createPresentation(
@@ -131,7 +115,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.vertex"
         ),
         locationString = vertex.coordinatesString,
-        icon = OBJ_VERTEX_ICON
+        icon = Icons.Structure.Obj.Vertex
     )
 
     private fun createPresentation(textureCoordinates: ObjTextureCoordinates): ItemPresentation = createPresentation(
@@ -139,7 +123,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.textureCoordinates"
         ),
         locationString = textureCoordinates.coordinatesString,
-        icon = OBJ_TEXTURE_COORDINATES_ICON
+        icon = Icons.Structure.Obj.TextureCoordinates
     )
 
     private fun createPresentation(vertexNormal: ObjVertexNormal): ItemPresentation = createPresentation(
@@ -147,7 +131,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.vertexNormal"
         ),
         locationString = vertexNormal.coordinatesString,
-        icon = OBJ_VERTEX_NORMAL_ICON
+        icon = Icons.Structure.Obj.VertexNormal
     )
 
     private fun createPresentation(face: ObjFace): ItemPresentation {
@@ -163,9 +147,9 @@ object ObjItemPresentationFactory {
                 "fileTypes.obj.structure.presentation.face"
             ),
             icon = when (faceType) {
-                ObjFaceType.TRIANGLE -> OBJ_FACE_TRIANGLE_ICON
-                ObjFaceType.QUAD -> OBJ_FACE_QUAD_ICON
-                ObjFaceType.POLYGON -> OBJ_FACE_POLYGON_ICON
+                ObjFaceType.TRIANGLE -> Icons.Structure.Obj.FaceTriangle
+                ObjFaceType.QUAD -> Icons.Structure.Obj.FaceQuad
+                ObjFaceType.POLYGON -> Icons.Structure.Obj.FacePolygon
             }
         )
     }
@@ -175,7 +159,7 @@ object ObjItemPresentationFactory {
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.line"
         ),
-        icon = OBJ_LINE_ICON
+        icon = Icons.Structure.Obj.Line
     )
 
     @Suppress("UnusedPrivateMember")
@@ -183,7 +167,7 @@ object ObjItemPresentationFactory {
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.point"
         ),
-        icon = OBJ_POINT_ICON
+        icon = Icons.Structure.Obj.Point
     )
 
     @Suppress("UnusedPrivateMember")
@@ -191,7 +175,7 @@ object ObjItemPresentationFactory {
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.faceVertex"
         ),
-        icon = OBJ_FACE_VERTEX_ICON
+        icon = Icons.Structure.Obj.FaceVertex
     )
 
     @Suppress("UnusedPrivateMember")
@@ -199,7 +183,7 @@ object ObjItemPresentationFactory {
         presentableText = WavefrontObjBundle.message(
             "fileTypes.obj.structure.presentation.lineVertex"
         ),
-        icon = OBJ_LINE_VERTEX_ICON
+        icon = Icons.Structure.Obj.LineVertex
     )
 
     private fun createPresentation(vertexIndex: ObjVertexIndex): ItemPresentation = createPresentation(
@@ -207,7 +191,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.vertex"
         ),
         locationString = vertexIndex.value.toString(),
-        icon = OBJ_VERTEX_ICON
+        icon = Icons.Structure.Obj.Vertex
     )
 
     private fun createPresentation(
@@ -217,7 +201,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.textureCoordinates"
         ),
         locationString = textureCoordinatesIndex.value.toString(),
-        icon = OBJ_TEXTURE_COORDINATES_ICON
+        icon = Icons.Structure.Obj.TextureCoordinates
     )
 
     private fun createPresentation(vertexNormalIndex: ObjVertexNormalIndex): ItemPresentation = createPresentation(
@@ -225,7 +209,7 @@ object ObjItemPresentationFactory {
             "fileTypes.obj.structure.presentation.vertexNormal"
         ),
         locationString = vertexNormalIndex.value.toString(),
-        icon = OBJ_VERTEX_NORMAL_ICON
+        icon = Icons.Structure.Obj.VertexNormal
     )
 
     private fun createPresentation(smoothShading: ObjSmoothingGroup): ItemPresentation {
@@ -241,7 +225,7 @@ object ObjItemPresentationFactory {
             } else {
                 value.toString()
             },
-            icon = OBJ_SMOOTHING_GROUP_ICON
+            icon = Icons.Structure.Obj.SmoothingGroup
         )
     }
 
@@ -251,7 +235,7 @@ object ObjItemPresentationFactory {
             presentableText = WavefrontObjBundle.message(
                 "fileTypes.obj.structure.presentation.materialFileReference"
             ),
-            icon = OBJ_MATERIAL_FILE_ICON
+            icon = Icons.Structure.Obj.MaterialFile
         )
 
     private fun createPresentation(materialFileReference: ObjMaterialFileReference): ItemPresentation =
@@ -259,15 +243,14 @@ object ObjItemPresentationFactory {
             presentableText = materialFileReference.filename ?: WavefrontObjBundle.message(
                 "fileTypes.obj.structure.presentation.materialFile"
             ),
-            icon = OBJ_MATERIAL_FILE_ICON
+            icon = Icons.Structure.Obj.MaterialFile
         )
 
     private fun createPresentation(materialReference: ObjMaterialReference): ItemPresentation =
         createPresentation(
-            presentableText = materialReference.materialName ?: WavefrontObjBundle.message(
-                "fileTypes.obj.structure.presentation.material"
-            ),
-            icon = OBJ_MATERIAL_ICON
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.material"),
+            locationString = materialReference.materialName.orEmpty(),
+            icon = Icons.Structure.Obj.Material
         )
 
     private fun createErrorPresentation(

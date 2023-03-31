@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.openapi.fileTypes.LanguageFileType
+import it.czerwinski.intellij.wavefront.icons.Icons
 import javax.swing.Icon
 
 object MtlFileType : LanguageFileType(MtlLanguage) {
@@ -27,5 +28,5 @@ object MtlFileType : LanguageFileType(MtlLanguage) {
 
     override fun getDefaultExtension(): String = "mtl"
 
-    override fun getIcon(): Icon = MTL_FILE_ICON
+    override fun getIcon(): Icon = Icons.Structure.Mtl.File
 }

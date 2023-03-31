@@ -61,7 +61,7 @@ class TextureFileReference(
                 val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
                     ?: file.containingDirectory?.name
                 LookupElementBuilder.create(file.name)
-                    .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
+                    .withIcon(file.fileType.icon ?: Icons.Structure.Mtl.Texture)
                     .withTypeText(typeText, Icons.General.Folder, false)
             }
             .toTypedArray()

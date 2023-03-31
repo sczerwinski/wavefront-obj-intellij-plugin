@@ -51,7 +51,7 @@ class MtlFileReference(
                 val text = findRelativePath(myElement.containingFile.originalFile, file)
                     ?: file.name
                 LookupElementBuilder.create(text)
-                    .withIcon(MTL_FILE_ICON)
+                    .withIcon(Icons.Structure.Mtl.File)
                     .withTypeText(typeText, Icons.General.Folder, false)
             }
             .toTypedArray()

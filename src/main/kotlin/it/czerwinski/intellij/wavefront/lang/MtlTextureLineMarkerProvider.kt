@@ -21,6 +21,7 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 import javax.swing.Icon
@@ -37,7 +38,7 @@ class MtlTextureLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
     override fun getName(): String = myName
 
-    override fun getIcon(): Icon = MTL_TEXTURE_ICON
+    override fun getIcon(): Icon = Icons.Structure.Mtl.Texture
 
     override fun collectNavigationMarkers(
         element: PsiElement,

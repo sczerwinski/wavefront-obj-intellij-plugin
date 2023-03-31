@@ -20,7 +20,7 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
-import it.czerwinski.intellij.wavefront.lang.MTL_MATERIAL_ICON
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
@@ -52,8 +52,8 @@ abstract class MtlMaterialIdentifierElementImpl(
         object : ItemPresentation {
             override fun getPresentableText(): String? = name
             override fun getLocationString(): String = containingFile.name
-            override fun getIcon(unused: Boolean): Icon = MTL_MATERIAL_ICON
+            override fun getIcon(unused: Boolean): Icon = Icons.Structure.Mtl.Material
         }
 
-    override fun getIcon(flags: Int): Icon? = MTL_MATERIAL_ICON
+    override fun getIcon(flags: Int): Icon? = Icons.Structure.Mtl.Material
 }

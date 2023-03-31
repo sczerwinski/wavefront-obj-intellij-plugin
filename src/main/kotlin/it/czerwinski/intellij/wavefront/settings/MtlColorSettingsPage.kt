@@ -22,14 +22,14 @@ import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.MTL_FILE_ICON
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.MtlSyntaxHighlighter
 import javax.swing.Icon
 
 class MtlColorSettingsPage : ColorSettingsPage {
 
     override fun getIcon(): Icon =
-        MTL_FILE_ICON
+        Icons.Structure.Mtl.File
 
     override fun getHighlighter(): SyntaxHighlighter =
         MtlSyntaxHighlighter()

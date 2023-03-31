@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+    <g id="axis">
+        <path stroke="#6C707E" stroke-linecap="round" fill="none" d="m8,9 v -7 m -2.5,2.5 2.5,-2.5 2.5,2.5"/>
+    </g>
+    <g transform="rotate(120 8 9)">
+        <use xlink:href="#axis"/>
+    </g>
+    <g transform="rotate(-120 8 9)">
+        <use xlink:href="#axis"/>
+    </g>
+</svg>

@@ -22,6 +22,11 @@
 - Use split editor (text and preview) provided by IntelliJ platform
 - Replace annotators with inspections
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
+- Upgrade Gradle Wrapper to `8.0.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.20`
+  - Upgrade `com.google.devtools.ksp` to `1.8.20-1.0.10`
+  - Upgrade `org.jetbrains.intellij` to `1.13.3`
 
 ### Deprecated
 

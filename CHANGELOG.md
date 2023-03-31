@@ -5,6 +5,7 @@
 ## [Unreleased]
 
 ### Added
+- Icons matching New UI
 
 ### Changed
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`

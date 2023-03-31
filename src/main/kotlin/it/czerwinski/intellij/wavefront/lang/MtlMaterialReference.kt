@@ -26,6 +26,7 @@ import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.ResolveResult
 import com.intellij.util.ProcessingContext
+import it.czerwinski.intellij.wavefront.icons.Icons
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifier
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
@@ -62,8 +63,8 @@ class MtlMaterialReference(
                 val typeText: String? = findRelativePath(myElement.containingFile.originalFile, material.containingFile)
                     ?: material.containingFile?.name
                 LookupElementBuilder.create(material)
-                    .withIcon(MTL_MATERIAL_ICON)
-                    .withTypeText(typeText, MTL_FILE_ICON, false)
+                    .withIcon(Icons.Structure.Mtl.Material)
+                    .withTypeText(typeText, Icons.Structure.Mtl.File, false)
             }
             .toTypedArray()
 

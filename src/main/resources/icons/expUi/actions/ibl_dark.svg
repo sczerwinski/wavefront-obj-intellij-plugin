@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+    <path stroke="#CED0D6" stroke-linecap="round" fill="none" d="m 0.5,7.5 a 8,8 0 0 1 15,0"/>
+    <g id="arrow">
+        <path stroke="#C77D55" stroke-linecap="round" fill="none" d="m8,3.5 v 4 m -1.5,-1.5 1.5,1.5 1.5,-1.5"/>
+    </g>
+    <g transform="rotate(-60 8 10.5)">
+        <use xlink:href="#arrow"/>
+    </g>
+    <g transform="rotate(60 8 10.5)">
+        <use xlink:href="#arrow"/>
+    </g>
+    <circle fill="#548AF7" cx="8" cy="10.5" r="2"/>
+</svg>

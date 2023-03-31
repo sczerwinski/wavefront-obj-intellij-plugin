@@ -18,7 +18,7 @@ package it.czerwinski.intellij.common.ui
 
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
-import it.czerwinski.intellij.wavefront.lang.ColorIcon
+import it.czerwinski.intellij.wavefront.icons.Icons
 import java.awt.Color
 import javax.swing.Icon
 
@@ -46,7 +46,7 @@ class ColorTextField : ExtendableTextField() {
 
     private fun updateColor(value: Color?) {
         myColor = value
-        myIcon = value?.let { ColorIcon(it) }
+        myIcon = value?.let(Icons::ColorIcon)
         text = selectedColor?.rgb?.toUInt()?.toString(radix = 16).orEmpty()
     }
 }

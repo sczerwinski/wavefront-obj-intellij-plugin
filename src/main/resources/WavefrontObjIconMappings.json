@@ -1,0 +1,43 @@
+{
+  "icons": {
+    "expUi": {
+      "actions": {
+        "axes.svg": "icons/actions/axes.svg",
+        "cropTextures.svg": "icons/actions/cropTextures.svg",
+        "cubeMesh.svg": "icons/actions/cubeMesh.svg",
+        "cylinderMesh.svg": "icons/actions/cylinderMesh.svg",
+        "editorPreviewVertical.svg": "icons/actions/editorPreviewVertical.svg",
+        "ibl.svg": "icons/actions/ibl.svg",
+        "materialProperties.svg": "icons/actions/materialProperties.svg",
+        "materialShading.svg": "icons/actions/materialShading.svg",
+        "pbrShading.svg": "icons/actions/pbrShading.svg",
+        "planeMesh.svg": "icons/actions/planeMesh.svg",
+        "solidShading.svg": "icons/actions/solidShading.svg",
+        "sphereMesh.svg": "icons/actions/sphereMesh.svg",
+        "wireframeShading.svg": "icons/actions/wireframeShading.svg",
+        "xUp.svg": "icons/actions/xUp.svg",
+        "yUp.svg": "icons/actions/yUp.svg",
+        "zUp.svg": "icons/actions/zUp.svg"
+      },
+      "structure": {
+        "mtlFile.svg": "icons/structure/mtlFile.svg",
+        "mtlMaterial.svg": "icons/structure/mtlMaterial.svg",
+        "mtlOption.svg": "icons/structure/mtlOption.svg",
+        "mtlProperty.svg": "icons/structure/mtlProperty.svg",
+        "mtlTexture.svg": "icons/structure/mtlTexture.svg",
+        "objFacePolygon.svg": "icons/structure/objFacePolygon.svg",
+        "objFaceQuad.svg": "icons/structure/objFaceQuad.svg",
+        "objFaceTriangle.svg": "icons/structure/objFaceTriangle.svg",
+        "objFile.svg": "icons/structure/objFile.svg",
+        "objGroup.svg": "icons/structure/objGroup.svg",
+        "objLine.svg": "icons/structure/objLine.svg",
+        "objObject.svg": "icons/structure/objObject.svg",
+        "objPoint.svg": "icons/structure/objPoint.svg",
+        "objSmoothing.svg": "icons/structure/objSmoothing.svg",
+        "objTextureCoordinates.svg": "icons/structure/objTextureCoordinates.svg",
+        "objVertex.svg": "icons/structure/objVertex.svg",
+        "objVertexNormal.svg": "icons/structure/objVertexNormal.svg"
+      }
+    }
+  }
+}

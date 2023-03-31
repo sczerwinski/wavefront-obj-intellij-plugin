@@ -23,12 +23,6 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.icons.Icons
-import it.czerwinski.intellij.wavefront.lang.ColorIcon
-import it.czerwinski.intellij.wavefront.lang.MTL_FILE_ICON
-import it.czerwinski.intellij.wavefront.lang.MTL_MATERIAL_ICON
-import it.czerwinski.intellij.wavefront.lang.MTL_OPTION_ICON
-import it.czerwinski.intellij.wavefront.lang.MTL_PROPERTY_ICON
-import it.czerwinski.intellij.wavefront.lang.MTL_TEXTURE_ICON
 import it.czerwinski.intellij.wavefront.lang.psi.MtlAmbientColor
 import it.czerwinski.intellij.wavefront.lang.psi.MtlAmbientColorMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlBlendUOption
@@ -132,14 +126,14 @@ object MtlItemPresentationFactory {
 
     private fun createPresentation(file: MtlFile): ItemPresentation = createPresentation(
         presentableText = file.name,
-        icon = MTL_FILE_ICON
+        icon = Icons.Structure.Mtl.File
     )
 
     private fun createPresentation(material: MtlMaterial): ItemPresentation = createPresentation(
         presentableText = material.getName() ?: WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.material"
         ),
-        icon = MTL_MATERIAL_ICON
+        icon = Icons.Structure.Mtl.Material
     )
 
     private fun createPresentation(color: MtlAmbientColor): ItemPresentation = createColorPresentation(
@@ -153,7 +147,7 @@ object MtlItemPresentationFactory {
         createPresentation(
             presentableText = presentableText,
             locationString = color.colorString.orEmpty(),
-            icon = color.color?.let(::ColorIcon) ?: Icons.General.Error
+            icon = color.color?.let(Icons::ColorIcon) ?: Icons.General.Error
         )
 
     private fun createPresentation(color: MtlDiffuseColor): ItemPresentation = createColorPresentation(
@@ -195,7 +189,7 @@ object MtlItemPresentationFactory {
         createPresentation(
             presentableText = presentableText,
             locationString = locationString,
-            icon = MTL_PROPERTY_ICON
+            icon = Icons.Structure.Mtl.Property
         )
 
     private fun createPresentation(dissolve: MtlDissolve): ItemPresentation = createPropertyPresentation(
@@ -252,7 +246,7 @@ object MtlItemPresentationFactory {
         createPresentation(
             presentableText = presentableText,
             locationString = texture.textureFilename.orEmpty(),
-            icon = MTL_TEXTURE_ICON
+            icon = Icons.Structure.Mtl.Texture
         )
 
     private fun createPresentation(map: MtlDiffuseColorMap): ItemPresentation = createTexturePresentation(
@@ -355,7 +349,7 @@ object MtlItemPresentationFactory {
         createPresentation(
             presentableText = presentableText,
             locationString = locationString.orEmpty(),
-            icon = MTL_OPTION_ICON
+            icon = Icons.Structure.Mtl.Option
         )
 
     private fun createPresentation(option: MtlBlendVOption): ItemPresentation = createOptionPresentation(

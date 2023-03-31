@@ -30,7 +30,6 @@ import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.TextFieldWithAutoCompletion
 import com.intellij.util.ui.AbstractTableCellEditor
 import it.czerwinski.intellij.wavefront.icons.Icons
-import it.czerwinski.intellij.wavefront.lang.MTL_TEXTURE_ICON
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllTextureFiles
 import it.czerwinski.intellij.wavefront.lang.psi.util.isTextureFile
 import java.awt.Component
@@ -68,7 +67,7 @@ class TextureTableCellEditor(
                         val typeText = root?.let { VfsUtil.getRelativePath(file.virtualFile.parent, it) }
                             ?: file.containingDirectory?.name
                         LookupElementBuilder.create(file.name)
-                            .withIcon(file.fileType.icon ?: MTL_TEXTURE_ICON)
+                            .withIcon(file.fileType.icon ?: Icons.Structure.Mtl.Texture)
                             .withTypeText(typeText, Icons.General.Folder, false)
                     }
                 }

@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.openapi.fileTypes.LanguageFileType
+import it.czerwinski.intellij.wavefront.icons.Icons
 import javax.swing.Icon
 
 object ObjFileType : LanguageFileType(ObjLanguage) {
@@ -27,5 +28,5 @@ object ObjFileType : LanguageFileType(ObjLanguage) {
 
     override fun getDefaultExtension(): String = "obj"
 
-    override fun getIcon(): Icon = OBJ_FILE_ICON
+    override fun getIcon(): Icon = Icons.Structure.Obj.File
 }

@@ -7,10 +7,12 @@
 ### Added
 
 ### Changed
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
 
 ### Deprecated
 
 ### Removed
+- Remove support for platform version `222.*`
 
 ### Fixed
 

@@ -33,12 +33,6 @@ class PBREnvironmentsComboBoxAction : ComboBoxAction() {
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
-    @Deprecated("Deprecated in IntelliJ platform version 223.*")
-    override fun createPopupActionGroup(button: JComponent?): DefaultActionGroup = DefaultActionGroup(
-        enumValues<PBREnvironment>()
-            .map { environment -> PBREnvironmentAction(environment) }
-    )
-
     override fun createPopupActionGroup(button: JComponent, dataContext: DataContext): DefaultActionGroup =
         DefaultActionGroup(
             enumValues<PBREnvironment>()

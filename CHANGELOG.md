@@ -15,6 +15,7 @@
 - Remove support for platform version `222.*`
 
 ### Fixed
+- Remove overridden deprecated method
 
 ### Security
 

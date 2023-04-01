@@ -46,13 +46,13 @@ class WavefrontObjSettingsComponent : SettingsComponent, WavefrontObjSettingsSta
         get() = WavefrontObjSettingsState(
             objPreviewSettings = objPreviewSettingsGroup.objPreviewSettings,
             mtlEditorSettings = mtlEditorSettingsGroup.mtlEditorSettings,
-            defaultEditorLayout = objSplitEditorSettingsGroup.defaultEditorLayout,
+            editorLayout = objSplitEditorSettingsGroup.defaultEditorLayout,
             isVerticalSplit = objSplitEditorSettingsGroup.isVerticalSplit
         )
         set(value) {
             objPreviewSettingsGroup.objPreviewSettings = value.objPreviewSettings
             mtlEditorSettingsGroup.mtlEditorSettings = value.mtlEditorSettings
-            objSplitEditorSettingsGroup.defaultEditorLayout = value.defaultEditorLayout
+            objSplitEditorSettingsGroup.defaultEditorLayout = value.editorLayout
             objSplitEditorSettingsGroup.isVerticalSplit = value.isVerticalSplit
         }
 

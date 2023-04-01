@@ -32,7 +32,7 @@ import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.dsl.builder.panel
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
@@ -105,7 +105,7 @@ class MtlMaterialComponent(
                 override fun contentsChanged(e: ListDataEvent?) {
                     val selectedMaterial = material
 
-                    val caretModel = SplitEditor.KEY_CARET_MODEL[editor]
+                    val caretModel = BaseSplitEditor.KEY_CARET_MODEL[editor]
                     val materialAtCaret = myMaterialComboBoxModel.findItemAtOffset(caretModel.offset)
                     if (selectedMaterial != null && selectedMaterial != materialAtCaret) {
                         invokeLater {
@@ -129,7 +129,7 @@ class MtlMaterialComponent(
     }
 
     fun initialize() {
-        SplitEditor.KEY_CARET_MODEL[editor]?.apply {
+        BaseSplitEditor.KEY_CARET_MODEL[editor]?.apply {
             removeCaretListener(myCaretListener)
             addCaretListener(myCaretListener)
         }
@@ -158,7 +158,7 @@ class MtlMaterialComponent(
             myMtlFile = mtlFile
             myMaterialComboBoxModel.updateMaterials(
                 materials = mtlFile?.materials.orEmpty(),
-                caretOffset = SplitEditor.KEY_CARET_MODEL[editor].offset
+                caretOffset = BaseSplitEditor.KEY_CARET_MODEL[editor].offset
             )
             myMaterialPreviewComponent.updateMaterial(material)
         }

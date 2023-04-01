@@ -19,7 +19,7 @@ package it.czerwinski.intellij.wavefront.editor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 
 /**
  * An activity initializing all open OpenGL preview editors,
@@ -34,7 +34,7 @@ class GLPreviewEditorsStartupActivity : StartupActivity.DumbAware {
         FileEditorManager.getInstance(project)
             .allEditors
             .asSequence()
-            .filterIsInstance<SplitEditor<*>>()
+            .filterIsInstance<BaseSplitEditor<*>>()
             .forEach { editor ->
                 (editor.previewEditor as? GLPreviewEditor)?.initPreview()
             }

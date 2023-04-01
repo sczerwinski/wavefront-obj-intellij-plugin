@@ -18,17 +18,25 @@ package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.TextEditor
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.swing.JComponent
 
 /**
  * Split editor for Wavefront MTL files.
  */
 class MtlSplitEditor(
     textEditor: TextEditor,
-    materialEditor: MtlMaterialEditor
-) : SplitEditor<MtlMaterialEditor>(textEditor, materialEditor) {
+    private val materialEditor: MtlMaterialEditor
+) : BaseSplitEditor<MtlMaterialEditor>(
+    textEditor,
+    materialEditor,
+    editorName = WavefrontObjBundle.message(key = "editor.fileTypes.mtl.split.name")
+) {
+
+    private val componentInitialized = AtomicBoolean(false)
 
     private val settingsChangedListener: WavefrontObjSettingsState.SettingsChangedListener =
         object : WavefrontObjSettingsState.SettingsChangedListener {
@@ -37,40 +45,43 @@ class MtlSplitEditor(
                 val mtlEditorSettings = WavefrontObjSettingsState.getInstance()?.mtlEditorSettings
                 val newMtlEditorSettings = newSettings?.mtlEditorSettings
 
-                val oldDefaultLayout = mtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
+                val oldDefaultLayout = mtlEditorSettings?.editorLayout
+                    ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
                 val oldVerticalSplit = mtlEditorSettings?.isVerticalSplit
                     ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
 
                 if (layout === oldDefaultLayout) {
-                    layout = newMtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
+                    layout = newMtlEditorSettings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
                 }
 
-                if (isSplitVertically == oldVerticalSplit) {
-                    isSplitVertically = newMtlEditorSettings?.isVerticalSplit
+                if (isVerticalSplit == oldVerticalSplit) {
+                    isVerticalSplit = newMtlEditorSettings?.isVerticalSplit
                         ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
                 }
             }
         }
 
-    init {
-        initializeEditorsVisibilityListener(materialEditor)
-        initializeFromSettings()
-        observeSettingsChanges()
-    }
-
-    private fun initializeEditorsVisibilityListener(materialEditor: MtlMaterialEditor) {
-        myComponent.addEditorsVisibilityListener { _, isShowingPreviewEditor ->
-            if (isShowingPreviewEditor) {
-                materialEditor.initPreview()
-            }
+    override fun getComponent(): JComponent {
+        val component = super.getComponent()
+        if (componentInitialized.compareAndSet(false, true)) {
+            initializeFromSettings()
+            observeSettingsChanges()
         }
+        return component
     }
 
     private fun initializeFromSettings() {
         val mtlEditorSettings = WavefrontObjSettingsState.getInstance()?.mtlEditorSettings
 
-        layout = mtlEditorSettings?.defaultEditorLayout ?: Layout.DEFAULT
-        isSplitVertically = mtlEditorSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+        layout = mtlEditorSettings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
+        isVerticalSplit = mtlEditorSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+    }
+
+    override fun setLayout(layout: Layout) {
+        super.setLayout(layout)
+        if (layout != Layout.SHOW_EDITOR) {
+            materialEditor.initPreview()
+        }
     }
 
     private fun observeSettingsChanges() {
@@ -78,6 +89,4 @@ class MtlSplitEditor(
             .connect(this)
             .subscribe(WavefrontObjSettingsState.SettingsChangedListener.TOPIC, settingsChangedListener)
     }
-
-    override fun getName(): String = WavefrontObjBundle.message("editor.fileTypes.mtl.split.name")
 }

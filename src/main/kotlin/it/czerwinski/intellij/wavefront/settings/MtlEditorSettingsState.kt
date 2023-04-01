@@ -16,13 +16,13 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.util.xmlb.annotations.Attribute
-import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 
 data class MtlEditorSettingsState(
-    @field:Attribute var defaultEditorLayout: SplitEditor.Layout = SplitEditor.Layout.DEFAULT,
+    @field:Attribute var editorLayout: TextEditorWithPreview.Layout = WavefrontObjSettingsState.DEFAULT_LAYOUT,
     @field:Attribute var isVerticalSplit: Boolean = DEFAULT_VERTICAL_SPLIT,
     @field:Attribute var defaultPreviewMesh: MaterialPreviewMesh = MaterialPreviewMesh.DEFAULT,
     @field:Attribute var defaultShadingMethod: ShadingMethod = ShadingMethod.MTL_DEFAULT,

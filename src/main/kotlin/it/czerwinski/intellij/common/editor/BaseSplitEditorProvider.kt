@@ -25,9 +25,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
 /**
- * Editor provider for a [SplitEditor].
+ * Editor provider for a [BaseSplitEditor].
  */
-abstract class SplitEditorProvider(
+abstract class BaseSplitEditorProvider(
     private val textEditorProvider: TextEditorProvider,
     private val previewEditorProvider: FileEditorProvider
 ) : AsyncFileEditorProvider {
@@ -39,13 +39,13 @@ abstract class SplitEditorProvider(
         textEditorProvider.accept(project, file) && previewEditorProvider.accept(project, file)
 
     /**
-     * Creates a new [SplitEditor].
+     * Creates a new [BaseSplitEditor].
      */
     final override fun createEditor(project: Project, file: VirtualFile): FileEditor =
         createEditorAsync(project, file).build()
 
     /**
-     * Creates a new [SplitEditor] asynchronously.
+     * Creates a new [BaseSplitEditor] asynchronously.
      */
     final override fun createEditorAsync(project: Project, file: VirtualFile): AsyncFileEditorProvider.Builder =
         createAsyncEditorBuilder(project, file)

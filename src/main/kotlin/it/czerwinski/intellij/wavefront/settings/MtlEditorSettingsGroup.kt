@@ -16,11 +16,11 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.bindItem
-import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
@@ -32,7 +32,7 @@ import javax.swing.JComponent
 
 class MtlEditorSettingsGroup : SettingsGroup, MtlEditorSettingsState.Holder {
 
-    private lateinit var defaultEditorLayoutComboBox: ComboBox<SplitEditor.Layout>
+    private lateinit var defaultEditorLayoutComboBox: ComboBox<TextEditorWithPreview.Layout>
     private lateinit var verticalSplitCheckBox: JBRadioButton
     private lateinit var horizontalSplitCheckBox: JBRadioButton
     private lateinit var defaultPreviewMesh: ComboBox<MaterialPreviewMesh>
@@ -40,13 +40,13 @@ class MtlEditorSettingsGroup : SettingsGroup, MtlEditorSettingsState.Holder {
 
     override var mtlEditorSettings: MtlEditorSettingsState
         get() = MtlEditorSettingsState(
-            defaultEditorLayout = defaultEditorLayoutComboBox.item ?: SplitEditor.Layout.DEFAULT,
+            editorLayout = defaultEditorLayoutComboBox.item ?: WavefrontObjSettingsState.DEFAULT_LAYOUT,
             isVerticalSplit = verticalSplitCheckBox.isSelected,
             defaultPreviewMesh = defaultPreviewMesh.item ?: MaterialPreviewMesh.DEFAULT,
             defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.MTL_DEFAULT
         )
         set(value) {
-            defaultEditorLayoutComboBox.item = value.defaultEditorLayout
+            defaultEditorLayoutComboBox.item = value.editorLayout
             verticalSplitCheckBox.isSelected = value.isVerticalSplit
             horizontalSplitCheckBox.isSelected = !value.isVerticalSplit
             defaultPreviewMesh.item = value.defaultPreviewMesh
@@ -57,7 +57,7 @@ class MtlEditorSettingsGroup : SettingsGroup, MtlEditorSettingsState.Holder {
         with(panel) {
             row(WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.default")) {
                 defaultEditorLayoutComboBox = enumComboBox(
-                    defaultValue = SplitEditor.Layout.DEFAULT,
+                    defaultValue = WavefrontObjSettingsState.DEFAULT_LAYOUT,
                     renderer = MtlSplitEditorLayoutListCellRenderer()
                 ).component
             }

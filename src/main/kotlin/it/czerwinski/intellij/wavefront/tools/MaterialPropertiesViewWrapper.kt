@@ -35,7 +35,7 @@ import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.ContentFactory
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.editor.MtlSplitEditor
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
@@ -104,14 +104,14 @@ class MaterialPropertiesViewWrapper(
 
             val oldCaretListener = myCaretListener
             if (oldCaretListener != null) {
-                SplitEditor.KEY_CARET_MODEL[oldEditor]?.removeCaretListener(oldCaretListener)
+                BaseSplitEditor.KEY_CARET_MODEL[oldEditor]?.removeCaretListener(oldCaretListener)
                 myCaretListener = null
             }
             updateMaterial(material = null)
         }
 
         private fun findMtlSplitEditor(editor: FileEditor?): MtlSplitEditor? =
-            editor as? MtlSplitEditor ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? MtlSplitEditor
+            editor as? MtlSplitEditor ?: BaseSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? MtlSplitEditor
 
         private fun findMtlFile(file: VirtualFile?): MtlFile? {
             return if (file == null) {
@@ -127,7 +127,7 @@ class MaterialPropertiesViewWrapper(
             mtlSplitEditor: MtlSplitEditor
         ) {
             val newCaretListener = MyCaretListener(mtlFile)
-            val caretModel = SplitEditor.KEY_CARET_MODEL[mtlSplitEditor]
+            val caretModel = BaseSplitEditor.KEY_CARET_MODEL[mtlSplitEditor]
             caretModel?.addCaretListener(newCaretListener)
             newCaretListener.updateCaretOffset(offset = caretModel?.offset ?: 0)
             myCaretListener = newCaretListener

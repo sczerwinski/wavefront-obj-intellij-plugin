@@ -23,7 +23,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.util.NlsActions.ActionDescription
 import com.intellij.openapi.util.NlsActions.ActionText
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.editor.Zoomable
 import javax.swing.Icon
 
@@ -47,6 +47,6 @@ abstract class ZoomableFileEditorAction(
     private fun findZoomableFileEditor(editor: FileEditor?): Zoomable? =
         editor as? Zoomable ?: findSplitEditor(editor)?.previewEditor as? Zoomable
 
-    private fun findSplitEditor(editor: FileEditor?): SplitEditor<*>? =
-        editor as? SplitEditor<*> ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
+    private fun findSplitEditor(editor: FileEditor?): BaseSplitEditor<*>? =
+        editor as? BaseSplitEditor<*> ?: BaseSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
 }

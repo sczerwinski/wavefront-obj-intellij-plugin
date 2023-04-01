@@ -8,6 +8,7 @@
 - Icons matching New UI
 
 ### Changed
+- Use split editor (text and preview) provided by IntelliJ platform
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
 
 ### Deprecated

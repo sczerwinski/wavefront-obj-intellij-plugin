@@ -22,13 +22,13 @@ import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import it.czerwinski.intellij.common.editor.SplitEditorProvider
+import it.czerwinski.intellij.common.editor.BaseSplitEditorProvider
 
 /**
  * Wavefront OBJ split editor provider.
  */
 class ObjSplitEditorProvider :
-    SplitEditorProvider(
+    BaseSplitEditorProvider(
         textEditorProvider = PsiAwareTextEditorProvider(),
         previewEditorProvider = ObjPreviewEditorProvider()
     ),
@@ -43,7 +43,7 @@ class ObjSplitEditorProvider :
     /**
      * Concrete builder of Wavefront OBJ split editor.
      */
-    class Builder(project: Project, file: VirtualFile) : SplitEditorProvider.Builder(project, file) {
+    class Builder(project: Project, file: VirtualFile) : BaseSplitEditorProvider.Builder(project, file) {
 
         override fun build(): FileEditor =
             ObjSplitEditor(

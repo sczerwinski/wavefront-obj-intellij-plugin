@@ -16,20 +16,20 @@
 
 package it.czerwinski.intellij.wavefront.settings.ui
 
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.ui.SimpleListCellRenderer
-import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 
 @Suppress("FunctionName")
-fun MtlSplitEditorLayoutListCellRenderer(): SimpleListCellRenderer<SplitEditor.Layout> =
+fun MtlSplitEditorLayoutListCellRenderer(): SimpleListCellRenderer<TextEditorWithPreview.Layout> =
     SimpleListCellRenderer.create("") { value ->
         when (value) {
-            SplitEditor.Layout.TEXT ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.default.text")
-            SplitEditor.Layout.SPLIT ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.default.split")
-            SplitEditor.Layout.PREVIEW ->
-                WavefrontObjBundle.message("settings.editor.fileTypes.mtl.layout.default.preview")
+            TextEditorWithPreview.Layout.SHOW_EDITOR ->
+                WavefrontObjBundle.message(key = "settings.editor.fileTypes.mtl.layout.default.text")
+            TextEditorWithPreview.Layout.SHOW_EDITOR_AND_PREVIEW ->
+                WavefrontObjBundle.message(key = "settings.editor.fileTypes.mtl.layout.default.split")
+            TextEditorWithPreview.Layout.SHOW_PREVIEW ->
+                WavefrontObjBundle.message(key = "settings.editor.fileTypes.mtl.layout.default.preview")
             else ->
                 null
         }

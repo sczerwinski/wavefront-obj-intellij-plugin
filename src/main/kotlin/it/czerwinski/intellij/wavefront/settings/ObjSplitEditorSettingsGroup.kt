@@ -16,10 +16,10 @@
 
 package it.czerwinski.intellij.wavefront.settings
 
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.dsl.builder.Panel
-import it.czerwinski.intellij.common.editor.SplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.settings.ui.ObjSplitEditorLayoutListCellRenderer
 import it.czerwinski.intellij.wavefront.settings.ui.enumComboBox
@@ -30,12 +30,12 @@ import javax.swing.JComponent
  */
 class ObjSplitEditorSettingsGroup : SettingsGroup {
 
-    private lateinit var defaultEditorLayoutComboBox: ComboBox<SplitEditor.Layout>
+    private lateinit var defaultEditorLayoutComboBox: ComboBox<TextEditorWithPreview.Layout>
     private lateinit var verticalSplitCheckBox: JBRadioButton
     private lateinit var horizontalSplitCheckBox: JBRadioButton
 
-    var defaultEditorLayout: SplitEditor.Layout
-        get() = defaultEditorLayoutComboBox.item ?: SplitEditor.Layout.DEFAULT
+    var defaultEditorLayout: TextEditorWithPreview.Layout
+        get() = defaultEditorLayoutComboBox.item ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
         set(value) {
             defaultEditorLayoutComboBox.item = value
         }
@@ -51,7 +51,7 @@ class ObjSplitEditorSettingsGroup : SettingsGroup {
         with(panel) {
             row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.layout.default")) {
                 defaultEditorLayoutComboBox = enumComboBox(
-                    defaultValue = SplitEditor.Layout.DEFAULT,
+                    defaultValue = WavefrontObjSettingsState.DEFAULT_LAYOUT,
                     renderer = ObjSplitEditorLayoutListCellRenderer()
                 ).component
             }

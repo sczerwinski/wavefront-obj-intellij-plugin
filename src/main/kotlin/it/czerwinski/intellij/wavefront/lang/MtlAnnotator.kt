@@ -16,12 +16,15 @@
 
 package it.czerwinski.intellij.wavefront.lang
 
+import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
+import it.czerwinski.intellij.wavefront.lang.psi.util.findAllObjFiles
 
 class MtlAnnotator : Annotator {
 
@@ -30,7 +33,19 @@ class MtlAnnotator : Annotator {
         holder: AnnotationHolder
     ) {
         when (element) {
+            is MtlMaterialIdentifierElement -> annotateMaterial(element, holder)
             is MtlTextureElement -> annotateTextureFileReference(element, holder)
+        }
+    }
+
+    private fun annotateMaterial(element: MtlMaterialIdentifierElement, holder: AnnotationHolder) {
+        if (element.parent !in element.project.findAllObjFiles().flatMap { it.referencedMaterials }) {
+            holder.newAnnotation(
+                HighlightSeverity.WARNING,
+                WavefrontObjBundle.message(key = "fileTypes.mtl.annotation.warning.materialUnused")
+            ).range(element)
+                .highlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL)
+                .create()
         }
     }
 
@@ -38,9 +53,11 @@ class MtlAnnotator : Annotator {
         val textureFilenameNode = element.textureFilenameNode
         if (textureFilenameNode != null && element.textureFile == null) {
             holder.newAnnotation(
-                HighlightSeverity.WARNING,
+                HighlightSeverity.ERROR,
                 WavefrontObjBundle.message("fileTypes.mtl.annotation.error.textureFileNotFound")
-            ).range(textureFilenameNode).create()
+            ).range(textureFilenameNode)
+                .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL)
+                .create()
         }
     }
 }

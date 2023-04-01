@@ -17,6 +17,7 @@
 package it.czerwinski.intellij.wavefront.lang
 
 import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.lang.annotation.AnnotationBuilder
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
@@ -25,6 +26,7 @@ import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReference
+import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialFileReferenceStatement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
@@ -44,6 +46,7 @@ class ObjAnnotator : Annotator {
             is ObjVertexIndex -> annotateVertexIndex(element, holder)
             is ObjTextureCoordinatesIndex -> annotateTextureCoordinatesIndex(element, holder)
             is ObjVertexNormalIndex -> annotateVertexNormalIndex(element, holder)
+            is ObjMaterialFileReferenceStatement -> annotateMaterialFileReferenceStatement(element, holder)
             is ObjMaterialFileReference -> annotateMaterialFileReference(element, holder)
             is ObjMaterialReference -> annotateMaterialReference(element, holder)
         }
@@ -110,18 +113,58 @@ class ObjAnnotator : Annotator {
         ).range(element).create()
     }
 
+    private fun annotateMaterialFileReferenceStatement(
+        element: ObjMaterialFileReferenceStatement,
+        holder: AnnotationHolder
+    ) {
+        if (isUnused(element)) {
+            holder.newAnnotation(
+                HighlightSeverity.WARNING,
+                WavefrontObjBundle.message(key = "fileTypes.obj.annotation.warning.mtlFileStatementUnused")
+            ).range(element)
+                .highlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL)
+                .create()
+        }
+    }
+
+    private fun isUnused(element: ObjMaterialFileReferenceStatement): Boolean {
+        val materialsInReferencedFiles = element.materialFileReferenceList
+            .flatMap { materialFileReference -> materialFileReference.mtlFile?.materials.orEmpty() }
+        val referencedMaterials = element.containingObjFile?.referencedMaterials.orEmpty()
+        return referencedMaterials.none { it in materialsInReferencedFiles }
+    }
+
     private fun annotateMaterialFileReference(
         element: ObjMaterialFileReference,
         holder: AnnotationHolder
     ) {
-        val materialFilenameNode = element.node.findChildByType(ObjTypes.MATERIAL_FILE_NAME)
-        if (materialFilenameNode != null && element.mtlFile == null) {
-            holder.newAnnotation(
-                HighlightSeverity.WARNING,
-                WavefrontObjBundle.message("fileTypes.obj.annotation.warning.mtlFileNotFound")
-            ).range(materialFilenameNode)
-                .applyMaterialFileQuickFix(element)
-                .create()
+        if (!element.filename.isNullOrBlank()) {
+            val mtlFile = element.mtlFile
+            if (mtlFile == null) {
+                holder.newAnnotation(
+                    HighlightSeverity.ERROR,
+                    WavefrontObjBundle.message("fileTypes.obj.annotation.error.mtlFileNotFound")
+                ).range(element)
+                    .applyMaterialFileQuickFix(element)
+                    .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL)
+                    .create()
+            } else {
+                if (isDuplicated(element)) {
+                    holder.newAnnotation(
+                        HighlightSeverity.WARNING,
+                        WavefrontObjBundle.message(key = "fileTypes.obj.annotation.warning.mtlFileDuplicate")
+                    ).range(element)
+                        .create()
+                }
+                if (isUnused(element)) {
+                    holder.newAnnotation(
+                        HighlightSeverity.WARNING,
+                        WavefrontObjBundle.message(key = "fileTypes.obj.annotation.warning.mtlFileUnused")
+                    ).range(element)
+                        .highlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL)
+                        .create()
+                }
+            }
         }
     }
 
@@ -134,6 +177,15 @@ class ObjAnnotator : Annotator {
         return this
     }
 
+    private fun isDuplicated(element: ObjMaterialFileReference): Boolean =
+        element.containingObjFile?.materialFileReferences.orEmpty()
+            .filterNot { it == element }
+            .any { it.mtlFile == element.mtlFile }
+
+    private fun isUnused(element: ObjMaterialFileReference): Boolean =
+        element.containingObjFile?.referencedMaterials.orEmpty()
+            .none { it in element.mtlFile?.materials.orEmpty() }
+
     private fun annotateMaterialReference(
         element: ObjMaterialReference,
         holder: AnnotationHolder
@@ -145,10 +197,11 @@ class ObjAnnotator : Annotator {
             val materials = materialFiles.flatMap { file -> file.materialIdentifiers }
             if (!materialName.isNullOrBlank() && materialName !in materials.mapNotNull { it.name }) {
                 holder.newAnnotation(
-                    HighlightSeverity.WARNING,
-                    WavefrontObjBundle.message("fileTypes.obj.annotation.warning.materialNotFound")
+                    HighlightSeverity.ERROR,
+                    WavefrontObjBundle.message("fileTypes.obj.annotation.error.materialNotFound")
                 ).range(materialNameNode)
                     .applyMaterialQuickFixes(element, materialFiles, materialName)
+                    .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL)
                     .create()
             }
         }

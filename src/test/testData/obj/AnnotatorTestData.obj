@@ -1,4 +1,4 @@
-mtllib <warning descr="The MTL file is not found">tetrahedron.mtl</warning>
+mtllib <error descr="The MTL file is not found">tetrahedron.mtl</error>
 
 v 1.0 1.0 1.0
 v 2.0 2.0 2.0
@@ -10,7 +10,7 @@ vt 1.0 1.0
 
 vn 0.5 0.5 0.5
 
-usemtl <warning descr="The material is not found">Marble</warning>
+usemtl <error descr="The material is not found">Marble</error>
 
 f 1 2 3
 f 1 2 <error descr="Incorrect geometric vertex index: 4">4</error>

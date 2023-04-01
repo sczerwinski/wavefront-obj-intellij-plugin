@@ -16,7 +16,7 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <iconMapper
-                mappingFile="WavefrontObjIconMappings.json"/>
+                mappingFile="icons/WavefrontObjIconMappings.json"/>
 
         <!-- OBJ File Type -->
         <fileType
@@ -180,26 +180,6 @@
     </extensions>
 
     <actions>
-        <!-- Split editor -->
-        <group
-                id="SplitEditor.Toolbar"
-                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
-            <action
-                    id="SplitEditor.Toolbar.SplitLayoutAction.TextOnly"
-                    class="it.czerwinski.intellij.common.actions.SplitLayoutAction$TextOnly"
-                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Layout.EditorOnly">
-            </action>
-            <action
-                    id="SplitEditor.Toolbar.SplitLayoutAction.TextAndPreview"
-                    class="it.czerwinski.intellij.common.actions.SplitLayoutAction$TextAndPreview"
-                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Layout.EditorPreviewHorizontal">
-            </action>
-            <action
-                    id="SplitEditor.Toolbar.SplitLayoutAction.PreviewOnly"
-                    class="it.czerwinski.intellij.common.actions.SplitLayoutAction$PreviewOnly"
-                    icon="it.czerwinski.intellij.wavefront.icons.Icons.Layout.PreviewOnly">
-            </action>
-        </group>
         <!-- OBJ preview -->
         <group
                 id="ObjPreviewComponent.Toolbar"

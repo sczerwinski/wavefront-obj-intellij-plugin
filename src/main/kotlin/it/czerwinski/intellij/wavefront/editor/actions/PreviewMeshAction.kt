@@ -23,7 +23,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.actionSystem.Toggleable
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.DumbAware
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.editor.MtlMaterialEditor
 import it.czerwinski.intellij.wavefront.editor.MtlSplitEditor
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
@@ -57,10 +57,10 @@ sealed class PreviewMeshAction(
         findMtlMaterialFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
     private fun findMtlMaterialFileEditor(editor: FileEditor?): MtlMaterialEditor? =
-        editor as? MtlMaterialEditor ?: findMtlSplitEditor(editor)?.previewEditor
+        editor as? MtlMaterialEditor ?: findMtlSplitEditor(editor)?.previewEditor as? MtlMaterialEditor
 
     private fun findMtlSplitEditor(editor: FileEditor?): MtlSplitEditor? =
-        editor as? MtlSplitEditor ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? MtlSplitEditor
+        editor as? MtlSplitEditor ?: BaseSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? MtlSplitEditor
 
     class Plane : PreviewMeshAction(MaterialPreviewMesh.PLANE)
 

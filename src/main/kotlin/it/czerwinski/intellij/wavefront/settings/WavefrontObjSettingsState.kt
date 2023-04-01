@@ -20,11 +20,11 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.util.messages.Topic
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Attribute
 import com.intellij.util.xmlb.annotations.Property
-import it.czerwinski.intellij.common.editor.SplitEditor
 
 @State(
     name = "it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState",
@@ -33,7 +33,7 @@ import it.czerwinski.intellij.common.editor.SplitEditor
 data class WavefrontObjSettingsState(
     @field:Property override var objPreviewSettings: ObjPreviewSettingsState = ObjPreviewSettingsState.DEFAULT,
     @field:Property override var mtlEditorSettings: MtlEditorSettingsState = MtlEditorSettingsState.DEFAULT,
-    @field:Attribute var defaultEditorLayout: SplitEditor.Layout = SplitEditor.Layout.DEFAULT,
+    @field:Attribute var editorLayout: TextEditorWithPreview.Layout = DEFAULT_LAYOUT,
     @field:Attribute var isVerticalSplit: Boolean = DEFAULT_VERTICAL_SPLIT
 ) : PersistentStateComponent<WavefrontObjSettingsState>,
     ObjPreviewSettingsState.Holder,
@@ -48,15 +48,16 @@ data class WavefrontObjSettingsState(
     fun setFrom(other: WavefrontObjSettingsState): WavefrontObjSettingsState {
         objPreviewSettings = other.objPreviewSettings
         mtlEditorSettings = other.mtlEditorSettings
-        defaultEditorLayout = other.defaultEditorLayout
+        editorLayout = other.editorLayout
         isVerticalSplit = other.isVerticalSplit
         return this
     }
 
     companion object {
 
-        val DEFAULT = WavefrontObjSettingsState()
+        val DEFAULT by lazy { WavefrontObjSettingsState() }
 
+        val DEFAULT_LAYOUT = TextEditorWithPreview.Layout.SHOW_EDITOR
         const val DEFAULT_VERTICAL_SPLIT = false
 
         fun getInstance(): WavefrontObjSettingsState? {

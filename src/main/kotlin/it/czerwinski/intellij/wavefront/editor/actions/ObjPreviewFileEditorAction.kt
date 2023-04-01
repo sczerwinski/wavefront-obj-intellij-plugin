@@ -22,7 +22,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.util.NlsActions.ActionDescription
 import com.intellij.openapi.util.NlsActions.ActionText
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.editor.ObjPreviewEditor
 import it.czerwinski.intellij.wavefront.editor.ObjSplitEditor
 import javax.swing.Icon
@@ -37,8 +37,8 @@ abstract class ObjPreviewFileEditorAction(
         findObjPreviewFileEditor(event.getData(PlatformDataKeys.FILE_EDITOR))
 
     private fun findObjPreviewFileEditor(editor: FileEditor?): ObjPreviewEditor? =
-        editor as? ObjPreviewEditor ?: findObjSplitEditor(editor)?.previewEditor
+        editor as? ObjPreviewEditor ?: findObjSplitEditor(editor)?.previewEditor as? ObjPreviewEditor
 
     private fun findObjSplitEditor(editor: FileEditor?): ObjSplitEditor? =
-        editor as? ObjSplitEditor ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? ObjSplitEditor
+        editor as? ObjSplitEditor ?: BaseSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor] as? ObjSplitEditor
 }

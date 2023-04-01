@@ -22,7 +22,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.DumbAware
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.editor.Refreshable
 
 class RefreshAction : AnAction(), DumbAware {
@@ -45,6 +45,6 @@ class RefreshAction : AnAction(), DumbAware {
     private fun findRefreshableFileEditor(editor: FileEditor?): Refreshable? =
         editor as? Refreshable ?: findSplitEditor(editor)?.previewEditor as? Refreshable
 
-    private fun findSplitEditor(editor: FileEditor?): SplitEditor<*>? =
-        editor as? SplitEditor<*> ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
+    private fun findSplitEditor(editor: FileEditor?): BaseSplitEditor<*>? =
+        editor as? BaseSplitEditor<*> ?: BaseSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
 }

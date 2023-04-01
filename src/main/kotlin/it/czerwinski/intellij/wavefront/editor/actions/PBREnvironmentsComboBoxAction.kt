@@ -23,7 +23,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.actionSystem.ex.ComboBoxAction
 import com.intellij.openapi.fileEditor.FileEditor
-import it.czerwinski.intellij.common.editor.SplitEditor
+import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.editor.GLPreviewEditor
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
@@ -55,6 +55,6 @@ class PBREnvironmentsComboBoxAction : ComboBoxAction() {
     private fun findGLPreviewFileEditor(editor: FileEditor?): GLPreviewEditor? =
         editor as? GLPreviewEditor ?: findSplitEditor(editor)?.previewEditor as? GLPreviewEditor
 
-    private fun findSplitEditor(editor: FileEditor?): SplitEditor<*>? =
-        editor as? SplitEditor<*> ?: SplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
+    private fun findSplitEditor(editor: FileEditor?): BaseSplitEditor<*>? =
+        editor as? BaseSplitEditor<*> ?: BaseSplitEditor.KEY_PARENT_SPLIT_EDITOR[editor]
 }

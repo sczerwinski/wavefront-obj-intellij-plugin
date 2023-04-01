@@ -42,13 +42,6 @@ object Icons {
         @JvmField val Fit = AllIcons.General.FitContent
     }
 
-    object Layout {
-        @JvmField val EditorOnly = AllIcons.General.LayoutEditorOnly
-        @JvmField val EditorPreviewHorizontal = AllIcons.General.LayoutEditorPreview
-        @JvmField val EditorPreviewVertical = getIcon(path = "/icons/actions/editorPreviewVertical.svg")
-        @JvmField val PreviewOnly = AllIcons.General.LayoutPreviewOnly
-    }
-
     object Mesh {
         @JvmField val Plane = getIcon(path = "/icons/actions/planeMesh.svg")
         @JvmField val Cube = getIcon(path = "/icons/actions/cubeMesh.svg")

@@ -6,6 +6,8 @@
 
 ### Added
 - Icons matching New UI
+- Annotating unused MTL file references in OBJ files
+- Annotating unused materials in OBJ files
 
 ### Changed
 - Use split editor (text and preview) provided by IntelliJ platform

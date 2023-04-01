@@ -47,12 +47,20 @@ class ObjFile(
 
     private val objectLikeElements: List<PsiElement> get() = listOf(this) + groupingElements
 
-    private val materialFileReferences: List<ObjMaterialFileReference>
+    val materialFileReferences: List<ObjMaterialFileReference>
         get() = objectLikeElements
             .flatMap { it.getChildrenOfType<ObjMaterialFileReferenceStatement>() }
             .flatMap { it.getChildrenOfType() }
 
-    val referencedMtlFiles: List<MtlFile> get() = materialFileReferences.mapNotNull { element -> element.mtlFile }
+    val referencedMtlFiles: List<MtlFile>
+        get() = materialFileReferences.mapNotNull { element -> element.mtlFile }.distinct()
+
+    private val materialReferences: List<ObjMaterialReference>
+        get() = objectLikeElements
+            .flatMap { it.getChildrenOfType() }
+
+    val referencedMaterials: List<MtlMaterial>
+        get() = materialReferences.mapNotNull { element -> element.material }.distinct()
 
     override fun getFileType(): FileType = ObjFileType
 

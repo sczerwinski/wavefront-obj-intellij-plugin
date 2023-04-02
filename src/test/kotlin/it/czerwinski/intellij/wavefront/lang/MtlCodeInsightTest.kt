@@ -21,6 +21,8 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.containers.ContainerUtil
+import it.czerwinski.intellij.wavefront.lang.inspections.MtlUnknownTextureFileInspection
+import it.czerwinski.intellij.wavefront.lang.inspections.MtlUnusedMaterialInspection
 
 class MtlCodeInsightTest : BasePlatformTestCase() {
 
@@ -32,6 +34,10 @@ class MtlCodeInsightTest : BasePlatformTestCase() {
     }
 
     fun testAnnotator() {
+        myFixture.enableInspections(
+            MtlUnusedMaterialInspection::class.java,
+            MtlUnknownTextureFileInspection::class.java
+        )
         myFixture.configureByFiles("AnnotatorTestData.mtl")
         myFixture.checkHighlighting(true, false, true)
     }

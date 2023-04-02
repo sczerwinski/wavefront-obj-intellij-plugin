@@ -21,6 +21,12 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.containers.ContainerUtil
+import it.czerwinski.intellij.wavefront.lang.inspections.ObjDuplicatedMtlFileReferenceInspection
+import it.czerwinski.intellij.wavefront.lang.inspections.ObjIndexOutOfBoundsInspection
+import it.czerwinski.intellij.wavefront.lang.inspections.ObjInvalidIndexInspection
+import it.czerwinski.intellij.wavefront.lang.inspections.ObjUnknownMaterialReferenceInspection
+import it.czerwinski.intellij.wavefront.lang.inspections.ObjUnknownMtlFileReferenceInspection
+import it.czerwinski.intellij.wavefront.lang.inspections.ObjUnusedMtlFileReferenceInspection
 
 class ObjCodeInsightTest : BasePlatformTestCase() {
 
@@ -32,6 +38,14 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
     }
 
     fun testAnnotator() {
+        myFixture.enableInspections(
+            ObjDuplicatedMtlFileReferenceInspection::class.java,
+            ObjIndexOutOfBoundsInspection::class.java,
+            ObjInvalidIndexInspection::class.java,
+            ObjUnknownMaterialReferenceInspection::class.java,
+            ObjUnknownMtlFileReferenceInspection::class.java,
+            ObjUnusedMtlFileReferenceInspection::class.java
+        )
         myFixture.configureByFiles("AnnotatorTestData.obj")
         myFixture.checkHighlighting(true, false, true)
     }

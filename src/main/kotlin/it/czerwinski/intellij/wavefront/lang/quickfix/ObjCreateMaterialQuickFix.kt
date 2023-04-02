@@ -16,13 +16,15 @@
 
 package it.czerwinski.intellij.wavefront.lang.quickfix
 
-import com.intellij.codeInsight.intention.impl.BaseIntentionAction
-import com.intellij.openapi.application.ApplicationManager
+import com.intellij.codeInsight.intention.HighPriorityAction
+import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInspection.LocalQuickFixOnPsiElement
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.NavigatablePsiElement
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlElementFactory
@@ -30,15 +32,17 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 import it.czerwinski.intellij.wavefront.lang.psi.util.findRelativePath
 
 class ObjCreateMaterialQuickFix(
-    private val objFile: PsiFile,
-    private val mtlFile: MtlFile,
+    objFile: PsiFile,
+    mtlFile: MtlFile,
     private val name: String
-) : BaseIntentionAction() {
+) : LocalQuickFixOnPsiElement(mtlFile), IntentionAction, HighPriorityAction {
+
+    private val path = findRelativePath(objFile, mtlFile) ?: mtlFile.virtualFile.path
 
     override fun getText(): String = WavefrontObjBundle.getMessage(
         "fileTypes.mtl.quickfix.createMaterial",
         name,
-        findRelativePath(objFile, mtlFile) ?: mtlFile.virtualFile.path
+        path
     )
 
     override fun getFamilyName(): String =
@@ -46,20 +50,20 @@ class ObjCreateMaterialQuickFix(
 
     override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean = true
 
+    override fun startInWriteAction(): Boolean = false
+
     override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
-        ApplicationManager.getApplication().invokeLater {
-            runCreateMaterialAction(project)
-        }
+        runCreateMaterialAction(project)
     }
 
     private fun runCreateMaterialAction(project: Project) {
-        WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
+        WriteCommandAction.writeCommandAction(project, startElement.containingFile).run<RuntimeException> {
             createMaterial(project)
         }
     }
 
     private fun createMaterial(project: Project) {
-        val material = with(mtlFile.node) {
+        val material = startElement?.node?.run {
             if (lastChildNode != null) {
                 addChild(MtlElementFactory.createCRLF(project).node)
             }
@@ -70,13 +74,20 @@ class ObjCreateMaterialQuickFix(
             addChild(MtlElementFactory.createCRLF(project).node)
             addChild(MtlElementFactory.createTODO(project).node)
             addChild(MtlElementFactory.createCRLF(project).node)
-            return@with material
+            return@run material
         }
 
-        (material.lastChild.navigationElement as NavigatablePsiElement).navigate(true)
-        FileEditorManager.getInstance(project)
-            .selectedTextEditor
-            ?.caretModel
-            ?.moveCaretRelatively(0, 2, false, false, false)
+        val navigatableElement = material?.lastChild?.navigationElement as? NavigatablePsiElement
+        if (navigatableElement != null) {
+            navigatableElement.navigate(true)
+            FileEditorManager.getInstance(project)
+                .selectedTextEditor
+                ?.caretModel
+                ?.moveCaretRelatively(0, 2, false, false, false)
+        }
+    }
+
+    override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
+        runCreateMaterialAction(project)
     }
 }

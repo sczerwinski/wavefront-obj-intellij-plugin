@@ -22,46 +22,45 @@ import com.intellij.codeInspection.LocalQuickFixOnPsiElement
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
-import it.czerwinski.intellij.wavefront.lang.psi.util.createRelativeFile
+import it.czerwinski.intellij.wavefront.lang.psi.MtlFile
 
-class ObjCreateMtlFileQuickFix(
-    element: PsiElement,
-    private val filename: String
-) : LocalQuickFixOnPsiElement(element), IntentionAction, HighPriorityAction {
+class MtlRemoveMaterialQuickFix(
+    private val materialName: String,
+    materialElement: PsiElement
+) : LocalQuickFixOnPsiElement(materialElement), IntentionAction, HighPriorityAction {
 
     override fun getText(): String =
-        WavefrontObjBundle.getMessage("fileTypes.mtl.quickfix.createMtlFile", filename)
+        WavefrontObjBundle.message(key = "fileTypes.mtl.quickfix.removeMaterial", materialName)
 
     override fun getFamilyName(): String =
-        WavefrontObjBundle.getMessage("fileTypes.mtl.quickfix.createMtlFile.family")
+        WavefrontObjBundle.message(key = "fileTypes.mtl.quickfix.removeMaterial.family")
 
-    override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean = true
+    override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean =
+        file is MtlFile
 
     override fun startInWriteAction(): Boolean = false
 
     override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
-        runCreateMtlFileAction(project)
+        removeMaterial(project, file = file ?: return, element = startElement ?: return)
     }
 
-    private fun runCreateMtlFileAction(project: Project) {
-        val dir = startElement.containingFile?.containingDirectory
-        if (dir != null) {
-            WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
-                createMtlFile(dir)
+    private fun removeMaterial(project: Project, file: PsiFile, element: PsiElement) {
+        WriteCommandAction.writeCommandAction(project, file)
+            .withName(WavefrontObjBundle.message(key = "fileTypes.mtl.quickfix.removeMaterial.action"))
+            .run<RuntimeException> {
+                val otherNode = element.prevSibling?.node ?: element.nextSibling?.node
+                val parentElement = element.parent
+                parentElement.node.removeChild(element.node)
+                if (otherNode != null) {
+                    parentElement.node.removeChild(otherNode)
+                }
             }
-        }
-    }
-
-    private fun createMtlFile(dir: PsiDirectory) {
-        val file = createRelativeFile(dir, filename)
-        file?.navigate(true)
     }
 
     override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
-        runCreateMtlFileAction(project)
+        removeMaterial(project, file, startElement)
     }
 }

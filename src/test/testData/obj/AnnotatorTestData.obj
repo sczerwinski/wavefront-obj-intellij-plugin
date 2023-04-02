@@ -1,4 +1,4 @@
-mtllib <error descr="The MTL file is not found">tetrahedron.mtl</error>
+<warning descr="Unused MTL file reference statement">mtllib <error descr="File “tetrahedron.mtl” cannot be found">tetrahedron.mtl</error></warning>
 
 v 1.0 1.0 1.0
 v 2.0 2.0 2.0
@@ -10,19 +10,19 @@ vt 1.0 1.0
 
 vn 0.5 0.5 0.5
 
-usemtl <error descr="The material is not found">Marble</error>
+usemtl <error descr="Material “Marble” cannot be found">Marble</error>
 
 f 1 2 3
-f 1 2 <error descr="Incorrect geometric vertex index: 4">4</error>
+f 1 2 <error descr="Geometric vertex index out of bounds: 4">4</error>
 
 f 1/1 2/2 3/3
-f 1/1 2/2 3/<error descr="Incorrect texture vertex index: 4">4</error>
+f 1/1 2/2 3/<error descr="Texture coordinates index out of bounds: 4">4</error>
 
 f 1/1/1 2/2/1 3/3/1
-f 1/1/1 2/2/1 3/3/<error descr="Incorrect vertex normal index: 2">2</error>
+f 1/1/1 2/2/1 3/3/<error descr="Normal index out of bounds: 2">2</error>
 
 l 1 2 3
-l 1 2 <error descr="Incorrect geometric vertex index: 4">4</error>
+l 1 2 <error descr="Geometric vertex index out of bounds: 4">4</error>
 
 p 1
-p <error descr="Incorrect geometric vertex index: 4">4</error>
+p <error descr="Geometric vertex index out of bounds: 4">4</error>

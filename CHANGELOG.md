@@ -6,15 +6,16 @@
 
 ### Added
 - Icons matching New UI
-- Annotating unused MTL file references in OBJ files
-- Annotating duplicated MTL file references in OBJ files
-- Annotating unused materials in MTL files
+- Inspection for unused MTL file references in OBJ files
+- Inspection for duplicated MTL file references in OBJ files
+- Inspection for unused materials in MTL files
 - Import optimizer for OBJ files
 - Quick fix for optimising MTL file references in OBJ files
 - Quick fix for removing unused materials in MTL files
 
 ### Changed
 - Use split editor (text and preview) provided by IntelliJ platform
+- Replace annotators with inspections
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
 
 ### Deprecated

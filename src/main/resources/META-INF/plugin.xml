@@ -31,9 +31,54 @@
         <lang.syntaxHighlighter
                 language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter"/>
-        <annotator
+        <localInspection
                 language="OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjAnnotator"/>
+                id="InvalidIndex"
+                key="fileTypes.obj.inspection.invalidIndex"
+                groupKey="fileTypes.obj.inspection.invalidIndex.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjInvalidIndexInspection"/>
+        <localInspection
+                language="OBJ"
+                id="IndexOutOfBounds"
+                key="fileTypes.obj.inspection.indexOutOfBounds"
+                groupKey="fileTypes.obj.inspection.indexOutOfBounds.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjIndexOutOfBoundsInspection"/>
+        <localInspection
+                language="OBJ"
+                id="UnusedMtlFileReference"
+                key="fileTypes.obj.inspection.unusedMtlReference"
+                groupKey="fileTypes.obj.inspection.unusedMtlReference.group"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjUnusedMtlFileReferenceInspection"/>
+        <localInspection
+                language="OBJ"
+                id="DuplicateMtlFileReference"
+                key="fileTypes.obj.inspection.duplicateMtlReference"
+                groupKey="fileTypes.obj.inspection.duplicateMtlReference.group"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjDuplicatedMtlFileReferenceInspection"/>
+        <localInspection
+                language="OBJ"
+                id="UnknownMtlFileReference"
+                key="fileTypes.obj.inspection.unknownMtlReference"
+                groupKey="fileTypes.obj.inspection.unknownMtlReference.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjUnknownMtlFileReferenceInspection"/>
+        <localInspection
+                language="OBJ"
+                id="UnknownMaterialReference"
+                key="fileTypes.obj.inspection.unknownMaterialReference"
+                groupKey="fileTypes.obj.inspection.unknownMaterialReference.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjUnknownMaterialReferenceInspection"/>
         <codeInsight.lineMarkerProvider
                 language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjMaterialFileLineMarkerProvider"/>
@@ -104,9 +149,22 @@
         <lang.syntaxHighlighter
                 language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlSyntaxHighlighter"/>
-        <annotator
+        <localInspection
                 language="MTL"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlAnnotator"/>
+                id="UnusedMaterial"
+                key="fileTypes.mtl.inspection.unusedMaterial"
+                groupKey="fileTypes.mtl.inspection.unusedMaterial.group"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.MtlUnusedMaterialInspection"/>
+        <localInspection
+                language="MTL"
+                id="UnknownTextureFile"
+                key="fileTypes.mtl.inspection.unknownTextureFile"
+                groupKey="fileTypes.mtl.inspection.unknownTextureFile.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.MtlUnknownTextureFileInspection"/>
         <codeInsight.lineMarkerProvider
                 language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlTextureLineMarkerProvider"/>

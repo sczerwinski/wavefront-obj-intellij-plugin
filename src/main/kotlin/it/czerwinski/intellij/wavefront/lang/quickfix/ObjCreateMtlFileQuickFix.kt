@@ -16,19 +16,22 @@
 
 package it.czerwinski.intellij.wavefront.lang.quickfix
 
-import com.intellij.codeInsight.intention.impl.BaseIntentionAction
+import com.intellij.codeInsight.intention.HighPriorityAction
+import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInspection.LocalQuickFixOnPsiElement
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.util.createRelativeFile
 
 class ObjCreateMtlFileQuickFix(
-    private val dir: PsiDirectory,
+    element: PsiElement,
     private val filename: String
-) : BaseIntentionAction() {
+) : LocalQuickFixOnPsiElement(element), IntentionAction, HighPriorityAction {
 
     override fun getText(): String =
         WavefrontObjBundle.getMessage("fileTypes.mtl.quickfix.createMtlFile", filename)
@@ -45,13 +48,20 @@ class ObjCreateMtlFileQuickFix(
     }
 
     private fun runCreateMtlFileAction(project: Project) {
-        WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
-            createMtlFile()
+        val dir = startElement.containingFile?.containingDirectory
+        if (dir != null) {
+            WriteCommandAction.writeCommandAction(project).run<RuntimeException> {
+                createMtlFile(dir)
+            }
         }
     }
 
-    private fun createMtlFile() {
+    private fun createMtlFile(dir: PsiDirectory) {
         val file = createRelativeFile(dir, filename)
         file?.navigate(true)
+    }
+
+    override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
+        runCreateMtlFileAction(project)
     }
 }

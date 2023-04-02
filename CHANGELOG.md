@@ -26,6 +26,7 @@
 - Remove support for platform version `222.*`
 
 ### Fixed
+- "Crop Textures" option in 3x3 plane mesh material preview shows middle tile
 - Remove overridden deprecated method
 
 ### Security

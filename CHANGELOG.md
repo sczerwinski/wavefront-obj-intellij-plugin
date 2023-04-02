@@ -12,6 +12,8 @@
 - Import optimizer for OBJ files
 - Quick fix for optimising MTL file references in OBJ files
 - Quick fix for removing unused materials in MTL files
+- Code completion for keywords and smoothing group "off" value in OBJ files
+- Code completion for keywords, options and enum values in MTL files
 
 ### Changed
 - Use split editor (text and preview) provided by IntelliJ platform

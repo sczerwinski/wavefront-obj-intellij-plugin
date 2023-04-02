@@ -91,6 +91,9 @@
         <lang.elementManipulator
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.ObjMaterialReferenceManipulator"/>
+        <completion.contributor
+                language="OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.completion.ObjCompletionContributor"/>
         <psi.referenceContributor
                 language="OBJ"
                 implementation="it.czerwinski.intellij.wavefront.lang.ObjReferenceContributor"/>
@@ -171,6 +174,9 @@
         <lang.elementManipulator
                 forClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.manipulators.MtlTextureElementManipulator"/>
+        <completion.contributor
+                language="MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.completion.MtlCompletionContributor"/>
         <psi.referenceContributor
                 language="MTL"
                 implementation="it.czerwinski.intellij.wavefront.lang.MtlReferenceContributor"/>

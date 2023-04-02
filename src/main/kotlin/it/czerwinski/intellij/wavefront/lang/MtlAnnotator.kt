@@ -25,6 +25,7 @@ import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.util.findAllObjFiles
+import it.czerwinski.intellij.wavefront.lang.quickfix.MtlRemoveMaterialQuickFix
 
 class MtlAnnotator : Annotator {
 
@@ -42,9 +43,18 @@ class MtlAnnotator : Annotator {
         if (element.parent !in element.project.findAllObjFiles().flatMap { it.referencedMaterials }) {
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
-                WavefrontObjBundle.message(key = "fileTypes.mtl.annotation.warning.materialUnused")
+                WavefrontObjBundle.message(
+                    key = "fileTypes.mtl.annotation.warning.materialUnused",
+                    element.name.orEmpty()
+                )
             ).range(element)
                 .highlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL)
+                .withFix(
+                    MtlRemoveMaterialQuickFix(
+                        materialName = element.name.orEmpty(),
+                        materialElement = element.parent
+                    )
+                )
                 .create()
         }
     }

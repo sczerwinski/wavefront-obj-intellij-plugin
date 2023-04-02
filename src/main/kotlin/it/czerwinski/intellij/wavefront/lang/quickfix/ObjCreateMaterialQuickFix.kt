@@ -17,7 +17,6 @@
 package it.czerwinski.intellij.wavefront.lang.quickfix
 
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -46,10 +45,10 @@ class ObjCreateMaterialQuickFix(
 
     override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean = true
 
+    override fun startInWriteAction(): Boolean = false
+
     override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
-        ApplicationManager.getApplication().invokeLater {
-            runCreateMaterialAction(project)
-        }
+        runCreateMaterialAction(project)
     }
 
     private fun runCreateMaterialAction(project: Project) {

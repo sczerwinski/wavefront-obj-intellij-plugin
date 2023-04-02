@@ -39,6 +39,15 @@ abstract class ObjMaterialFileReferenceElementImpl(
             }
         }
 
+    override val isDuplicated: Boolean
+        get() = containingObjFile?.materialFileReferences.orEmpty()
+            .filterNot { reference -> reference == this }
+            .any { reference -> reference.mtlFile == this.mtlFile }
+
+    override val isUnused: Boolean
+        get() = containingObjFile?.referencedMaterials.orEmpty()
+            .none { material -> material in mtlFile?.materials.orEmpty() }
+
     override fun getReferences(): Array<PsiReference> =
         ReferenceProvidersRegistry.getReferencesFromProviders(this)
 }

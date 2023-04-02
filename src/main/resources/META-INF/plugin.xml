@@ -61,6 +61,9 @@
         <lang.formatter
                 language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.formatting.ObjFormattingModelBuilder"/>
+        <lang.importOptimizer
+                language="OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjImportOptimizer"/>
         <lang.commenter
                 language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>

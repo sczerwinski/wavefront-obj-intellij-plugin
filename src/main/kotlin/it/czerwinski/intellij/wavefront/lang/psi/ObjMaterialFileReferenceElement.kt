@@ -19,6 +19,10 @@ package it.czerwinski.intellij.wavefront.lang.psi
 import com.intellij.psi.PsiElement
 
 interface ObjMaterialFileReferenceElement : PsiElement {
+
     val filename: String?
     val mtlFile: MtlFile?
+
+    val isDuplicated: Boolean
+    val isUnused: Boolean
 }

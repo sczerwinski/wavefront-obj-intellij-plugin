@@ -35,6 +35,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMaterialQuickFix
 import it.czerwinski.intellij.wavefront.lang.quickfix.ObjCreateMtlFileQuickFix
+import it.czerwinski.intellij.wavefront.lang.quickfix.ObjOptimizeMtlFileReferencesQuickFix
 
 class ObjAnnotator : Annotator {
 
@@ -117,21 +118,15 @@ class ObjAnnotator : Annotator {
         element: ObjMaterialFileReferenceStatement,
         holder: AnnotationHolder
     ) {
-        if (isUnused(element)) {
+        if (element.materialFileReferenceList.all { reference -> reference.isUnused }) {
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
                 WavefrontObjBundle.message(key = "fileTypes.obj.annotation.warning.mtlFileStatementUnused")
             ).range(element)
+                .withFix(ObjOptimizeMtlFileReferencesQuickFix())
                 .highlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL)
                 .create()
         }
-    }
-
-    private fun isUnused(element: ObjMaterialFileReferenceStatement): Boolean {
-        val materialsInReferencedFiles = element.materialFileReferenceList
-            .flatMap { materialFileReference -> materialFileReference.mtlFile?.materials.orEmpty() }
-        val referencedMaterials = element.containingObjFile?.referencedMaterials.orEmpty()
-        return referencedMaterials.none { it in materialsInReferencedFiles }
     }
 
     private fun annotateMaterialFileReference(
@@ -149,19 +144,21 @@ class ObjAnnotator : Annotator {
                     .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL)
                     .create()
             } else {
-                if (isDuplicated(element)) {
+                if (element.isDuplicated) {
                     holder.newAnnotation(
                         HighlightSeverity.WARNING,
                         WavefrontObjBundle.message(key = "fileTypes.obj.annotation.warning.mtlFileDuplicate")
                     ).range(element)
+                        .withFix(ObjOptimizeMtlFileReferencesQuickFix())
                         .create()
                 }
-                if (isUnused(element)) {
+                if (element.isUnused) {
                     holder.newAnnotation(
                         HighlightSeverity.WARNING,
                         WavefrontObjBundle.message(key = "fileTypes.obj.annotation.warning.mtlFileUnused")
                     ).range(element)
                         .highlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL)
+                        .withFix(ObjOptimizeMtlFileReferencesQuickFix())
                         .create()
                 }
             }
@@ -176,15 +173,6 @@ class ObjAnnotator : Annotator {
         }
         return this
     }
-
-    private fun isDuplicated(element: ObjMaterialFileReference): Boolean =
-        element.containingObjFile?.materialFileReferences.orEmpty()
-            .filterNot { it == element }
-            .any { it.mtlFile == element.mtlFile }
-
-    private fun isUnused(element: ObjMaterialFileReference): Boolean =
-        element.containingObjFile?.referencedMaterials.orEmpty()
-            .none { it in element.mtlFile?.materials.orEmpty() }
 
     private fun annotateMaterialReference(
         element: ObjMaterialReference,

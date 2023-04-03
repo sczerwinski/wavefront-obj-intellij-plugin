@@ -38,7 +38,7 @@ class ObjParserDefinition : ParserDefinition {
 
     override fun getWhitespaceTokens(): TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
 
-    override fun getCommentTokens(): TokenSet = TokenSet.create(ObjTypes.COMMENT)
+    override fun getCommentTokens(): TokenSet = TokenSet.create(ObjTypes.COMMENT_BLOCK)
 
     override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 

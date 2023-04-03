@@ -40,8 +40,7 @@ abstract class MtlMaterialElementImpl(
 
     private val material: MtlMaterial? get() = this as? MtlMaterial
 
-    override val identifierElement: MtlMaterialIdentifierElement?
-        get() = material?.materialIdentifierList?.firstOrNull()
+    override val identifierElement: MtlMaterialIdentifierElement? get() = material?.materialIdentifier
 
     override val ambientColorElement: MtlColorElement? get() = material?.ambientColorList?.firstOrNull()
     override val diffuseColorElement: MtlColorElement? get() = material?.diffuseColorList?.firstOrNull()

@@ -33,12 +33,12 @@ class MtlCodeInsightTest : BasePlatformTestCase() {
         myFixture.testDataPath = basePath
     }
 
-    fun testAnnotator() {
+    fun testInspections() {
         myFixture.enableInspections(
             MtlUnusedMaterialInspection::class.java,
             MtlUnknownTextureFileInspection::class.java
         )
-        myFixture.configureByFiles("AnnotatorTestData.mtl")
+        myFixture.configureByFiles("InspectionsTestData.mtl")
         myFixture.checkHighlighting(true, false, true)
     }
 
@@ -51,8 +51,12 @@ class MtlCodeInsightTest : BasePlatformTestCase() {
         myFixture.checkResultByFile("FormatterTestDataExpected.mtl")
     }
 
-    fun testFolding() {
-        myFixture.testFolding("$basePath/FoldingTestData.mtl")
+    fun testFoldingMaterial() {
+        myFixture.testFolding("$basePath/FoldingMaterialTestData.mtl")
+    }
+
+    fun testFoldingComment() {
+        myFixture.testFolding("$basePath/FoldingCommentTestData.mtl")
     }
 
     fun testCommenter() {

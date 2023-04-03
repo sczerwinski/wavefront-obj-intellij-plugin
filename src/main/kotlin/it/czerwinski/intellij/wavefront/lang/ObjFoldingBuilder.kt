@@ -21,37 +21,62 @@ import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.childrenOfType
+import com.intellij.refactoring.suggested.endOffset
+import com.intellij.refactoring.suggested.startOffset
+import it.czerwinski.intellij.wavefront.lang.psi.ObjCommentBlock
+import it.czerwinski.intellij.wavefront.lang.psi.ObjDocumentation
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
-import it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
 import org.jetbrains.annotations.NonNls
 
 class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> =
-        buildObjGroupingElements(root)
-            .map { element -> FoldingDescriptor(element.node, element.textRange) }
-            .toTypedArray()
+        listOf(
+            buildObjGroupingElements(root),
+            buildObjCommentBlocks(root)
+        ).flatten().toTypedArray()
 
-    private fun buildObjGroupingElements(root: PsiElement): List<PsiElement> =
-        PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java).toList()
+    private fun buildObjGroupingElements(root: PsiElement): List<FoldingDescriptor> =
+        PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java)
+            .map { element ->
+                val startOffset = element.childrenOfType<ObjDocumentation>().singleOrNull()?.endOffset
+                    ?: element.startOffset
+                val endOffset = element.endOffset
+                FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
+            }
+
+    private fun buildObjCommentBlocks(root: PsiElement): List<FoldingDescriptor> =
+        PsiTreeUtil.findChildrenOfType(root, ObjCommentBlock::class.java)
+            .filter { commentBlock -> commentBlock.commentLineList.size > 1 }
+            .map { element ->
+                val startOffset = element.startOffset
+                val endOffset = element.startOffset + element.text.trimEnd().length
+                FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
+            }
 
     override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
             is ObjObject -> OBJECT_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
             is ObjGroup -> GROUP_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
+            is ObjCommentBlock -> COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT.format(
+                element.commentLineList.firstOrNull()?.text?.trim().orEmpty()
+            )
 
             else -> DEFAULT_PLACEHOLDER_TEXT
         }
 
-    override fun isCollapsedByDefault(node: ASTNode): Boolean = node.psi is ObjIndexElement
+    override fun isCollapsedByDefault(node: ASTNode): Boolean = false
 
     companion object {
         @NonNls private const val DEFAULT_PLACEHOLDER_TEXT = "..."
         @NonNls private const val OBJECT_PLACEHOLDER_TEXT_FORMAT = "o %s ..."
         @NonNls private const val GROUP_PLACEHOLDER_TEXT_FORMAT = "g %s ..."
+        @NonNls private const val COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT = "%s ..."
     }
 }

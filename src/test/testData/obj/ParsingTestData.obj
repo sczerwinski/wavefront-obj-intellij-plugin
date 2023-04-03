@@ -1,23 +1,26 @@
 # OBJ File: 'tetrahedron.obj'
 mtllib tetrahedron.mtl
-o Tetrahedron
-v 1.000000 -1.000000 1.000000
-v -1.000000 -1.000000 -1.000000
-v 1.000000 1.000000 -1.000000
-v -1.000000 1.000000 1.000000
-vt 0.865957 0.500000
-vt 0.433025 0.749954
-vt 0.433025 0.250047
-vt 0.865957 0.999907
-vt 0.000093 0.500000
-vt 0.865957 0.000093
-vn 0.5774 -0.5774 -0.5774
-vn 0.5774 0.5774 0.5774
-vn -0.5774 -0.5774 0.5774
-vn -0.5774 0.5774 -0.5774
+# Triangle face mesh
+o Triangle_Face
+v -1 -1 0
+v 1 -1 0
+v 0 1 0
+vt 0 0
+vt 1 0
+vt 0 1
+vn 0 0 1
+# Faces:
 usemtl Marble
+s 1
+f 1/1/1 2/2/1 3/3/1
+o Triangle_Line
+# Lines:
+usemtl Rope
 s off
-f 3/1/1 1/2/1 2/3/1
-f 1/2/2 3/1/2 4/4/2
-f 2/3/3 1/2/3 4/5/3
-f 2/3/4 4/6/4 3/1/4
+l 1/1 2/2 3/3 1/1
+# Triangle points
+o Triangle_Points
+# Points:
+p 1
+p 2
+p 3

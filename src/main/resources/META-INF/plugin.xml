@@ -115,6 +115,9 @@
         <lang.commenter
                 language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
+        <lang.documentationProvider
+                language="OBJ"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.documentation.ObjDocumentationProvider"/>
         <spellchecker.support
                 language="OBJ"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
@@ -200,6 +203,9 @@
         <lang.commenter
                 language="MTL"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.WavefrontCommenter"/>
+        <lang.documentationProvider
+                language="MTL"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.documentation.MtlDocumentationProvider"/>
         <spellchecker.support
                 language="MTL"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>

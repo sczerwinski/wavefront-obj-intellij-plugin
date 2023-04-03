@@ -26,7 +26,7 @@ abstract class MtlReflectionTextureElementImpl(
 ) : MtlTextureElementImpl(node), MtlReflectionTextureElement {
 
     override val reflectionTypeOptionElement: MtlReflectionTypeOption?
-        get() = reflectionTypeOptionList.firstOrNull()
+        get() = reflectionTypeOption
 
     override val reflectionType: MtlReflectionType?
         get() = MtlReflectionType.fromValue(reflectionTypeOptionElement?.value)

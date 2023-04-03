@@ -29,23 +29,33 @@
   tokenTypeClass="it.czerwinski.intellij.wavefront.lang.psi.ObjTokenType"
 }
 
-objFile ::= (groupingItem_|item_)*
+objFile ::= (groupingElement_ | item_ | commentBlock)*
 
 private item_ ::= (
   vertex | textureCoordinates | vertexNormal
   | point | line | face
   | smoothingGroup
   | materialFileReferenceStatement | materialReference
-  | COMMENT | CRLF
 )
 
-private groupingItem_ ::= (object|group)
+commentBlock ::= (commentLine)+ {
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+}
+commentLine ::= (COMMENT_SYMBOL COMMENT) {
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+}
 
-object ::= (OBJECT_KEYWORD objectOrGroupIdentifier) + item_* {
+private groupingElement_ ::= (object|group)
+
+documentation ::= (commentBlock)? {
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+}
+
+object ::= (documentation OBJECT_KEYWORD objectOrGroupIdentifier) (commentBlock? item_)* {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjGroupingElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement"
 }
-group ::= (GROUP_KEYWORD objectOrGroupIdentifier) + item_* {
+group ::= (documentation GROUP_KEYWORD objectOrGroupIdentifier) (commentBlock? item_)* {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjGroupingElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement"
 }
@@ -68,11 +78,11 @@ vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjVectorElement"
 }
 
-face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex + (faceVertex)*) {
+face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex (faceVertex)*) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjFaceElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjFaceElement"
 }
-line ::= (LINE_KEYWORD lineVertex lineVertex + (lineVertex)*) {
+line ::= (LINE_KEYWORD lineVertex lineVertex (lineVertex)*) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjLineElement"
 }
 point ::= (POINT_KEYWORD vertexIndex)
@@ -103,7 +113,7 @@ smoothingGroup ::= (SMOOTHING_GROUP_KEYWORD SMOOTHING_GROUP_NUMBER) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjSmoothingGroupElement"
 }
 
-materialFileReferenceStatement ::= (MATERIAL_FILE_REF_KEYWORD materialFileReference + materialFileReference*)
+materialFileReferenceStatement ::= (MATERIAL_FILE_REF_KEYWORD materialFileReference materialFileReference*)
 
 materialFileReference ::= (MATERIAL_FILE_NAME) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjMaterialFileReferenceElementImpl"

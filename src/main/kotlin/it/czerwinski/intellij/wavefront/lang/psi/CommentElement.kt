@@ -16,10 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-interface MtlReflectionTextureElement : MtlTextureElement {
+import com.intellij.psi.PsiElement
 
-    val reflectionTypeOption: MtlReflectionTypeOption
-    val reflectionTypeOptionElement: MtlReflectionTypeOption?
-
-    val reflectionType: MtlReflectionType?
-}
+interface CommentElement : PsiElement

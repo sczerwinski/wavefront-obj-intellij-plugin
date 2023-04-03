@@ -21,25 +21,49 @@ import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
+import com.intellij.psi.util.childrenOfType
+import com.intellij.refactoring.suggested.endOffset
+import com.intellij.refactoring.suggested.startOffset
+import it.czerwinski.intellij.wavefront.lang.psi.MtlCommentBlock
+import it.czerwinski.intellij.wavefront.lang.psi.MtlDocumentation
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import org.jetbrains.annotations.NonNls
 
 class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> =
-        buildMtlMaterialElements(root)
-            .map { element -> FoldingDescriptor(element.node, element.textRange) }
-            .toTypedArray()
+        listOf(
+            buildMtlMaterialElements(root),
+            buildMtlCommentBlocks(root)
+        ).flatten().toTypedArray()
 
-    private fun buildMtlMaterialElements(root: PsiElement): List<PsiElement> =
-        PsiTreeUtil.findChildrenOfType(root, MtlMaterialElement::class.java).toList()
+    private fun buildMtlMaterialElements(root: PsiElement): List<FoldingDescriptor> =
+        PsiTreeUtil.findChildrenOfType(root, MtlMaterialElement::class.java)
+            .map { element ->
+                val startOffset = element.childrenOfType<MtlDocumentation>().singleOrNull()?.endOffset
+                    ?: element.startOffset
+                val endOffset = element.endOffset
+                FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
+            }
+
+    private fun buildMtlCommentBlocks(root: PsiElement): List<FoldingDescriptor> =
+        PsiTreeUtil.findChildrenOfType(root, MtlCommentBlock::class.java)
+            .filter { commentBlock -> commentBlock.commentLineList.size > 1 }
+            .map { element ->
+                val startOffset = element.startOffset
+                val endOffset = element.startOffset + element.text.trimEnd().length
+                FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
+            }
 
     override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
-            is MtlMaterial -> MATERIAL_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
+            is MtlMaterialElement -> MATERIAL_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
+            is MtlCommentBlock -> COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT.format(
+                element.commentLineList.firstOrNull()?.text?.trim().orEmpty()
+            )
 
             else -> DEFAULT_PLACEHOLDER_TEXT
         }
@@ -49,5 +73,6 @@ class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
     companion object {
         @NonNls private const val DEFAULT_PLACEHOLDER_TEXT = "..."
         @NonNls private const val MATERIAL_PLACEHOLDER_TEXT_FORMAT = "newmtl %s ..."
+        @NonNls private const val COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT = "%s ..."
     }
 }

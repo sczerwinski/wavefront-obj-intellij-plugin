@@ -22,6 +22,8 @@ import graphics.glimpse.types.Vec3
 
 interface MtlMaterialElement : PsiElement {
 
+    val documentation: MtlDocumentation
+
     val identifierElement: MtlMaterialIdentifierElement?
 
     val ambientColorElement: MtlColorElement?

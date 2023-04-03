@@ -32,6 +32,10 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> =
         when (tokenType) {
+            ObjTypes.DOCUMENTATION,
+            ObjTypes.COMMENT_BLOCK,
+            ObjTypes.COMMENT_LINE,
+            ObjTypes.COMMENT_SYMBOL,
             ObjTypes.COMMENT ->
                 arrayOf(ATTR_COMMENT)
 

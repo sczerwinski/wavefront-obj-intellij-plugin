@@ -21,11 +21,27 @@ import com.intellij.lang.ASTNode
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
+import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
+import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
+import it.czerwinski.intellij.wavefront.lang.psi.util.countChildrenOfType
 import it.czerwinski.intellij.wavefront.lang.psi.util.getChildrenOfType
 
 abstract class ObjGroupingElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), ObjGroupingElement {
+
+    override val verticesCount
+        get() = countChildrenOfType<ObjVertex>()
+
+    override val textureCoordinatesCount
+        get() = countChildrenOfType<ObjTextureCoordinates>()
+
+    override val vertexNormalsCount
+        get() = countChildrenOfType<ObjVertexNormal>()
+
+    override val facesCount
+        get() = countChildrenOfType<ObjFaceElement>()
 
     override val trianglesCount: Int
         get() = getChildrenOfType<ObjFaceElement>().sumOf { it.trianglesCount }

@@ -14,6 +14,9 @@
 - Quick fix for removing unused materials in MTL files
 - Code completion for keywords and smoothing group "off" value in OBJ files
 - Code completion for keywords, options and enum values in MTL files
+- Documentation provider for objects and groups defined in OBJ files
+- Documentation provider for materials defined in MTL files
+- Folding multi-line comments
 
 ### Changed
 - Use split editor (text and preview) provided by IntelliJ platform

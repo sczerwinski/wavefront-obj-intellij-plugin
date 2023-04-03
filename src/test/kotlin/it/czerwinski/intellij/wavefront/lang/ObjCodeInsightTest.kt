@@ -37,7 +37,7 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
         myFixture.testDataPath = basePath
     }
 
-    fun testAnnotator() {
+    fun testInspections() {
         myFixture.enableInspections(
             ObjDuplicatedMtlFileReferenceInspection::class.java,
             ObjIndexOutOfBoundsInspection::class.java,
@@ -46,7 +46,7 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
             ObjUnknownMtlFileReferenceInspection::class.java,
             ObjUnusedMtlFileReferenceInspection::class.java
         )
-        myFixture.configureByFiles("AnnotatorTestData.obj")
+        myFixture.configureByFiles("InspectionsTestData.obj")
         myFixture.checkHighlighting(true, false, true)
     }
 
@@ -59,8 +59,12 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
         myFixture.checkResultByFile("FormatterTestDataExpected.obj")
     }
 
-    fun testFolding() {
-        myFixture.testFolding("$basePath/FoldingTestData.obj")
+    fun testFoldingObject() {
+        myFixture.testFolding("$basePath/FoldingObjectTestData.obj")
+    }
+
+    fun testFoldingComment() {
+        myFixture.testFolding("$basePath/FoldingCommentTestData.obj")
     }
 
     fun testCommenter() {

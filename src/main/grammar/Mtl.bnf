@@ -29,9 +29,20 @@
   tokenTypeClass="it.czerwinski.intellij.wavefront.lang.psi.MtlTokenType"
 }
 
-mtlFile ::= material*
+mtlFile ::= (material | commentBlock)*
 
-material ::= (NEW_MATERIAL_KEYWORD materialIdentifier) + item_* {
+commentBlock ::= (commentLine)+ {
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+}
+commentLine ::= (COMMENT_SYMBOL COMMENT) {
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+}
+
+documentation ::= (commentBlock)? {
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+}
+
+material ::= (documentation NEW_MATERIAL_KEYWORD materialIdentifier) (commentBlock? item_)* {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlMaterialElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement"
 }
@@ -43,7 +54,6 @@ materialIdentifier ::= MATERIAL_NAME {
 
 private item_ ::= (
   color_ | property_ | map_
-  | COMMENT | CRLF
 )
 
 private color_ ::= (ambientColor | diffuseColor | specularColor | transmissionFilter | emissionColor)
@@ -194,7 +204,7 @@ private bumpMapOptions_ ::= (
     | bumpMultiplierOption
 )*
 
-private reflectionMapOptions_ ::= reflectionTypeOption + colorMapOptions_
+private reflectionMapOptions_ ::= reflectionTypeOption colorMapOptions_
 
 blendUOption ::= (BLEND_U_OPTION_NAME FLAG) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFlagValueElementImpl"

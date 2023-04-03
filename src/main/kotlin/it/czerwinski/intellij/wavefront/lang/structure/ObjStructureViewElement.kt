@@ -21,6 +21,7 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import it.czerwinski.intellij.wavefront.lang.psi.CommentElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
 
 class ObjStructureViewElement(
@@ -46,6 +47,8 @@ class ObjStructureViewElement(
             NavigatablePsiElement::class.java
         ).filterNot { element ->
             element is ObjObjectOrGroupIdentifier
+        }.filterNot { element ->
+            element is CommentElement
         }.map { element ->
             ObjStructureViewElement(element)
         }.toTypedArray()

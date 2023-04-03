@@ -33,6 +33,10 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
     @Suppress("LongMethod")
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> =
         when (tokenType) {
+            MtlTypes.DOCUMENTATION,
+            MtlTypes.COMMENT_BLOCK,
+            MtlTypes.COMMENT_LINE,
+            MtlTypes.COMMENT_SYMBOL,
             MtlTypes.COMMENT ->
                 arrayOf(ATTR_COMMENT)
 

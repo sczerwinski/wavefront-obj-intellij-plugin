@@ -1,5 +1,5 @@
-# OBJ File: 'tetrahedron.obj'
 mtllib tetrahedron.mtl
+# Tetrahedron mesh
 <fold text='o Tetrahedron ...'>o Tetrahedron
 v 1.000000 -1.000000 1.000000
 v -1.000000 -1.000000 -1.000000

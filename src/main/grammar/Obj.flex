@@ -32,9 +32,9 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes;
 %eof{  return;
 %eof}
 
-CRLF=\R
+CRLF=[\r\n\f]+
 
-COMMENT_LINE="#"[^\r\n\f]*
+COMMENT_SYMBOL="#"[\ \t]*
 
 WHITE_SPACE=[\ \t]+
 
@@ -62,6 +62,7 @@ FLOAT="-"?((0)|([1-9][\d]*))("."[\d]+)?([Ee][+-]?[\d]+)?
 INDEX=-?([1-9][\d]*)
 REFERENCE=[^\ \t\r\n\f]+
 
+%state WAITING_COMMENT
 %state WAITING_OBJECT_OR_GROUP_NAME
 %state WAITING_FLOAT
 %state WAITING_FACE_VERTEX
@@ -76,7 +77,7 @@ REFERENCE=[^\ \t\r\n\f]+
 
 %%
 
-<YYINITIAL> {COMMENT_LINE} { yybegin(YYINITIAL); return ObjTypes.COMMENT; }
+<YYINITIAL> {COMMENT_SYMBOL} { yybegin(WAITING_COMMENT); return ObjTypes.COMMENT_SYMBOL; }
 
 <YYINITIAL> {OBJECT_KEYWORD} { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return ObjTypes.OBJECT_KEYWORD; }
 <YYINITIAL> {GROUP_KEYWORD} { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return ObjTypes.GROUP_KEYWORD; }
@@ -95,6 +96,8 @@ REFERENCE=[^\ \t\r\n\f]+
 <YYINITIAL> {MATERIAL_REFERENCE_KEYWORD} { yybegin(WAITING_MATERIAL_NAME); return ObjTypes.MATERIAL_REFERENCE_KEYWORD; }
 
 <YYINITIAL> [^\ \t\r\n\f]+ { yybegin(INVALID); return ObjUnknownTypes.UNKNOWN_KEYWORD; }
+
+<WAITING_COMMENT> [^\r\n\f]*[\r\n\f] { yybegin(YYINITIAL); return ObjTypes.COMMENT; }
 
 <WAITING_OBJECT_OR_GROUP_NAME> {WHITE_SPACE} { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return TokenType.WHITE_SPACE; }
 <WAITING_OBJECT_OR_GROUP_NAME> {OBJECT_OR_GROUP_NAME} { yybegin(END); return ObjTypes.OBJECT_OR_GROUP_NAME; }

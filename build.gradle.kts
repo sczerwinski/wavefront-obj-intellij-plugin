@@ -10,11 +10,11 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("com.google.devtools.ksp") version "1.8.20-1.0.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.2"
+    id("org.jetbrains.intellij") version "1.13.3"
     // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2022.3.1"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -56,10 +56,10 @@ dependencies {
 // Generate parsers and lexers before Kotlin compilation.
 // Read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
 fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {}) =
-    task<GenerateParserTask>("generateParser${suffix.capitalize()}") {
-        sourceFile.set(file("src/main/grammar/${suffix.capitalize()}.bnf"))
+    task<GenerateParserTask>("generateParser${suffix.replaceFirstChar { it.uppercaseChar() }}") {
+        sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.bnf"))
         targetRoot.set("${project.buildDir}/generated/source/parser/$suffix")
-        pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.capitalize()}Parser.java")
+        pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.replaceFirstChar { it.uppercaseChar() }}Parser.java")
         pathToPsiRoot.set("it/czerwinski/intellij/wavefront/lang/psi")
         purgeOldFiles.set(true)
         targetRootOutputDir.convention(targetRoot.map { project.layout.projectDirectory.dir(it) })
@@ -67,10 +67,10 @@ fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {
     }
 
 fun generateLexerTask(suffix: String, config: GenerateLexerTask.() -> Unit = {}) =
-    task<GenerateLexerTask>("generateLexer${suffix.capitalize()}") {
-        sourceFile.set(file("src/main/grammar/${suffix.capitalize()}.flex"))
+    task<GenerateLexerTask>("generateLexer${suffix.replaceFirstChar { it.uppercaseChar() }}") {
+        sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.flex"))
         targetDir.set("${project.buildDir}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang")
-        targetClass.set("${suffix.capitalize()}Lexer")
+        targetClass.set("${suffix.replaceFirstChar { it.uppercaseChar() }}Lexer")
         purgeOldFiles.set(true)
         config()
     }

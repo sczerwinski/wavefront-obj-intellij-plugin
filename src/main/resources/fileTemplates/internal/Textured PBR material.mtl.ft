@@ -1,0 +1,9 @@
+# ${NAME}
+# Created ${DATE} by ${USER}
+newmtl ${NAME}
+map_Kd albedo.png
+map_Ke emission.png
+map_Pr -imfchan r roughness.png
+map_Pm -imfchan r metalness.png
+norm normalmap.png
+disp -imfchan r -mm 0 0.1 displacement.png

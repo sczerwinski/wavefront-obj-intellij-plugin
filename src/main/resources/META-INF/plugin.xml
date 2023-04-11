@@ -126,7 +126,7 @@
         <createFromTemplateHandler
                 implementation="it.czerwinski.intellij.wavefront.templates.ObjCreateFromTemplateHandler"/>
         <internalFileTemplate
-                name="Wavefront OBJ File"/>
+                name="Empty object"/>
 
         <!-- Settings -->
         <colorSettingsPage
@@ -216,7 +216,15 @@
         <createFromTemplateHandler
                 implementation="it.czerwinski.intellij.wavefront.templates.MtlCreateFromTemplateHandler"/>
         <internalFileTemplate
-                name="Wavefront MTL File"/>
+                name="Empty material"/>
+        <internalFileTemplate
+                name="Phong material"/>
+        <internalFileTemplate
+                name="Textured Phong material"/>
+        <internalFileTemplate
+                name="PBR material"/>
+        <internalFileTemplate
+                name="Textured PBR material"/>
 
         <!-- Settings -->
         <colorSettingsPage

@@ -1,0 +1,7 @@
+# ${NAME}
+# Created ${DATE} by ${USER}
+newmtl ${NAME}
+Ka 1 0 0
+Kd 1 0 0
+Ks 1 1 1
+Ns 128

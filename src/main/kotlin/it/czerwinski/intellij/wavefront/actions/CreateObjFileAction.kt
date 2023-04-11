@@ -41,10 +41,10 @@ class CreateObjFileAction :
             )
             .addKind(
                 WavefrontObjBundle.message(
-                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj"
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.empty"
                 ),
                 ObjFileType.icon,
-                ObjFileType.name
+                "Empty object"
             )
     }
 

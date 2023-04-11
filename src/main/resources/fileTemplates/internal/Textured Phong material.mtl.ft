@@ -1,0 +1,10 @@
+# ${NAME}
+# Created ${DATE} by ${USER}
+newmtl ${NAME}
+map_Ka ambient.png
+map_Kd diffuse.png
+map_Ks specular.png
+map_Ns -imfchan r -mm 0 1024 exponent.png
+map_Ke emission.png
+norm normalmap.png
+disp -imfchan r -mm 0 0.1 displacement.png

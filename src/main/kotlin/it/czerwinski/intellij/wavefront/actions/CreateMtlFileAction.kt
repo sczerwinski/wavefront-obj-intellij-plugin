@@ -41,10 +41,38 @@ class CreateMtlFileAction :
             )
             .addKind(
                 WavefrontObjBundle.message(
-                    "action.it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction.dialog.kind.mtl"
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction.dialog.kind.mtl.empty"
                 ),
                 MtlFileType.icon,
-                MtlFileType.name
+                "Empty material"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction.dialog.kind.mtl.phong"
+                ),
+                MtlFileType.icon,
+                "Phong material"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction.dialog.kind.mtl.phong.textured"
+                ),
+                MtlFileType.icon,
+                "Textured Phong material"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction.dialog.kind.mtl.pbr"
+                ),
+                MtlFileType.icon,
+                "PBR material"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateMtlFileAction.dialog.kind.mtl.pbr.textured"
+                ),
+                MtlFileType.icon,
+                "Textured PBR material"
             )
     }
 

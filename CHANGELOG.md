@@ -17,6 +17,7 @@
 - Documentation provider for objects and groups defined in OBJ files
 - Documentation provider for materials defined in MTL files
 - Folding multi-line comments
+- MTL file templates for Phong and PBR materials
 
 ### Changed
 - Use split editor (text and preview) provided by IntelliJ platform

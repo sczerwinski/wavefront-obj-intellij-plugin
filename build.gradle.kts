@@ -12,7 +12,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.8.20-1.0.10"
+    id("com.google.devtools.ksp") version "1.8.20-1.0.11"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.13.3"
     // Gradle Grammar-Kit Plugin

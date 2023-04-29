@@ -71,11 +71,11 @@ abstract class MtlMaterialElementImpl(
     override val bumpMapElement: MtlTextureElement? get() = material?.bumpMapList?.firstOrNull()
     override val reflectionMapElement: MtlReflectionTextureElement? get() = material?.reflectionMapList?.firstOrNull()
 
-    override val ambientColorVector: Vec3? get() = ambientColorElement?.colorVector
-    override val diffuseColorVector: Vec3? get() = diffuseColorElement?.colorVector
-    override val specularColorVector: Vec3? get() = specularColorElement?.colorVector
-    override val transmissionFilterVector: Vec3? get() = transmissionFilterElement?.colorVector
-    override val emissionColorVector: Vec3? get() = emissionColorElement?.colorVector
+    override val ambientColorVector: Vec3<Float>? get() = ambientColorElement?.colorVector
+    override val diffuseColorVector: Vec3<Float>? get() = diffuseColorElement?.colorVector
+    override val specularColorVector: Vec3<Float>? get() = specularColorElement?.colorVector
+    override val transmissionFilterVector: Vec3<Float>? get() = transmissionFilterElement?.colorVector
+    override val emissionColorVector: Vec3<Float>? get() = emissionColorElement?.colorVector
 
     override val illumination: MtlIlluminationValueElement.Illumination? get() = illuminationElement?.value
     override val dissolve: Float? get() = dissolveElement?.value

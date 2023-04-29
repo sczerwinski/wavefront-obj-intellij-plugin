@@ -24,23 +24,23 @@ import kotlin.math.atan
 
 data class GLCameraModel(
     val distance: Float,
-    val longitude: Angle,
-    val latitude: Angle,
-    val fov: Angle,
+    val longitude: Angle<Float>,
+    val latitude: Angle<Float>,
+    val fov: Angle<Float>,
     val upVector: UpVector
 ) {
 
-    val x
+    val x: Float
         get() =
             upVector.vector.x * distance * sin(latitude) +
                 upVector.vector.y * distance * cos(longitude) * cos(latitude) +
                 upVector.vector.z * distance * sin(longitude) * cos(latitude)
-    val y
+    val y: Float
         get() =
             upVector.vector.x * distance * sin(longitude) * cos(latitude) +
                 upVector.vector.y * distance * sin(latitude) +
                 upVector.vector.z * distance * cos(longitude) * cos(latitude)
-    val z
+    val z: Float
         get() =
             upVector.vector.x * distance * cos(longitude) * cos(latitude) +
                 upVector.vector.y * distance * sin(longitude) * cos(latitude) +
@@ -49,7 +49,7 @@ data class GLCameraModel(
     val near get() = distance * NEAR_RATIO
     val far get() = distance * FAR_RATIO
 
-    fun fovY(aspect: Float): Angle =
+    fun fovY(aspect: Float): Angle<Float> =
         Angle.fromRad(atan(tan(fov) / aspect.coerceAtMost(1f)))
 
     companion object {

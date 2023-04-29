@@ -47,7 +47,7 @@ abstract class MtlColorElementImpl(
                 }
             }
 
-    override val colorVector: Vec3?
+    override val colorVector: Vec3<Float>?
         get() = channels
             .takeIf { it.size == COLOR_CHANNELS_COUNT }
             ?.let { (r, g, b) -> Vec3(r, g, b) }

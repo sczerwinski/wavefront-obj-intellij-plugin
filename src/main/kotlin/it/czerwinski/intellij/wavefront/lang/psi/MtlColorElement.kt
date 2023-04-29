@@ -22,6 +22,6 @@ import java.awt.Color
 
 interface MtlColorElement : PsiElement {
     val color: Color?
-    val colorVector: Vec3?
+    val colorVector: Vec3<Float>?
     val colorString: String?
 }

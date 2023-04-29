@@ -32,7 +32,7 @@ import graphics.glimpse.types.Mat4
 data class EnvironmentShader(
 
     @Uniform(name = "uMVPMat")
-    val mvpMatrix: Mat4,
+    val mvpMatrix: Mat4<Float>,
 
     @Sampler2D(name = "uEnvTexture")
     val environmentTexture: Texture,

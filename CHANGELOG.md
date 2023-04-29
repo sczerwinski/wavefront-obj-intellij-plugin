@@ -25,9 +25,14 @@
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
 - Upgrade Gradle Wrapper to `8.0.2`
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.20`
-  - Upgrade `com.google.devtools.ksp` to `1.8.20-1.0.10`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.21`
+  - Upgrade `com.google.devtools.ksp` to `1.8.21-1.0.11`
   - Upgrade `org.jetbrains.intellij` to `1.13.3`
+  - Upgrade `glimpse-core` to `2.0.0-alpha.1`
+  - Upgrade `glimpse-obj` to `2.0.0-alpha.1`
+  - Upgrade `glimpse-offscreen` to `2.0.0-alpha.1`
+  - Upgrade `glimpse-ui` to `2.0.0-alpha.1`
+  - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.1`
 
 ### Deprecated
 
@@ -35,6 +40,7 @@
 - Remove support for platform version `222.*`
 
 ### Fixed
+- Concave polygon rendering in 3D preview
 - "Crop Textures" option in 3x3 plane mesh material preview shows middle tile
 - Remove overridden deprecated method
 

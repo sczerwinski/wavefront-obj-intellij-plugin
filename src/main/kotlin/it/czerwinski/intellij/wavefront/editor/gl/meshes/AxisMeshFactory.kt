@@ -45,15 +45,15 @@ object AxisMeshFactory {
     private val axisConePositionsData: FloatBufferData by lazy {
         val apex = listOf(0f, 0f, AXIS_LENGTH + AXIS_CONE_LENGTH)
         val base = (0..AXIS_CONE_SEGMENTS).flatMap { index ->
-            val angle = Angle.fullAngle / AXIS_CONE_SEGMENTS.toFloat() * index.toFloat()
+            val angle = Angle.fullAngle<Float>() / AXIS_CONE_SEGMENTS.toFloat() * index.toFloat()
             listOf(AXIS_CONE_RADIUS * cos(angle), AXIS_CONE_RADIUS * sin(angle), AXIS_LENGTH - AXIS_CONE_LENGTH)
         }
         (apex + base).toFloatBufferData()
     }
 
-    internal val xAxisModelMatrix: Mat4 = rotationY(Angle.rightAngle)
-    internal val yAxisModelMatrix: Mat4 = rotationX(-Angle.rightAngle)
-    internal val zAxisModelMatrix: Mat4 = Mat4.identity
+    internal val xAxisModelMatrix: Mat4<Float> = rotationY(Angle.rightAngle())
+    internal val yAxisModelMatrix: Mat4<Float> = rotationX(-Angle.rightAngle<Float>())
+    internal val zAxisModelMatrix: Mat4<Float> = Mat4.identity()
 
     fun createAxis(gl: GlimpseAdapter): Mesh {
         val bufferFactory = Buffer.Factory.newInstance(gl)

@@ -10,9 +10,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.20"
+    id("org.jetbrains.kotlin.jvm") version "1.8.21"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.8.20-1.0.10"
+    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.13.3"
     // Gradle Grammar-Kit Plugin
@@ -43,11 +43,11 @@ kotlin {
 }
 
 dependencies {
-    api("graphics.glimpse:glimpse-core:1.2.1")
-    api("graphics.glimpse:glimpse-obj:1.2.1")
-    api("graphics.glimpse:glimpse-offscreen:1.2.1")
-    api("graphics.glimpse:glimpse-ui:1.2.1")
-    ksp("graphics.glimpse:glimpse-processor-ksp:1.2.1")
+    api("graphics.glimpse:glimpse-core:2.0.0-alpha.1")
+    api("graphics.glimpse:glimpse-obj:2.0.0-alpha.1")
+    api("graphics.glimpse:glimpse-offscreen:2.0.0-alpha.1")
+    api("graphics.glimpse:glimpse-ui:2.0.0-alpha.1")
+    ksp("graphics.glimpse:glimpse-processor-ksp:2.0.0-alpha.1")
     api("org.jogamp.jogl:jogl-all-main:2.4.0")
     api("org.jogamp.gluegen:gluegen-rt-main:2.4.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")

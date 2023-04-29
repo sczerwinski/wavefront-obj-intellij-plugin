@@ -33,20 +33,20 @@ import graphics.glimpse.types.Vec3
 data class SolidShader(
 
     @Uniform(name = "uProjMat")
-    val projectionMatrix: Mat4,
+    val projectionMatrix: Mat4<Float>,
 
     @Uniform(name = "uViewMat")
-    val viewMatrix: Mat4,
+    val viewMatrix: Mat4<Float>,
 
     @Uniform(name = "uModelMat")
-    val modelMatrix: Mat4,
+    val modelMatrix: Mat4<Float>,
 
     @Uniform(name = "uNormalMat")
-    val normalMatrix: Mat3,
+    val normalMatrix: Mat3<Float>,
 
     @Uniform(name = "uCameraPos")
-    val cameraPosition: Vec3,
+    val cameraPosition: Vec3<Float>,
 
     @Uniform(name = "uColor")
-    val color: Vec3,
+    val color: Vec3<Float>,
 )

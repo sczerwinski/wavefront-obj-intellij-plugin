@@ -24,7 +24,7 @@ import graphics.glimpse.types.Vec3
 
 object EnvironmentMeshFactory {
 
-    private val vertices: List<Vec3> = listOf(
+    private val vertices: List<Vec3<Float>> = listOf(
         Vec3(x = -1f, y = -1f, z = 1f),
         Vec3(x = 1f, y = -1f, z = 1f),
         Vec3(x = 1f, y = 1f, z = 1f),
@@ -51,7 +51,7 @@ object EnvironmentMeshFactory {
             meshDataBuilder.addVertex(vertex)
         }
         meshDataBuilder.addTextureCoordinates(Vec2(x = 0f, y = 0f))
-        meshDataBuilder.addNormal(Vec3.nullVector)
+        meshDataBuilder.addNormal(Vec3.nullVector())
         for (face in faces) {
             meshDataBuilder.addFace(
                 face.map { positionIndex ->

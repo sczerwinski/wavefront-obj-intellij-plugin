@@ -217,7 +217,7 @@ abstract class ZoomablePreviewComponent(
             val newLongitude = longitude + Angle.fromDeg(panningLongitude)
             val newLatitude = latitude + Angle.fromDeg(panningLatitude)
             return copy(
-                longitude = newLongitude % Angle.fullAngle,
+                longitude = newLongitude % Angle.fullAngle(),
                 latitude = newLatitude.coerceIn(
                     minimumValue = minLatitude,
                     maximumValue = maxLatitude

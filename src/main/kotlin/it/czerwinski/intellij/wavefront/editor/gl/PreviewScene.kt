@@ -37,7 +37,6 @@ import graphics.glimpse.types.Angle
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec2
 import graphics.glimpse.types.Vec3
-import graphics.glimpse.types.magnitude
 import graphics.glimpse.types.scale
 import graphics.glimpse.types.translation
 import it.czerwinski.intellij.common.ui.ErrorLog
@@ -86,12 +85,12 @@ abstract class PreviewScene(
     /**
      * Scene camera configuration.
      */
-    protected var camera: Camera = TargetCamera(eye = Vec3.unitX, target = Vec3.nullVector)
+    protected var camera: Camera<Float> = TargetCamera(eye = Vec3.unitX(), target = Vec3.nullVector())
 
     /**
      * Scene lens configuration.
      */
-    protected var lens: Lens = PerspectiveLens(Angle.rightAngle, aspect = 1f, near = 1f, far = 2f)
+    protected var lens: Lens<Float> = PerspectiveLens(Angle.rightAngle(), aspect = 1f, near = 1f, far = 2f)
 
     /**
      * Vector pointing in the "up" direction of the scene.
@@ -306,7 +305,7 @@ abstract class PreviewScene(
     private fun renderEnvironment(gl: GlimpseAdapter) {
         prepareEnvironment(gl)
         gl.glCullFace(FaceCullingMode.DISABLED)
-        val scale = magnitude(camera.eye) * ENVIRONMENT_CUBE_RATIO
+        val scale = camera.eye.magnitude() * ENVIRONMENT_CUBE_RATIO
         val modelMatrix = translation(camera.eye) * scale(scale)
         programExecutorsManager.renderEnvironment(
             gl,
@@ -338,12 +337,12 @@ abstract class PreviewScene(
         renderAxis(gl, AxisMeshFactory.zAxisModelMatrix, PreviewColors.COLOR_AXIS_Z)
     }
 
-    private fun renderAxis(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey) {
+    private fun renderAxis(gl: GlimpseAdapter, modelMatrix: Mat4<Float>, colorKey: ColorKey) {
         val scale = (modelSize ?: 1f) * AXIS_LENGTH_FACTOR
         val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.modelMatrix * modelMatrix
         programExecutorsManager.renderWireframe(
             gl,
-            WireframeShader(mvpMatrix = mvpMatrix, color = Vec4(colorKey)),
+            WireframeShader(mvpMatrix = mvpMatrix, color = colorKey.toVec4()),
             axisMesh,
             axisConeMesh
         )
@@ -356,7 +355,7 @@ abstract class PreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale),
-                color = Vec4(PreviewColors.COLOR_GRID, GRID_ALPHA)
+                color = PreviewColors.COLOR_GRID.toVec4(alpha = GRID_ALPHA)
             ),
             gridMesh
         )
@@ -368,7 +367,7 @@ abstract class PreviewScene(
             gl,
             WireframeShader(
                 mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale),
-                color = Vec4(PreviewColors.COLOR_GRID, FINE_GRID_ALPHA)
+                color = PreviewColors.COLOR_GRID.toVec4(alpha = FINE_GRID_ALPHA)
             ),
             fineGridMesh
         )
@@ -380,17 +379,17 @@ abstract class PreviewScene(
         renderAxisLabel(gl, AxisMeshFactory.zAxisModelMatrix, PreviewColors.COLOR_AXIS_Z, axisZLabelMesh)
     }
 
-    private fun renderAxisLabel(gl: GlimpseAdapter, modelMatrix: Mat4, colorKey: ColorKey, labelMesh: Mesh) {
+    private fun renderAxisLabel(gl: GlimpseAdapter, modelMatrix: Mat4<Float>, colorKey: ColorKey, labelMesh: Mesh) {
         val textSize = fontScaling * config.axisLabelFontSize
         val scale = (modelSize ?: 1f) * AXIS_LENGTH_FACTOR
         val mvpMatrix = lens.projectionMatrix * camera.viewMatrix * scale(scale) * upVector.modelMatrix * modelMatrix
-        val labelPosition = mvpMatrix * (Vec3.unitZ * AXIS_LABEL_DISTANCE_FACTOR).toVec4(w = 1f)
+        val labelPosition = mvpMatrix * (Vec3.unitZ<Float>() * AXIS_LABEL_DISTANCE_FACTOR).toVec4(w = 1f)
         programExecutorsManager.renderText(
             gl,
             TextShader(
                 position = labelPosition.toVec3() / labelPosition.w,
                 scale = Vec2(x = textSize / width, y = textSize / height),
-                color = Vec4(colorKey),
+                color = colorKey.toVec4(),
                 texture = boldFontTexture
             ),
             labelMesh

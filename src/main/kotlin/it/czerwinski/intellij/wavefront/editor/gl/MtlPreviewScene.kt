@@ -26,6 +26,7 @@ import graphics.glimpse.lenses.PerspectiveLens
 import graphics.glimpse.meshes.Mesh
 import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Vec3
+import graphics.glimpse.types.toVec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.meshes.MtlPreviewMeshesManager
@@ -122,7 +123,7 @@ class MtlPreviewScene(
 
     private fun recalculateCamera(newCameraModel: GLCameraModel) {
         with(newCameraModel) {
-            camera = TargetCamera(upVector.modelMatrix.toMat3() * Vec3(x, y, z), Vec3.nullVector, Vec3.unitZ)
+            camera = TargetCamera(upVector.modelMatrix.toMat3() * Vec3(x, y, z), Vec3.nullVector(), Vec3.unitZ())
             lens = PerspectiveLens(fovY(aspect), aspect, near, far)
         }
         requestRender()
@@ -166,9 +167,9 @@ class MtlPreviewScene(
 
     @Suppress("ComplexMethod")
     private fun renderFacesMaterial(gl: GlimpseAdapter, facesMesh: Mesh) {
-        val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor = (if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK).toVec3()
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
-        val fallbackColor = Vec3(color = Color.WHITE)
+        val fallbackColor = Color.WHITE.toVec3()
 
         programExecutorsManager.renderMaterial(
             gl,
@@ -205,7 +206,7 @@ class MtlPreviewScene(
 
     @Suppress("ComplexMethod")
     private fun renderFacesPBR(gl: GlimpseAdapter, facesMesh: Mesh) {
-        val fallbackEmissionColor = Vec3(if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK)
+        val fallbackEmissionColor = (if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK).toVec3()
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
 
         programExecutorsManager.renderPBR(
@@ -216,7 +217,7 @@ class MtlPreviewScene(
                 modelMatrix = upVector.modelMatrix,
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
-                diffuseColor = material?.diffuseColorVector ?: Vec3(color = Color.WHITE),
+                diffuseColor = material?.diffuseColorVector ?: Color.WHITE.toVec3(),
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,

@@ -35,13 +35,13 @@ import graphics.glimpse.types.Vec4
 data class TextShader(
 
     @Uniform(name = "uPos")
-    val position: Vec3,
+    val position: Vec3<Float>,
 
     @Uniform(name = "uScale")
-    val scale: Vec2,
+    val scale: Vec2<Float>,
 
     @Uniform(name = "uColor")
-    val color: Vec4,
+    val color: Vec4<Float>,
 
     @Sampler2D(name = "uTexture")
     val texture: Texture,

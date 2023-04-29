@@ -37,7 +37,7 @@ object SolidFacesMeshFactory : FacesMeshFactory {
             meshDataBuilder.addNormal(normal.coordinates.map { it ?: 0f })
         }
         meshDataBuilder.addTextureCoordinates(Vec2(x = 0f, y = 0f))
-        meshDataBuilder.addNormal(Vec3.nullVector)
+        meshDataBuilder.addNormal(Vec3.nullVector())
         for (face in materialPart.faces) {
             meshDataBuilder.addFace(
                 face.faceVertexList.map { faceVertex ->

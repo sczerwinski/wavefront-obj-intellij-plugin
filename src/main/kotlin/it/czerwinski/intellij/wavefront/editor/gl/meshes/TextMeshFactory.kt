@@ -52,7 +52,7 @@ object TextMeshFactory {
                 )
             }
         }
-        meshDataBuilder.addNormal(Vec3.nullVector)
+        meshDataBuilder.addNormal(Vec3.nullVector())
         for ((index, char) in text.withIndex()) {
             val charPosition = char.code
             val charRow = charPosition / (FONT_COLS)

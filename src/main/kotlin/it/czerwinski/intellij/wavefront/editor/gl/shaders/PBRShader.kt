@@ -39,25 +39,25 @@ import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 data class PBRShader(
 
     @Uniform(name = "uProjMat")
-    val projectionMatrix: Mat4,
+    val projectionMatrix: Mat4<Float>,
 
     @Uniform(name = "uViewMat")
-    val viewMatrix: Mat4,
+    val viewMatrix: Mat4<Float>,
 
     @Uniform(name = "uModelMat")
-    val modelMatrix: Mat4,
+    val modelMatrix: Mat4<Float>,
 
     @Uniform(name = "uNormalMat")
-    val normalMatrix: Mat3,
+    val normalMatrix: Mat3<Float>,
 
     @Uniform(name = "uCameraPos")
-    val cameraPosition: Vec3,
+    val cameraPosition: Vec3<Float>,
 
     @Uniform(name = "uDiffColor")
-    val diffuseColor: Vec3,
+    val diffuseColor: Vec3<Float>,
 
     @Uniform(name = "uEmissionColor")
-    val emissionColor: Vec3,
+    val emissionColor: Vec3<Float>,
 
     @Uniform(name = "uRoughness")
     val roughness: Float,

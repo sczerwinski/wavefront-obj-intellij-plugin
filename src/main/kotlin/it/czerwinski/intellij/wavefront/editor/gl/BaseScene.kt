@@ -29,7 +29,7 @@ import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.GlimpseCallback
 import graphics.glimpse.textures.BufferedImageProvider
 import graphics.glimpse.textures.Texture
-import graphics.glimpse.types.Vec3
+import graphics.glimpse.types.toVec3
 import it.czerwinski.intellij.common.ui.ErrorLog
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TexturesManager
@@ -140,7 +140,7 @@ abstract class BaseScene(
 
     final override fun onRender(gl: GlimpseAdapter) {
         try {
-            gl.glClearColor(Vec3(background))
+            gl.glClearColor(background.toVec3())
             gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
             doRender(gl)
         } catch (expected: Throwable) {

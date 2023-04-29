@@ -31,11 +31,11 @@ import graphics.glimpse.types.Vec4
 data class WireframeShader(
 
     @Uniform(name = "uMVPMat")
-    val mvpMatrix: Mat4,
+    val mvpMatrix: Mat4<Float>,
 
     @Uniform(name = "uPointSize")
     val pointSize: Float = 1f,
 
     @Uniform(name = "uColor")
-    val color: Vec4,
+    val color: Vec4<Float>,
 )

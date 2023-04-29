@@ -54,11 +54,11 @@ interface MtlMaterialElement : PsiElement {
     val bumpMapElement: MtlTextureElement?
     val reflectionMapElement: MtlReflectionTextureElement?
 
-    val ambientColorVector: Vec3?
-    val diffuseColorVector: Vec3?
-    val specularColorVector: Vec3?
-    val transmissionFilterVector: Vec3?
-    val emissionColorVector: Vec3?
+    val ambientColorVector: Vec3<Float>?
+    val diffuseColorVector: Vec3<Float>?
+    val specularColorVector: Vec3<Float>?
+    val transmissionFilterVector: Vec3<Float>?
+    val emissionColorVector: Vec3<Float>?
 
     val illumination: MtlIlluminationValueElement.Illumination?
     val dissolve: Float?

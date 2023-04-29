@@ -21,6 +21,7 @@ import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.ui.JBColor
 import graphics.glimpse.types.Vec3
 import graphics.glimpse.types.Vec4
+import graphics.glimpse.types.toVec4
 
 internal object PreviewColors {
 
@@ -34,8 +35,8 @@ internal object PreviewColors {
     internal val COLOR_GRID: ColorKey = ColorKey.createColorKey("OBJ_3D_GRID", JBColor.GRAY)
 }
 
-fun Vec3(colorKey: ColorKey): Vec3 =
-    Vec4(color = EditorColorsManager.getInstance().globalScheme.getColor(colorKey) ?: colorKey.defaultColor).toVec3()
+fun ColorKey.toVec3(): Vec3<Float> =
+    (EditorColorsManager.getInstance().globalScheme.getColor(this) ?: defaultColor).toVec4().toVec3()
 
-fun Vec4(colorKey: ColorKey, alpha: Float = 1f): Vec4 =
-    Vec3(colorKey).toVec4(w = alpha)
+fun ColorKey.toVec4(alpha: Float = 1f): Vec4<Float> =
+    toVec3().toVec4(w = alpha)

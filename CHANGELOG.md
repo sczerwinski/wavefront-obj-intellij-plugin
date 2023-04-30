@@ -28,11 +28,11 @@
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.21`
   - Upgrade `com.google.devtools.ksp` to `1.8.21-1.0.11`
   - Upgrade `org.jetbrains.intellij` to `1.13.3`
-  - Upgrade `glimpse-core` to `2.0.0-alpha.1`
-  - Upgrade `glimpse-obj` to `2.0.0-alpha.1`
-  - Upgrade `glimpse-offscreen` to `2.0.0-alpha.1`
-  - Upgrade `glimpse-ui` to `2.0.0-alpha.1`
-  - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.1`
+  - Upgrade `glimpse-core` to `2.0.0-alpha.2`
+  - Upgrade `glimpse-obj` to `2.0.0-alpha.2`
+  - Upgrade `glimpse-offscreen` to `2.0.0-alpha.2`
+  - Upgrade `glimpse-ui` to `2.0.0-alpha.2`
+  - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.2`
 
 ### Deprecated
 

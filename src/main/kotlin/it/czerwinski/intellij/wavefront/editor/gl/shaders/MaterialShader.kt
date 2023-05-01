@@ -25,6 +25,7 @@ import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
+import graphics.glimpse.types.Vec4
 
 @ShaderParams(
     attributes = [
@@ -56,7 +57,7 @@ data class MaterialShader(
     val ambientColor: Vec3<Float>,
 
     @Uniform(name = "uDiffColor")
-    val diffuseColor: Vec3<Float>,
+    val diffuseColor: Vec4<Float>,
 
     @Uniform(name = "uSpecColor")
     val specularColor: Vec3<Float>,

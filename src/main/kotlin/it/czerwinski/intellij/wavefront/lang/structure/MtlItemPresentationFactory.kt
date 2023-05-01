@@ -62,6 +62,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlSpecularExponentMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlStencilDecalMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTransmissionFilter
+import it.czerwinski.intellij.wavefront.lang.psi.MtlTransparency
 import it.czerwinski.intellij.wavefront.lang.psi.MtlTurbulenceOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlValueModifierOption
 import it.czerwinski.intellij.wavefront.lang.psi.valuesString
@@ -86,6 +87,7 @@ object MtlItemPresentationFactory {
         is MtlSpecularExponent -> createPresentation(element)
         is MtlSharpness -> createPresentation(element)
         is MtlOpticalDensity -> createPresentation(element)
+        is MtlTransparency -> createPresentation(element)
         is MtlRoughness -> createPresentation(element)
         is MtlMetalness -> createPresentation(element)
 
@@ -219,6 +221,13 @@ object MtlItemPresentationFactory {
             "fileTypes.mtl.structure.presentation.opticalDensity"
         ),
         locationString = opticalDensity.value?.toString().orEmpty()
+    )
+
+    private fun createPresentation(roughness: MtlTransparency): ItemPresentation = createPropertyPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.transparency"
+        ),
+        locationString = roughness.value?.toString().orEmpty()
     )
 
     private fun createPresentation(roughness: MtlRoughness): ItemPresentation = createPropertyPresentation(

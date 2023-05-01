@@ -5,6 +5,7 @@
 ## [Unreleased]
 
 ### Added
+- Support for `Tr` (transparency) in MTL file
 - Icons matching New UI
 - Inspection for unused MTL file references in OBJ files
 - Inspection for duplicated MTL file references in OBJ files

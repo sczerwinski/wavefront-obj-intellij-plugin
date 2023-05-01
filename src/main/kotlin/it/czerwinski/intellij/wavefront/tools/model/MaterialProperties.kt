@@ -40,6 +40,13 @@ internal val allMaterialProperties = listOf(
         elementGetter = { material -> material.diffuseColorElement },
         shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
     ),
+    MaterialProperty.MaterialFloatValue(
+        label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.transparency"),
+        actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.transparency.action"),
+        propertyKeyword = "Tr",
+        elementGetter = { material -> material.transparencyElement },
+        shadingMethods = setOf(ShadingMethod.MATERIAL, ShadingMethod.PBR)
+    ),
     MaterialProperty.MaterialColor(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.specular"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.color.specular.action"),

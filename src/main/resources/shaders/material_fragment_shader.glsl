@@ -3,7 +3,7 @@
 uniform vec3 uCameraPos;
 
 uniform vec3 uAmbColor;
-uniform vec3 uDiffColor;
+uniform vec4 uDiffColor;
 uniform vec3 uSpecColor;
 uniform vec3 uEmissionColor;
 uniform float uSpecExp;
@@ -91,7 +91,7 @@ void main() {
 
     vec4 diffTexColor = texture2D(uDiffTex, texCoord);
 
-    float alpha = diffTexColor.a;
+    float alpha = diffTexColor.a * uDiffColor.a;
 
     if (alpha == 0.0) {
         discard;
@@ -118,7 +118,7 @@ void main() {
     float specular = pow(max(dot(normal, halfVector), 0.0), exponent);
 
     vec3 ambColor = texture2D(uAmbTex, texCoord).rgb * uAmbColor * 0.4;
-    vec3 diffColor = diffTexColor.rgb * uDiffColor;
+    vec3 diffColor = diffTexColor.rgb * uDiffColor.rgb;
     vec3 specColor = texture2D(uSpecTex, texCoord).rgb * uSpecColor;
     vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
 

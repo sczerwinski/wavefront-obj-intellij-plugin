@@ -80,7 +80,9 @@ emissionColor ::= (EMISSION_COLOR_KEYWORD FLOAT FLOAT FLOAT) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement"
 }
 
-private property_ ::= (illumination | dissolve | specularExponent | sharpness | opticalDensity | roughness | metalness)
+private property_ ::= (
+  illumination | dissolve | specularExponent | sharpness | opticalDensity | transparency | roughness | metalness
+)
 
 illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlIlluminationValueElementImpl"
@@ -103,6 +105,10 @@ opticalDensity ::= (OPTICAL_DENSITY_KEYWORD FLOAT) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
 }
 
+transparency ::= (TRANSPARENCY_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
 roughness ::= (ROUGHNESS_KEYWORD FLOAT) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"

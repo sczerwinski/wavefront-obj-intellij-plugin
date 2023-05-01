@@ -53,6 +53,7 @@ abstract class MtlMaterialElementImpl(
     override val specularExponentElement: MtlFloatValueElement? get() = material?.specularExponentList?.firstOrNull()
     override val sharpnessElement: MtlFloatValueElement? get() = material?.sharpnessList?.firstOrNull()
     override val opticalDensityElement: MtlFloatValueElement? get() = material?.opticalDensityList?.firstOrNull()
+    override val transparencyElement: MtlFloatValueElement? get() = material?.transparencyList?.firstOrNull()
     override val roughnessElement: MtlFloatValueElement? get() = material?.roughnessList?.firstOrNull()
     override val metalnessElement: MtlFloatValueElement? get() = material?.metalnessList?.firstOrNull()
 
@@ -82,6 +83,7 @@ abstract class MtlMaterialElementImpl(
     override val specularExponent: Float? get() = specularExponentElement?.value
     override val sharpness: Float? get() = sharpnessElement?.value
     override val opticalDensity: Float? get() = opticalDensityElement?.value
+    override val transparency: Float? get() = transparencyElement?.value
     override val roughness: Float? get() = roughnessElement?.value
     override val metalness: Float? get() = metalnessElement?.value
 

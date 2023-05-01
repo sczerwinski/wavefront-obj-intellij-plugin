@@ -294,12 +294,12 @@ abstract class PreviewScene(
     final override fun doRender(gl: GlimpseAdapter) {
         if (showEnvironment) renderEnvironment(gl)
 
-        gl.glCullFace(config.faceCulling)
-        renderModel(gl)
-
         if (showAxes) renderAxes(gl)
         if (showGrid) renderGrid(gl)
         if (showAxes && config.showAxesLabels) renderAxesLabels(gl)
+
+        gl.glCullFace(config.faceCulling)
+        renderModel(gl)
     }
 
     private fun renderEnvironment(gl: GlimpseAdapter) {
@@ -322,11 +322,6 @@ abstract class PreviewScene(
      * Prepares environment before rendering.
      */
     protected abstract fun prepareEnvironment(gl: GlimpseAdapter)
-
-    /**
-     * Renders the actual model being the subject of this preview.
-     */
-    protected abstract fun renderModel(gl: GlimpseAdapter)
 
     private fun renderAxes(gl: GlimpseAdapter) {
         gl.glCullFace(FaceCullingMode.DISABLED)
@@ -395,6 +390,11 @@ abstract class PreviewScene(
             labelMesh
         )
     }
+
+    /**
+     * Renders the actual model being the subject of this preview.
+     */
+    protected abstract fun renderModel(gl: GlimpseAdapter)
 
     override fun dispose(gl: GlimpseAdapter) {
         axisMesh.dispose(gl)

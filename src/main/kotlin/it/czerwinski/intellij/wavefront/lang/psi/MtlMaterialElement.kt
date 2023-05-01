@@ -37,6 +37,7 @@ interface MtlMaterialElement : PsiElement {
     val specularExponentElement: MtlFloatValueElement?
     val sharpnessElement: MtlFloatValueElement?
     val opticalDensityElement: MtlFloatValueElement?
+    val transparencyElement: MtlFloatValueElement?
     val roughnessElement: MtlFloatValueElement?
     val metalnessElement: MtlFloatValueElement?
 
@@ -65,6 +66,7 @@ interface MtlMaterialElement : PsiElement {
     val specularExponent: Float?
     val sharpness: Float?
     val opticalDensity: Float?
+    val transparency: Float?
     val roughness: Float?
     val metalness: Float?
 

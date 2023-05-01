@@ -3,7 +3,7 @@
 
 uniform vec3 uCameraPos;
 
-uniform vec3 uDiffColor;
+uniform vec4 uDiffColor;
 uniform vec3 uEmissionColor;
 uniform float uRoughness;
 uniform float uMetalness;
@@ -108,7 +108,7 @@ void main() {
     }
 
     vec4 diffTexColor = texture2D(uDiffTex, texCoord);
-    float alpha = diffTexColor.a;
+    float alpha = diffTexColor.a * uDiffColor.a;
 
     if (alpha == 0.0) {
         discard;
@@ -120,7 +120,7 @@ void main() {
         normal = -normal;
     }
 
-    vec3 diffColor = diffTexColor.rgb * uDiffColor;
+    vec3 diffColor = diffTexColor.rgb * uDiffColor.rgb;
     vec3 emissionColor = texture2D(uEmissionTex, texCoord).rgb * uEmissionColor;
     vec3 envRadianceColor = texture2D(uIrradianceTex, envTexCoord(normal)).rgb;
 

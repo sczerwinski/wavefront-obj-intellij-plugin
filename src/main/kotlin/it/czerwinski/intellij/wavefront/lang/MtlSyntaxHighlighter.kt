@@ -51,6 +51,7 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
             MtlTypes.SPECULAR_EXPONENT_KEYWORD,
             MtlTypes.SHARPNESS_KEYWORD,
             MtlTypes.OPTICAL_DENSITY_KEYWORD,
+            MtlTypes.TRANSPARENCY_KEYWORD,
             MtlTypes.ROUGHNESS_KEYWORD,
             MtlTypes.METALNESS_KEYWORD,
             MtlTypes.AMBIENT_COLOR_MAP_KEYWORD,

@@ -205,6 +205,7 @@ class ObjPreviewScene(
         val fallbackEmissionColor = (if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK).toVec3()
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
         val fallbackColor = Color.WHITE.toVec3()
+        val alpha = 1f - (material?.transparency ?: 0f)
 
         programExecutorsManager.renderMaterial(
             gl,
@@ -215,7 +216,7 @@ class ObjPreviewScene(
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
                 ambientColor = material?.ambientColorVector ?: material?.diffuseColorVector ?: fallbackColor,
-                diffuseColor = material?.diffuseColorVector ?: fallbackColor,
+                diffuseColor = (material?.diffuseColorVector ?: fallbackColor).toVec4(alpha),
                 specularColor = material?.specularColorVector ?: fallbackColor,
                 emissionColor = emissionColor,
                 specularExponent = material?.specularExponent ?: 1f,
@@ -247,6 +248,7 @@ class ObjPreviewScene(
 
         val fallbackEmissionColor = (if (materialTexturesProvider.hasEmission) Color.WHITE else Color.BLACK).toVec3()
         val emissionColor = material?.emissionColorVector ?: fallbackEmissionColor
+        val alpha = 1f - (material?.transparency ?: 0f)
 
         programExecutorsManager.renderPBR(
             gl,
@@ -256,7 +258,7 @@ class ObjPreviewScene(
                 modelMatrix = upVector.modelMatrix,
                 normalMatrix = upVector.normalMatrix.toMat3(),
                 cameraPosition = camera.eye,
-                diffuseColor = material?.diffuseColorVector ?: Color.WHITE.toVec3(),
+                diffuseColor = (material?.diffuseColorVector ?: Color.WHITE.toVec3()).toVec4(alpha),
                 emissionColor = emissionColor,
                 roughness = material?.roughness ?: 1f,
                 metalness = material?.metalness ?: 1f,

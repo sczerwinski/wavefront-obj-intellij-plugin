@@ -87,6 +87,10 @@ internal class MtlKeywordCompletionProvider : CompletionProvider<CompletionParam
                 description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.OPTICAL_DENSITY_KEYWORD")
             ),
             CompletionElement(
+                text = "Tr",
+                description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.TRANSPARENCY_KEYWORD")
+            ),
+            CompletionElement(
                 text = "Pr",
                 description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.ROUGHNESS_KEYWORD")
             ),

@@ -25,6 +25,7 @@ import graphics.glimpse.textures.Texture
 import graphics.glimpse.types.Mat3
 import graphics.glimpse.types.Mat4
 import graphics.glimpse.types.Vec3
+import graphics.glimpse.types.Vec4
 import it.czerwinski.intellij.wavefront.editor.gl.textures.TextureResources
 
 @ShaderParams(
@@ -54,7 +55,7 @@ data class PBRShader(
     val cameraPosition: Vec3<Float>,
 
     @Uniform(name = "uDiffColor")
-    val diffuseColor: Vec3<Float>,
+    val diffuseColor: Vec4<Float>,
 
     @Uniform(name = "uEmissionColor")
     val emissionColor: Vec3<Float>,

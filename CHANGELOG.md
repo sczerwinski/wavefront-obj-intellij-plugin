@@ -21,6 +21,7 @@
 
 ### Changed
 - Use split editor (text and preview) provided by IntelliJ platform
+- Remember splitter proportion per file type
 - Replace annotators with inspections
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
 - Upgrade Gradle Wrapper to `8.0.2`

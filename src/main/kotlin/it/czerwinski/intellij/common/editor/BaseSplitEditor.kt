@@ -49,6 +49,9 @@ open class BaseSplitEditor<P : FileEditor>(
         KEY_CARET_MODEL[previewEditor] = textEditor.editor.caretModel
     }
 
+    override fun getSplitterProportionKey(): String =
+        "${this.javaClass.simpleName}.SplitterProportionKey"
+
     companion object {
         val KEY_PARENT_SPLIT_EDITOR: Key<BaseSplitEditor<*>> = Key.create("SplitEditor.parentSplitEditor")
         val KEY_CARET_MODEL: Key<CaretModel> = Key.create("SplitEditor.caretModel")

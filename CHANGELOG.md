@@ -7,6 +7,7 @@
 ### Added
 - Support for `Tr` (transparency) in MTL file
 - Support for free-form geometry syntax in OBJ files
+- Support for multi-line statements in OBJ files
 - Icons matching New UI
 - Inspection for unused MTL file references in OBJ files
 - Inspection for duplicated MTL file references in OBJ files
@@ -37,8 +38,6 @@
   - Upgrade `glimpse-ui` to `2.0.0-alpha.2`
   - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.2`
 
-### Deprecated
-
 ### Removed
 - Remove support for platform version `222.*`
 
@@ -46,8 +45,6 @@
 - Concave polygon rendering in 3D preview
 - "Crop Textures" option in 3x3 plane mesh material preview shows middle tile
 - Remove overridden deprecated method
-
-### Security
 
 ## [1.3.1] - 2023-03-15
 

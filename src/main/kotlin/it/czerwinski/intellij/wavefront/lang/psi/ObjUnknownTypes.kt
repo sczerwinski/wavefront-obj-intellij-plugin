@@ -19,4 +19,6 @@ package it.czerwinski.intellij.wavefront.lang.psi
 object ObjUnknownTypes {
     @JvmField val UNKNOWN_KEYWORD = ObjTokenType(debugName = "UNKNOWN_KEYWORD")
     @JvmField val UNKNOWN_SMOOTHING_GROUP_NUMBER = ObjTokenType(debugName = "UNKNOWN_SMOOTHING_GROUP_NUMBER")
+    @JvmField val UNKNOWN_FREE_FORM_TYPE = ObjTokenType(debugName = "UNKNOWN_FREE_FORM_TYPE")
+    @JvmField val UNKNOWN_FREE_FORM_DIRECTION = ObjTokenType(debugName = "UNKNOWN_FREE_FORM_DIRECTION")
 }

@@ -34,5 +34,15 @@ class ObjCompletionContributor : CompletionContributor() {
             PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_SMOOTHING_GROUP_NUMBER),
             ObjSmoothingGroupNumberCompletionProvider()
         )
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_FREE_FORM_TYPE),
+            ObjFreeFormTypeCompletionProvider()
+        )
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_FREE_FORM_DIRECTION),
+            ObjFreeFormDirectionCompletionProvider()
+        )
     }
 }

@@ -34,9 +34,12 @@ objFile ::= (groupingElement_ | item_ | commentBlock)*
 private item_ ::= (
   vertex | textureCoordinates | vertexNormal
   | point | line | face
+  | freeFormItem_
   | smoothingGroup
   | materialFileReferenceStatement | materialReference
 )
+
+// Comments:
 
 commentBlock ::= (commentLine)+ {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
@@ -44,6 +47,8 @@ commentBlock ::= (commentLine)+ {
 commentLine ::= (COMMENT_SYMBOL COMMENT) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
 }
+
+// Grouping:
 
 private groupingElement_ ::= (object|group)
 
@@ -65,6 +70,8 @@ objectOrGroupIdentifier ::= OBJECT_OR_GROUP_NAME {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifierElement"
 }
 
+// Vertex data:
+
 vertex ::= (VERTEX_KEYWORD FLOAT FLOAT FLOAT FLOAT?) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjVectorElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjVectorElement"
@@ -77,6 +84,8 @@ vertexNormal ::= (VERTEX_NORMAL_KEYWORD FLOAT FLOAT FLOAT)  {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjVectorElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjVectorElement"
 }
+
+// Elements:
 
 face ::= (FACE_KEYWORD faceVertex faceVertex faceVertex (faceVertex)*) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjFaceElementImpl"
@@ -108,10 +117,97 @@ vertexNormalIndex ::= (INDEX) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement"
 }
 
+// Free-form geometry:
+
+private freeFormItem_ ::= (
+  freeFormPoint | freeFormType | freeFormDegree | freeFormBasisMatrix | freeFormStepSize
+  | freeFormCurve | freeForm2DCurve | freeFormSurface
+)
+
+freeFormPoint ::= (FREE_FORM_POINT_KEYWORD FLOAT FLOAT? FLOAT?) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjVectorElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjVectorElement"
+}
+
+freeFormType ::= (FREE_FORM_TYPE_KEYWORD FREE_FORM_RATIONAL_KEYWORD? FREE_FORM_TYPE_NAME) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjFreeFormTypeElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormTypeElement"
+}
+freeFormDegree ::= (FREE_FORM_DEGREE_KEYWORD INTEGER INTEGER? INTEGER?) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjIntListElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjIntListElement"
+}
+freeFormBasisMatrix ::= (FREE_FORM_BASIS_MATRIX_KEYWORD FREE_FORM_DIRECTION FLOAT+) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjFreeFormBasisMatrixElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormBasisMatrixElement"
+}
+freeFormStepSize ::= (FREE_FORM_STEP_SIZE_KEYWORD INTEGER INTEGER?) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjIntListElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjIntListElement"
+}
+
+freeFormCurve ::= (
+  (freeFormCurveDefinition)
+  (commentBlock? freeFormBodyStatement_)*
+  (commentBlock? freeFormBodyEnd)
+)
+freeFormCurveDefinition ::= (FREE_FORM_CURVE_KEYWORD FLOAT FLOAT vertexIndex vertexIndex vertexIndex*)
+
+freeForm2DCurve ::= (
+  (freeForm2DCurveDefinition)
+  (commentBlock? freeFormBodyStatement_)*
+  (commentBlock? freeFormBodyEnd)
+)
+freeForm2DCurveDefinition ::= (FREE_FORM_2D_CURVE_KEYWORD freeFormPointIndex freeFormPointIndex freeFormPointIndex*)
+
+freeFormSurface ::= (
+  (freeFormSurfaceDefinition)
+  (commentBlock? freeFormBodyStatement_)*
+  (commentBlock? freeFormBodyEnd)
+)
+freeFormSurfaceDefinition ::= (FREE_FORM_SURFACE_KEYWORD FLOAT FLOAT FLOAT FLOAT faceVertex+)
+
+private freeFormBodyStatement_ ::= (
+  freeFormParameters
+  | freeFormOuterTrimmingLoop | freeFormInnerTrimmingLoop
+  | freeFormSpecialCurve | freeFormSpecialPoints
+)
+
+freeFormParameters ::= (FREE_FORM_PARAMETERS_KEYWORD FREE_FORM_DIRECTION FLOAT FLOAT FLOAT*) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjFreeFormParametersElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormParametersElement"
+}
+
+freeFormOuterTrimmingLoop ::= (FREE_FORM_OUTER_TRIMMING_LOOP_KEYWORD curveReference+)
+freeFormInnerTrimmingLoop ::= (FREE_FORM_INNER_TRIMMING_LOOP_KEYWORD curveReference+)
+
+curveReference ::= (FLOAT FLOAT curveIndex) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjCurveReferenceElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjCurveReferenceElement"
+}
+
+freeFormSpecialCurve ::= (FREE_FORM_SPECIAL_CURVE_KEYWORD curveReference+)
+freeFormSpecialPoints ::= (FREE_FORM_SPECIAL_POINTS_KEYWORD freeFormPointIndex+)
+
+freeFormBodyEnd ::= (FREE_FORM_BODY_END_KEYWORD)
+
+freeFormPointIndex ::= (INDEX) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjIndexElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement"
+}
+curveIndex ::= (INDEX) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjIndexElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement"
+}
+
+// Smoothing:
+
 smoothingGroup ::= (SMOOTHING_GROUP_KEYWORD SMOOTHING_GROUP_NUMBER) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjSmoothingGroupElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.ObjSmoothingGroupElement"
 }
+
+// Materials:
 
 materialFileReferenceStatement ::= (MATERIAL_FILE_REF_KEYWORD materialFileReference materialFileReference*)
 

@@ -23,10 +23,29 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.icons.Icons
+import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceVertex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeForm2DCurve
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeForm2DCurveDefinition
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormBasisMatrix
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurve
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurveDefinition
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormDegree
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormInnerTrimmingLoop
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormOuterTrimmingLoop
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormParameters
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormPoint
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormPointIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormSpecialCurve
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormSpecialPoints
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormStepSize
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormSurface
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormSurfaceDefinition
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLineVertex
@@ -68,6 +87,32 @@ object ObjItemPresentationFactory {
         is ObjVertexIndex -> createPresentation(element)
         is ObjTextureCoordinatesIndex -> createPresentation(element)
         is ObjVertexNormalIndex -> createPresentation(element)
+
+        is ObjFreeFormPoint -> createPresentation(element)
+
+        is ObjFreeFormType -> createPresentation(element)
+        is ObjFreeFormDegree -> createPresentation(element)
+        is ObjFreeFormBasisMatrix -> createPresentation(element)
+        is ObjFreeFormStepSize -> createPresentation(element)
+
+        is ObjFreeFormCurve -> createPresentation(element)
+        is ObjFreeForm2DCurve -> createPresentation(element)
+        is ObjFreeFormSurface -> createPresentation(element)
+
+        is ObjFreeFormCurveDefinition -> createPresentation(element)
+        is ObjFreeForm2DCurveDefinition -> createPresentation(element)
+        is ObjFreeFormSurfaceDefinition -> createPresentation(element)
+
+        is ObjFreeFormParameters -> createPresentation(element)
+        is ObjFreeFormOuterTrimmingLoop -> createPresentation(element)
+        is ObjFreeFormInnerTrimmingLoop -> createPresentation(element)
+        is ObjFreeFormSpecialCurve -> createPresentation(element)
+        is ObjFreeFormSpecialPoints -> createPresentation(element)
+
+        is ObjCurveReference -> createPresentation(element)
+
+        is ObjFreeFormPointIndex -> createPresentation(element)
+        is ObjCurveIndex -> createPresentation(element)
 
         is ObjSmoothingGroup -> createPresentation(element)
 
@@ -211,6 +256,162 @@ object ObjItemPresentationFactory {
         locationString = vertexNormalIndex.value.toString(),
         icon = Icons.Structure.Obj.VertexNormal
     )
+
+    private fun createPresentation(freeFormPoint: ObjFreeFormPoint): ItemPresentation = createPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.obj.structure.presentation.freeFormPoint"
+        ),
+        locationString = freeFormPoint.coordinatesString,
+        icon = Icons.Structure.Obj.FreeFormPoint
+    )
+
+    private fun createPresentation(freeFormType: ObjFreeFormType): ItemPresentation {
+        val description = freeFormType.value?.description.orEmpty()
+        return createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormType"
+            ),
+            locationString = if (freeFormType.isRationalForm) {
+                WavefrontObjBundle.message(key = "fileTypes.obj.structure.presentation.freeFormType.rat", description)
+            } else {
+                description
+            },
+            icon = Icons.Structure.Obj.FreeFormType
+        )
+    }
+
+    private fun createPresentation(freeFormDegree: ObjFreeFormDegree): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormDegree"),
+            locationString = freeFormDegree.valuesString,
+            icon = Icons.Structure.Obj.FreeFormDegree
+        )
+
+    private fun createPresentation(freeFormBasisMatrix: ObjFreeFormBasisMatrix): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormBasisMatrix"),
+            locationString = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormBasisMatrix.values",
+                freeFormBasisMatrix.direction?.description.orEmpty(),
+                freeFormBasisMatrix.matrixElementsString
+            ),
+            icon = Icons.Structure.Obj.FreeFormBasisMatrix
+        )
+
+    private fun createPresentation(freeFormStepSize: ObjFreeFormStepSize): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormStepSize"),
+            locationString = freeFormStepSize.valuesString,
+            icon = Icons.Structure.Obj.FreeFormStep
+        )
+
+    private fun createPresentation(curve: ObjFreeFormCurve): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormCurve"),
+            icon = Icons.Structure.Obj.FreeFormCurve
+        )
+
+    private fun createPresentation(curve: ObjFreeForm2DCurve): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeForm2DCurve"),
+            icon = Icons.Structure.Obj.FreeForm2DCurve
+        )
+
+    private fun createPresentation(surface: ObjFreeFormSurface): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormSurface"),
+            icon = Icons.Structure.Obj.FreeFormSurface
+        )
+
+    private fun createPresentation(definition: ObjFreeFormCurveDefinition): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormCurve.definition"
+            ),
+            icon = Icons.Structure.Obj.FreeFormCurveControlPoints
+        )
+
+    private fun createPresentation(definition: ObjFreeForm2DCurveDefinition): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeForm2DCurve.definition"
+            ),
+            icon = Icons.Structure.Obj.FreeFormCurveControlPoints
+        )
+
+    private fun createPresentation(definition: ObjFreeFormSurfaceDefinition): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormSurface.definition"
+            ),
+            icon = Icons.Structure.Obj.FreeFormSurfaceControlVertices
+        )
+
+    private fun createPresentation(parameters: ObjFreeFormParameters): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormParameters"),
+            locationString = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormParameters.values",
+                parameters.direction?.description.orEmpty(),
+                parameters.parametersString
+            ),
+            icon = Icons.Structure.Obj.FreeFormParameters
+        )
+
+    private fun createPresentation(outerTrimmingLoop: ObjFreeFormOuterTrimmingLoop): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormOuterTrimmingLoop"
+            ),
+            icon = Icons.Structure.Obj.FreeFormOuterTrimmingLoop
+        )
+
+    private fun createPresentation(innerTrimmingLoop: ObjFreeFormInnerTrimmingLoop): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormInnerTrimmingLoop"
+            ),
+            icon = Icons.Structure.Obj.FreeFormInnerTrimmingLoop
+        )
+
+    private fun createPresentation(specialCurve: ObjFreeFormSpecialCurve): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormSpecialCurve"
+            ),
+            icon = Icons.Structure.Obj.FreeFormSpecialCurve
+        )
+
+    private fun createPresentation(specialPoints: ObjFreeFormSpecialPoints): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormSpecialPoints"
+            ),
+            icon = Icons.Structure.Obj.FreeFormSpecialPoints
+        )
+
+    private fun createPresentation(curveReference: ObjCurveReference): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message(
+                "fileTypes.obj.structure.presentation.freeFormCurveFragment"
+            ),
+            locationString = curveReference.parameterValuesString,
+            icon = Icons.Structure.Obj.FreeFormCurveFragment
+        )
+
+    private fun createPresentation(pointIndex: ObjFreeFormPointIndex): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormPoint"),
+            locationString = pointIndex.value.toString(),
+            icon = Icons.Structure.Obj.FreeFormPoint
+        )
+
+    private fun createPresentation(curveIndex: ObjCurveIndex): ItemPresentation =
+        createPresentation(
+            presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeForm2DCurve"),
+            locationString = curveIndex.value.toString(),
+            icon = Icons.Structure.Obj.FreeForm2DCurve
+        )
 
     private fun createPresentation(smoothShading: ObjSmoothingGroup): ItemPresentation {
         val value = smoothShading.value

@@ -33,5 +33,4 @@ abstract class ObjFreeFormTypeElementImpl(
 
     override val value: ObjFreeFormTypeValue?
         get() = valueElement?.text?.let { ObjFreeFormTypeValue.fromValue(it) }
-
 }

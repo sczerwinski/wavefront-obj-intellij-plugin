@@ -305,24 +305,28 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormStep
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(curve: ObjFreeFormCurve): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormCurve"),
             icon = Icons.Structure.Obj.FreeFormCurve
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(curve: ObjFreeForm2DCurve): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeForm2DCurve"),
             icon = Icons.Structure.Obj.FreeForm2DCurve
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(surface: ObjFreeFormSurface): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormSurface"),
             icon = Icons.Structure.Obj.FreeFormSurface
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(definition: ObjFreeFormCurveDefinition): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
@@ -331,6 +335,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormCurveControlPoints
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(definition: ObjFreeForm2DCurveDefinition): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
@@ -339,6 +344,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormCurveControlPoints
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(definition: ObjFreeFormSurfaceDefinition): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
@@ -358,6 +364,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormParameters
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(outerTrimmingLoop: ObjFreeFormOuterTrimmingLoop): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
@@ -366,6 +373,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormOuterTrimmingLoop
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(innerTrimmingLoop: ObjFreeFormInnerTrimmingLoop): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
@@ -374,6 +382,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormInnerTrimmingLoop
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(specialCurve: ObjFreeFormSpecialCurve): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
@@ -382,6 +391,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormSpecialCurve
         )
 
+    @Suppress("UnusedPrivateMember")
     private fun createPresentation(specialPoints: ObjFreeFormSpecialPoints): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(

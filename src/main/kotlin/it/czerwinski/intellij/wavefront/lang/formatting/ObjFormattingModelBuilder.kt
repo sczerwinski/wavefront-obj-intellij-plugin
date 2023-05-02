@@ -37,6 +37,7 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
             formattingContext.codeStyleSettings
         )
 
+    @Suppress("LongMethod")
     private fun createSpaceBuilder(settings: CodeStyleSettings): SpacingBuilder =
         SpacingBuilder(settings, ObjLanguage)
             .before(ObjTypes.OBJECT_KEYWORD).none()

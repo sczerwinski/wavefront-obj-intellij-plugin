@@ -23,6 +23,7 @@ import com.intellij.formatting.FormattingModelProvider
 import com.intellij.formatting.SpacingBuilder
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.tree.TokenSet
+import it.czerwinski.intellij.wavefront.lang.ObjFileType
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 
@@ -31,9 +32,10 @@ class ObjFormattingModelBuilder : FormattingModelBuilder {
     override fun createModel(formattingContext: FormattingContext): FormattingModel =
         FormattingModelProvider.createFormattingModelForPsiFile(
             formattingContext.psiElement.containingFile,
-            WavefrontBlock(
+            ObjBlock(
                 node = formattingContext.psiElement.node,
-                spacingBuilder = createSpaceBuilder(formattingContext.codeStyleSettings)
+                spacingBuilder = createSpaceBuilder(formattingContext.codeStyleSettings),
+                indent = formattingContext.codeStyleSettings.getContinuationIndentSize(ObjFileType)
             ),
             formattingContext.codeStyleSettings
         )

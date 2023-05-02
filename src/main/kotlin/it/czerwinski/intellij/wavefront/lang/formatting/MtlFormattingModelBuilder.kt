@@ -31,7 +31,7 @@ class MtlFormattingModelBuilder : FormattingModelBuilder {
     override fun createModel(formattingContext: FormattingContext): FormattingModel =
         FormattingModelProvider.createFormattingModelForPsiFile(
             formattingContext.psiElement.containingFile,
-            WavefrontBlock(
+            MtlBlock(
                 node = formattingContext.psiElement.node,
                 spacingBuilder = createSpaceBuilder(formattingContext.codeStyleSettings)
             ),

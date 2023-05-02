@@ -33,6 +33,14 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter"/>
         <localInspection
                 language="OBJ"
+                id="InvalidInteger"
+                key="fileTypes.obj.inspection.invalidInteger"
+                groupKey="fileTypes.obj.inspection.invalidInteger.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjInvalidIntegerInspection"/>
+        <localInspection
+                language="OBJ"
                 id="InvalidIndex"
                 key="fileTypes.obj.inspection.invalidIndex"
                 groupKey="fileTypes.obj.inspection.invalidIndex.group"

@@ -90,7 +90,6 @@ abstract class BaseScene(
         gl.glEnableBlending()
         gl.glBlendingFunction(BlendingFactorFunction.SOURCE_ALPHA, BlendingFactorFunction.ONE_MINUS_SOURCE_ALPHA)
 
-        gl.glEnableLineSmooth()
         gl.glEnableProgramPointSize()
 
         initialize(gl)

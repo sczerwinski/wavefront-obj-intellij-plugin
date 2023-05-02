@@ -23,8 +23,6 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.icons.Icons
-import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveIndex
-import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFaceVertex
@@ -34,6 +32,8 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeForm2DCurveDefinition
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormBasisMatrix
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurve
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurveDefinition
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurveIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurveReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormDegree
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormInnerTrimmingLoop
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormOuterTrimmingLoop
@@ -109,10 +109,10 @@ object ObjItemPresentationFactory {
         is ObjFreeFormSpecialCurve -> createPresentation(element)
         is ObjFreeFormSpecialPoints -> createPresentation(element)
 
-        is ObjCurveReference -> createPresentation(element)
+        is ObjFreeFormCurveReference -> createPresentation(element)
 
         is ObjFreeFormPointIndex -> createPresentation(element)
-        is ObjCurveIndex -> createPresentation(element)
+        is ObjFreeFormCurveIndex -> createPresentation(element)
 
         is ObjSmoothingGroup -> createPresentation(element)
 
@@ -400,7 +400,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormSpecialPoints
         )
 
-    private fun createPresentation(curveReference: ObjCurveReference): ItemPresentation =
+    private fun createPresentation(curveReference: ObjFreeFormCurveReference): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message(
                 "fileTypes.obj.structure.presentation.freeFormCurveFragment"
@@ -416,7 +416,7 @@ object ObjItemPresentationFactory {
             icon = Icons.Structure.Obj.FreeFormPoint
         )
 
-    private fun createPresentation(curveIndex: ObjCurveIndex): ItemPresentation =
+    private fun createPresentation(curveIndex: ObjFreeFormCurveIndex): ItemPresentation =
         createPresentation(
             presentableText = WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeForm2DCurve"),
             locationString = curveIndex.value.toString(),

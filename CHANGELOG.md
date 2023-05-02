@@ -6,7 +6,7 @@
 
 ### Added
 - Support for `Tr` (transparency) in MTL file
-- Support for free-form geometry syntax in OBJ file
+- Support for free-form geometry syntax in OBJ files
 - Icons matching New UI
 - Inspection for unused MTL file references in OBJ files
 - Inspection for duplicated MTL file references in OBJ files

@@ -70,9 +70,7 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.OBJECT_OR_GROUP_NAME ->
                 arrayOf(ATTR_DECLARATION)
 
-            ObjTypes.FLOAT,
-            ObjTypes.INTEGER,
-            ObjTypes.INDEX ->
+            ObjTypes.NUMBER ->
                 arrayOf(ATTR_NUMBER)
 
             ObjTypes.FREE_FORM_DIRECTION,
@@ -80,7 +78,7 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.SMOOTHING_GROUP_NUMBER ->
                 arrayOf(ATTR_CONSTANT)
 
-            ObjTypes.VERTEX_INDEX_SEPARATOR ->
+            ObjTypes.INDEX_SEPARATOR ->
                 arrayOf(ATTR_OPERATOR)
 
             ObjTypes.MATERIAL_FILE_NAME,

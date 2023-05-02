@@ -16,12 +16,9 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-object MtlUnknownTypes {
-    @JvmField val UNKNOWN_KEYWORD = MtlTokenType(debugName = "UNKNOWN_KEYWORD")
-    @JvmField val UNKNOWN_OPTION = MtlTokenType(debugName = "UNKNOWN_OPTION")
-    @JvmField val UNKNOWN_REFLECTION_TYPE_OPTION = MtlTokenType(debugName = "UNKNOWN_REFLECTION_TYPE_OPTION")
-    @JvmField val UNKNOWN_REFLECTION_TYPE = MtlTokenType(debugName = "UNKNOWN_REFLECTION_TYPE")
-    @JvmField val UNKNOWN_FLAG = MtlTokenType(debugName = "UNKNOWN_FLAG")
-    @JvmField val UNKNOWN_ILLUMINATION_VALUE = MtlTokenType(debugName = "UNKNOWN_ILLUMINATION_VALUE")
-    @JvmField val UNKNOWN_SCALAR_CHANNEL = MtlTokenType(debugName = "UNKNOWN_SCALAR_CHANNEL")
+object ObjSpecialTypes {
+    @JvmField val UNKNOWN_KEYWORD = ObjTokenType(debugName = "UNKNOWN_KEYWORD")
+    @JvmField val UNKNOWN_SMOOTHING_GROUP_NUMBER = ObjTokenType(debugName = "UNKNOWN_SMOOTHING_GROUP_NUMBER")
+    @JvmField val UNKNOWN_FREE_FORM_TYPE = ObjTokenType(debugName = "UNKNOWN_FREE_FORM_TYPE")
+    @JvmField val UNKNOWN_FREE_FORM_DIRECTION = ObjTokenType(debugName = "UNKNOWN_FREE_FORM_DIRECTION")
 }

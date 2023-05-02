@@ -19,29 +19,29 @@ package it.czerwinski.intellij.wavefront.lang.completion
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.patterns.PlatformPatterns
-import it.czerwinski.intellij.wavefront.lang.psi.ObjUnknownTypes
+import it.czerwinski.intellij.wavefront.lang.psi.ObjSpecialTypes
 
 class ObjCompletionContributor : CompletionContributor() {
 
     init {
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_KEYWORD),
+            PlatformPatterns.psiElement(ObjSpecialTypes.UNKNOWN_KEYWORD),
             ObjKeywordCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_SMOOTHING_GROUP_NUMBER),
+            PlatformPatterns.psiElement(ObjSpecialTypes.UNKNOWN_SMOOTHING_GROUP_NUMBER),
             ObjSmoothingGroupNumberCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_FREE_FORM_TYPE),
+            PlatformPatterns.psiElement(ObjSpecialTypes.UNKNOWN_FREE_FORM_TYPE),
             ObjFreeFormTypeCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(ObjUnknownTypes.UNKNOWN_FREE_FORM_DIRECTION),
+            PlatformPatterns.psiElement(ObjSpecialTypes.UNKNOWN_FREE_FORM_DIRECTION),
             ObjFreeFormDirectionCompletionProvider()
         )
     }

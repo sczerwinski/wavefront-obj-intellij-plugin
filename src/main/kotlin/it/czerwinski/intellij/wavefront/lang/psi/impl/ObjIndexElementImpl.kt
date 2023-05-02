@@ -18,10 +18,12 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurveIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormPointIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import it.czerwinski.intellij.wavefront.lang.psi.util.containingObjFile
@@ -30,7 +32,9 @@ abstract class ObjIndexElementImpl(
     node: ASTNode
 ) : ASTWrapperPsiElement(node), ObjIndexElement {
 
-    override val value: Int? get() = text.toIntOrNull()
+    private val numberElement: ObjIndex? get() = findChildByType(ObjTypes.INDEX)
+
+    override val value: Int? get() = numberElement?.intValue
 
     override val countReferencesBefore: Int
         get() = when (this) {
@@ -38,7 +42,7 @@ abstract class ObjIndexElementImpl(
             is ObjTextureCoordinatesIndex -> containingObjFile?.countTextureCoordinatesBefore(this) ?: 0
             is ObjVertexNormalIndex -> containingObjFile?.countVertexNormalsBefore(this) ?: 0
             is ObjFreeFormPointIndex -> containingObjFile?.countFreeFormPointsBefore(this) ?: 0
-            is ObjCurveIndex -> containingObjFile?.countCurvesBefore(this) ?: 0
+            is ObjFreeFormCurveIndex -> containingObjFile?.countCurvesBefore(this) ?: 0
             else -> 0
         }
 
@@ -48,7 +52,7 @@ abstract class ObjIndexElementImpl(
             is ObjTextureCoordinatesIndex -> containingObjFile?.textureCoordinatesCount ?: 0
             is ObjVertexNormalIndex -> containingObjFile?.vertexNormalsCount ?: 0
             is ObjFreeFormPointIndex -> containingObjFile?.freeFormPointsCount ?: 0
-            is ObjCurveIndex -> containingObjFile?.curvesCount ?: 0
+            is ObjFreeFormCurveIndex -> containingObjFile?.curvesCount ?: 0
             else -> 0
         }
 

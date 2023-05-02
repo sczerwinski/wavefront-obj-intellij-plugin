@@ -63,6 +63,14 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
         myFixture.testFolding("$basePath/FoldingObjectTestData.obj")
     }
 
+    fun testFoldingCurve() {
+        myFixture.testFolding("$basePath/FoldingCurveTestData.obj")
+    }
+
+    fun testFoldingSurface() {
+        myFixture.testFolding("$basePath/FoldingSurfaceTestData.obj")
+    }
+
     fun testFoldingComment() {
         myFixture.testFolding("$basePath/FoldingCommentTestData.obj")
     }

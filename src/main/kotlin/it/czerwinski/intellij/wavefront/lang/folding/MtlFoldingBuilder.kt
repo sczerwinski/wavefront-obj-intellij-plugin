@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang
+package it.czerwinski.intellij.wavefront.lang.folding
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
@@ -27,32 +27,30 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.childrenOfType
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
-import it.czerwinski.intellij.wavefront.lang.psi.ObjCommentBlock
-import it.czerwinski.intellij.wavefront.lang.psi.ObjDocumentation
-import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
-import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
-import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
+import it.czerwinski.intellij.wavefront.lang.psi.MtlCommentBlock
+import it.czerwinski.intellij.wavefront.lang.psi.MtlDocumentation
+import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import org.jetbrains.annotations.NonNls
 
-class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
+class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> =
         listOf(
-            buildObjGroupingElements(root),
-            buildObjCommentBlocks(root)
+            buildMtlMaterialElements(root),
+            buildMtlCommentBlocks(root)
         ).flatten().toTypedArray()
 
-    private fun buildObjGroupingElements(root: PsiElement): List<FoldingDescriptor> =
-        PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java)
+    private fun buildMtlMaterialElements(root: PsiElement): List<FoldingDescriptor> =
+        PsiTreeUtil.findChildrenOfType(root, MtlMaterialElement::class.java)
             .map { element ->
-                val startOffset = element.childrenOfType<ObjDocumentation>().singleOrNull()?.endOffset
+                val startOffset = element.childrenOfType<MtlDocumentation>().singleOrNull()?.endOffset
                     ?: element.startOffset
                 val endOffset = element.endOffset
                 FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
             }
 
-    private fun buildObjCommentBlocks(root: PsiElement): List<FoldingDescriptor> =
-        PsiTreeUtil.findChildrenOfType(root, ObjCommentBlock::class.java)
+    private fun buildMtlCommentBlocks(root: PsiElement): List<FoldingDescriptor> =
+        PsiTreeUtil.findChildrenOfType(root, MtlCommentBlock::class.java)
             .filter { commentBlock -> commentBlock.commentLineList.size > 1 }
             .map { element ->
                 val startOffset = element.startOffset
@@ -62,9 +60,8 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun getPlaceholderText(node: ASTNode): String =
         when (val element = node.psi) {
-            is ObjObject -> OBJECT_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
-            is ObjGroup -> GROUP_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
-            is ObjCommentBlock -> COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT.format(
+            is MtlMaterialElement -> MATERIAL_PLACEHOLDER_TEXT_FORMAT.format(element.getName())
+            is MtlCommentBlock -> COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT.format(
                 element.commentLineList.firstOrNull()?.text?.trim().orEmpty()
             )
 
@@ -75,8 +72,7 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     companion object {
         @NonNls private const val DEFAULT_PLACEHOLDER_TEXT = "..."
-        @NonNls private const val OBJECT_PLACEHOLDER_TEXT_FORMAT = "o %s ..."
-        @NonNls private const val GROUP_PLACEHOLDER_TEXT_FORMAT = "g %s ..."
+        @NonNls private const val MATERIAL_PLACEHOLDER_TEXT_FORMAT = "newmtl %s ..."
         @NonNls private const val COMMENT_BLOCK_PLACEHOLDER_TEXT_FORMAT = "%s ..."
     }
 }

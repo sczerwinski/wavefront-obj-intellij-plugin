@@ -24,7 +24,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import it.czerwinski.intellij.wavefront.lang.MtlLanguage
@@ -35,8 +34,6 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes
 class MtlParserDefinition : ParserDefinition {
 
     override fun createLexer(project: Project?): Lexer = MtlLexerAdapter()
-
-    override fun getWhitespaceTokens(): TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
 
     override fun getCommentTokens(): TokenSet = TokenSet.create(MtlTypes.COMMENT_BLOCK)
 

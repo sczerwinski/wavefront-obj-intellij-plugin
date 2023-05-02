@@ -22,6 +22,8 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import it.czerwinski.intellij.wavefront.lang.psi.CommentElement
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormBodyEnd
+import it.czerwinski.intellij.wavefront.lang.psi.ObjNumberElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
 
 class ObjStructureViewElement(
@@ -45,11 +47,12 @@ class ObjStructureViewElement(
         PsiTreeUtil.getChildrenOfTypeAsList(
             element,
             NavigatablePsiElement::class.java
-        ).filterNot { element ->
-            element is ObjObjectOrGroupIdentifier
-        }.filterNot { element ->
-            element is CommentElement
-        }.map { element ->
-            ObjStructureViewElement(element)
-        }.toTypedArray()
+        ).asSequence()
+            .filterNot { element -> element is ObjObjectOrGroupIdentifier }
+            .filterNot { element -> element is ObjNumberElement }
+            .filterNot { element -> element is ObjFreeFormBodyEnd }
+            .filterNot { element -> element is CommentElement }
+            .map { element -> ObjStructureViewElement(element) }
+            .toList()
+            .toTypedArray()
 }

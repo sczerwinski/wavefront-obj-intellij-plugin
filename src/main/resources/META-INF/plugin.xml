@@ -33,6 +33,14 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjSyntaxHighlighter"/>
         <localInspection
                 language="OBJ"
+                id="InvalidInteger"
+                key="fileTypes.obj.inspection.invalidInteger"
+                groupKey="fileTypes.obj.inspection.invalidInteger.group"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="it.czerwinski.intellij.wavefront.lang.inspections.ObjInvalidIntegerInspection"/>
+        <localInspection
+                language="OBJ"
                 id="InvalidIndex"
                 key="fileTypes.obj.inspection.invalidIndex"
                 groupKey="fileTypes.obj.inspection.invalidIndex.group"
@@ -102,7 +110,7 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.ObjRefactoringSupportProvider"/>
         <lang.foldingBuilder
                 language="OBJ"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.ObjFoldingBuilder"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.folding.ObjFoldingBuilder"/>
         <lang.psiStructureViewFactory
                 language="OBJ"
                 implementationClass="it.czerwinski.intellij.wavefront.lang.structure.ObjStructureViewFactory"/>
@@ -191,7 +199,7 @@
                 implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFindUsagesProvider"/>
         <lang.foldingBuilder
                 language="MTL"
-                implementationClass="it.czerwinski.intellij.wavefront.lang.MtlFoldingBuilder"/>
+                implementationClass="it.czerwinski.intellij.wavefront.lang.folding.MtlFoldingBuilder"/>
         <gotoSymbolContributor
                 implementation="it.czerwinski.intellij.wavefront.lang.MtlChooseByNameContributor"/>
         <lang.psiStructureViewFactory

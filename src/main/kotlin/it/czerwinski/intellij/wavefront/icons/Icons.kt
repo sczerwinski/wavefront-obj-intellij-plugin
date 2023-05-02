@@ -113,6 +113,28 @@ object Icons {
             val FaceVertex: Icon get() = Vertex
             val LineVertex: Icon get() = Vertex
 
+            @JvmField val FreeFormPoint: Icon = getIcon(path = "/icons/structure/objParameterizedPoint.svg")
+            @JvmField val FreeFormType: Icon = getIcon(path = "/icons/structure/objFreeFormType.svg")
+            @JvmField val FreeFormDegree: Icon = getIcon(path = "/icons/structure/objPolynomialDegree.svg")
+            @JvmField val FreeFormBasisMatrix: Icon = getIcon(path = "/icons/structure/objBasisMatrix.svg")
+            val FreeFormStep: Icon = AllIcons.Actions.TraceOver
+
+            @JvmField val FreeFormCurve: Icon = getIcon(path = "/icons/structure/objCurve.svg")
+            @JvmField val FreeForm2DCurve: Icon = getIcon(path = "/icons/structure/objParameterizedCurve.svg")
+            @JvmField val FreeFormSurface: Icon = getIcon(path = "/icons/structure/objSurface.svg")
+
+            @JvmField val FreeFormCurveControlPoints: Icon = getIcon(path = "/icons/structure/objControlPoints.svg")
+            @JvmField val FreeFormSurfaceControlVertices: Icon =
+                getIcon(path = "/icons/structure/objControlVertices.svg")
+
+            @JvmField val FreeFormParameters: Icon = getIcon(path = "/icons/structure/objFreeFormParameters.svg")
+            @JvmField val FreeFormInnerTrimmingLoop: Icon = getIcon(path = "/icons/structure/objInnerTrimmingLoop.svg")
+            @JvmField val FreeFormOuterTrimmingLoop: Icon = getIcon(path = "/icons/structure/objOuterTrimmingLoop.svg")
+            @JvmField val FreeFormSpecialCurve: Icon = getIcon(path = "/icons/structure/objSpecialCurve.svg")
+            @JvmField val FreeFormSpecialPoints: Icon = getIcon(path = "/icons/structure/objSpecialPoints.svg")
+
+            @JvmField val FreeFormCurveFragment: Icon = getIcon(path = "/icons/structure/objCurveFragment.svg")
+
             @JvmField val SmoothingGroup: Icon = getIcon(path = "/icons/structure/objSmoothing.svg")
 
             val MaterialFile: Icon get() = Mtl.File

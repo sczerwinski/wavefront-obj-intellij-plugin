@@ -17,9 +17,10 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.psi.tree.IElementType
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import org.jetbrains.annotations.NonNls
 
 class ObjElementType(
     @NonNls debugName: String
-) : IElementType(debugName, ObjLanguage)
+) : IElementType(WavefrontObjBundle.message("fileTypes.obj.elementType.$debugName"), ObjLanguage)

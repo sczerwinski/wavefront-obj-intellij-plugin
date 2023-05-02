@@ -75,6 +75,74 @@ internal class ObjKeywordCompletionProvider : CompletionProvider<CompletionParam
                 description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.POINT_KEYWORD")
             ),
             CompletionElement(
+                text = "vp",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_POINT_KEYWORD")
+            ),
+            CompletionElement(
+                text = "cstype",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_TYPE_KEYWORD")
+            ),
+            CompletionElement(
+                text = "cstype rat",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_TYPE_KEYWORD.rat")
+            ),
+            CompletionElement(
+                text = "deg",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_DEGREE_KEYWORD")
+            ),
+            CompletionElement(
+                text = "bmat",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_BASIS_MATRIX_KEYWORD")
+            ),
+            CompletionElement(
+                text = "step",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_STEP_SIZE_KEYWORD")
+            ),
+            CompletionElement(
+                text = "curv",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_CURVE_KEYWORD")
+            ),
+            CompletionElement(
+                text = "curv2",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_2D_CURVE_KEYWORD")
+            ),
+            CompletionElement(
+                text = "surf",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_SURFACE_KEYWORD")
+            ),
+            CompletionElement(
+                text = "parm",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_PARAMETERS_KEYWORD")
+            ),
+            CompletionElement(
+                text = "trim",
+                description = WavefrontObjBundle.message(
+                    key = "fileTypes.obj.tokenType.FREE_FORM_OUTER_TRIMMING_LOOP_KEYWORD"
+                )
+            ),
+            CompletionElement(
+                text = "hole",
+                description = WavefrontObjBundle.message(
+                    key = "fileTypes.obj.tokenType.FREE_FORM_INNER_TRIMMING_LOOP_KEYWORD"
+                )
+            ),
+            CompletionElement(
+                text = "scrv",
+                description = WavefrontObjBundle.message(
+                    key = "fileTypes.obj.tokenType.FREE_FORM_SPECIAL_CURVE_KEYWORD"
+                )
+            ),
+            CompletionElement(
+                text = "sp",
+                description = WavefrontObjBundle.message(
+                    key = "fileTypes.obj.tokenType.FREE_FORM_SPECIAL_POINTS_KEYWORD"
+                )
+            ),
+            CompletionElement(
+                text = "end",
+                description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.FREE_FORM_BODY_END_KEYWORD")
+            ),
+            CompletionElement(
                 text = "s",
                 description = WavefrontObjBundle.message(key = "fileTypes.obj.tokenType.SMOOTHING_GROUP_KEYWORD")
             ),

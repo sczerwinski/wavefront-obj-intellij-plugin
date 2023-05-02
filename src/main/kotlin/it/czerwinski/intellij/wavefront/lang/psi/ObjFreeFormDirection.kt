@@ -16,7 +16,17 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-object ObjUnknownTypes {
-    @JvmField val UNKNOWN_KEYWORD = ObjTokenType(debugName = "UNKNOWN_KEYWORD")
-    @JvmField val UNKNOWN_SMOOTHING_GROUP_NUMBER = ObjTokenType(debugName = "UNKNOWN_SMOOTHING_GROUP_NUMBER")
+import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+
+enum class ObjFreeFormDirection {
+    U, V;
+
+    val description: String =
+        WavefrontObjBundle.message("fileTypes.obj.structure.presentation.freeFormDirection.${name.lowercase()}")
+
+    companion object {
+
+        fun fromValue(value: String?): ObjFreeFormDirection? =
+            value?.uppercase()?.let(::valueOf)
+    }
 }

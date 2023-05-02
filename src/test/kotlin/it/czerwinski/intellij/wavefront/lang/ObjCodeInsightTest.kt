@@ -37,7 +37,7 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
         myFixture.testDataPath = basePath
     }
 
-    fun testInspections() {
+    fun testInspectionsObject() {
         myFixture.enableInspections(
             ObjDuplicatedMtlFileReferenceInspection::class.java,
             ObjIndexOutOfBoundsInspection::class.java,
@@ -46,7 +46,20 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
             ObjUnknownMtlFileReferenceInspection::class.java,
             ObjUnusedMtlFileReferenceInspection::class.java
         )
-        myFixture.configureByFiles("InspectionsTestData.obj")
+        myFixture.configureByFiles("InspectionsObjectTestData.obj")
+        myFixture.checkHighlighting(true, false, true)
+    }
+
+    fun testInspectionsFreeForm() {
+        myFixture.enableInspections(
+            ObjDuplicatedMtlFileReferenceInspection::class.java,
+            ObjIndexOutOfBoundsInspection::class.java,
+            ObjInvalidIndexInspection::class.java,
+            ObjUnknownMaterialReferenceInspection::class.java,
+            ObjUnknownMtlFileReferenceInspection::class.java,
+            ObjUnusedMtlFileReferenceInspection::class.java
+        )
+        myFixture.configureByFiles("InspectionsFreeFormTestData.obj")
         myFixture.checkHighlighting(true, false, true)
     }
 
@@ -61,6 +74,14 @@ class ObjCodeInsightTest : BasePlatformTestCase() {
 
     fun testFoldingObject() {
         myFixture.testFolding("$basePath/FoldingObjectTestData.obj")
+    }
+
+    fun testFoldingCurve() {
+        myFixture.testFolding("$basePath/FoldingCurveTestData.obj")
+    }
+
+    fun testFoldingSurface() {
+        myFixture.testFolding("$basePath/FoldingSurfaceTestData.obj")
     }
 
     fun testFoldingComment() {

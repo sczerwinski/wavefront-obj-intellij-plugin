@@ -21,6 +21,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurveIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormPointIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
@@ -39,12 +41,14 @@ class ObjIndexOutOfBoundsInspection : LocalInspectionTool() {
                 is ObjVertexIndex -> visitVertexIndex(element)
                 is ObjTextureCoordinatesIndex -> visitTextureCoordinatesIndex(element)
                 is ObjVertexNormalIndex -> visitVertexNormalIndex(element)
+                is ObjFreeFormPointIndex -> visitFreeFormPointIndex(element)
+                is ObjFreeFormCurveIndex -> visitFreeForm2DCurveIndex(element)
             }
         }
 
         private fun visitVertexIndex(element: ObjVertexIndex) {
             val index = element.value
-            if (index != null && !element.isValidIndex()) {
+            if (index != null && index != 0 && !element.isValidIndex()) {
                 holder.registerProblem(
                     element,
                     WavefrontObjBundle.message(
@@ -57,7 +61,7 @@ class ObjIndexOutOfBoundsInspection : LocalInspectionTool() {
 
         private fun visitTextureCoordinatesIndex(element: ObjTextureCoordinatesIndex) {
             val index = element.value
-            if (index != null && !element.isValidIndex()) {
+            if (index != null && index != 0 && !element.isValidIndex()) {
                 holder.registerProblem(
                     element,
                     WavefrontObjBundle.message(
@@ -70,11 +74,37 @@ class ObjIndexOutOfBoundsInspection : LocalInspectionTool() {
 
         private fun visitVertexNormalIndex(element: ObjVertexNormalIndex) {
             val index = element.value
-            if (index != null && !element.isValidIndex()) {
+            if (index != null && index != 0 && !element.isValidIndex()) {
                 holder.registerProblem(
                     element,
                     WavefrontObjBundle.message(
                         key = "fileTypes.obj.inspection.indexOutOfBounds.description.normal",
+                        index
+                    )
+                )
+            }
+        }
+
+        private fun visitFreeFormPointIndex(element: ObjFreeFormPointIndex) {
+            val index = element.value
+            if (index != null && index != 0 && !element.isValidIndex()) {
+                holder.registerProblem(
+                    element,
+                    WavefrontObjBundle.message(
+                        key = "fileTypes.obj.inspection.indexOutOfBounds.description.freeFormPoint",
+                        index
+                    )
+                )
+            }
+        }
+
+        private fun visitFreeForm2DCurveIndex(element: ObjFreeFormCurveIndex) {
+            val index = element.value
+            if (index != null && index != 0 && !element.isValidIndex()) {
+                holder.registerProblem(
+                    element,
+                    WavefrontObjBundle.message(
+                        key = "fileTypes.obj.inspection.indexOutOfBounds.description.freeForm2DCurve",
                         index
                     )
                 )

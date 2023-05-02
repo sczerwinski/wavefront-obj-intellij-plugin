@@ -47,6 +47,21 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.FACE_KEYWORD,
             ObjTypes.LINE_KEYWORD,
             ObjTypes.POINT_KEYWORD,
+            ObjTypes.FREE_FORM_POINT_KEYWORD,
+            ObjTypes.FREE_FORM_TYPE_KEYWORD,
+            ObjTypes.FREE_FORM_RATIONAL_KEYWORD,
+            ObjTypes.FREE_FORM_DEGREE_KEYWORD,
+            ObjTypes.FREE_FORM_BASIS_MATRIX_KEYWORD,
+            ObjTypes.FREE_FORM_STEP_SIZE_KEYWORD,
+            ObjTypes.FREE_FORM_CURVE_KEYWORD,
+            ObjTypes.FREE_FORM_2D_CURVE_KEYWORD,
+            ObjTypes.FREE_FORM_SURFACE_KEYWORD,
+            ObjTypes.FREE_FORM_PARAMETERS_KEYWORD,
+            ObjTypes.FREE_FORM_OUTER_TRIMMING_LOOP_KEYWORD,
+            ObjTypes.FREE_FORM_INNER_TRIMMING_LOOP_KEYWORD,
+            ObjTypes.FREE_FORM_SPECIAL_CURVE_KEYWORD,
+            ObjTypes.FREE_FORM_SPECIAL_POINTS_KEYWORD,
+            ObjTypes.FREE_FORM_BODY_END_KEYWORD,
             ObjTypes.SMOOTHING_GROUP_KEYWORD,
             ObjTypes.MATERIAL_FILE_REF_KEYWORD,
             ObjTypes.MATERIAL_REFERENCE_KEYWORD ->
@@ -55,14 +70,15 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.OBJECT_OR_GROUP_NAME ->
                 arrayOf(ATTR_DECLARATION)
 
-            ObjTypes.FLOAT,
-            ObjTypes.INDEX ->
+            ObjTypes.NUMBER ->
                 arrayOf(ATTR_NUMBER)
 
+            ObjTypes.FREE_FORM_DIRECTION,
+            ObjTypes.FREE_FORM_TYPE_NAME,
             ObjTypes.SMOOTHING_GROUP_NUMBER ->
                 arrayOf(ATTR_CONSTANT)
 
-            ObjTypes.VERTEX_INDEX_SEPARATOR ->
+            ObjTypes.INDEX_SEPARATOR ->
                 arrayOf(ATTR_OPERATOR)
 
             ObjTypes.MATERIAL_FILE_NAME,

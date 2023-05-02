@@ -19,44 +19,44 @@ package it.czerwinski.intellij.wavefront.lang.completion
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.patterns.PlatformPatterns
-import it.czerwinski.intellij.wavefront.lang.psi.MtlUnknownTypes
+import it.czerwinski.intellij.wavefront.lang.psi.MtlSpecialTypes
 
 class MtlCompletionContributor : CompletionContributor() {
 
     init {
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_KEYWORD),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_KEYWORD),
             MtlKeywordCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_OPTION),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_OPTION),
             MtlOptionCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_REFLECTION_TYPE_OPTION),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_REFLECTION_TYPE_OPTION),
             MtlReflectionTypeOptionCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_REFLECTION_TYPE),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_REFLECTION_TYPE),
             MtlReflectionTypeCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_FLAG),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_FLAG),
             MtlFlagCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_ILLUMINATION_VALUE),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_ILLUMINATION_VALUE),
             MtlIlluminationValueCompletionProvider()
         )
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement(MtlUnknownTypes.UNKNOWN_SCALAR_CHANNEL),
+            PlatformPatterns.psiElement(MtlSpecialTypes.UNKNOWN_SCALAR_CHANNEL),
             MtlScalarChannelCompletionProvider()
         )
     }

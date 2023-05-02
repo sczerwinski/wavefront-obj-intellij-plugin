@@ -37,6 +37,9 @@ class ObjFile(
     val verticesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjVertex>() }
     val textureCoordinatesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjTextureCoordinates>() }
     val vertexNormalsCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjVertexNormal>() }
+    val freeFormPointsCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjFreeFormPoint>() }
+    val curvesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjFreeForm2DCurve>() }
+
     val facesCount get() = objectLikeElements.sumOf { it.countChildrenOfType<ObjFaceElement>() }
     val trianglesCount
         get() = objectLikeElements.sumOf { element ->
@@ -72,6 +75,12 @@ class ObjFile(
 
     fun countVertexNormalsBefore(element: PsiElement): Int =
         objectLikeElements.sumOf { it.countChildrenOfTypeBefore<ObjVertexNormal>(element) }
+
+    fun countFreeFormPointsBefore(element: PsiElement): Int =
+        objectLikeElements.sumOf { it.countChildrenOfTypeBefore<ObjFreeFormPoint>(element) }
+
+    fun countCurvesBefore(element: PsiElement): Int =
+        objectLikeElements.sumOf { it.countChildrenOfTypeBefore<ObjFreeForm2DCurve>(element) }
 
     fun findMtlFile(filePath: String): MtlFile? = findRelativeFile(this, filePath) as? MtlFile
 

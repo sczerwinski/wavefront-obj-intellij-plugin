@@ -18,6 +18,8 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormPointIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
@@ -35,6 +37,8 @@ abstract class ObjIndexElementImpl(
             is ObjVertexIndex -> containingObjFile?.countVerticesBefore(this) ?: 0
             is ObjTextureCoordinatesIndex -> containingObjFile?.countTextureCoordinatesBefore(this) ?: 0
             is ObjVertexNormalIndex -> containingObjFile?.countVertexNormalsBefore(this) ?: 0
+            is ObjFreeFormPointIndex -> containingObjFile?.countFreeFormPointsBefore(this) ?: 0
+            is ObjCurveIndex -> containingObjFile?.countCurvesBefore(this) ?: 0
             else -> 0
         }
 
@@ -43,6 +47,8 @@ abstract class ObjIndexElementImpl(
             is ObjVertexIndex -> containingObjFile?.verticesCount ?: 0
             is ObjTextureCoordinatesIndex -> containingObjFile?.textureCoordinatesCount ?: 0
             is ObjVertexNormalIndex -> containingObjFile?.vertexNormalsCount ?: 0
+            is ObjFreeFormPointIndex -> containingObjFile?.freeFormPointsCount ?: 0
+            is ObjCurveIndex -> containingObjFile?.curvesCount ?: 0
             else -> 0
         }
 

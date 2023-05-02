@@ -21,6 +21,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import it.czerwinski.intellij.wavefront.lang.psi.ObjCurveIndex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormPointIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
@@ -39,6 +41,8 @@ class ObjIndexOutOfBoundsInspection : LocalInspectionTool() {
                 is ObjVertexIndex -> visitVertexIndex(element)
                 is ObjTextureCoordinatesIndex -> visitTextureCoordinatesIndex(element)
                 is ObjVertexNormalIndex -> visitVertexNormalIndex(element)
+                is ObjFreeFormPointIndex -> visitFreeFormPointIndex(element)
+                is ObjCurveIndex -> visitFreeForm2DCurveIndex(element)
             }
         }
 
@@ -75,6 +79,32 @@ class ObjIndexOutOfBoundsInspection : LocalInspectionTool() {
                     element,
                     WavefrontObjBundle.message(
                         key = "fileTypes.obj.inspection.indexOutOfBounds.description.normal",
+                        index
+                    )
+                )
+            }
+        }
+
+        private fun visitFreeFormPointIndex(element: ObjFreeFormPointIndex) {
+            val index = element.value
+            if (index != null && !element.isValidIndex()) {
+                holder.registerProblem(
+                    element,
+                    WavefrontObjBundle.message(
+                        key = "fileTypes.obj.inspection.indexOutOfBounds.description.freeFormPoint",
+                        index
+                    )
+                )
+            }
+        }
+
+        private fun visitFreeForm2DCurveIndex(element: ObjCurveIndex) {
+            val index = element.value
+            if (index != null && !element.isValidIndex()) {
+                holder.registerProblem(
+                    element,
+                    WavefrontObjBundle.message(
+                        key = "fileTypes.obj.inspection.indexOutOfBounds.description.freeForm2DCurve",
                         index
                     )
                 )

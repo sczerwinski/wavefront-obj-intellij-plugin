@@ -27,6 +27,7 @@ data class ObjPreviewSettingsState(
     @field:Attribute var defaultShadingMethod: ShadingMethod = ShadingMethod.DEFAULT,
     @field:Attribute var defaultPBREnvironment: PBREnvironment = PBREnvironment.DEFAULT,
     @field:Attribute var defaultUpVector: UpVector = UpVector.DEFAULT,
+    @field:Attribute var freeFormCurveResolution: Int = DEFAULT_FREE_FORM_CURVE_RESOLUTION,
     @field:Attribute var showAxes: Boolean = DEFAULT_SHOW_AXES,
     @field:Attribute var axisLineWidth: Float = DEFAULT_AXIS_LINE_WIDTH,
     @field:Attribute var showAxesLabels: Boolean = DEFAULT_SHOW_AXES_LABELS,
@@ -46,6 +47,7 @@ data class ObjPreviewSettingsState(
     companion object {
         val DEFAULT = ObjPreviewSettingsState()
 
+        const val DEFAULT_FREE_FORM_CURVE_RESOLUTION = 5
         const val DEFAULT_SHOW_AXES = true
         const val DEFAULT_AXIS_LINE_WIDTH = 3f
         const val DEFAULT_SHOW_AXES_LABELS = true

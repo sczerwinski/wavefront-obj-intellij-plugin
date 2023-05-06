@@ -45,6 +45,12 @@ class ObjPreviewEditor(
             myComponent.shadingMethod = value
         }
 
+    private var freeFormCurveResolution: Int
+        get() = myComponent.freeFormCurveResolution
+        set(value) {
+            myComponent.freeFormCurveResolution = value
+        }
+
     override var environment: PBREnvironment
         get() = myComponent.environment
         set(value) {
@@ -86,6 +92,9 @@ class ObjPreviewEditor(
                     shadingMethod = newPreviewSettings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
                 }
 
+                freeFormCurveResolution = newPreviewSettings?.freeFormCurveResolution
+                    ?: ObjPreviewSettingsState.DEFAULT_FREE_FORM_CURVE_RESOLUTION
+
                 if (environment === oldPreviewSettings?.defaultPBREnvironment) {
                     environment = newPreviewSettings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
                 }
@@ -122,6 +131,8 @@ class ObjPreviewEditor(
         val settings = WavefrontObjSettingsState.getInstance()?.objPreviewSettings
 
         shadingMethod = settings?.defaultShadingMethod ?: ShadingMethod.DEFAULT
+        freeFormCurveResolution = settings?.freeFormCurveResolution
+            ?: ObjPreviewSettingsState.DEFAULT_FREE_FORM_CURVE_RESOLUTION
         environment = settings?.defaultPBREnvironment ?: PBREnvironment.DEFAULT
         isCroppingTextures = settings?.cropTextures ?: ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
         upVector = settings?.defaultUpVector ?: UpVector.DEFAULT

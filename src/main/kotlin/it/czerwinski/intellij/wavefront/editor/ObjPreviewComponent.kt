@@ -94,6 +94,12 @@ class ObjPreviewComponent(
             myActionToolbar.updateActionsImmediately()
         }
 
+    var freeFormCurveResolution: Int = ObjPreviewSettingsState.DEFAULT_FREE_FORM_CURVE_RESOLUTION
+        set(value) {
+            field = value
+            updateScene()
+        }
+
     var environment: PBREnvironment = PBREnvironment.DEFAULT
         set(value) {
             field = value
@@ -164,6 +170,7 @@ class ObjPreviewComponent(
             if (::myScene.isInitialized) {
                 myScene.cameraModel = cameraModel
                 myScene.shadingMethod = shadingMethod
+                myScene.freeFormCurveResolution = freeFormCurveResolution
                 myScene.environment = environment
                 myScene.cropTextures = isCroppingTextures
                 myScene.showAxes = isShowingAxes

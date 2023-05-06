@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.wavefront.editor.gl.meshes
 
-import com.intellij.psi.PsiElement
-import graphics.glimpse.types.Vec2
-import graphics.glimpse.types.Vec3
-import graphics.glimpse.types.Vec4
+import graphics.glimpse.GlimpseAdapter
+import graphics.glimpse.meshes.Mesh
+import it.czerwinski.intellij.wavefront.editor.model.GLModel
 
-interface ObjVectorElement : PsiElement {
+interface SurfaceMeshFactory {
 
-    val coordinates: List<Float?>
-
-    val asVec2: Vec2<Float>
-    val asVec3: Vec3<Float>
-    val asVec4: Vec4<Float>
+    fun create(
+        gl: GlimpseAdapter,
+        model: GLModel,
+        surface: GLModel.Surface,
+        freeFormCurveResolution: Int
+    ): Mesh?
 }
-
-val ObjVectorElement.coordinatesString: String
-    get() = coordinates.joinToString(prefix = "[", separator = " ", postfix = "]")

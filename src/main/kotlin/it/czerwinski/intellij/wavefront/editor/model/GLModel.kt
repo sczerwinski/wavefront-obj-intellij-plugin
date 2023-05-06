@@ -19,12 +19,20 @@ package it.czerwinski.intellij.wavefront.editor.model
 import com.intellij.psi.PsiElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurve
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormDegree
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormDirection
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormSurface
+import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormType
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinates
+import it.czerwinski.intellij.wavefront.lang.psi.ObjTextureCoordinatesIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertex
+import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexIndex
 import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormal
+import it.czerwinski.intellij.wavefront.lang.psi.ObjVertexNormalIndex
 import kotlin.math.abs
 
 data class GLModel(
@@ -46,6 +54,34 @@ data class GLModel(
             }
         }
 
+    fun getVertexPosition(index: ObjVertexIndex?): List<Float> =
+        vertices
+            .getOrNull(index = (index?.value ?: 1) - 1)
+            ?.asVec3
+            ?.toList()
+            ?: listOf(0f, 0f, 0f)
+
+    fun getRationalVertexPosition(index: ObjVertexIndex?): List<Float> =
+        vertices
+            .getOrNull(index = (index?.value ?: 1) - 1)
+            ?.asVec4
+            ?.toList()
+            ?: listOf(0f, 0f, 0f, 1f)
+
+    fun getTextureCoordinates(index: ObjTextureCoordinatesIndex?): List<Float> =
+        textureCoordinates
+            .getOrNull(index = (index?.value ?: 1) - 1)
+            ?.asVec2
+            ?.toList()
+            ?: listOf(0f, 0f)
+
+    fun getVertexNormal(index: ObjVertexNormalIndex?): List<Float> =
+        vertexNormals
+            .getOrNull(index = (index?.value ?: 1) - 1)
+            ?.asVec3
+            ?.toList()
+            ?: listOf(0f, 0f, 0f)
+
     data class GroupingElement(
         val psiElement: PsiElement,
         val materialParts: List<MaterialPart>
@@ -57,9 +93,37 @@ data class GLModel(
         val materialReference: ObjMaterialReference?,
         val faces: List<ObjFace>,
         val lines: List<ObjLine>,
-        val points: List<ObjPoint>
+        val points: List<ObjPoint>,
+        val curves: List<Curve>,
+        val surfaces: List<Surface>
     ) {
-        val isEmpty: Boolean get() = faces.isEmpty() && lines.isEmpty() && points.isEmpty()
+        val isEmpty: Boolean
+            get() = faces.isEmpty() && lines.isEmpty() && points.isEmpty() && curves.isEmpty() && surfaces.isEmpty()
+
         val material: MtlMaterial? = materialReference?.material
+    }
+
+    data class Curve(
+        val type: ObjFreeFormType?,
+        val degree: ObjFreeFormDegree?,
+        val curve: ObjFreeFormCurve?
+    ) {
+
+        fun getKnots(direction: ObjFreeFormDirection): List<Float> =
+            curve?.freeFormParametersList.orEmpty()
+                .filter { it.direction == direction }
+                .flatMap { it.parameters }
+    }
+
+    data class Surface(
+        val type: ObjFreeFormType?,
+        val degree: ObjFreeFormDegree?,
+        val surface: ObjFreeFormSurface?
+    ) {
+
+        fun getKnots(direction: ObjFreeFormDirection): List<Float> =
+            surface?.freeFormParametersList.orEmpty()
+                .filter { it.direction == direction }
+                .flatMap { it.parameters }
     }
 }

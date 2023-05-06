@@ -43,11 +43,12 @@ kotlin {
 }
 
 dependencies {
-    api("graphics.glimpse:glimpse-core:2.0.0-alpha.2")
-    api("graphics.glimpse:glimpse-obj:2.0.0-alpha.2")
-    api("graphics.glimpse:glimpse-offscreen:2.0.0-alpha.2")
-    api("graphics.glimpse:glimpse-ui:2.0.0-alpha.2")
-    ksp("graphics.glimpse:glimpse-processor-ksp:2.0.0-alpha.2")
+    api("graphics.glimpse:glimpse-core:2.0.0-alpha.3")
+    api("graphics.glimpse:glimpse-geom:2.0.0-alpha.3")
+    api("graphics.glimpse:glimpse-obj:2.0.0-alpha.3")
+    api("graphics.glimpse:glimpse-offscreen:2.0.0-alpha.3")
+    api("graphics.glimpse:glimpse-ui:2.0.0-alpha.3")
+    ksp("graphics.glimpse:glimpse-processor-ksp:2.0.0-alpha.3")
     api("org.jogamp.jogl:jogl-all-main:2.4.0")
     api("org.jogamp.gluegen:gluegen-rt-main:2.4.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")

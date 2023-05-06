@@ -19,6 +19,7 @@ package it.czerwinski.intellij.wavefront.lang.psi.impl
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.tree.TokenSet
+import graphics.glimpse.types.Vec2
 import it.czerwinski.intellij.wavefront.lang.psi.ObjIntListElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 
@@ -33,4 +34,15 @@ abstract class ObjIntListElementImpl(
 
     override val valuesString: String
         get() = values.joinToString()
+
+    override val asVec2: Vec2<Int>
+        get() = Vec2(
+            x = values.getOrNull(COORDINATE_U) ?: 0,
+            y = values.getOrNull(COORDINATE_V) ?: 0
+        )
+
+    companion object {
+        private const val COORDINATE_U = 0
+        private const val COORDINATE_V = 1
+    }
 }

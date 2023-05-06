@@ -41,6 +41,7 @@ import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.toInt
+import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 import java.awt.Color
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -94,6 +95,13 @@ class ObjPreviewScene(
             requestRender()
         }
 
+    var freeFormCurveResolution: Int = ObjPreviewSettingsState.DEFAULT_FREE_FORM_CURVE_RESOLUTION
+        set(value) {
+            field = value
+            modelChanged.set(true)
+            requestRender()
+        }
+
     var cropTextures: Boolean = false
         set(value) {
             field = value
@@ -132,7 +140,7 @@ class ObjPreviewScene(
 
     private fun createModelMeshes(gl: GlimpseAdapter) {
         try {
-            modelMeshesManager.initialize(gl, model ?: return, shadingMethod)
+            modelMeshesManager.initialize(gl, model ?: return, shadingMethod, freeFormCurveResolution)
         } catch (expected: Throwable) {
             errorLog.addError(
                 WavefrontObjBundle.message("editor.fileTypes.obj.preview.createModelMeshes.error"),
@@ -159,6 +167,8 @@ class ObjPreviewScene(
         modelMeshesManager.facesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
         modelMeshesManager.linesMeshes.forEachIndexed { index, mesh -> renderLines(gl, mesh, index) }
         modelMeshesManager.pointsMeshes.forEach { renderPoints(gl, it) }
+        modelMeshesManager.curvesMeshes.forEachIndexed { index, mesh -> renderLines(gl, mesh, index) }
+        modelMeshesManager.surfacesMeshes.forEachIndexed { index, mesh -> renderFaces(gl, mesh, shadingMethod, index) }
     }
 
     private fun renderFaces(gl: GlimpseAdapter, facesMesh: Mesh, shadingMethod: ShadingMethod, index: Int) {

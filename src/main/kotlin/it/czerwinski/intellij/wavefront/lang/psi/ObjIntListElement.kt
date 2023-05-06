@@ -17,10 +17,13 @@
 package it.czerwinski.intellij.wavefront.lang.psi
 
 import com.intellij.psi.PsiElement
+import graphics.glimpse.types.Vec2
 
 interface ObjIntListElement : PsiElement {
 
     val values: List<Int>
 
     val valuesString: String
+
+    val asVec2: Vec2<Int>
 }

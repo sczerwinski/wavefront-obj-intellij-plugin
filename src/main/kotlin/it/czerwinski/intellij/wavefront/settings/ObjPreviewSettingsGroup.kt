@@ -49,6 +49,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
     private lateinit var defaultShadingMethod: ComboBox<ShadingMethod>
     private lateinit var defaultPBREnvironment: ComboBox<PBREnvironment>
     private lateinit var defaultUpVector: ComboBox<UpVector>
+    private lateinit var freeFormCurveResolutionSlider: JSlider
     private lateinit var showAxesCheckBox: JBCheckBox
     private lateinit var axisLineWidthInput: JBTextField
     private lateinit var showAxesLabelsCheckBox: JBCheckBox
@@ -70,6 +71,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             defaultShadingMethod = defaultShadingMethod.item ?: ShadingMethod.DEFAULT,
             defaultPBREnvironment = defaultPBREnvironment.item ?: PBREnvironment.DEFAULT,
             defaultUpVector = defaultUpVector.item ?: UpVector.DEFAULT,
+            freeFormCurveResolution = freeFormCurveResolutionSlider.value,
             showAxes = showAxesCheckBox.isSelected,
             axisLineWidth = axisLineWidthInput.text.toFloatOrNull() ?: INVALID_FLOAT_VALUE,
             showAxesLabels = showAxesLabelsCheckBox.isSelected,
@@ -92,6 +94,7 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
             defaultShadingMethod.item = value.defaultShadingMethod
             defaultPBREnvironment.item = value.defaultPBREnvironment
             defaultUpVector.item = value.defaultUpVector
+            freeFormCurveResolutionSlider.value = value.freeFormCurveResolution
             showAxesCheckBox.isSelected = value.showAxes
             axisLineWidthInput.text = value.axisLineWidth.toString()
             showAxesLabelsCheckBox.isSelected = value.showAxesLabels
@@ -128,6 +131,21 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
                     defaultValue = UpVector.DEFAULT,
                     renderer = UpVectorListCellRenderer()
                 ).component
+            }
+            row(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.freeFormCurveResolution")) {
+                freeFormCurveResolutionSlider = slider(
+                    FREE_FORM_CURVE_RESOLUTION_MIN,
+                    FREE_FORM_CURVE_RESOLUTION_MAX,
+                    FREE_FORM_CURVE_RESOLUTION_MINOR_TICK,
+                    FREE_FORM_CURVE_RESOLUTION_MAJOR_TICK
+                ).comment(
+                    comment = WavefrontObjBundle.message(
+                        "settings.editor.fileTypes.obj.preview.freeFormCurveResolution.contextHelp"
+                    )
+                ).component
+                freeFormCurveResolutionSlider.labelTable = Hashtable(
+                    freeFormCurveResolutionLabels.associateWith { JLabel(it.toString()) }
+                )
             }
             collapsibleGroup(WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.axes")) {
                 createAxesGroup()
@@ -303,6 +321,12 @@ class ObjPreviewSettingsGroup : SettingsGroup, ObjPreviewSettingsState.Holder {
     )
 
     companion object {
+        private const val FREE_FORM_CURVE_RESOLUTION_MIN = 1
+        private const val FREE_FORM_CURVE_RESOLUTION_MAX = 20
+        private const val FREE_FORM_CURVE_RESOLUTION_MINOR_TICK = 1
+        private const val FREE_FORM_CURVE_RESOLUTION_MAJOR_TICK = FREE_FORM_CURVE_RESOLUTION_MAX + 1
+        private val freeFormCurveResolutionLabels = listOf(1, 5, 10, 15, 20)
+
         private const val DISPLACEMENT_QUALITY_MIN = 25
         private const val DISPLACEMENT_QUALITY_MAX = 100
         private const val DISPLACEMENT_QUALITY_MINOR_TICK = 5

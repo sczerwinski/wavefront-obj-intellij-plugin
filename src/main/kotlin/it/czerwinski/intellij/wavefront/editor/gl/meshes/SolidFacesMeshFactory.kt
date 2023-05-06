@@ -28,13 +28,13 @@ object SolidFacesMeshFactory : FacesMeshFactory {
     override fun create(gl: GlimpseAdapter, model: GLModel, materialPart: GLModel.MaterialPart): Mesh {
         val meshDataBuilder = MeshDataBuilder()
         for (vertex in model.vertices) {
-            meshDataBuilder.addVertex(vertex.coordinates.map { it ?: 0f })
+            meshDataBuilder.addVertex(vertex.asVec3)
         }
         for (texCoord in model.textureCoordinates) {
-            meshDataBuilder.addTextureCoordinates(texCoord.coordinates.map { it ?: 0f })
+            meshDataBuilder.addTextureCoordinates(texCoord.asVec2)
         }
         for (normal in model.vertexNormals) {
-            meshDataBuilder.addNormal(normal.coordinates.map { it ?: 0f })
+            meshDataBuilder.addNormal(normal.asVec3)
         }
         meshDataBuilder.addTextureCoordinates(Vec2(x = 0f, y = 0f))
         meshDataBuilder.addNormal(Vec3.nullVector())

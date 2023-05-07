@@ -24,21 +24,16 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import it.czerwinski.intellij.wavefront.lang.ObjLanguage
 import it.czerwinski.intellij.wavefront.lang.ObjLexerAdapter
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFile
-import it.czerwinski.intellij.wavefront.lang.psi.ObjSpecialTypes
 import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes
 
 class ObjParserDefinition : ParserDefinition {
 
     override fun createLexer(project: Project?): Lexer = ObjLexerAdapter()
-
-    override fun getWhitespaceTokens(): TokenSet =
-        TokenSet.create(TokenType.WHITE_SPACE, ObjSpecialTypes.CONTINUATION_CRLF)
 
     override fun getCommentTokens(): TokenSet = TokenSet.create(ObjTypes.COMMENT_BLOCK)
 

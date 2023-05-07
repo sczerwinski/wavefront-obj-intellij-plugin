@@ -52,39 +52,12 @@ class ObjBlock(
     override fun getIndent(): Indent? = Indent.getNoneIndent()
 
     override fun getSpacing(child1: Block?, child2: Block): Spacing? {
-        return when {
-            isContinuationNewLine(child1) ->
-                Spacing.createSpacing(indent, indent, LINE_FEEDS, KEEP_LINE_BREAKS, BLANK_LINES)
-
-            isContinuationNewLine(child2) ->
-                Spacing.createSpacing(SPACES_BEFORE, SPACES_BEFORE, LINE_FEEDS, KEEP_LINE_BREAKS, BLANK_LINES)
-
-            else ->
-                spacingBuilder.getSpacing(this, child1, child2)
-        }
-    }
-
-    private fun isContinuationNewLine(block: Block?): Boolean {
-        if (block == null) return false
-        val text = getText(block.textRange.startOffset, block.textRange.endOffset)
-        return text.trim() == CONTINUATION_SEPARATOR
-    }
-
-    private fun getText(startOffset: Int, endOffset: Int): CharSequence {
-        val startIndex = startOffset - node.textRange.startOffset
-        val endIndex = endOffset - node.textRange.startOffset
-        return node.text.subSequence(startIndex, endIndex)
+        return spacingBuilder.getSpacing(this, child1, child2)
     }
 
     override fun isLeaf(): Boolean = myNode.firstChildNode == null
 
     companion object {
         private const val CONTINUATION_CHAR = '\\'
-        private const val CONTINUATION_SEPARATOR = "$CONTINUATION_CHAR"
-
-        private const val SPACES_BEFORE = 1
-        private const val LINE_FEEDS = 0
-        private const val KEEP_LINE_BREAKS = false
-        private const val BLANK_LINES = 0
     }
 }

@@ -150,7 +150,7 @@ REFERENCE=[^\ \t\r\n\f]+
 
 <WAITING_MATERIAL_NAME> {REFERENCE} { yybegin(END); return ObjTypes.MATERIAL_NAME; }
 
-\\{CRLF} { return ObjSpecialTypes.CONTINUATION_CRLF; }
+\\{CRLF} { return TokenType.WHITE_SPACE; }
 {CRLF} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
 <END> [^\ \t\r\n\f]+ { yybegin(INVALID); return TokenType.BAD_CHARACTER; }

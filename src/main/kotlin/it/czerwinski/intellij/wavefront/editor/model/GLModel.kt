@@ -17,6 +17,8 @@
 package it.czerwinski.intellij.wavefront.editor.model
 
 import com.intellij.psi.PsiElement
+import com.intellij.refactoring.suggested.endOffset
+import com.intellij.refactoring.suggested.startOffset
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurve
@@ -24,6 +26,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormDegree
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormDirection
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormSurface
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormType
+import it.czerwinski.intellij.wavefront.lang.psi.ObjIndexElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjLine
 import it.czerwinski.intellij.wavefront.lang.psi.ObjMaterialReference
 import it.czerwinski.intellij.wavefront.lang.psi.ObjPoint
@@ -55,29 +58,36 @@ data class GLModel(
         }
 
     fun getVertexPosition(index: ObjVertexIndex?): List<Float> =
-        vertices
-            .getOrNull(index = (index?.value ?: 1) - 1)
+        vertices[index]
             ?.asVec3
             ?.toList()
             ?: listOf(0f, 0f, 0f)
 
+    private operator fun <T : PsiElement> List<T>.get(index: ObjIndexElement?): T? {
+        val indexValue = index?.value ?: 1
+        return if (indexValue > 0) {
+            getOrNull(index = indexValue - 1)
+        } else {
+            filter { it.endOffset < (index?.startOffset ?: 0) }
+                .reversed()
+                .getOrNull(index = abs(indexValue) - 1)
+        }
+    }
+
     fun getRationalVertexPosition(index: ObjVertexIndex?): List<Float> =
-        vertices
-            .getOrNull(index = (index?.value ?: 1) - 1)
+        vertices[index]
             ?.asVec4
             ?.toList()
             ?: listOf(0f, 0f, 0f, 1f)
 
     fun getTextureCoordinates(index: ObjTextureCoordinatesIndex?): List<Float> =
-        textureCoordinates
-            .getOrNull(index = (index?.value ?: 1) - 1)
+        textureCoordinates[index]
             ?.asVec2
             ?.toList()
             ?: listOf(0f, 0f)
 
     fun getVertexNormal(index: ObjVertexNormalIndex?): List<Float> =
-        vertexNormals
-            .getOrNull(index = (index?.value ?: 1) - 1)
+        vertexNormals[index]
             ?.asVec3
             ?.toList()
             ?: listOf(0f, 0f, 0f)

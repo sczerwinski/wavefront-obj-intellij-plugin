@@ -46,6 +46,48 @@ class CreateObjFileAction :
                 ObjFileType.icon,
                 "Empty object"
             )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.square"
+                ),
+                ObjFileType.icon,
+                "Square"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.cube"
+                ),
+                ObjFileType.icon,
+                "Cube"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.cylinder"
+                ),
+                ObjFileType.icon,
+                "Cylinder"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.sphere"
+                ),
+                ObjFileType.icon,
+                "Sphere"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.nurbs.circle"
+                ),
+                ObjFileType.icon,
+                "NURBS circle"
+            )
+            .addKind(
+                WavefrontObjBundle.message(
+                    "action.it.czerwinski.intellij.wavefront.actions.CreateObjFileAction.dialog.kind.obj.nurbs.sphere"
+                ),
+                ObjFileType.icon,
+                "NURBS sphere"
+            )
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String =

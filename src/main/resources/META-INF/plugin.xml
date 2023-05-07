@@ -135,6 +135,18 @@
                 implementation="it.czerwinski.intellij.wavefront.templates.ObjCreateFromTemplateHandler"/>
         <internalFileTemplate
                 name="Empty object"/>
+        <internalFileTemplate
+                name="Square"/>
+        <internalFileTemplate
+                name="Cube"/>
+        <internalFileTemplate
+                name="Cylinder"/>
+        <internalFileTemplate
+                name="Sphere"/>
+        <internalFileTemplate
+                name="NURBS circle"/>
+        <internalFileTemplate
+                name="NURBS sphere"/>
 
         <!-- Settings -->
         <colorSettingsPage

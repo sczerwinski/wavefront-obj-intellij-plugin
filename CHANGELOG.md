@@ -22,6 +22,7 @@
 - Documentation provider for objects and groups defined in OBJ files
 - Documentation provider for materials defined in MTL files
 - Folding multi-line comments
+- OBJ file templates for square, cube, cylinder, sphere, NURBS circle and NURBS sphere
 - MTL file templates for Phong and PBR materials
 
 ### Changed

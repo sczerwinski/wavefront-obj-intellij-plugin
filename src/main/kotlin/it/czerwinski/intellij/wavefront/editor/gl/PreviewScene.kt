@@ -295,11 +295,12 @@ abstract class PreviewScene(
         if (showEnvironment) renderEnvironment(gl)
 
         if (showAxes) renderAxes(gl)
-        if (showGrid) renderGrid(gl)
-        if (showAxes && config.showAxesLabels) renderAxesLabels(gl)
 
         gl.glCullFace(config.faceCulling)
         renderModel(gl)
+
+        if (showGrid) renderGrid(gl)
+        if (showAxes && config.showAxesLabels) renderAxesLabels(gl)
     }
 
     private fun renderEnvironment(gl: GlimpseAdapter) {
@@ -342,6 +343,11 @@ abstract class PreviewScene(
             axisConeMesh
         )
     }
+
+    /**
+     * Renders the actual model being the subject of this preview.
+     */
+    protected abstract fun renderModel(gl: GlimpseAdapter)
 
     private fun renderGrid(gl: GlimpseAdapter) {
         gl.glLineWidth(config.gridLineWidth)
@@ -390,11 +396,6 @@ abstract class PreviewScene(
             labelMesh
         )
     }
-
-    /**
-     * Renders the actual model being the subject of this preview.
-     */
-    protected abstract fun renderModel(gl: GlimpseAdapter)
 
     override fun dispose(gl: GlimpseAdapter) {
         axisMesh.dispose(gl)

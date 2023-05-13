@@ -5,6 +5,7 @@
 ## [Unreleased]
 
 ### Added
+- Add support for platform version `232.*`
 - Support for `Tr` (transparency) in MTL file
 - Support for free-form geometry syntax in OBJ files
 - Support for curves and surfaces in 3D preview of OBJ files
@@ -29,7 +30,7 @@
 - Use split editor (text and preview) provided by IntelliJ platform
 - Remember splitter proportion per file type
 - Replace annotators with inspections
-- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1`
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.1, 2023.2`
 - Upgrade Gradle Wrapper to `8.0.2`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.21`

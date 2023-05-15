@@ -5,6 +5,20 @@
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.4.0] - 2023-05-15
+
+### Added
 - Add support for platform version `232.*`
 - Support for `Tr` (transparency) in MTL file
 - Support for free-form geometry syntax in OBJ files
@@ -614,6 +628,7 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.1...main
+[1.4.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.2.1...v1.2.2

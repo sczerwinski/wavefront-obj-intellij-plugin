@@ -107,7 +107,7 @@ object SolidSurfaceMeshFactory : SurfaceMeshFactory {
             .withKnotsV(knotsV)
             .build()
         val parametersValues = generateParametersValues(surface, surface3.gridSize, freeFormCurveResolution)
-        return surface3.toMeshData(parametersValues.first, parametersValues.second)
+        return surface3.createTriangulation(parametersValues.first, parametersValues.second).generateMeshData()
     }
 
     @Suppress("DestructuringDeclarationWithTooManyEntries")
@@ -158,6 +158,6 @@ object SolidSurfaceMeshFactory : SurfaceMeshFactory {
             .withKnotsV(knotsV)
             .build()
         val parametersValues = generateParametersValues(surface, surface4.gridSize, freeFormCurveResolution)
-        return surface4.toMeshData(parametersValues.first, parametersValues.second)
+        return surface4.createTriangulation(parametersValues.first, parametersValues.second).generateMeshData()
     }
 }

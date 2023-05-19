@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorPolicy
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -33,6 +34,9 @@ class ObjSplitEditorProvider :
         previewEditorProvider = ObjPreviewEditorProvider()
     ),
     DumbAware {
+
+    override fun createEditor(textEditor: TextEditor, previewEditor: FileEditor): FileEditor =
+        ObjSplitEditor(textEditor, previewEditor as ObjPreviewEditor)
 
     override fun createAsyncEditorBuilder(project: Project, file: VirtualFile): Builder = Builder(project, file)
 

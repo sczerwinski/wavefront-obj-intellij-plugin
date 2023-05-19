@@ -13,6 +13,7 @@
 ### Removed
 
 ### Fixed
+- Fix override-only methods usage violations related to `AsyncFileEditorProvider`
 
 ### Security
 

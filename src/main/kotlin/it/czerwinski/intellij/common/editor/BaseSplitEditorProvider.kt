@@ -41,8 +41,17 @@ abstract class BaseSplitEditorProvider(
     /**
      * Creates a new [BaseSplitEditor].
      */
-    final override fun createEditor(project: Project, file: VirtualFile): FileEditor =
-        createEditorAsync(project, file).build()
+    final override fun createEditor(project: Project, file: VirtualFile): FileEditor {
+        val textEditor = textEditorProvider.createEditor(project, file) as TextEditor
+        val previewEditor = previewEditorProvider.createEditor(project, file)
+        return createEditor(textEditor, previewEditor)
+    }
+
+    /**
+     * Implement this method to create an actual split editor,
+     * containing given [textEditor] and [previewEditor].
+     */
+    protected abstract fun createEditor(textEditor: TextEditor, previewEditor: FileEditor): FileEditor
 
     /**
      * Creates a new [BaseSplitEditor] asynchronously.
@@ -65,40 +74,34 @@ abstract class BaseSplitEditorProvider(
         private val file: VirtualFile
     ) : AsyncFileEditorProvider.Builder() {
 
-        private lateinit var asyncTextEditorBuilder: AsyncFileEditorProvider.Builder
+        private lateinit var textEditorProvider: FileEditorProvider
 
-        private lateinit var asyncPreviewEditorBuilder: AsyncFileEditorProvider.Builder
+        private lateinit var previewEditorProvider: FileEditorProvider
 
         /**
          * Sets text editor provider.
          */
         fun withTextEditorProvider(textEditorProvider: TextEditorProvider): Builder {
-            asyncTextEditorBuilder = getAsyncFileEditorBuilder(textEditorProvider)
+            this.textEditorProvider = textEditorProvider
             return this
         }
-
-        private fun getAsyncFileEditorBuilder(provider: FileEditorProvider): AsyncFileEditorProvider.Builder =
-            if (provider is AsyncFileEditorProvider) provider.createEditorAsync(project, file)
-            else object : AsyncFileEditorProvider.Builder() {
-                override fun build(): FileEditor = provider.createEditor(project, file)
-            }
 
         /**
          * Sets preview editor provider.
          */
         fun withPreviewEditorProvider(previewEditorProvider: FileEditorProvider): Builder {
-            asyncPreviewEditorBuilder = getAsyncFileEditorBuilder(previewEditorProvider)
+            this.previewEditorProvider = previewEditorProvider
             return this
         }
 
         /**
          * Builds text editor asynchronously.
          */
-        protected fun buildTextEditor(): TextEditor = asyncTextEditorBuilder.build() as TextEditor
+        protected fun buildTextEditor(): TextEditor = textEditorProvider.createEditor(project, file) as TextEditor
 
         /**
          * Builds preview editor asynchronously.
          */
-        protected fun buildPreviewEditor(): FileEditor = asyncPreviewEditorBuilder.build()
+        protected fun buildPreviewEditor(): FileEditor = previewEditorProvider.createEditor(project, file)
     }
 }

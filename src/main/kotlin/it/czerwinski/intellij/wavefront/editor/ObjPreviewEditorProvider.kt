@@ -18,7 +18,7 @@ package it.czerwinski.intellij.wavefront.editor
 
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorPolicy
-import com.intellij.openapi.fileEditor.FileEditorProvider
+import com.intellij.openapi.fileEditor.WeighedFileEditorProvider
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -27,7 +27,7 @@ import it.czerwinski.intellij.wavefront.lang.ObjFileType
 /**
  * Wavefront OBJ 3D preview editor provider.
  */
-class ObjPreviewEditorProvider : FileEditorProvider, DumbAware {
+class ObjPreviewEditorProvider : WeighedFileEditorProvider(), DumbAware {
 
     override fun accept(project: Project, file: VirtualFile): Boolean = file.isValid && file.fileType === ObjFileType
 

@@ -16,13 +16,15 @@
 
 package it.czerwinski.intellij.common.editor
 
-import com.intellij.openapi.fileEditor.AsyncFileEditorProvider
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorProvider
+import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.TextEditor
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import org.jdom.Element
 
 /**
  * Editor provider for a [BaseSplitEditor].
@@ -30,7 +32,7 @@ import com.intellij.openapi.vfs.VirtualFile
 abstract class BaseSplitEditorProvider(
     private val textEditorProvider: TextEditorProvider,
     private val previewEditorProvider: FileEditorProvider
-) : AsyncFileEditorProvider {
+) : FileEditorProvider {
 
     /**
      * Returns `true` if the given [file] is accepted by both [textEditorProvider] and [previewEditorProvider].
@@ -54,54 +56,60 @@ abstract class BaseSplitEditorProvider(
     protected abstract fun createEditor(textEditor: TextEditor, previewEditor: FileEditor): FileEditor
 
     /**
-     * Creates a new [BaseSplitEditor] asynchronously.
+     * Deserializes state of split editor.
      */
-    final override fun createEditorAsync(project: Project, file: VirtualFile): AsyncFileEditorProvider.Builder =
-        createAsyncEditorBuilder(project, file)
-            .withTextEditorProvider(textEditorProvider)
-            .withPreviewEditorProvider(previewEditorProvider)
+    override fun readState(sourceElement: Element, project: Project, file: VirtualFile): FileEditorState =
+        TextEditorWithPreview.MyFileEditorState(
+            readSplitLayoutState(sourceElement),
+            readTextEditorState(sourceElement, project, file),
+            readPreviewEditorState(sourceElement, project, file)
+        )
+
+    private fun readSplitLayoutState(sourceElement: Element): TextEditorWithPreview.Layout? =
+        sourceElement.getAttribute(SPLIT_LAYOUT)?.value
+            ?.let { enumValueOf<TextEditorWithPreview.Layout>(it) }
+
+    private fun readTextEditorState(sourceElement: Element, project: Project, file: VirtualFile): FileEditorState? =
+        sourceElement.getChild(TEXT_EDITOR)
+            ?.let { childElement -> textEditorProvider.readState(childElement, project, file) }
+
+    private fun readPreviewEditorState(sourceElement: Element, project: Project, file: VirtualFile): FileEditorState? =
+        sourceElement.getChild(PREVIEW_EDITOR)
+            ?.let { childElement -> previewEditorProvider.readState(childElement, project, file) }
 
     /**
-     * Implement this method to provide a split editor [Builder].
+     * Serializes state of split editor.
      */
-    protected abstract fun createAsyncEditorBuilder(project: Project, file: VirtualFile): Builder
+    override fun writeState(state: FileEditorState, project: Project, targetElement: Element) {
+        val splitEditorState = state as? TextEditorWithPreview.MyFileEditorState ?: return
+        writeSplitLayoutState(splitEditorState.splitLayout, targetElement)
+        writeTextEditorState(splitEditorState.firstState, project, targetElement)
+        writePreviewEditorState(splitEditorState.secondState, project, targetElement)
+    }
 
-    /**
-     * Split editor builder.
-     */
-    abstract class Builder(
-        private val project: Project,
-        private val file: VirtualFile
-    ) : AsyncFileEditorProvider.Builder() {
+    private fun writeSplitLayoutState(layout: TextEditorWithPreview.Layout?, targetElement: Element) {
+        targetElement.setAttribute(SPLIT_LAYOUT, layout?.name)
+    }
 
-        private lateinit var textEditorProvider: FileEditorProvider
-
-        private lateinit var previewEditorProvider: FileEditorProvider
-
-        /**
-         * Sets text editor provider.
-         */
-        fun withTextEditorProvider(textEditorProvider: TextEditorProvider): Builder {
-            this.textEditorProvider = textEditorProvider
-            return this
+    private fun writeTextEditorState(state: FileEditorState?, project: Project, targetElement: Element) {
+        if (state != null) {
+            val childElement = Element(TEXT_EDITOR)
+            textEditorProvider.writeState(state, project, childElement)
+            targetElement.addContent(childElement)
         }
+    }
 
-        /**
-         * Sets preview editor provider.
-         */
-        fun withPreviewEditorProvider(previewEditorProvider: FileEditorProvider): Builder {
-            this.previewEditorProvider = previewEditorProvider
-            return this
+    private fun writePreviewEditorState(state: FileEditorState?, project: Project, targetElement: Element) {
+        if (state != null) {
+            val childElement = Element(PREVIEW_EDITOR)
+            previewEditorProvider.writeState(state, project, childElement)
+            targetElement.addContent(childElement)
         }
+    }
 
-        /**
-         * Builds text editor asynchronously.
-         */
-        protected fun buildTextEditor(): TextEditor = textEditorProvider.createEditor(project, file) as TextEditor
-
-        /**
-         * Builds preview editor asynchronously.
-         */
-        protected fun buildPreviewEditor(): FileEditor = previewEditorProvider.createEditor(project, file)
+    companion object {
+        private const val TEXT_EDITOR = "text_editor"
+        private const val PREVIEW_EDITOR = "preview_editor"
+        private const val SPLIT_LAYOUT = "split_layout"
     }
 }

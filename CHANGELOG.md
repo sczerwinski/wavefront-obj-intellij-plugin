@@ -5,12 +5,15 @@
 ## [Unreleased]
 
 ### Added
+- Reading and writing state in editor providers
+- Add weight to preview editors
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+- Creating editors asynchronously
 
 ### Fixed
 - Fix override-only methods usage violations related to `AsyncFileEditorProvider`

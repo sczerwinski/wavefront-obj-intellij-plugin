@@ -21,8 +21,6 @@ import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.DumbAware
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.BaseSplitEditorProvider
 
 /**
@@ -38,21 +36,7 @@ class ObjSplitEditorProvider :
     override fun createEditor(textEditor: TextEditor, previewEditor: FileEditor): FileEditor =
         ObjSplitEditor(textEditor, previewEditor as ObjPreviewEditor)
 
-    override fun createAsyncEditorBuilder(project: Project, file: VirtualFile): Builder = Builder(project, file)
-
     override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.HIDE_DEFAULT_EDITOR
 
     override fun getEditorTypeId(): String = "wavefront-obj-split-editor"
-
-    /**
-     * Concrete builder of Wavefront OBJ split editor.
-     */
-    class Builder(project: Project, file: VirtualFile) : BaseSplitEditorProvider.Builder(project, file) {
-
-        override fun build(): FileEditor =
-            ObjSplitEditor(
-                textEditor = buildTextEditor(),
-                previewEditor = buildPreviewEditor() as ObjPreviewEditor
-            )
-    }
 }

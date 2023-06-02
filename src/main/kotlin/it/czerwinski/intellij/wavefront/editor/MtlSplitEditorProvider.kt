@@ -21,8 +21,6 @@ import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.DumbAware
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.BaseSplitEditorProvider
 
 /**
@@ -38,21 +36,7 @@ class MtlSplitEditorProvider :
     override fun createEditor(textEditor: TextEditor, previewEditor: FileEditor): FileEditor =
         MtlSplitEditor(textEditor, previewEditor as MtlMaterialEditor)
 
-    override fun createAsyncEditorBuilder(project: Project, file: VirtualFile): Builder = Builder(project, file)
-
     override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.HIDE_DEFAULT_EDITOR
 
     override fun getEditorTypeId(): String = "wavefront-mtl-split-editor"
-
-    /**
-     * Concrete builder of Wavefront MTL split editor.
-     */
-    class Builder(project: Project, file: VirtualFile) : BaseSplitEditorProvider.Builder(project, file) {
-
-        override fun build(): FileEditor =
-            MtlSplitEditor(
-                textEditor = buildTextEditor(),
-                materialEditor = buildPreviewEditor() as MtlMaterialEditor
-            )
-    }
 }

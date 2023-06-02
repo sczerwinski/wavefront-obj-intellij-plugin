@@ -18,9 +18,9 @@ plugins {
     // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2022.3.1"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-    id("org.jetbrains.changelog") version "2.0.0"
+    id("org.jetbrains.changelog") version "2.1.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
 }
 
 group = properties("pluginGroup")
@@ -51,7 +51,7 @@ dependencies {
     ksp("graphics.glimpse:glimpse-processor-ksp:2.0.0-alpha.3")
     api("org.jogamp.jogl:jogl-all-main:2.4.0")
     api("org.jogamp.gluegen:gluegen-rt-main:2.4.0")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
 }
 
 // Generate parsers and lexers before Kotlin compilation.

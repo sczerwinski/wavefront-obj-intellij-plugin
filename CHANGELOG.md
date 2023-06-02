@@ -8,6 +8,13 @@
 - Reading and writing state in editor providers
 - Add weight to preview editors
 
+### Changed
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.2, 2023.2`
+- Dependencies:
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.23.0`
+  - Upgrade `detekt-formatting` to `1.23.0`
+  - Upgrade `org.jetbrains.changelog` to `2.1.0`
+
 ### Removed
 - Creating editors asynchronously
 
@@ -48,11 +55,11 @@
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.21`
   - Upgrade `com.google.devtools.ksp` to `1.8.21-1.0.11`
   - Upgrade `org.jetbrains.intellij` to `1.13.3`
-  - Upgrade `glimpse-core` to `2.0.0-alpha.2`
-  - Upgrade `glimpse-obj` to `2.0.0-alpha.2`
-  - Upgrade `glimpse-offscreen` to `2.0.0-alpha.2`
-  - Upgrade `glimpse-ui` to `2.0.0-alpha.2`
-  - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.2`
+  - Upgrade `glimpse-core` to `2.0.0-alpha.3`
+  - Upgrade `glimpse-obj` to `2.0.0-alpha.3`
+  - Upgrade `glimpse-offscreen` to `2.0.0-alpha.3`
+  - Upgrade `glimpse-ui` to `2.0.0-alpha.3`
+  - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.3`
 
 ### Removed
 - Remove support for platform version `222.*`

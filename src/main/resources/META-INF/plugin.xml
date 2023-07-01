@@ -155,6 +155,7 @@
                 serviceImplementation="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState"/>
         <applicationConfigurable
                 id="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsConfigurable"
+                key="settings.editor.fileTypes.obj.displayName"
                 groupId="language"
                 instance="it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsConfigurable"/>
 

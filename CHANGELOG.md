@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.4.2] - 2023-07-02
+
 ### Changed
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.3, 2023.2`
 - Dependencies:

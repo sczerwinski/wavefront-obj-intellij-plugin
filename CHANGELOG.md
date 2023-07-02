@@ -644,7 +644,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.1...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.2...main
+[1.4.2]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.3.0...v1.3.1

@@ -4,17 +4,15 @@
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
-
-### Deprecated
-
-### Removed
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.3, 2023.2`
+- Dependencies:
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.22`
+  - Upgrade `com.google.devtools.ksp` to `1.8.22-1.0.11`
+  - Upgrade `org.jetbrains.intellij` to `1.14.2`
 
 ### Fixed
-
-### Security
+- Add key to applicationConfigurable in plugin.xml
 
 ## [1.4.1] - 2023-06-03
 

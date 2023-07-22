@@ -10,15 +10,15 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    id("org.jetbrains.kotlin.jvm") version "1.9.0"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
+    id("com.google.devtools.ksp") version "1.9.0-1.0.12"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.14.2"
+    id("org.jetbrains.intellij") version "1.15.0"
     // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2022.3.1"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-    id("org.jetbrains.changelog") version "2.1.0"
+    id("org.jetbrains.changelog") version "2.1.2"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
     id("io.gitlab.arturbosch.detekt") version "1.23.0"
 }

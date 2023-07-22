@@ -7,6 +7,7 @@
 ### Added
 
 ### Changed
+- Upgrade Gradle Wrapper to `8.2.1`
 
 ### Deprecated
 

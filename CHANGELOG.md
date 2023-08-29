@@ -8,6 +8,7 @@
 
 ### Changed
 - Upgrade Gradle Wrapper to `8.3`
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.1`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.9.10`
   - Upgrade `com.google.devtools.ksp` to `1.9.10-1.0.13`

@@ -186,6 +186,10 @@ jobs:
     name: Verify
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      security-events: write
     steps:
 
       # Setup Java 11 environment for the next steps

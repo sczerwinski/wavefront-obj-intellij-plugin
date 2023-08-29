@@ -7,7 +7,7 @@
 ### Added
 
 ### Changed
-- Upgrade Gradle Wrapper to `8.2.1`
+- Upgrade Gradle Wrapper to `8.3`
 - Dependencies:
   - Upgrade `org.jetbrains.kotlin.jvm` to `1.9.10`
   - Upgrade `com.google.devtools.ksp` to `1.9.10-1.0.13`

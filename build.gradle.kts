@@ -10,17 +10,17 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.9.0"
+    id("org.jetbrains.kotlin.jvm") version "1.9.10"
     // Kotlin Symbol Processing
-    id("com.google.devtools.ksp") version "1.9.0-1.0.12"
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.15.0"
     // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2022.3.1"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-    id("org.jetbrains.changelog") version "2.1.2"
+    id("org.jetbrains.changelog") version "2.2.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.23.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
 }
 
 group = properties("pluginGroup")
@@ -49,9 +49,9 @@ dependencies {
     api("graphics.glimpse:glimpse-offscreen:2.0.0-alpha.3")
     api("graphics.glimpse:glimpse-ui:2.0.0-alpha.3")
     ksp("graphics.glimpse:glimpse-processor-ksp:2.0.0-alpha.3")
-    api("org.jogamp.jogl:jogl-all-main:2.4.0")
-    api("org.jogamp.gluegen:gluegen-rt-main:2.4.0")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
+    api("org.jogamp.jogl:jogl-all-main:2.5.0")
+    api("org.jogamp.gluegen:gluegen-rt-main:2.5.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 }
 
 // Generate parsers and lexers before Kotlin compilation.

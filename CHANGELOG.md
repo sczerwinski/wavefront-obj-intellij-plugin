@@ -9,10 +9,14 @@
 ### Changed
 - Upgrade Gradle Wrapper to `8.2.1`
 - Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.9.0`
-  - Upgrade `com.google.devtools.ksp` to `1.9.0-1.0.12`
+  - Upgrade `org.jetbrains.kotlin.jvm` to `1.9.10`
+  - Upgrade `com.google.devtools.ksp` to `1.9.10-1.0.13`
   - Upgrade `org.jetbrains.intellij` to `1.15.0`
-  - Upgrade `org.jetbrains.changelog` to `2.1.2`
+  - Upgrade `io.gitlab.arturbosch.detekt` to `1.23.1`
+  - Upgrade `org.jetbrains.changelog` to `2.2.0`
+  - Upgrade `jogl-all-main` to `2.5.0`
+  - Upgrade `gluegen-rt-main` to `2.5.0`
+  - Upgrade `detekt-formatting` to `1.23.1`
 
 ### Deprecated
 

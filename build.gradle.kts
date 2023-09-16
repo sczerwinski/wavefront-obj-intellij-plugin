@@ -59,7 +59,7 @@ dependencies {
 fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {}) =
     task<GenerateParserTask>("generateParser${suffix.replaceFirstChar { it.uppercaseChar() }}") {
         sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.bnf"))
-        targetRoot.set("${project.buildDir}/generated/source/parser/$suffix")
+        targetRoot.set("${project.layout.buildDirectory.get()}/generated/source/parser/$suffix")
         pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.replaceFirstChar { it.uppercaseChar() }}Parser.java")
         pathToPsiRoot.set("it/czerwinski/intellij/wavefront/lang/psi")
         purgeOldFiles.set(true)
@@ -70,7 +70,7 @@ fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {
 fun generateLexerTask(suffix: String, config: GenerateLexerTask.() -> Unit = {}) =
     task<GenerateLexerTask>("generateLexer${suffix.replaceFirstChar { it.uppercaseChar() }}") {
         sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.flex"))
-        targetDir.set("${project.buildDir}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang")
+        targetDir.set("${project.layout.buildDirectory.get()}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang")
         targetClass.set("${suffix.replaceFirstChar { it.uppercaseChar() }}Lexer")
         purgeOldFiles.set(true)
         config()
@@ -122,11 +122,11 @@ tasks {
     withType<JavaCompile> {
         sourceSets["main"].java.srcDirs(
             "${project.projectDir}/src/main/kotlin",
-            "${project.buildDir}/generated/source/lexer/obj",
-            "${project.buildDir}/generated/source/lexer/mtl",
-            "${project.buildDir}/generated/source/parser/obj",
-            "${project.buildDir}/generated/source/parser/mtl",
-            "${project.buildDir}/generated/ksp/main/kotlin"
+            "${project.layout.buildDirectory.get()}/generated/source/lexer/obj",
+            "${project.layout.buildDirectory.get()}/generated/source/lexer/mtl",
+            "${project.layout.buildDirectory.get()}/generated/source/parser/obj",
+            "${project.layout.buildDirectory.get()}/generated/source/parser/mtl",
+            "${project.layout.buildDirectory.get()}/generated/ksp/main/kotlin"
         )
     }
 

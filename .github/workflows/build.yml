@@ -223,7 +223,7 @@ jobs:
         shell: bash
         run: |
           PROPERTIES="$(./gradlew properties --console=plain -q)"
-          IDE_VERSIONS="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | base64)"
+          IDE_VERSIONS="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | base64 -w 0)"
           PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:")"
           PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:")"
 

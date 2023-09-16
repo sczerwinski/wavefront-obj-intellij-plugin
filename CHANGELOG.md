@@ -7,17 +7,7 @@
 ### Added
 
 ### Changed
-- Upgrade Gradle Wrapper to `8.3`
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.1`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.9.10`
-  - Upgrade `com.google.devtools.ksp` to `1.9.10-1.0.13`
-  - Upgrade `org.jetbrains.intellij` to `1.15.0`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.23.1`
-  - Upgrade `org.jetbrains.changelog` to `2.2.0`
-  - Upgrade `jogl-all-main` to `2.5.0`
-  - Upgrade `gluegen-rt-main` to `2.5.0`
-  - Upgrade `detekt-formatting` to `1.23.1`
 
 ### Deprecated
 
@@ -31,10 +21,6 @@
 
 ### Changed
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.3, 2023.2`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.22`
-  - Upgrade `com.google.devtools.ksp` to `1.8.22-1.0.11`
-  - Upgrade `org.jetbrains.intellij` to `1.14.2`
 
 ### Fixed
 - Add key to applicationConfigurable in plugin.xml
@@ -47,10 +33,6 @@
 
 ### Changed
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.2, 2023.2`
-- Dependencies:
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.23.0`
-  - Upgrade `detekt-formatting` to `1.23.0`
-  - Upgrade `org.jetbrains.changelog` to `2.1.0`
 
 ### Removed
 - Creating editors asynchronously
@@ -87,16 +69,6 @@
 - Remember splitter proportion per file type
 - Replace annotators with inspections
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.1, 2023.2`
-- Upgrade Gradle Wrapper to `8.0.2`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.21`
-  - Upgrade `com.google.devtools.ksp` to `1.8.21-1.0.11`
-  - Upgrade `org.jetbrains.intellij` to `1.13.3`
-  - Upgrade `glimpse-core` to `2.0.0-alpha.3`
-  - Upgrade `glimpse-obj` to `2.0.0-alpha.3`
-  - Upgrade `glimpse-offscreen` to `2.0.0-alpha.3`
-  - Upgrade `glimpse-ui` to `2.0.0-alpha.3`
-  - Upgrade `glimpse-processor-ksp` to `2.0.0-alpha.3`
 
 ### Removed
 - Remove support for platform version `222.*`
@@ -107,14 +79,6 @@
 - Remove overridden deprecated method
 
 ## [1.3.1] - 2023-03-15
-
-### Changed
-- Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `1.13.2`
-  - Upgrade `org.jetbrains.grammarkit` to `2022.3.1`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.3.1`
-  - Upgrade `gradle/wrapper-validation-action` to `v1.0.6`
 
 ### Fixed
 - Fix solid shading for OBJ files without texture coordinates
@@ -152,23 +116,6 @@
 - Move material properties to a tool window
 - Update platform version to `2022.2.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.2.4, 2022.3.2, 2023.1`
-- Upgrade Java to `17`
-- Upgrade Gradle Wrapper to `7.6`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.8.10`
-  - Upgrade `com.google.devtools.ksp` to `1.8.10-1.0.9`
-  - Upgrade `org.jetbrains.intellij` to `1.13.0`
-  - Upgrade `org.jetbrains.grammarkit` to `2022.3`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.22.0`
-  - Upgrade `glimpse-core` to `1.2.1`
-  - Upgrade `glimpse-obj` to `1.2.1`
-  - Upgrade `glimpse-ui` to `1.2.1`
-  - Upgrade `glimpse-processor-ksp` to `1.2.1`
-  - Upgrade `jogl-all-main` to `2.4.0`
-  - Upgrade `gluegen-rt-main` to `2.4.0`
-  - Upgrade `detekt-formatting` to `1.22.0`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.2.5`
 
 ### Removed
 - Remove support for platform version `221.*`
@@ -187,15 +134,6 @@
 
 ## [1.2.2] - 2022-11-17
 
-### Changed
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.21`
-  - Upgrade `com.google.devtools.ksp` to `1.7.21-1.0.8`
-  - Upgrade `glimpse-core` to `1.2.0`
-  - Upgrade `glimpse-obj` to `1.2.0`
-  - Upgrade `glimpse-ui` to `1.2.0`
-  - Upgrade `glimpse-processor-ksp` to `1.2.0`
-
 ### Fixed
 - Wrap file operations in read-actions
 
@@ -211,14 +149,6 @@
 - Update platform version to `2022.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2022.1.4, 2022.2.3, 2022.3`
 - Update setting GitHub Actions output
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.20`
-  - Upgrade `com.google.devtools.ksp` to `1.7.20-1.0.7`
-  - Upgrade `org.jetbrains.intellij` to `1.9.0`
-  - Upgrade `org.jetbrains.changelog` to `2.0.0`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.11`
-  - Upgrade `gradle/wrapper-validation-action` to `v1.0.5`
 
 ### Removed
 - Remove support for platform version `213.*`
@@ -256,15 +186,6 @@
 - Move settings icon to the left toolbar in 3D preview
 - Disable face culling in 3D preview
 - Update GitHub Actions build pipeline
-- Upgrade Gradle Wrapper to `7.4.2`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.7.10`
-  - Upgrade `com.google.devtools.ksp` to `1.7.10-1.0.6`
-  - Upgrade `org.jetbrains.intellij` to `1.7.0`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.2`
-  - Upgrade `EnricoMi/publish-unit-test-result-action` to `v2`
-  - Upgrade `JetBrains/qodana-action` to `v2022.1.1`
 - Update platform version to `2021.3.3`
 - `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1.3, 2022.2`
 
@@ -293,23 +214,6 @@
 - OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
 - Display Number of triangles for each object and group in structure view
 
-### Changed
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.21`
-  - Upgrade `com.google.devtools.ksp` to `1.6.21-1.0.5`
-  - Upgrade `org.jetbrains.intellij` to `1.5.3`
-  - Upgrade `org.jetbrains.grammarkit` to `2021.2.2`
-  - Upgrade `detekt-formatting` to `1.20.0`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.20.0`
-  - Upgrade `glimpse-core` to `1.1.0`
-  - Upgrade `glimpse-ui` to `1.1.0`
-  - Upgrade `glimpse-processor-ksp` to `1.1.0`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v3.0.2`
-  - Upgrade `actions/download-artifact` to `v3`
-  - Upgrade `actions/setup-java` to `v3`
-  - Upgrade `github/codeql-action/upload-sarif` to `v2`
-
 ### Fixed
 - Change language IDs to `OBJ` and `MTL`.
 - Remove unnecessary abstract class `ObjLineElementImpl`.
@@ -325,16 +229,6 @@
 - Line markers made configurable
 - PBR shader calculations in world space
 - Use pre-calculated bitangents in PBR shader
-- Upgrade Gradle Wrapper to `7.4.1`
-- Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `1.4.0`
-  - Upgrade `com.google.devtools.ksp` to `1.6.10-1.0.4`
-  - Upgrade `glimpse-core` to `1.1.0-ALPHA3`
-  - Upgrade `glimpse-ui` to `1.1.0-ALPHA3`
-  - Upgrade `glimpse-processor-ksp` to `1.1.0-ALPHA3`
-- GitHub Actions:
-  - Upgrade `actions/checkout` to `v3`
-  - Upgrade `actions/upload-artifact` to `v3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1, 2022.1`
 
 ### Fixed
@@ -358,21 +252,6 @@
 - Physically based shading method in 3D preview
 
 ### Changed
-- Upgrade Gradle Wrapper to `7.3.3`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.6.10`
-  - Replace `kapt` with `com.google.devtools.ksp` version `1.6.10-1.0.2`
-  - Upgrade `org.jetbrains.intellij` to `1.3.0`
-  - Upgrade `org.jetbrains.grammarkit` to `2021.2.1`
-  - Upgrade `detekt-formatting` to `1.19.0`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.19.0`
-  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.1`
-  - Upgrade `glimpse-core` to `1.1.0-ALPHA1`
-  - Upgrade `glimpse-ui` to `1.1.0-ALPHA1`
-  - Replace `glimpse-processor-java` with `glimpse-processor-ksp` version `1.1.0-ALPHA1`
-- GitHub Actions:
-  - Upgrade `actions/cache` to `v2.1.7`
-  - Upgrade `actions/upload-artifact` to `v2.3.1`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1`
 
 ### Fixed
@@ -392,17 +271,6 @@
 
 ### Changed
 - Upload detekt report in GitHub Actions build after failure
-- Upgrade Gradle Wrapper to `7.2`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.31`
-  - Upgrade `kapt` to `1.5.31`
-  - Upgrade `org.jetbrains.intellij` to `1.2.1`
-  - Upgrade `org.jetbrains.changelog` to `1.3.1`
-  - Upgrade `detekt-formatting` to `1.18.1`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.18.1`
-  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.2.0`
-- GitHub Actions:
-  - Upgrade `actions/checkout` to `v2.4.0`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`, `2021.3`
 - Gradle – Changelog plugin configuration update
 
@@ -417,11 +285,6 @@
 - Support for platform version `212.*`
 
 ### Changed
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.21`
-  - Upgrade `kapt` to `1.5.21`
-  - Upgrade `org.jetbrains.intellij` to `1.1.3`
-  - Upgrade `org.jetbrains.changelog` to `1.2.0`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`, `2021.2`
 
 ## [1.0.0] - 2021-07-04
@@ -443,20 +306,6 @@
 - Smoothing group number can be any positive integer
 - Use `gradle-grammarkit-plugin` to generate parsers and lexers
 - Remove reference to the `jcenter()` from Gradle configuration file
-- Upgrade Gradle Wrapper to `7.1`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.5.20`
-  - Upgrade `kapt` to `1.5.20`
-  - Upgrade `org.jetbrains.intellij` to `1.1.2`
-  - Upgrade `detekt-formatting` to `1.17.1`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.17.1`
-- GitHub Actions:
-  - Upgrade `gradle/wrapper-validation-action` to `v1.0.4`
-  - Upgrade `actions/cache` to `v2.1.6`
-  - Upgrade `actions/checkout` to `v2.3.4`
-  - Upgrade `actions/upload-artifact` to `v2.2.4`
-  - Upgrade `actions/upload-release-asset` to `v1.0.2`
-  - Upgrade `actions/create-release` to `v1.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`
 - Trigger GitHub Actions `Build` workflows only on pushes to `main` branch or pull request to avoid duplicated checks
 
@@ -483,12 +332,6 @@
 - Support for platform version `211.*`
 
 ### Changed
-- Dependencies:
-  - Upgrade `kapt` to `1.4.32`
-- GitHub Actions:
-  - Upgrade `actions/upload-artifact` to `v2.2.3`
-  - Upgrade `actions/setup-java` to `v2`
-- Update platform version to `2020.3`
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
 - Update Java version to `11`
 
@@ -513,17 +356,6 @@
   - Dependabot check for GitHub Actions used in workflow files
 
 ### Changed
-- Upgrade Gradle Wrapper to `6.8.3`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.32`
-  - Upgrade `org.jetbrains.intellij` to `0.7.2`
-  - Upgrade `org.jetbrains.changelog` to `1.1.2`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.16.0`
-  - Upgrade `detekt-formatting` to `1.16.0`
-  - Upgrade `org.jlleitschuh.gradle.ktlint` to `10.0.0`
-- GitHub Actions:
-  - Upgrade `actions/upload-artifact` to `v2.2.2`
-  - Upgrade `actions/cache` to `v2.1.4`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.3`
 - Update `changelog` Gradle plugin configuration
 - Migrate to GLES 2.0 with [Glimpse](https://glimpse.graphics/)
@@ -545,9 +377,6 @@
 - Settings action on 3D preview toolbar
 
 ### Changed
-- Upgrade Gradle Wrapper to `6.8.1`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.30`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.2`
 
 ### Fixed
@@ -586,12 +415,6 @@
 
 ### Changed
 - `build.gradle.kts`: simpler syntax for configuring `KotlinCompile`
-- Upgrade Gradle Wrapper to `6.8`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.21-2`
-  - Upgrade `detekt-formatting` to `1.15.0`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.15.0`
-  - Upgrade `org.jetbrains.changelog` to `1.0.1`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.3`, `2020.3.1`
 
 ### Fixed
@@ -605,11 +428,6 @@
 - Predefined Run/Debug Configurations
 - Support for platform version 203.*
 
-### Changed
-- Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `0.6.5`
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.20`
-
 ## [0.1.3] - 2020-11-06
 
 ### Added
@@ -618,8 +436,6 @@
 
 ### Changed
 - Update `pluginVerifierIdeVersions` in the `gradle.properties` file
-- Dependencies:
-  - Upgrade `org.jetbrains.intellij` to `0.6.2`
 
 ### Fixed
 - Not creating `GLPanel` before 3D preview set to visible
@@ -634,12 +450,6 @@
 - Set default editor layout to text only
 - Update platform version to `2020.1`
 - Upgrade Gradle Wrapper to `6.7`
-- Dependencies:
-  - Upgrade `org.jetbrains.kotlin.jvm` to `1.4.10`
-  - Upgrade `org.jetbrains.intellij` to `0.6.1`
-  - Upgrade `org.jetbrains.changelog` to `0.6.2`
-  - Upgrade `io.gitlab.arturbosch.detekt` to `1.14.2`
-  - Upgrade `org.jlleitschuh.gradle.ktlint` to `9.4.1`
 
 ### Removed
 - Remove support for platform version `2019.3`

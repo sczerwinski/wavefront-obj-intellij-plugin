@@ -1,4 +1,4 @@
-# Wavefront OBJ IntelliJ Plugin*
+# ![icon.svg](.idea/icon.svg) Wavefront OBJ IntelliJ Plugin*
 
 ![Build][build_badge]
 [![Version][jb_version_badge]][jb_plugin_page]

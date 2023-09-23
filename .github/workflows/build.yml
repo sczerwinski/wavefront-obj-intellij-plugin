@@ -48,7 +48,7 @@ jobs:
       security-events: write
     steps:
 
-      # Setup Java 11 environment for the next steps
+      # Setup Java 17 environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -113,12 +113,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       name: ${{ steps.properties.outputs.name }}
+      pluginGroup: ${{ steps.properties.outputs.pluginGroup }}
+      pluginVersion: ${{ steps.properties.outputs.pluginVersion }}
       version: ${{ steps.properties.outputs.version }}
+      ideVersions: ${{ steps.properties.outputs.ideVersions }}
       changelog: ${{ steps.properties.outputs.changelog }}
       artifact: ${{ steps.properties.outputs.artifact }}
     steps:
 
-      # Setup Java 11 environment for the next steps
+      # Setup Java 17 environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -149,13 +152,20 @@ jobs:
         shell: bash
         run: |
           PROPERTIES="$(./gradlew properties --console=plain -q)"
-          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
           NAME="$(echo "$PROPERTIES" | grep "^pluginName:" | cut -f2- -d ' ')"
+          PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:" | cut -f2- -d ' ')"
+          PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:" | cut -f2- -d ' ')"
+          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
+          IDE_VERSIONS_STRING="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | cut -f2- -d ' ' | sed 's/ //g')"
+          IDE_VERSIONS="$(echo "\"$IDE_VERSIONS_STRING\"" | jq -c 'split(",")')"
           CHANGELOG="$(./gradlew getChangelog --unreleased --no-header --console=plain -q)"
           ARTIFACT="${NAME}-${VERSION}.zip"
 
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "pluginGroup=$PLUGIN_GROUP" >> $GITHUB_OUTPUT
+          echo "pluginVersion=$PLUGIN_VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "ideVersions=$IDE_VERSIONS" >> $GITHUB_OUTPUT
           echo "changelog<<%%EOF%%" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "%%EOF%%" >> $GITHUB_OUTPUT
@@ -186,13 +196,12 @@ jobs:
     name: Verify
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      pull-requests: write
-      security-events: write
+    strategy:
+      matrix:
+        ideVersion: ${{ fromJson(needs.build.outputs.ideVersions) }}
     steps:
 
-      # Setup Java 11 environment for the next steps
+      # Setup Java 17 environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -217,39 +226,61 @@ jobs:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
-      # Set environment variables
-      - name: Export Properties
-        id: properties
-        shell: bash
-        run: |
-          PROPERTIES="$(./gradlew properties --console=plain -q)"
-          IDE_VERSIONS="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | base64 -w 0)"
-          PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:")"
-          PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:")"
-
-          echo "ideVersions=$IDE_VERSIONS" >> $GITHUB_OUTPUT
-          echo "pluginVerifierHomeDir=~/.pluginVerifier" >> $GITHUB_OUTPUT
-          echo "pluginGroup=${PLUGIN_GROUP##* }" >> $GITHUB_OUTPUT
-          echo "pluginVersion=${PLUGIN_VERSION##* }" >> $GITHUB_OUTPUT
-
       # Cache Plugin Verifier IDEs
       - name: Setup Plugin Verifier IDEs Cache
         uses: actions/cache@v3.3.2
         with:
-          path: ${{ steps.properties.outputs.pluginVerifierHomeDir }}/ides
-          key: ${{ runner.os }}-plugin-verifier-${{ steps.properties.outputs.ideVersions }}
+          path: ~/.pluginVerifier/ides
+          key: ${{ runner.os }}-plugin-verifier-${{ matrix.ideVersion }}
 
       # Run IntelliJ Plugin Verifier action using GitHub Action
       - name: Verify Plugin
-        run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=${{ steps.properties.outputs.pluginVerifierHomeDir }}
+        id: verify
+        run: |
+          ./gradlew runPluginVerifier \
+            -Pplugin.verifier.home.dir=~/.pluginVerifier \
+            -PpluginVerifierIdeVersions=${{ matrix.ideVersion }}
 
-      # Publish Plugin Verifier results
+          OUTPUT_DIR="$(ls ${{ github.workspace }}/build/reports/pluginVerifier/)"
+          echo "outputDir=${OUTPUT_DIR##* }" >> $GITHUB_OUTPUT
+
+      # Upload Plugin Verifier Report
+      - name: Upload Plugin Verifier Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.ideVersion }}
+          path: ${{ github.workspace }}/build/reports/pluginVerifier/${{ steps.verify.outputs.outputDir }}/
+
+  # Publish report generated by IntelliJ Plugin Verifier tool
+  # Requires build and verify jobs to be passed
+  publishReport:
+    name: Publish Verifier Report
+    needs: [build, verify]
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      security-events: write
+    steps:
+
+      # Download Plugin Verifier Report
+      - name: Download Plugin Verifier Report
+        uses: actions/download-artifact@v3
+        with:
+          path: ${{ github.workspace }}/build/reports/pluginVerifier/
+
+      # Delete Plugin Artifact From Plugin Verifier Reports
+      - name: Delete Plugin Artifact
+        shell: bash
+        run: rm -rf ${{ github.workspace }}/build/reports/pluginVerifier/plugin-artifact
+
+      # Publish Plugin Verifier Results
       - name: Publish Verifier Report
         if: ${{ always() }}
         uses: sczerwinski/publish-intellij-plugin-verifier-report@v1.1.0
         with:
-          plugin-id: ${{ steps.properties.outputs.pluginGroup }}
-          plugin-version: ${{ steps.properties.outputs.pluginVersion }}
+          plugin-id: ${{ needs.build.outputs.pluginGroup }}
+          plugin-version: ${{ needs.build.outputs.pluginVersion }}
 
   # Prepare a draft release for GitHub Releases page for the manual verification
   # If accepted and published, release workflow would be triggered

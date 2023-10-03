@@ -24,18 +24,30 @@ import javax.swing.tree.DefaultTreeModel
  */
 class ErrorLogTreeModel : DefaultTreeModel(DefaultMutableTreeNode()), ErrorLog {
 
-    private val rootNode: DefaultMutableTreeNode get() = root as DefaultMutableTreeNode
+    private val rootNode: DefaultMutableTreeNode
+        get() = root as DefaultMutableTreeNode
+
+    private val entries: Sequence<Any>
+        get() = rootNode.children().asSequence()
+            .mapNotNull { node -> (node as? DefaultMutableTreeNode)?.userObject }
 
     override fun addError(entry: ErrorLog.Entry) {
-        for (node in rootNode.children()) {
-            if ((node as? DefaultMutableTreeNode)?.userObject == entry.headline) return
-        }
-        rootNode.add(
-            DefaultMutableTreeNode(entry.headline).apply {
-                add(DefaultMutableTreeNode(entry.stackTrace, false))
-            }
-        )
+        if (entry.headline in entries) return
+
+        val entryNode = DefaultMutableTreeNode(entry.headline)
+        val stackTraceNode = DefaultMutableTreeNode(entry.stackTrace, false)
+
+        insertNodeInto(entryNode, rootNode, rootNode.childCount)
+        insertNodeInto(stackTraceNode, entryNode, 0)
+
         reload()
+    }
+
+    override fun reload() {
+        try {
+            super.reload()
+        } catch (ignored: NullPointerException) {
+        }
     }
 
     override fun clearErrors() {

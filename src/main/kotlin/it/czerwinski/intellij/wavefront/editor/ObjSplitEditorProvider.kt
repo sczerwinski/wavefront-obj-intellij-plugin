@@ -19,19 +19,13 @@ package it.czerwinski.intellij.wavefront.editor
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.TextEditor
-import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.DumbAware
 import it.czerwinski.intellij.common.editor.BaseSplitEditorProvider
 
 /**
  * Wavefront OBJ split editor provider.
  */
-class ObjSplitEditorProvider :
-    BaseSplitEditorProvider(
-        textEditorProvider = PsiAwareTextEditorProvider(),
-        previewEditorProvider = ObjPreviewEditorProvider()
-    ),
-    DumbAware {
+class ObjSplitEditorProvider : BaseSplitEditorProvider(previewEditorProvider = ObjPreviewEditorProvider()), DumbAware {
 
     override fun createEditor(textEditor: TextEditor, previewEditor: FileEditor): FileEditor =
         ObjSplitEditor(textEditor, previewEditor as ObjPreviewEditor)

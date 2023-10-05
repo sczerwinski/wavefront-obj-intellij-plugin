@@ -15,6 +15,9 @@
 ### Removed
 
 ### Fixed
+- Handle `NullPointerException` in `ErrorLogTreeModel`
+- Get model size in read action
+- Move preview model creation to background task
 
 ### Security
 

@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.wavefront.editor.model
 
+import com.intellij.openapi.application.runReadAction
 import com.intellij.psi.PsiElement
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
@@ -47,7 +48,7 @@ data class GLModel(
 
     val size: Float
         get() = vertices.flatMap { vertex ->
-            vertex.coordinates.filterNotNull().map { abs(it) }
+            runReadAction { vertex.coordinates.filterNotNull().map { abs(it) } }
         }.maxOrNull() ?: 0f
 
     val materials: List<MtlMaterial?>

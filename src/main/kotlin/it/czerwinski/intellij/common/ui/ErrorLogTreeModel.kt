@@ -45,8 +45,10 @@ class ErrorLogTreeModel : DefaultTreeModel(DefaultMutableTreeNode()), ErrorLog {
 
     override fun reload() {
         try {
-            super.reload()
-        } catch (ignored: NullPointerException) {
+            synchronized(this) {
+                reload(root)
+            }
+        } catch (ignored: RuntimeException) {
         }
     }
 

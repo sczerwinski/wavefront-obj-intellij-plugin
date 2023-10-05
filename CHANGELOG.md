@@ -10,18 +10,12 @@
 ### Changed
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.2, 2023.3`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Prevent concurrent reloading of `ErrorLogTreeModel`
 - Handle exceptions when reloading `ErrorLogTreeModel`
 - Use `TextEditorProvider.getInstance()` instead of creating `PsiAwareTextEditorProvider` directly
 - Get model size in read action
 - Move preview model creation to background task
-
-### Security
 
 ## [1.4.2] - 2023-07-02
 

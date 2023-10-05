@@ -37,8 +37,8 @@ class ErrorLogTreeModel : DefaultTreeModel(DefaultMutableTreeNode()), ErrorLog {
         val entryNode = DefaultMutableTreeNode(entry.headline)
         val stackTraceNode = DefaultMutableTreeNode(entry.stackTrace, false)
 
-        insertNodeInto(entryNode, rootNode, rootNode.childCount)
-        insertNodeInto(stackTraceNode, entryNode, 0)
+        rootNode.add(entryNode)
+        entryNode.add(stackTraceNode)
 
         reload()
     }

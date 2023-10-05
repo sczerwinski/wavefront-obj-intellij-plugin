@@ -16,6 +16,7 @@
 
 ### Fixed
 - Handle `NullPointerException` in `ErrorLogTreeModel`
+- Use `TextEditorProvider.getInstance()` instead of creating `PsiAwareTextEditorProvider` directly
 - Get model size in read action
 - Move preview model creation to background task
 

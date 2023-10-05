@@ -30,8 +30,8 @@ import org.jdom.Element
  * Editor provider for a [BaseSplitEditor].
  */
 abstract class BaseSplitEditorProvider(
-    private val textEditorProvider: TextEditorProvider,
-    private val previewEditorProvider: FileEditorProvider
+    private val previewEditorProvider: FileEditorProvider,
+    private val textEditorProvider: TextEditorProvider = TextEditorProvider.getInstance()
 ) : FileEditorProvider {
 
     /**

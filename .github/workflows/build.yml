@@ -87,7 +87,7 @@ jobs:
       # Annotate sources with detekt issues
       - name: Generate Detekt Annotations
         if: ${{ always() }}
-        uses: jwgmeligmeyling/checkstyle-github-action@master
+        uses: lcollins/checkstyle-github-action@v2
         with:
           name: Detekt Report
           title: Detekt Report

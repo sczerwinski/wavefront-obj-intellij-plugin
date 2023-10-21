@@ -8,7 +8,7 @@
 - Add support for platform version `233.*`
 
 ### Changed
-- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.2, 2023.3`
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.3, 2023.3`
 
 ### Fixed
 - Prevent concurrent reloading of `ErrorLogTreeModel`

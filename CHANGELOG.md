@@ -5,12 +5,29 @@
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## 1.4.3 - 2023-11-12
+
+### Added
+
 - Add support for platform version `233.*`
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.3, 2023.3`
 
 ### Fixed
+
 - Prevent concurrent reloading of `ErrorLogTreeModel`
 - Handle exceptions when reloading `ErrorLogTreeModel`
 - Use `TextEditorProvider.getInstance()` instead of creating `PsiAwareTextEditorProvider` directly
@@ -20,29 +37,36 @@
 ## [1.4.2] - 2023-07-02
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.3, 2023.2`
 
 ### Fixed
+
 - Add key to applicationConfigurable in plugin.xml
 
 ## [1.4.1] - 2023-06-03
 
 ### Added
+
 - Reading and writing state in editor providers
 - Add weight to preview editors
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.2, 2023.2`
 
 ### Removed
+
 - Creating editors asynchronously
 
 ### Fixed
+
 - Fix override-only methods usage violations related to `AsyncFileEditorProvider`
 
 ## [1.4.0] - 2023-05-15
 
 ### Added
+
 - Add support for platform version `232.*`
 - Support for `Tr` (transparency) in MTL file
 - Support for free-form geometry syntax in OBJ files
@@ -65,15 +89,18 @@
 - MTL file templates for Phong and PBR materials
 
 ### Changed
+
 - Use split editor (text and preview) provided by IntelliJ platform
 - Remember splitter proportion per file type
 - Replace annotators with inspections
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.1, 2023.2`
 
 ### Removed
+
 - Remove support for platform version `222.*`
 
 ### Fixed
+
 - Concave polygon rendering in 3D preview
 - "Crop Textures" option in 3x3 plane mesh material preview shows middle tile
 - Remove overridden deprecated method
@@ -81,6 +108,7 @@
 ## [1.3.1] - 2023-03-15
 
 ### Fixed
+
 - Fix solid shading for OBJ files without texture coordinates
 - Fix rendering of material shading preview for OBJ files without material
 - Fix two-way navigation between MTL text editor and material preview
@@ -90,6 +118,7 @@
 ## [1.3.0] - 2023-02-19
 
 ### Added
+
 - Add support for platform version `231.*`
 - Add support for Apple M1 processor (macOS AArch64)
 - Automatically preview material at caret
@@ -111,6 +140,7 @@
 - Toggle editor split layout orientation with toolbar action
 
 ### Changed
+
 - Improve IBL in PBR shader
 - Convert all remaining Java code to Kotlin
 - Move material properties to a tool window
@@ -118,10 +148,12 @@
 - `pluginVerifierIdeVersions` – upgrade to `2022.2.4, 2022.3.2, 2023.1`
 
 ### Removed
+
 - Remove support for platform version `221.*`
 - Remove additional light source from PBR shader
 
 ### Fixed
+
 - Fix error in 3D preview of a line without texture coordinates
 - Wrap file operations in read-actions
 - Fix error when adding reflection texture via material editor
@@ -135,15 +167,18 @@
 ## [1.2.2] - 2022-11-17
 
 ### Fixed
+
 - Wrap file operations in read-actions
 
 ## [1.2.1] - 2022-10-31
 
 ### Added
+
 - Add support for platform version `223.*`
 - Add detekt linter
 
 ### Changed
+
 - Change disposable parent from project to editor when possible
 - Remove events from PSI tree change listeners that slow down IDE
 - Update platform version to `2022.1.4`
@@ -151,10 +186,12 @@
 - Update setting GitHub Actions output
 
 ### Removed
+
 - Remove support for platform version `213.*`
 - Remove Qodana checks
 
 ### Fixed
+
 - Replace API usages deprecated in IDE versions `2022.1` and `2022.2`
 - Replace usages of `registerPostStartupActivity` with `runAfterOpened`
 - Override non-deprecated version of `createPopupActionGroup` in `PBREnvironmentsComboBoxAction`
@@ -164,6 +201,7 @@
 ## [1.2.0] - 2022-07-26
 
 ### Added
+
 - Add support for platform version `222.*`
 - MTL material editor with preview
 - Material editor settings:
@@ -180,6 +218,7 @@
 - Add Qodana checks
 
 ### Changed
+
 - Improved action and gutter icons to work with high contrast theme
 - Use non-null values in editor state
 - Migrate to Kotlin UI DSL version 2
@@ -190,6 +229,7 @@
 - `pluginVerifierIdeVersions` – upgrade to `2021.3.3, 2022.1.3, 2022.2`
 
 ### Removed
+
 - Remove support for platform version `203.*`
 - Remove support for platform version `211.*`
 - Remove support for platform version `212.*`
@@ -197,6 +237,7 @@
 - Remove ktlint linter
 
 ### Fixed
+
 - Replace usage of deprecated `UIUtil.getClientProperty` with direct call to `JComponent.getClientProperty`
 - Replace usage of deprecated `FilenameIndex.getFilesByName` with `FilenameIndex.getVirtualFilesByName`
   and additional mapping using `PsiManager.findFile`
@@ -211,27 +252,32 @@
 ## [1.1.2] - 2022-04-30
 
 ### Added
+
 - OBJ 3D preview status bar with number of objects, groups, vertices, faces and triangles
 - Display Number of triangles for each object and group in structure view
 
 ### Fixed
+
 - Change language IDs to `OBJ` and `MTL`.
 - Remove unnecessary abstract class `ObjLineElementImpl`.
 
 ## [1.1.1] - 2022-03-13
 
 ### Added
+
 - Support for platform version `221.*`
 - Color preview markers in MTL files
 - Add city square (night) environment for physically based shading method in 3D preview
 
 ### Changed
+
 - Line markers made configurable
 - PBR shader calculations in world space
 - Use pre-calculated bitangents in PBR shader
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1, 2022.1`
 
 ### Fixed
+
 - Improve PBR shader calculations
 - Fix displacement step calculation
 - Refresh 3D preview when any of the MTL and texture files referenced by OBJ file changes
@@ -239,11 +285,13 @@
 - Allow material color components outside of range
 
 ### Security
+
 - Sign plugin before publishing
 
 ## [1.1.0] - 2022-01-09
 
 ### Added
+
 - Extended MTL syntax for physically based rendering parameters:
   - roughness (`Pr` and `map_Pr`)
   - metalness (`Pm` and `map_Pm`)
@@ -252,14 +300,17 @@
 - Physically based shading method in 3D preview
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.4, 2021.3.1`
 
 ### Fixed
+
 - Prevent texture loading on GL thread
 
 ## [1.0.2] - 2021-11-09
 
 ### Added
+
 - Support for platform version `213.*`
 - Shader quality (float precision) setting
 - Pinch to zoom on 3D preview (if supported on current platform)
@@ -270,11 +321,13 @@
 - Suppress `UnusedProperty` inspection for the `kotlin.stdlib.default.dependency` in `gradle.properties`
 
 ### Changed
+
 - Upload detekt report in GitHub Actions build after failure
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4, 2021.1.3, 2021.2.1`, `2021.3`
 - Gradle – Changelog plugin configuration update
 
 ### Fixed
+
 - Prevent infinite displacement loop
 - Use `DynamicBundle` instead of `AbstractBundle` in `WavefrontObjBundle.kt`
 - Replace deprecated `ServiceManager.getService` with `Application.getService`
@@ -282,14 +335,17 @@
 ## [1.0.1] - 2021-07-16
 
 ### Added
+
 - Support for platform version `212.*`
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.4`, `2021.1.3`, `2021.2`
 
 ## [1.0.0] - 2021-07-04
 
 ### Added
+
 - Support for textured lines
 - Support for multiple MTL filenames in `mtllib` statement
 - Support for displacement textures in 3D preview
@@ -301,6 +357,7 @@
 - Setting for axes labels font size
 
 ### Changed
+
 - Group 3D preview editor color settings
 - Reorganise plugin settings
 - Smoothing group number can be any positive integer
@@ -310,6 +367,7 @@
 - Trigger GitHub Actions `Build` workflows only on pushes to `main` branch or pull request to avoid duplicated checks
 
 ### Fixed
+
 - Prevent IDE from freezing after a big change to an OBJ file
 - Display correct descriptions of OBJ and MTL token types
 - Improve UI messages
@@ -318,28 +376,34 @@
 ## [0.3.2] - 2021-04-11
 
 ### Added
+
 - Support for relative indices in OBJ files (#95)
 - Refresh action in 3D preview
 - Setting for default shading method in 3D preview
 
 ### Changed
+
 - Use standard IDE error icons
 - Display 3D preview errors below the preview (#112)
 
 ## [0.3.1] - 2021-04-08
 
 ### Added
+
 - Support for platform version `211.*`
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2020.3.3`, `2021.1`
 - Update Java version to `11`
 
 ### Removed
+
 - Remove support for platform version `201.*`
 - Remove support for platform version `202.*`
 
 ### Fixed
+
 - Update signature of overridden method `RelatedItemLineMarkerProvider.collectNavigationMarkers(...)`
 - Replace deprecated method `FormattingModelBuilder.createModel(...)`
 - Replace deprecated extension function `max()` with `maxOrNull()`
@@ -349,6 +413,7 @@
 ## [0.3.0] - 2021-04-08
 
 ### Added
+
 - Wireframe shading in the 3D preview
 - Material shading in the 3D preview (material colors)
 - Build configuration:
@@ -356,17 +421,20 @@
   - Dependabot check for GitHub Actions used in workflow files
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.3`
 - Update `changelog` Gradle plugin configuration
 - Migrate to GLES 2.0 with [Glimpse](https://glimpse.graphics/)
 
 ### Fixed
+
 - Provide list of available texture files to texture file reference
 - Fix `README.md` file resolution in the `build.gradle.kts`
 
 ## [0.2.1] - 2021-02-05
 
 ### Added
+
 - Color settings for OBJ 3D preview colors for faces, lines and points.
 - Settings for the 3D preview:
   - Default up vector
@@ -377,9 +445,11 @@
 - Settings action on 3D preview toolbar
 
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.4`, `2020.3.2`
 
 ### Fixed
+
 - Separate color settings attribute key for OBJ and MTL constants
 - JogAmp bug on macOS causing IDE crash when showing 3D preview (fixed by using JogAmp snapshot dependencies v2.4)
 - Limit initial camera distance for very small objects
@@ -389,6 +459,7 @@
 ## [0.2.0] - 2021-01-31
 
 ### Added
+
 - Support for drawing lines in 3D preview
 - Support for drawing points in 3D preview
 - Support for MTL files:
@@ -404,20 +475,24 @@
   - Quick fixes
 
 ### Fixed
+
 - Replace usages deprecated in platform version 2020.3 (if replacement available)
 - Fix errors after typing long keywords
 
 ## [0.1.5] - 2021-01-28
 
 ### Added
+
 - Dependabot integration
 - Show `idea.log` logs of the run IDE in the Run console
 
 ### Changed
+
 - `build.gradle.kts`: simpler syntax for configuring `KotlinCompile`
 - `pluginVerifierIdeVersions` – upgrade to `2020.1.4`, `2020.2.3`, `2020.3.1`
 
 ### Fixed
+
 - Allow `float` scientific notation with upper case `E`
 - Return `Supplier<@Nls String>` instead of `String` in `MyBundle.messagePointer`
 - GitHub Actions: Use the correct property in the "Upload artifact" step
@@ -425,37 +500,45 @@
 ## [0.1.4] - 2020-12-02
 
 ### Added
+
 - Predefined Run/Debug Configurations
 - Support for platform version 203.*
 
 ## [0.1.3] - 2020-11-06
 
 ### Added
+
 - Setting: Disable 3D preview
 - Setting: Default layout
 
 ### Changed
+
 - Update `pluginVerifierIdeVersions` in the `gradle.properties` file
 
 ### Fixed
+
 - Not creating `GLPanel` before 3D preview set to visible
 
 ## [0.1.2] - 2020-10-31
 
 ### Added
+
 - Fix default to opt-out of bundling Kotlin standard library in plugin distribution
 - Integration with [IntelliJ Plugin Verifier](https://github.com/JetBrains/intellij-plugin-verifier) through the [Gradle IntelliJ Plugin](https://github.com/JetBrains/gradle-intellij-plugin#plugin-verifier-dsl) `runPluginVerifier` task
 
 ### Changed
+
 - Set default editor layout to text only
 - Update platform version to `2020.1`
 - Upgrade Gradle Wrapper to `6.7`
 
 ### Removed
+
 - Remove support for platform version `2019.3`
 - Remove Third-party IntelliJ Plugin Verifier GitHub Action
 
 ### Fixed
+
 - Handling exceptions in 3D preview
 - Trying to load different GL profiles (#38)
 - Allowing for integer values of coordinates in OBJ files (#39)
@@ -465,11 +548,13 @@
 ## [0.1.1] - 2020-08-09
 
 ### Fixed
+
 - Correct link in plugin description
 
 ## [0.1.0] - 2020-08-09
 
 ### Added
+
 - Support for Wavefront OBJ files
   - Syntax highlighting
   - Structure tree view

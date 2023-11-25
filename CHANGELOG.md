@@ -14,6 +14,8 @@
 
 ### Fixed
 
+- Allow no white character after comment symbol (`#`)
+
 ### Security
 
 ## [1.4.3] - 2023-11-12

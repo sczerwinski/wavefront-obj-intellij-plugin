@@ -34,7 +34,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjTypes;
 
 CRLF=[\r\n\f]+
 
-COMMENT_SYMBOL="#"[\ \t]*?
+COMMENT="#"[^\r\n\f]*[\r\n\f]
 
 WHITE_SPACE=[\ \t]+
 
@@ -79,7 +79,6 @@ FREE_FORM_DIRECTION=(u)|(v)
 FREE_FORM_TYPE_NAME=(bmatrix)|(bezier)|(bspline)|(cardinal)|(taylor)
 REFERENCE=[^\ \t\r\n\f]+
 
-%state WAITING_COMMENT
 %state WAITING_OBJECT_OR_GROUP_NAME
 %state WAITING_NUMBER_OR_INDEX
 %state WAITING_FREE_FORM_TYPE_NAME
@@ -93,7 +92,7 @@ REFERENCE=[^\ \t\r\n\f]+
 
 %%
 
-<YYINITIAL> {COMMENT_SYMBOL} { yybegin(WAITING_COMMENT); return ObjTypes.COMMENT_SYMBOL; }
+<YYINITIAL> {COMMENT} { yybegin(YYINITIAL); return ObjTypes.COMMENT; }
 
 <YYINITIAL> {OBJECT_KEYWORD} { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return ObjTypes.OBJECT_KEYWORD; }
 <YYINITIAL> {GROUP_KEYWORD} { yybegin(WAITING_OBJECT_OR_GROUP_NAME); return ObjTypes.GROUP_KEYWORD; }
@@ -131,8 +130,6 @@ REFERENCE=[^\ \t\r\n\f]+
 <YYINITIAL> {MATERIAL_REFERENCE_KEYWORD} { yybegin(WAITING_MATERIAL_NAME); return ObjTypes.MATERIAL_REFERENCE_KEYWORD; }
 
 <YYINITIAL> [^\ \t\r\n\f]+ { return ObjSpecialTypes.UNKNOWN_KEYWORD; }
-
-<WAITING_COMMENT> [^\r\n\f]*[\r\n\f] { yybegin(YYINITIAL); return ObjTypes.COMMENT; }
 
 <WAITING_OBJECT_OR_GROUP_NAME> {OBJECT_OR_GROUP_NAME} { yybegin(END); return ObjTypes.OBJECT_OR_GROUP_NAME; }
 

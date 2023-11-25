@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.wavefront.lang.psi.impl
 
-interface ObjGroupingElement : DocumentedElement {
+import com.intellij.lang.ASTNode
+import it.czerwinski.intellij.wavefront.lang.psi.CommentLineElement
+import it.czerwinski.intellij.wavefront.lang.psi.MtlCommentBlock
 
-    override val documentation: ObjDocumentation
+abstract class MtlCommentBlockElementImpl(
+    node: ASTNode
+) : CommentBlockElementImpl(node), MtlCommentBlock {
 
-    val verticesCount: Int
-    val textureCoordinatesCount: Int
-    val vertexNormalsCount: Int
-    val facesCount: Int
-    val trianglesCount: Int
-
-    fun getName(): String?
+    override val commentLines: List<CommentLineElement>
+        get() = commentLineList
 }

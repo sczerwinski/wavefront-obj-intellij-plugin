@@ -16,50 +16,33 @@
 
 package it.czerwinski.intellij.wavefront.lang.documentation
 
-import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.lang.documentation.DocumentationMarkup
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parentOfType
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialIdentifierElement
 
-class MtlDocumentationProvider : AbstractDocumentationProvider() {
+class MtlDocumentationProvider : WavefrontDocumentationProvider<MtlMaterialElement>() {
 
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
         return when (element) {
             is MtlMaterialIdentifierElement ->
-                element.parentOfType<MtlMaterialElement>()?.let { generateMaterialIdentifierDocumentation(it) }
+                element.parentOfType<MtlMaterialElement>()?.let { generateDocumentation(it) }
 
             else ->
                 null
         }
     }
 
-    private fun generateMaterialIdentifierDocumentation(element: MtlMaterialElement): String =
-        StringBuilder()
-            .addDefinition(element)
-            .addContent(element)
-            .toString()
-
-    private fun StringBuilder.addDefinition(element: MtlMaterialElement): StringBuilder {
+    override fun StringBuilder.addDefinition(element: MtlMaterialElement): StringBuilder {
         append(DocumentationMarkup.DEFINITION_START)
         append(DEFINITION_FORMAT_MATERIAL.format(element.getName()))
         append(DocumentationMarkup.DEFINITION_END)
         return this
     }
 
-    private fun StringBuilder.addContent(element: MtlMaterialElement): StringBuilder {
-        val content = element.documentation.commentBlock?.commentLineList
-            ?.joinToString(
-                prefix = DocumentationMarkup.CONTENT_START,
-                separator = "",
-                postfix = DocumentationMarkup.CONTENT_END
-            ) { it.lastChild.text }
-        if (content != null) {
-            append(content)
-        }
-        return this
-    }
+    override fun StringBuilder.addSections(parentElement: MtlMaterialElement): StringBuilder =
+        this
 
     companion object {
         private const val DEFINITION_FORMAT_MATERIAL = "newmtl %s"

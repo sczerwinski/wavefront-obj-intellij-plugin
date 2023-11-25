@@ -16,15 +16,8 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-interface ObjGroupingElement : DocumentedElement {
+import com.intellij.psi.PsiElement
 
-    override val documentation: ObjDocumentation
-
-    val verticesCount: Int
-    val textureCoordinatesCount: Int
-    val vertexNormalsCount: Int
-    val facesCount: Int
-    val trianglesCount: Int
-
-    fun getName(): String?
+interface DocumentedElement : PsiElement {
+    val documentation: DocumentationElement
 }

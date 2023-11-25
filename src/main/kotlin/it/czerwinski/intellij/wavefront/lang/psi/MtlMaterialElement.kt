@@ -16,13 +16,12 @@
 
 package it.czerwinski.intellij.wavefront.lang.psi
 
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import graphics.glimpse.types.Vec3
 
-interface MtlMaterialElement : PsiElement {
+interface MtlMaterialElement : DocumentedElement {
 
-    val documentation: MtlDocumentation
+    override val documentation: MtlDocumentation
 
     val identifierElement: MtlMaterialIdentifierElement?
 

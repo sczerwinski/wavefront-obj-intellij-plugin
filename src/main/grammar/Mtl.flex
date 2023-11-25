@@ -34,7 +34,7 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlTypes;
 
 CRLF=[\r\n\f]+
 
-COMMENT_SYMBOL="#"[\ \t]*
+COMMENT="#"[^\r\n\f]*[\r\n\f]
 
 WHITE_SPACE=[\ \t]+
 
@@ -92,7 +92,6 @@ SCALAR_CHANNEL=(r)|(g)|(b)|(m)|(l)|(z)
 REFLECTION_TYPE=(sphere)|(cube_top)|(cube_bottom)|(cube_front)|(cube_back)|(cube_left)|(cube_right)
 TEXTURE_FILE_NAME=[^\ \t\r\n\f]+
 
-%state WAITING_COMMENT
 %state WAITING_MATERIAL_NAME
 %state WAITING_FLOAT
 %state WAITING_FLAG
@@ -109,7 +108,7 @@ TEXTURE_FILE_NAME=[^\ \t\r\n\f]+
 
 %%
 
-<YYINITIAL> {COMMENT_SYMBOL} { yybegin(WAITING_COMMENT); return MtlTypes.COMMENT_SYMBOL; }
+<YYINITIAL> {COMMENT} { yybegin(YYINITIAL); return MtlTypes.COMMENT; }
 
 <YYINITIAL> {NEW_MATERIAL_KEYWORD} { yybegin(WAITING_MATERIAL_NAME); return MtlTypes.NEW_MATERIAL_KEYWORD; }
 
@@ -143,8 +142,6 @@ TEXTURE_FILE_NAME=[^\ \t\r\n\f]+
 <YYINITIAL> {REFLECTION_MAP_KEYWORD} { yybegin(WAITING_REFLECTION_TYPE_OPTION_NAME); return MtlTypes.REFLECTION_MAP_KEYWORD; }
 
 <YYINITIAL> [^\ \t\r\n\f]+ { yybegin(INVALID); return MtlSpecialTypes.UNKNOWN_KEYWORD; }
-
-<WAITING_COMMENT> [^\r\n\f]*[\r\n\f] { yybegin(YYINITIAL); return MtlTypes.COMMENT; }
 
 <WAITING_MATERIAL_NAME> {WHITE_SPACE} { yybegin(WAITING_MATERIAL_NAME); return TokenType.WHITE_SPACE; }
 <WAITING_MATERIAL_NAME> {MATERIAL_NAME} { yybegin(END); return MtlTypes.MATERIAL_NAME; }

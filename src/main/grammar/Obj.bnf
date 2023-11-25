@@ -57,10 +57,12 @@ index ::= (NUMBER) {
 // Comments:
 
 commentBlock ::= (commentLine)+ {
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.ObjCommentBlockElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentBlockElement"
 }
-commentLine ::= (COMMENT_SYMBOL COMMENT) {
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+commentLine ::= COMMENT {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.CommentLineElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentLineElement"
 }
 
 // Grouping:
@@ -68,7 +70,7 @@ commentLine ::= (COMMENT_SYMBOL COMMENT) {
 private groupingElement_ ::= (object|group)
 
 documentation ::= (commentBlock)? {
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.DocumentationElement"
 }
 
 object ::= (documentation OBJECT_KEYWORD objectOrGroupIdentifier) (commentBlock? item_)* {

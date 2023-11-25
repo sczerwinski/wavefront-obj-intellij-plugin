@@ -36,7 +36,6 @@ class MtlSyntaxHighlighter : SyntaxHighlighterBase() {
             MtlTypes.DOCUMENTATION,
             MtlTypes.COMMENT_BLOCK,
             MtlTypes.COMMENT_LINE,
-            MtlTypes.COMMENT_SYMBOL,
             MtlTypes.COMMENT ->
                 arrayOf(ATTR_COMMENT)
 

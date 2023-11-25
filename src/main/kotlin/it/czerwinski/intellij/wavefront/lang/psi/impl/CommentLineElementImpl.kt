@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package it.czerwinski.intellij.wavefront.lang.psi
+package it.czerwinski.intellij.wavefront.lang.psi.impl
 
-interface ObjGroupingElement : DocumentedElement {
+import com.intellij.extapi.psi.ASTWrapperPsiElement
+import com.intellij.lang.ASTNode
+import it.czerwinski.intellij.wavefront.lang.psi.CommentLineElement
 
-    override val documentation: ObjDocumentation
+abstract class CommentLineElementImpl(
+    node: ASTNode
+) : ASTWrapperPsiElement(node), CommentLineElement {
 
-    val verticesCount: Int
-    val textureCoordinatesCount: Int
-    val vertexNormalsCount: Int
-    val facesCount: Int
-    val trianglesCount: Int
+    override val commentText: String
+        get() = text.trimStart(COMMENT_SYMBOL).trim()
 
-    fun getName(): String?
+    companion object {
+        private const val COMMENT_SYMBOL = '#'
+    }
 }

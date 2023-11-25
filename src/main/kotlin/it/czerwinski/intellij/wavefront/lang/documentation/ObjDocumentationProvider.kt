@@ -16,7 +16,6 @@
 
 package it.czerwinski.intellij.wavefront.lang.documentation
 
-import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.lang.documentation.DocumentationMarkup
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parentOfType
@@ -25,28 +24,20 @@ import it.czerwinski.intellij.wavefront.lang.psi.ObjGroup
 import it.czerwinski.intellij.wavefront.lang.psi.ObjGroupingElement
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObject
 import it.czerwinski.intellij.wavefront.lang.psi.ObjObjectOrGroupIdentifier
-import org.jetbrains.annotations.Nls
 
-class ObjDocumentationProvider : AbstractDocumentationProvider() {
+class ObjDocumentationProvider : WavefrontDocumentationProvider<ObjGroupingElement>() {
 
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
         return when (element) {
             is ObjObjectOrGroupIdentifier ->
-                element.parentOfType<ObjGroupingElement>()?.let { generateObjectOrGroupDocumentation(it) }
+                element.parentOfType<ObjGroupingElement>()?.let { generateDocumentation(it) }
 
             else ->
                 null
         }
     }
 
-    private fun generateObjectOrGroupDocumentation(element: ObjGroupingElement): String =
-        StringBuilder()
-            .addDefinition(element)
-            .addContent(element)
-            .addSections(element)
-            .toString()
-
-    private fun StringBuilder.addDefinition(element: ObjGroupingElement): StringBuilder {
+    override fun StringBuilder.addDefinition(element: ObjGroupingElement): StringBuilder {
         append(DocumentationMarkup.DEFINITION_START)
         append(
             when (element) {
@@ -59,20 +50,7 @@ class ObjDocumentationProvider : AbstractDocumentationProvider() {
         return this
     }
 
-    private fun StringBuilder.addContent(element: ObjGroupingElement): StringBuilder {
-        val content = element.getDocumentation().commentBlock?.commentLineList
-            ?.joinToString(
-                prefix = DocumentationMarkup.CONTENT_START,
-                separator = "",
-                postfix = DocumentationMarkup.CONTENT_END
-            ) { it.lastChild.text }
-        if (content != null) {
-            append(content)
-        }
-        return this
-    }
-
-    private fun StringBuilder.addSections(parentElement: ObjGroupingElement): StringBuilder {
+    override fun StringBuilder.addSections(parentElement: ObjGroupingElement): StringBuilder {
         append(DocumentationMarkup.SECTIONS_START)
         addSection(
             label = WavefrontObjBundle.message(key = "fileTypes.obj.documentation.vertices"),
@@ -87,15 +65,6 @@ class ObjDocumentationProvider : AbstractDocumentationProvider() {
             value = parentElement.trianglesCount
         )
         append(DocumentationMarkup.SECTIONS_END)
-        return this
-    }
-
-    private fun StringBuilder.addSection(@Nls label: String, value: Any?): StringBuilder {
-        append(DocumentationMarkup.SECTION_HEADER_START)
-        append(label)
-        append(DocumentationMarkup.SECTION_SEPARATOR)
-        append(value)
-        append(DocumentationMarkup.SECTION_END)
         return this
     }
 

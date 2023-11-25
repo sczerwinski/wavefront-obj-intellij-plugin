@@ -35,7 +35,6 @@ class ObjSyntaxHighlighter : SyntaxHighlighterBase() {
             ObjTypes.DOCUMENTATION,
             ObjTypes.COMMENT_BLOCK,
             ObjTypes.COMMENT_LINE,
-            ObjTypes.COMMENT_SYMBOL,
             ObjTypes.COMMENT ->
                 arrayOf(ATTR_COMMENT)
 

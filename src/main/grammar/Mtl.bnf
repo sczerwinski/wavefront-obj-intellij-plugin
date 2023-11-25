@@ -32,14 +32,16 @@
 mtlFile ::= (material | commentBlock)*
 
 commentBlock ::= (commentLine)+ {
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlCommentBlockElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentBlockElement"
 }
-commentLine ::= (COMMENT_SYMBOL COMMENT) {
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+commentLine ::= COMMENT {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.CommentLineElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentLineElement"
 }
 
 documentation ::= (commentBlock)? {
-  implements = "it.czerwinski.intellij.wavefront.lang.psi.CommentElement"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.DocumentationElement"
 }
 
 material ::= (documentation NEW_MATERIAL_KEYWORD materialIdentifier) (commentBlock? item_)* {

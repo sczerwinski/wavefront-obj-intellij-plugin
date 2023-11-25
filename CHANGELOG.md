@@ -8,17 +8,23 @@
 
 ### Changed
 
-- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.5, 2023.3`
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
-- Allow no white character after comment symbol (`#`)
-
 ### Security
+
+## 1.4.4 - 2023-11-25
+
+### Changed
+
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.5, 2023.3`
+
+### Fixed
+
+- Allow no white character after comment symbol (`#`)
 
 ## [1.4.3] - 2023-11-12
 

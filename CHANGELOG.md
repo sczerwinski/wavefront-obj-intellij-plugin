@@ -6,7 +6,11 @@
 
 ### Added
 
+- Add support for platform version `234.*`
+
 ### Changed
+
+- `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.5, 2023.2.5, 2023.3.2, 2024.1`
 
 ### Deprecated
 

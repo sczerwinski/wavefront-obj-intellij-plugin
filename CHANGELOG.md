@@ -6,7 +6,7 @@
 
 ### Added
 
-- Add support for platform version `234.*`
+- Add support for platform version `241.*`
 
 ### Changed
 

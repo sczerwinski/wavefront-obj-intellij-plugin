@@ -16,7 +16,7 @@ plugins {
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.17.2"
     // Gradle Grammar-Kit Plugin
-    id("org.jetbrains.grammarkit") version "2022.3.2.1"
+    id("org.jetbrains.grammarkit") version "2022.3.2.2"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.2.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
@@ -59,19 +59,17 @@ dependencies {
 fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {}) =
     task<GenerateParserTask>("generateParser${suffix.replaceFirstChar { it.uppercaseChar() }}") {
         sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.bnf"))
-        targetRoot.set("${project.layout.buildDirectory.get()}/generated/source/parser/$suffix")
+        targetRootOutputDir.set(file("${project.layout.buildDirectory.get()}/generated/source/parser/$suffix"))
         pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.replaceFirstChar { it.uppercaseChar() }}Parser.java")
         pathToPsiRoot.set("it/czerwinski/intellij/wavefront/lang/psi")
         purgeOldFiles.set(true)
-        targetRootOutputDir.convention(targetRoot.map { project.layout.projectDirectory.dir(it) })
         config()
     }
 
 fun generateLexerTask(suffix: String, config: GenerateLexerTask.() -> Unit = {}) =
     task<GenerateLexerTask>("generateLexer${suffix.replaceFirstChar { it.uppercaseChar() }}") {
         sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.flex"))
-        targetDir.set("${project.layout.buildDirectory.get()}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang")
-        targetClass.set("${suffix.replaceFirstChar { it.uppercaseChar() }}Lexer")
+        targetOutputDir.set(file("${project.layout.buildDirectory.get()}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang"))
         purgeOldFiles.set(true)
         config()
     }

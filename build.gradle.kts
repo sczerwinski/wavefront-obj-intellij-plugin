@@ -20,7 +20,7 @@ plugins {
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.2.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.23.5"
+    id("io.gitlab.arturbosch.detekt") version "1.23.6"
 }
 
 group = properties("pluginGroup")
@@ -51,7 +51,7 @@ dependencies {
     ksp("graphics.glimpse:glimpse-processor-ksp:2.0.0-alpha.3")
     api("org.jogamp.jogl:jogl-all-main:2.5.0")
     api("org.jogamp.gluegen:gluegen-rt-main:2.5.0")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.5")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.6")
 }
 
 // Generate parsers and lexers before Kotlin compilation.

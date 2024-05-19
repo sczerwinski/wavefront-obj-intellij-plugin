@@ -24,7 +24,6 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectLocator
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.vcs.vfs.VcsFileSystem
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
@@ -60,7 +59,6 @@ abstract class BaseGenerateMapDialog(
         val virtualOutputFile = runReadAction {
             val dirs = (inputFiles.filter { it.isDirectory } + inputFiles.mapNotNull { it.parent }).distinct()
             LocalFileSystem.getInstance().refreshFiles(dirs)
-            VcsFileSystem.getInstance().refresh(true)
             LocalFileSystem.getInstance().findFileByIoFile(outputFiles.first())
         }
         if (virtualOutputFile != null) {

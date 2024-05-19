@@ -59,6 +59,17 @@ that you think other user might benefit from, you are welcome to create a GitHub
   create two separate pull requests.
 * Make sure to format your code according to [Kotlin Coding Conventions][kotlin_coding_conventions].
 
+### Plugin Translations
+
+If you'd like to provide a new bundled translation for the plugin, please adhere to the following guidelines:
+
+* Open one PR per language (or region).
+* Use localization suffix in file name (not language directory).
+* Provide translations for message bundle `/src/main/resources/messages/WavefrontObjBundle.properties`.
+* Provide translations for inspection descriptions `/src/main/resources/inspectionDescriptions`.
+* Do **NOT** provide translations for file templates, because using anything except English
+  in the codebase is considered a **bad practice**.
+
 
 [issue_tracker]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/issues
 [kotlin_coding_conventions]: https://kotlinlang.org/docs/reference/coding-conventions.html

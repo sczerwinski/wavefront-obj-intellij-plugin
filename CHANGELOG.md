@@ -12,17 +12,11 @@
 
 - `pluginVerifierIdeVersions` – upgrade to `2022.3.3, 2023.1.6, 2023.2.6, 2023.3.6, 2024.1.1, 2024.2`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Refresh `ErrorLogTreeModel` on AWT event dispatching thread
 - Initialize `MtlPreviewScene` with empty `MaterialTexturesProvider`
 - Initialize preview editor when component obtained first time
-
-### Security
 
 ## [1.4.5] - 2024-01-20
 
@@ -592,7 +586,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.5...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.6...main
+[1.4.5]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.4...v1.4.5
 [1.4.4]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.3...v1.4.4
 [1.4.3]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.2...v1.4.3

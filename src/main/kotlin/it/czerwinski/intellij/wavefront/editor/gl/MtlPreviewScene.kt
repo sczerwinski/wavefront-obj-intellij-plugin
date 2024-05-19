@@ -99,7 +99,7 @@ class MtlPreviewScene(
 
     private val mesh: Mesh? get() = meshesManager.getMesh(previewMesh)
 
-    private lateinit var materialTexturesProvider: MaterialTexturesProvider
+    private var materialTexturesProvider: MaterialTexturesProvider = MaterialTexturesProvider()
 
     override var materialEnvironmentTexture: Texture? = null
         private set

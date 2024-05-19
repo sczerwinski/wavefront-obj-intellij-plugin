@@ -19,6 +19,7 @@
 ### Fixed
 
 - Refresh `ErrorLogTreeModel` on AWT event dispatching thread
+- Initialize `MtlPreviewScene` with empty `MaterialTexturesProvider`
 
 ### Security
 

@@ -14,7 +14,7 @@ plugins {
     // Kotlin Symbol Processing
     id("com.google.devtools.ksp") version "1.9.22-1.0.18"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.17.2"
+    id("org.jetbrains.intellij") version "1.17.3"
     // Gradle Grammar-Kit Plugin
     id("org.jetbrains.grammarkit") version "2022.3.2.2"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin

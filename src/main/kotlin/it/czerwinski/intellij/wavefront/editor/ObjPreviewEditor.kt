@@ -30,6 +30,7 @@ import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JComponent
 
 class ObjPreviewEditor(
@@ -38,6 +39,8 @@ class ObjPreviewEditor(
 ) : PreviewEditor(), GLPreviewEditor {
 
     private val myComponent: ObjPreviewComponent = ObjPreviewComponent(project, virtualFile, this)
+
+    private val componentInitialized = AtomicBoolean(false)
 
     override var shadingMethod: ShadingMethod
         get() = myComponent.shadingMethod
@@ -150,13 +153,18 @@ class ObjPreviewEditor(
             .subscribe(WavefrontObjSettingsState.SettingsChangedListener.TOPIC, settingsChangedListener)
     }
 
+    override fun getComponent(): JComponent {
+        if (componentInitialized.compareAndSet(false, true)) {
+            initPreview()
+        }
+        return myComponent
+    }
+
     override fun initPreview() {
         BackgroundTaskUtil.executeOnPooledThread(this) {
             myComponent.initialize()
         }
     }
-
-    override fun getComponent(): JComponent = myComponent
 
     override fun getPreferredFocusedComponent(): JComponent = myComponent
 

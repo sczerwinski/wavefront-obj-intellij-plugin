@@ -20,6 +20,7 @@
 
 - Refresh `ErrorLogTreeModel` on AWT event dispatching thread
 - Initialize `MtlPreviewScene` with empty `MaterialTexturesProvider`
+- Initialize preview editor when component obtained first time
 
 ### Security
 

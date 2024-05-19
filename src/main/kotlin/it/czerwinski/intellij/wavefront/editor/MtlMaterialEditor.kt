@@ -31,6 +31,7 @@ import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import it.czerwinski.intellij.wavefront.settings.ObjPreviewSettingsState
 import it.czerwinski.intellij.wavefront.settings.WavefrontObjSettingsState
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JComponent
 
 class MtlMaterialEditor(
@@ -39,6 +40,8 @@ class MtlMaterialEditor(
 ) : PreviewEditor(), GLPreviewEditor {
 
     private val myComponent: MtlMaterialComponent = MtlMaterialComponent(project, virtualFile, this)
+
+    private val componentInitialized = AtomicBoolean(false)
 
     var previewMesh: MaterialPreviewMesh
         get() = myComponent.previewMesh
@@ -125,13 +128,18 @@ class MtlMaterialEditor(
             .subscribe(WavefrontObjSettingsState.SettingsChangedListener.TOPIC, settingsChangedListener)
     }
 
+    override fun getComponent(): JComponent {
+        if (componentInitialized.compareAndSet(false, true)) {
+            initPreview()
+        }
+        return myComponent
+    }
+
     override fun initPreview() {
         BackgroundTaskUtil.executeOnPooledThread(this) {
             myComponent.initialize()
         }
     }
-
-    override fun getComponent(): JComponent = myComponent
 
     override fun getPreferredFocusedComponent(): JComponent = myComponent
 

@@ -31,7 +31,7 @@ import javax.swing.JComponent
  */
 class ObjSplitEditor(
     textEditor: TextEditor,
-    private val previewEditor: ObjPreviewEditor
+    previewEditor: ObjPreviewEditor
 ) : BaseSplitEditor<ObjPreviewEditor>(
     textEditor,
     previewEditor,
@@ -73,13 +73,6 @@ class ObjSplitEditor(
 
         layout = settings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
         isVerticalSplit = settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
-    }
-
-    override fun setLayout(layout: Layout) {
-        super.setLayout(layout)
-        if (layout != Layout.SHOW_EDITOR) {
-            previewEditor.initPreview()
-        }
     }
 
     private fun observeSettingsChanges() {

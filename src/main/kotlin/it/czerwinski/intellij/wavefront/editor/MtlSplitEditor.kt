@@ -29,7 +29,7 @@ import javax.swing.JComponent
  */
 class MtlSplitEditor(
     textEditor: TextEditor,
-    private val materialEditor: MtlMaterialEditor
+    materialEditor: MtlMaterialEditor
 ) : BaseSplitEditor<MtlMaterialEditor>(
     textEditor,
     materialEditor,
@@ -75,13 +75,6 @@ class MtlSplitEditor(
 
         layout = mtlEditorSettings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
         isVerticalSplit = mtlEditorSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
-    }
-
-    override fun setLayout(layout: Layout) {
-        super.setLayout(layout)
-        if (layout != Layout.SHOW_EDITOR) {
-            materialEditor.initPreview()
-        }
     }
 
     private fun observeSettingsChanges() {

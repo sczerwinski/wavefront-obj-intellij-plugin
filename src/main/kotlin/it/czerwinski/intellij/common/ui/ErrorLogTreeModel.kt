@@ -16,6 +16,7 @@
 
 package it.czerwinski.intellij.common.ui
 
+import com.intellij.openapi.application.invokeLater
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
@@ -45,8 +46,10 @@ class ErrorLogTreeModel : DefaultTreeModel(DefaultMutableTreeNode()), ErrorLog {
 
     override fun reload() {
         try {
-            synchronized(this) {
-                reload(root)
+            invokeLater {
+                synchronized(root) {
+                    reload(root)
+                }
             }
         } catch (ignored: RuntimeException) {
         }

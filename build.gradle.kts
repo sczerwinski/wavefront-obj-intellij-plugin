@@ -182,6 +182,7 @@ tasks {
 
     runPluginVerifier {
         ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
+        verifierVersion.set("1.307")
     }
 
     signPlugin {

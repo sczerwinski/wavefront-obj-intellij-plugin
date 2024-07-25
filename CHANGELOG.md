@@ -8,9 +8,16 @@
 
 ### Changed
 
+- `pluginVerifierIdeVersions` – upgrade to `2024.1.4, 2024.2`
+
 ### Deprecated
 
 ### Removed
+
+- Remove support for platform version `223.*`
+- Remove support for platform version `231.*`
+- Remove support for platform version `232.*`
+- Remove support for platform version `233.*`
 
 ### Fixed
 

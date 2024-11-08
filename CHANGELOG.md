@@ -12,18 +12,12 @@
 
 - `pluginVerifierIdeVersions` – upgrade to `2024.1.7, 2024.2.4, 2024.3`
 
-### Deprecated
-
 ### Removed
 
 - Remove support for platform version `223.*`
 - Remove support for platform version `231.*`
 - Remove support for platform version `232.*`
 - Remove support for platform version `233.*`
-
-### Fixed
-
-### Security
 
 ## [1.4.6] - 2024-05-19
 
@@ -609,7 +603,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.6...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.7...main
+[1.4.7]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.4...v1.4.5
 [1.4.4]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.3...v1.4.4

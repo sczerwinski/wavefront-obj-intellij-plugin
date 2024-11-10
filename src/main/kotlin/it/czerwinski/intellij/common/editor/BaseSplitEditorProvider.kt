@@ -62,7 +62,8 @@ abstract class BaseSplitEditorProvider(
         TextEditorWithPreview.MyFileEditorState(
             readSplitLayoutState(sourceElement),
             readTextEditorState(sourceElement, project, file),
-            readPreviewEditorState(sourceElement, project, file)
+            readPreviewEditorState(sourceElement, project, file),
+            readVerticalState(sourceElement)
         )
 
     private fun readSplitLayoutState(sourceElement: Element): TextEditorWithPreview.Layout? =
@@ -77,6 +78,9 @@ abstract class BaseSplitEditorProvider(
         sourceElement.getChild(PREVIEW_EDITOR)
             ?.let { childElement -> previewEditorProvider.readState(childElement, project, file) }
 
+    private fun readVerticalState(sourceElement: Element): Boolean =
+        sourceElement.getAttribute(IS_VERTICAL)?.value?.toBoolean() ?: false
+
     /**
      * Serializes state of split editor.
      */
@@ -85,6 +89,7 @@ abstract class BaseSplitEditorProvider(
         writeSplitLayoutState(splitEditorState.splitLayout, targetElement)
         writeTextEditorState(splitEditorState.firstState, project, targetElement)
         writePreviewEditorState(splitEditorState.secondState, project, targetElement)
+        writeVerticalState(splitEditorState.isVerticalSplit, targetElement)
     }
 
     private fun writeSplitLayoutState(layout: TextEditorWithPreview.Layout?, targetElement: Element) {
@@ -107,9 +112,14 @@ abstract class BaseSplitEditorProvider(
         }
     }
 
+    private fun writeVerticalState(isVertical: Boolean, targetElement: Element) {
+        targetElement.setAttribute(IS_VERTICAL, isVertical.toString())
+    }
+
     companion object {
         private const val TEXT_EDITOR = "text_editor"
         private const val PREVIEW_EDITOR = "preview_editor"
         private const val SPLIT_LAYOUT = "split_layout"
+        private const val IS_VERTICAL = "is_vertical"
     }
 }

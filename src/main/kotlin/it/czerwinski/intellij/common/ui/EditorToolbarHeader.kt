@@ -44,8 +44,8 @@ class EditorToolbarHeader(
             add(it, constraints(index = 1, anchor = GridBagConstraints.EAST, fill = GridBagConstraints.NONE))
         }
 
-        leftActionToolbar?.updateActionsImmediately()
-        rightActionToolbar?.updateActionsImmediately()
+        leftActionToolbar?.updateActionsAsync()
+        rightActionToolbar?.updateActionsAsync()
     }
 
     private fun constraints(index: Int, anchor: Int, fill: Int): GridBagConstraints =

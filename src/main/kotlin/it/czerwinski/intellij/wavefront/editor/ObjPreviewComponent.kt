@@ -92,7 +92,7 @@ class ObjPreviewComponent(
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var freeFormCurveResolution: Int = ObjPreviewSettingsState.DEFAULT_FREE_FORM_CURVE_RESOLUTION
@@ -105,14 +105,14 @@ class ObjPreviewComponent(
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var isCroppingTextures: Boolean = ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var upVector: UpVector = UpVector.DEFAULT
@@ -122,21 +122,21 @@ class ObjPreviewComponent(
                 oldCameraModel.copy(upVector = upVector)
             }
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var isShowingAxes: Boolean = ObjPreviewSettingsState.DEFAULT_SHOW_AXES
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var isShowingGrid: Boolean = ObjPreviewSettingsState.DEFAULT_SHOW_GRID
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var previewSceneConfig: PreviewSceneConfig = PreviewSceneConfig()

@@ -30,7 +30,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
-import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.common.editor.BaseSplitEditor
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
@@ -109,7 +108,7 @@ class MtlMaterialComponent(
                     val materialAtCaret = myMaterialComboBoxModel.findItemAtOffset(caretModel.offset)
                     if (selectedMaterial != null && selectedMaterial != materialAtCaret) {
                         invokeLater {
-                            caretModel.moveToOffset(selectedMaterial.startOffset)
+                            caretModel.moveToOffset(selectedMaterial.textRange.startOffset)
                         }
                     }
 

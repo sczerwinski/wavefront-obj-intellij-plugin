@@ -18,8 +18,6 @@ package it.czerwinski.intellij.wavefront.editor.model
 
 import com.intellij.openapi.application.runReadAction
 import com.intellij.psi.PsiElement
-import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterial
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFace
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeFormCurve
@@ -69,7 +67,7 @@ data class GLModel(
         return if (indexValue > 0) {
             getOrNull(index = indexValue - 1)
         } else {
-            filter { it.endOffset < (index?.startOffset ?: 0) }
+            filter { it.textRange.endOffset < (index?.textRange?.startOffset ?: 0) }
                 .reversed()
                 .getOrNull(index = abs(indexValue) - 1)
         }

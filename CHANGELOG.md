@@ -13,6 +13,8 @@
 ### Removed
 
 ### Fixed
+- Remove usages of internal API
+- Remove usages of deprecated API
 
 ### Security
 

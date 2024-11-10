@@ -25,8 +25,6 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.childrenOfType
-import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
 import it.czerwinski.intellij.wavefront.lang.psi.ObjCommentBlock
 import it.czerwinski.intellij.wavefront.lang.psi.ObjDocumentation
 import it.czerwinski.intellij.wavefront.lang.psi.ObjFreeForm2DCurve
@@ -49,9 +47,9 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private fun buildObjGroupingElements(root: PsiElement): List<FoldingDescriptor> =
         PsiTreeUtil.findChildrenOfType(root, ObjGroupingElement::class.java)
             .map { element ->
-                val startOffset = element.childrenOfType<ObjDocumentation>().singleOrNull()?.endOffset
-                    ?: element.startOffset
-                val endOffset = element.endOffset
+                val startOffset = element.childrenOfType<ObjDocumentation>().singleOrNull()?.textRange?.endOffset
+                    ?: element.textRange.startOffset
+                val endOffset = element.textRange.endOffset
                 FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
             }
 
@@ -69,8 +67,8 @@ class ObjFoldingBuilder : FoldingBuilderEx(), DumbAware {
         PsiTreeUtil.findChildrenOfType(root, ObjCommentBlock::class.java)
             .filter { commentBlock -> commentBlock.commentLineList.size > 1 }
             .map { element ->
-                val startOffset = element.startOffset
-                val endOffset = element.startOffset + element.text.trimEnd().length
+                val startOffset = element.textRange.startOffset
+                val endOffset = element.textRange.startOffset + element.text.trimEnd().length
                 FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
             }
 

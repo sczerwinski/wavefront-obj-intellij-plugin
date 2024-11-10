@@ -25,8 +25,6 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.childrenOfType
-import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
 import it.czerwinski.intellij.wavefront.lang.psi.MtlCommentBlock
 import it.czerwinski.intellij.wavefront.lang.psi.MtlDocumentation
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
@@ -43,9 +41,9 @@ class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private fun buildMtlMaterialElements(root: PsiElement): List<FoldingDescriptor> =
         PsiTreeUtil.findChildrenOfType(root, MtlMaterialElement::class.java)
             .map { element ->
-                val startOffset = element.childrenOfType<MtlDocumentation>().singleOrNull()?.endOffset
-                    ?: element.startOffset
-                val endOffset = element.endOffset
+                val startOffset = element.childrenOfType<MtlDocumentation>().singleOrNull()?.textRange?.endOffset
+                    ?: element.textRange.startOffset
+                val endOffset = element.textRange.endOffset
                 FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
             }
 
@@ -53,8 +51,8 @@ class MtlFoldingBuilder : FoldingBuilderEx(), DumbAware {
         PsiTreeUtil.findChildrenOfType(root, MtlCommentBlock::class.java)
             .filter { commentBlock -> commentBlock.commentLineList.size > 1 }
             .map { element ->
-                val startOffset = element.startOffset
-                val endOffset = element.startOffset + element.text.trimEnd().length
+                val startOffset = element.textRange.startOffset
+                val endOffset = element.textRange.startOffset + element.text.trimEnd().length
                 FoldingDescriptor(element.node, TextRange.create(startOffset, endOffset))
             }
 

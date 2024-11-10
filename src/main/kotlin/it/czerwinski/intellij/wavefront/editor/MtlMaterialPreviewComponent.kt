@@ -62,28 +62,28 @@ class MtlMaterialPreviewComponent(
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var shadingMethod: ShadingMethod = ShadingMethod.MTL_DEFAULT
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var environment: PBREnvironment = PBREnvironment.DEFAULT
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var isCroppingTextures: Boolean = ObjPreviewSettingsState.DEFAULT_CROP_TEXTURES
         set(value) {
             field = value
             updateScene()
-            myActionToolbar.updateActionsImmediately()
+            myActionToolbar.updateActionsAsync()
         }
 
     var previewSceneConfig: PreviewSceneConfig = PreviewSceneConfig()

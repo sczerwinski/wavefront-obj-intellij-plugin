@@ -4,7 +4,22 @@
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
 ### Fixed
+
+### Security
+
+## [1.4.8] - 2024-11-10
+
+### Fixed
+
 - Remove usages of internal API
 - Remove usages of deprecated API
 

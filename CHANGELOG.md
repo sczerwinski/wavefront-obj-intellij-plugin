@@ -4,19 +4,9 @@
 
 ## [Unreleased]
 
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Remove usages of internal API
 - Remove usages of deprecated API
-
-### Security
 
 ## [1.4.7] - 2024-11-08
 
@@ -619,7 +609,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.7...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.8...main
+[1.4.8]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.7...v1.4.8
 [1.4.7]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.4...v1.4.5

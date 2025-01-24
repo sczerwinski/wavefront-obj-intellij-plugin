@@ -101,10 +101,6 @@ jobs:
           sarif_file: ${{ github.workspace }}/build/reports/detekt.sarif.json
           checkout_path: ${{ github.workspace }}
 
-      # Run verifyPlugin Gradle task
-      - name: Verify Plugin
-        run: ./gradlew verifyPlugin
-
   # Build plugin with buildPlugin Gradle task and provide the artifact for the next workflow jobs
   # Requires test job to be passed
   build:
@@ -152,7 +148,7 @@ jobs:
         shell: bash
         run: |
           PROPERTIES="$(./gradlew properties --console=plain -q)"
-          NAME="$(echo "$PROPERTIES" | grep "^pluginName:" | cut -f2- -d ' ')"
+          NAME="$(echo "$PROPERTIES" | grep "^archivesBaseName:" | cut -f2- -d ' ')"
           PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:" | cut -f2- -d ' ')"
           PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:" | cut -f2- -d ' ')"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
@@ -237,7 +233,7 @@ jobs:
       - name: Verify Plugin
         id: verify
         run: |
-          ./gradlew runPluginVerifier \
+          ./gradlew verifyPlugin \
             -Pplugin.verifier.home.dir=~/.pluginVerifier \
             -PpluginVerifierIdeVersions=${{ matrix.ideVersion }}
 

@@ -8,6 +8,8 @@
 
 ### Changed
 
+- Replace `org.jetbrains.intellij` with `org.jetbrains.intellij.platform` version `2.2.1`
+
 ### Deprecated
 
 ### Removed

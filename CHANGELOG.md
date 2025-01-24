@@ -6,9 +6,12 @@
 
 ### Added
 
+- Add support for platform version `251.*`
+
 ### Changed
 
 - Replace `org.jetbrains.intellij` with `org.jetbrains.intellij.platform` version `2.2.1`
+- `pluginVerifierIdeVersions` – upgrade to `2024.1.7, 2024.2.5, 2024.3.2, 251.17181.16`
 
 ### Deprecated
 

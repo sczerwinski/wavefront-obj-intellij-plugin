@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.gl
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.colors.EditorColorsManager
+import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
 import com.jogamp.opengl.GLAnimatorControl
@@ -143,7 +144,9 @@ abstract class BaseScene(
             gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
             doRender(gl)
         } catch (expected: Throwable) {
-            onRenderError(gl, expected)
+            if (expected !is ProcessCanceledException) {
+                onRenderError(gl, expected)
+            }
         } finally {
             if (isStarted) pause()
         }

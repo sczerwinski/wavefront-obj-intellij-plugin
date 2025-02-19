@@ -14,15 +14,9 @@
 - Replace `org.jetbrains.intellij` with `org.jetbrains.intellij.platform` version `2.2.1`
 - `pluginVerifierIdeVersions` – upgrade to `2024.1.7, 2024.2.5, 2024.3.3, 251.21418.62`
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Ignore `ProcessCanceledException` in error log
-
-### Security
 
 ## [1.4.8] - 2024-11-10
 
@@ -632,7 +626,8 @@
   - Rendering all faces using Gouraud shading model
   - Up vector axis selection
 
-[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.8...main
+[Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.9...main
+[1.4.9]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.8...v1.4.9
 [1.4.8]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.7...v1.4.8
 [1.4.7]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.5...v1.4.6

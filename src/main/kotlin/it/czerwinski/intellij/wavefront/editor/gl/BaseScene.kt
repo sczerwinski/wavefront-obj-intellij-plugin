@@ -143,10 +143,9 @@ abstract class BaseScene(
             gl.glClearColor(background.toVec3())
             gl.glClear(ClearableBufferType.COLOR_BUFFER, ClearableBufferType.DEPTH_BUFFER)
             doRender(gl)
+        } catch (@Suppress("IncorrectCancellationExceptionHandling") ignored: ProcessCanceledException) {
         } catch (expected: Throwable) {
-            if (expected !is ProcessCanceledException) {
-                onRenderError(gl, expected)
-            }
+            onRenderError(gl, expected)
         } finally {
             if (isStarted) pause()
         }

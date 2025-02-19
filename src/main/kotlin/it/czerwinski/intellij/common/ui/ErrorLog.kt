@@ -24,6 +24,16 @@ import com.jetbrains.rd.util.string.printToString
 interface ErrorLog {
 
     /**
+     * Returns `true` if this log contains at least one error; `false` otherwise.
+     */
+    val hasErrors: Boolean
+
+    /**
+     * Number of errors in this log.
+     */
+    val errorsCount: Int
+
+    /**
      * Adds an [error] with a given [message] to the log.
      */
     fun addError(message: String, error: Throwable) {

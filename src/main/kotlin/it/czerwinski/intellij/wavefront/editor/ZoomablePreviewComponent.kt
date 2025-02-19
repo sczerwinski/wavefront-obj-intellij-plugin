@@ -26,6 +26,7 @@ import com.jogamp.opengl.util.AnimatorBase
 import com.jogamp.opengl.util.FPSAnimator
 import graphics.glimpse.types.Angle
 import graphics.glimpse.ui.GlimpsePanel
+import it.czerwinski.intellij.common.ui.ErrorLogContainer
 import it.czerwinski.intellij.common.ui.ErrorLogSplitter
 import it.czerwinski.intellij.common.ui.GlimpseViewport
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
@@ -42,7 +43,7 @@ import javax.swing.event.MouseInputAdapter
 abstract class ZoomablePreviewComponent(
     private val project: Project,
     parent: Disposable
-) : JBLoadingPanel(BorderLayout(), parent), Zoomable, Refreshable, Disposable {
+) : JBLoadingPanel(BorderLayout(), parent), Zoomable, Refreshable, ErrorLogContainer, Disposable {
 
     private val isInitialized = AtomicBoolean(false)
 
@@ -53,6 +54,9 @@ abstract class ZoomablePreviewComponent(
     protected abstract val modelSize: Float
 
     protected var cameraModel: GLCameraModel = GLCameraModelFactory.createDefault()
+
+    override val errorsCount: Int
+        get() = myErrorLogSplitter.errorsCount
 
     fun initialize() {
         if (project.isInitialized && isInitialized.compareAndSet(false, true)) {
@@ -162,6 +166,10 @@ abstract class ZoomablePreviewComponent(
         deinitialize()
         myErrorLogSplitter.clearErrors()
         initialize()
+    }
+
+    override fun setErrorLogVisibility(visible: Boolean) {
+        myErrorLogSplitter.setErrorLogVisibility(visible)
     }
 
     override fun dispose() {

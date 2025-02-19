@@ -23,6 +23,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.PreviewEditor
+import it.czerwinski.intellij.common.ui.ErrorLogContainer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
 import it.czerwinski.intellij.wavefront.editor.model.PreviewSceneConfig
@@ -36,7 +37,7 @@ import javax.swing.JComponent
 class ObjPreviewEditor(
     project: Project,
     virtualFile: VirtualFile
-) : PreviewEditor(), GLPreviewEditor {
+) : PreviewEditor(), GLPreviewEditor, ErrorLogContainer {
 
     private val myComponent: ObjPreviewComponent = ObjPreviewComponent(project, virtualFile, this)
 
@@ -125,6 +126,9 @@ class ObjPreviewEditor(
             }
         }
 
+    override val errorsCount: Int
+        get() = myComponent.errorsCount
+
     init {
         initializeFromSettings()
         observeSettingsChanges()
@@ -202,5 +206,9 @@ class ObjPreviewEditor(
 
     override fun refresh() {
         myComponent.refresh()
+    }
+
+    override fun setErrorLogVisibility(visible: Boolean) {
+        myComponent.setErrorLogVisibility(visible)
     }
 }

@@ -32,6 +32,12 @@ class ErrorLogTreeModel : DefaultTreeModel(DefaultMutableTreeNode()), ErrorLog {
         get() = rootNode.children().asSequence()
             .mapNotNull { node -> (node as? DefaultMutableTreeNode)?.userObject }
 
+    override val hasErrors: Boolean
+        get() = errorsCount > 0
+
+    override val errorsCount: Int
+        get() = rootNode.childCount
+
     override fun addError(entry: ErrorLog.Entry) {
         if (entry.headline in entries) return
 

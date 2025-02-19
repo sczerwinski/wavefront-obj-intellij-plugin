@@ -32,6 +32,7 @@ import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.dsl.builder.panel
 import it.czerwinski.intellij.common.editor.BaseSplitEditor
+import it.czerwinski.intellij.common.ui.ErrorLogContainer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
@@ -50,7 +51,7 @@ class MtlMaterialComponent(
     private val project: Project,
     private val file: VirtualFile,
     private val editor: FileEditor
-) : JPanel(BorderLayout()), Zoomable, Refreshable, Disposable {
+) : JPanel(BorderLayout()), Zoomable, Refreshable, ErrorLogContainer, Disposable {
 
     private var psiTreeChangeListener: MyPsiTreeChangeListener? = null
     private val myCaretListener: MyCaretListener = MyCaretListener()
@@ -92,6 +93,9 @@ class MtlMaterialComponent(
         set(value) {
             myMaterialPreviewComponent.previewSceneConfig = value
         }
+
+    override val errorsCount: Int
+        get() = myMaterialPreviewComponent.errorsCount
 
     init {
         myMaterialComboBoxModel.addListDataListener(
@@ -181,6 +185,10 @@ class MtlMaterialComponent(
 
     override fun refresh() {
         myMaterialPreviewComponent.refresh()
+    }
+
+    override fun setErrorLogVisibility(visible: Boolean) {
+        myMaterialPreviewComponent.setErrorLogVisibility(visible)
     }
 
     override fun dispose() {

@@ -72,6 +72,11 @@ object Icons {
         @JvmField val Material = getIcon(path = "/icons/actions/materialProperties.svg")
     }
 
+    object ErrorLog {
+        @JvmField val Error = AllIcons.General.BalloonError
+        @JvmField val Hide = AllIcons.General.HideToolWindow
+    }
+
     object Filter {
         @JvmField val Unsupported = AllIcons.General.ShowWarning
         @JvmField val Material = getIcon(path = "/icons/actions/materialShading.svg")

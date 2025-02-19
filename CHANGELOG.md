@@ -7,6 +7,7 @@
 ### Added
 
 - Add support for platform version `251.*`
+- Add buttons for hiding and showing preview error log
 
 ### Changed
 

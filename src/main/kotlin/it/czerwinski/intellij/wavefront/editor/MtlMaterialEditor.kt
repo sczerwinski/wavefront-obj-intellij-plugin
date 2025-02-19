@@ -23,6 +23,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
 import it.czerwinski.intellij.common.editor.PreviewEditor
+import it.czerwinski.intellij.common.ui.ErrorLogContainer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
@@ -37,7 +38,7 @@ import javax.swing.JComponent
 class MtlMaterialEditor(
     project: Project,
     virtualFile: VirtualFile
-) : PreviewEditor(), GLPreviewEditor {
+) : PreviewEditor(), GLPreviewEditor, ErrorLogContainer {
 
     private val myComponent: MtlMaterialComponent = MtlMaterialComponent(project, virtualFile, this)
 
@@ -100,6 +101,9 @@ class MtlMaterialEditor(
                 }
             }
         }
+
+    override val errorsCount: Int
+        get() = myComponent.errorsCount
 
     init {
         initializeFromSettings()
@@ -169,5 +173,9 @@ class MtlMaterialEditor(
 
     override fun refresh() {
         myComponent.refresh()
+    }
+
+    override fun setErrorLogVisibility(visible: Boolean) {
+        myComponent.setErrorLogVisibility(visible)
     }
 }

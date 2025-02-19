@@ -417,6 +417,23 @@
                     class="it.czerwinski.intellij.wavefront.editor.actions.ShowSettingsAction"
                     icon="it.czerwinski.intellij.wavefront.icons.Icons.General.Settings"/>
         </group>
+        <!-- Error log -->
+        <group
+                id="PreviewComponent.ErrorLog.Floating"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="PreviewComponent.ErrorLog.Floating.Show"
+                    class="it.czerwinski.intellij.common.editor.actions.ErrorLogVisibilityAction$Show"
+                    icon="it.czerwinski.intellij.wavefront.icons.Icons.ErrorLog.Error"/>
+        </group>
+        <group
+                id="PreviewComponent.ErrorLog.Toolbar"
+                class="com.intellij.openapi.actionSystem.DefaultActionGroup">
+            <action
+                    id="PreviewComponent.ErrorLog.Toolbar.Hide"
+                    class="it.czerwinski.intellij.common.editor.actions.ErrorLogVisibilityAction$Hide"
+                    icon="it.czerwinski.intellij.wavefront.icons.Icons.ErrorLog.Hide"/>
+        </group>
         <!-- Material Properties tool window -->
         <group
                 id="MaterialPropertiesToolWindow.Toolbar"

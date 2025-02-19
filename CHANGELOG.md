@@ -20,6 +20,8 @@
 
 ### Fixed
 
+- Ignore `ProcessCanceledException` in error log
+
 ### Security
 
 ## [1.4.8] - 2024-11-10

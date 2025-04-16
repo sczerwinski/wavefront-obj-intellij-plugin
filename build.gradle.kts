@@ -35,7 +35,7 @@ repositories {
     }
     maven {
         name = "JogAmp"
-        url = uri(path = "https://www.jogamp.org/deployment/maven/")
+        url = uri(path = "https://jogamp.org/deployment/maven/")
     }
 }
 

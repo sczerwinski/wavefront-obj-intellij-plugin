@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.4.10] - 2025-04-17
+
 ### Added
 
 - Support for additional material parameters in MTL file:

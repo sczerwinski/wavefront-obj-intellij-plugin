@@ -39,6 +39,9 @@ interface MtlMaterialElement : DocumentedElement {
     val transparencyElement: MtlFloatValueElement?
     val roughnessElement: MtlFloatValueElement?
     val metalnessElement: MtlFloatValueElement?
+    val sheenElement: MtlFloatValueElement?
+    val clearcoatThicknessElement: MtlFloatValueElement?
+    val clearcoatRoughnessElement: MtlFloatValueElement?
 
     val ambientColorMapElement: MtlTextureElement?
     val diffuseColorMapElement: MtlTextureElement?
@@ -50,6 +53,7 @@ interface MtlMaterialElement : DocumentedElement {
     val stencilDecalMapElement: MtlScalarTextureElement?
     val roughnessMapElement: MtlScalarTextureElement?
     val metalnessMapElement: MtlScalarTextureElement?
+    val sheenMapElement: MtlScalarTextureElement?
     val normalMapElement: MtlTextureElement?
     val bumpMapElement: MtlTextureElement?
     val reflectionMapElement: MtlReflectionTextureElement?
@@ -68,6 +72,9 @@ interface MtlMaterialElement : DocumentedElement {
     val transparency: Float?
     val roughness: Float?
     val metalness: Float?
+    val sheen: Float?
+    val clearcoatThickness: Float?
+    val clearcoatRoughness: Float?
 
     val ambientColorMap: String?
     val diffuseColorMap: String?
@@ -86,6 +93,8 @@ interface MtlMaterialElement : DocumentedElement {
     val roughnessChannel: MtlScalarChannel?
     val metalnessMap: String?
     val metalnessChannel: MtlScalarChannel?
+    val sheenMap: String?
+    val sheenChannel: MtlScalarChannel?
     val normalMap: String?
     val bumpMap: String?
     val bumpMapMultiplier: Float?

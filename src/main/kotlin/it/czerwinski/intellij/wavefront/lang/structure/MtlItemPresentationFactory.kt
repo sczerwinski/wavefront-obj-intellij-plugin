@@ -30,6 +30,8 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlBlendVOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlBumpMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlBumpMultiplierOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlClampOption
+import it.czerwinski.intellij.wavefront.lang.psi.MtlClearcoatRoughness
+import it.czerwinski.intellij.wavefront.lang.psi.MtlClearcoatThickness
 import it.czerwinski.intellij.wavefront.lang.psi.MtlColorCorrectionOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlColorElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlDiffuseColor
@@ -55,6 +57,8 @@ import it.czerwinski.intellij.wavefront.lang.psi.MtlRoughnessMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScalarChannelOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlScaleOption
 import it.czerwinski.intellij.wavefront.lang.psi.MtlSharpness
+import it.czerwinski.intellij.wavefront.lang.psi.MtlSheen
+import it.czerwinski.intellij.wavefront.lang.psi.MtlSheenMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlSpecularColor
 import it.czerwinski.intellij.wavefront.lang.psi.MtlSpecularColorMap
 import it.czerwinski.intellij.wavefront.lang.psi.MtlSpecularExponent
@@ -90,6 +94,9 @@ object MtlItemPresentationFactory {
         is MtlTransparency -> createPresentation(element)
         is MtlRoughness -> createPresentation(element)
         is MtlMetalness -> createPresentation(element)
+        is MtlSheen -> createPresentation(element)
+        is MtlClearcoatThickness -> createPresentation(element)
+        is MtlClearcoatRoughness -> createPresentation(element)
 
         is MtlAmbientColorMap -> createPresentation(element)
         is MtlDiffuseColorMap -> createPresentation(element)
@@ -101,6 +108,7 @@ object MtlItemPresentationFactory {
         is MtlStencilDecalMap -> createPresentation(element)
         is MtlRoughnessMap -> createPresentation(element)
         is MtlMetalnessMap -> createPresentation(element)
+        is MtlSheenMap -> createPresentation(element)
         is MtlNormalMap -> createPresentation(element)
         is MtlBumpMap -> createPresentation(element)
         is MtlReflectionMap -> createPresentation(element)
@@ -244,6 +252,31 @@ object MtlItemPresentationFactory {
         locationString = metalness.value?.toString().orEmpty()
     )
 
+    private fun createPresentation(sheen: MtlSheen): ItemPresentation = createPropertyPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.sheen"
+        ),
+        locationString = sheen.value?.toString().orEmpty()
+    )
+
+    private fun createPresentation(
+        clearcoatThickness: MtlClearcoatThickness
+    ): ItemPresentation = createPropertyPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.clearcoatThickness"
+        ),
+        locationString = clearcoatThickness.value?.toString().orEmpty()
+    )
+
+    private fun createPresentation(
+        clearcoatRoughness: MtlClearcoatRoughness
+    ): ItemPresentation = createPropertyPresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.clearcoatRoughness"
+        ),
+        locationString = clearcoatRoughness.value?.toString().orEmpty()
+    )
+
     private fun createPresentation(map: MtlAmbientColorMap): ItemPresentation = createTexturePresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.ambientColorMap"
@@ -317,6 +350,13 @@ object MtlItemPresentationFactory {
     private fun createPresentation(map: MtlMetalnessMap): ItemPresentation = createTexturePresentation(
         presentableText = WavefrontObjBundle.message(
             "fileTypes.mtl.structure.presentation.metalnessMap"
+        ),
+        texture = map
+    )
+
+    private fun createPresentation(map: MtlSheenMap): ItemPresentation = createTexturePresentation(
+        presentableText = WavefrontObjBundle.message(
+            "fileTypes.mtl.structure.presentation.sheenMap"
         ),
         texture = map
     )

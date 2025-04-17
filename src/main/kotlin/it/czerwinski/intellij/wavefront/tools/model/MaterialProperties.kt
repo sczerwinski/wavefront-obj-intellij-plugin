@@ -116,6 +116,28 @@ internal val allMaterialProperties = listOf(
         elementGetter = { material -> material.metalnessElement },
         shadingMethods = setOf(ShadingMethod.PBR)
     ),
+    MaterialProperty.MaterialFloatValue(
+        label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.sheen"),
+        actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.sheen.action"),
+        propertyKeyword = "Ps",
+        elementGetter = { material -> material.sheenElement }
+    ),
+    MaterialProperty.MaterialFloatValue(
+        label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.clearcoatThickness"),
+        actionName = WavefrontObjBundle.message(
+            "toolwindow.MaterialPropertiesToolWindow.value.clearcoatThickness.action"
+        ),
+        propertyKeyword = "Pc",
+        elementGetter = { material -> material.clearcoatThicknessElement }
+    ),
+    MaterialProperty.MaterialFloatValue(
+        label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.value.clearcoatRoughness"),
+        actionName = WavefrontObjBundle.message(
+            "toolwindow.MaterialPropertiesToolWindow.value.clearcoatRoughness.action"
+        ),
+        propertyKeyword = "Pcr",
+        elementGetter = { material -> material.clearcoatRoughnessElement }
+    ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.ambient"),
         actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.ambient.action"),
@@ -258,6 +280,19 @@ internal val allMaterialProperties = listOf(
         parentElementGetter = { material -> material.metalnessMapElement },
         elementGetter = { material -> material.metalnessMapElement?.scalarChannelOptionElement },
         shadingMethods = setOf(ShadingMethod.PBR)
+    ),
+    MaterialProperty.MaterialTexture(
+        label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.sheen"),
+        actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.sheen.action"),
+        propertyKeyword = "map_Ps",
+        elementGetter = { material -> material.sheenMapElement }
+    ),
+    MaterialProperty.MaterialTextureScalarChannel(
+        label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.sheen.imfchan"),
+        actionName = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.colorChannel.action"),
+        propertyKeyword = "map_Ps",
+        parentElementGetter = { material -> material.sheenMapElement },
+        elementGetter = { material -> material.sheenMapElement?.scalarChannelOptionElement }
     ),
     MaterialProperty.MaterialTexture(
         label = WavefrontObjBundle.message("toolwindow.MaterialPropertiesToolWindow.texture.normalmap"),

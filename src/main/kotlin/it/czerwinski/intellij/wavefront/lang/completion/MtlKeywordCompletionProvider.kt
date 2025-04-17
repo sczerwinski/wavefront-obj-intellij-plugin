@@ -99,6 +99,18 @@ internal class MtlKeywordCompletionProvider : CompletionProvider<CompletionParam
                 description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.METALNESS_KEYWORD")
             ),
             CompletionElement(
+                text = "Ps",
+                description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.SHEEN_KEYWORD")
+            ),
+            CompletionElement(
+                text = "Pc",
+                description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.CLEARCOAT_THICKNESS_KEYWORD")
+            ),
+            CompletionElement(
+                text = "Pcr",
+                description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.CLEARCOAT_ROUGHNESS_KEYWORD")
+            ),
+            CompletionElement(
                 text = "map_Ka",
                 description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.AMBIENT_COLOR_MAP_KEYWORD")
             ),
@@ -139,6 +151,10 @@ internal class MtlKeywordCompletionProvider : CompletionProvider<CompletionParam
             CompletionElement(
                 text = "map_Pm",
                 description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.METALNESS_MAP_KEYWORD")
+            ),
+            CompletionElement(
+                text = "map_Ps",
+                description = WavefrontObjBundle.message(key = "fileTypes.mtl.tokenType.SHEEN_MAP_KEYWORD")
             ),
             CompletionElement(
                 text = "norm",

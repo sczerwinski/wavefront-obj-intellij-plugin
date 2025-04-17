@@ -4,7 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support for additional material parameters in MTL file:
+  - sheen (`Ps` and `map_Ps`)
+  - clearcoat thickness (`Pc`) and roughness (`Pcr`)
+
 ### Changed
+
 - `pluginVerifierIdeVersions` – upgrade to `2024.1.7, 2024.2.5, 2024.3.5, 2025.1`
 
 ## [1.4.9] - 2025-02-19

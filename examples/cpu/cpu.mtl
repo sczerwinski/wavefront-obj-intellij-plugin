@@ -1,0 +1,8 @@
+# Blender 3.6.4 Release Candidate MTL File: 'cpu.blend'
+# www.blender.org
+
+newmtl CPU
+map_Kd cpu_albedo.png
+map_Pr -imfchan r cpu_rough_metal.png
+map_Pm -imfchan g cpu_rough_metal.png
+norm cpu_normalmap.png

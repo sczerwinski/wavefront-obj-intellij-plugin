@@ -77,6 +77,9 @@ class MtlFormattingModelBuilder : FormattingModelBuilder {
             MtlTypes.TRANSPARENCY_KEYWORD,
             MtlTypes.ROUGHNESS_KEYWORD,
             MtlTypes.METALNESS_KEYWORD,
+            MtlTypes.SHEEN_KEYWORD,
+            MtlTypes.CLEARCOAT_THICKNESS_KEYWORD,
+            MtlTypes.CLEARCOAT_ROUGHNESS_KEYWORD,
             MtlTypes.AMBIENT_COLOR_MAP_KEYWORD,
             MtlTypes.DIFFUSE_COLOR_MAP_KEYWORD,
             MtlTypes.SPECULAR_COLOR_MAP_KEYWORD,
@@ -87,6 +90,7 @@ class MtlFormattingModelBuilder : FormattingModelBuilder {
             MtlTypes.STENCIL_DECAL_MAP_KEYWORD,
             MtlTypes.ROUGHNESS_MAP_KEYWORD,
             MtlTypes.METALNESS_MAP_KEYWORD,
+            MtlTypes.SHEEN_MAP_KEYWORD,
             MtlTypes.NORMAL_MAP_KEYWORD,
             MtlTypes.BUMP_MAP_KEYWORD,
             MtlTypes.REFLECTION_MAP_KEYWORD

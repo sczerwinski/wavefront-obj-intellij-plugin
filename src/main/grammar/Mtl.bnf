@@ -83,7 +83,8 @@ emissionColor ::= (EMISSION_COLOR_KEYWORD FLOAT FLOAT FLOAT) {
 }
 
 private property_ ::= (
-  illumination | dissolve | specularExponent | sharpness | opticalDensity | transparency | roughness | metalness
+  illumination | dissolve | specularExponent | sharpness | opticalDensity | transparency
+  | roughness | metalness | sheen | clearcoatThickness | clearcoatRoughness
 )
 
 illumination ::= (ILLUMINATION_KEYWORD ILLUMINATION_VALUE) {
@@ -119,6 +120,18 @@ metalness ::= (METALNESS_KEYWORD FLOAT) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
 }
+sheen ::= (SHEEN_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+clearcoatThickness ::= (CLEARCOAT_THICKNESS_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
+clearcoatRoughness ::= (CLEARCOAT_ROUGHNESS_KEYWORD FLOAT) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlFloatValueElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlFloatValueElement"
+}
 
 private map_ ::= (colorMap_ | scalarMap_ | bumpMap | reflectionMap)
 
@@ -142,7 +155,11 @@ emissionColorMap ::= (EMISSION_COLOR_MAP_KEYWORD colorMapOptions_ TEXTURE_FILE) 
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlTextureElement"
 }
 
-private scalarMap_ ::= (specularExponentMap | dissolveMap | displacementMap | stencilDecalMap | roughnessMap | metalnessMap | normalMap)
+private scalarMap_ ::= (
+  specularExponentMap | dissolveMap | displacementMap | stencilDecalMap
+  | roughnessMap | metalnessMap | sheenMap
+  | normalMap
+)
 
 specularExponentMap ::= (SPECULAR_EXPONENT_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlScalarTextureElementImpl"
@@ -166,6 +183,10 @@ roughnessMap ::= (ROUGHNESS_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement"
 }
 metalnessMap ::= (METALNESS_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
+  mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlScalarTextureElementImpl"
+  implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement"
+}
+sheenMap ::= (SHEEN_MAP_KEYWORD scalarMapOptions_ TEXTURE_FILE) {
   mixin = "it.czerwinski.intellij.wavefront.lang.psi.impl.MtlScalarTextureElementImpl"
   implements = "it.czerwinski.intellij.wavefront.lang.psi.MtlScalarTextureElement"
 }

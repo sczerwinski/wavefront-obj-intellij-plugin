@@ -56,6 +56,11 @@ abstract class MtlMaterialElementImpl(
     override val transparencyElement: MtlFloatValueElement? get() = material?.transparencyList?.firstOrNull()
     override val roughnessElement: MtlFloatValueElement? get() = material?.roughnessList?.firstOrNull()
     override val metalnessElement: MtlFloatValueElement? get() = material?.metalnessList?.firstOrNull()
+    override val sheenElement: MtlFloatValueElement? get() = material?.sheenList?.firstOrNull()
+    override val clearcoatThicknessElement: MtlFloatValueElement?
+        get() = material?.clearcoatThicknessList?.firstOrNull()
+    override val clearcoatRoughnessElement: MtlFloatValueElement?
+        get() = material?.clearcoatRoughnessList?.firstOrNull()
 
     override val ambientColorMapElement: MtlTextureElement? get() = material?.ambientColorMapList?.firstOrNull()
     override val diffuseColorMapElement: MtlTextureElement? get() = material?.diffuseColorMapList?.firstOrNull()
@@ -68,6 +73,7 @@ abstract class MtlMaterialElementImpl(
     override val stencilDecalMapElement: MtlScalarTextureElement? get() = material?.stencilDecalMapList?.firstOrNull()
     override val roughnessMapElement: MtlScalarTextureElement? get() = material?.roughnessMapList?.firstOrNull()
     override val metalnessMapElement: MtlScalarTextureElement? get() = material?.metalnessMapList?.firstOrNull()
+    override val sheenMapElement: MtlScalarTextureElement? get() = material?.sheenMapList?.firstOrNull()
     override val normalMapElement: MtlTextureElement? get() = material?.normalMapList?.firstOrNull()
     override val bumpMapElement: MtlTextureElement? get() = material?.bumpMapList?.firstOrNull()
     override val reflectionMapElement: MtlReflectionTextureElement? get() = material?.reflectionMapList?.firstOrNull()
@@ -86,6 +92,9 @@ abstract class MtlMaterialElementImpl(
     override val transparency: Float? get() = transparencyElement?.value
     override val roughness: Float? get() = roughnessElement?.value
     override val metalness: Float? get() = metalnessElement?.value
+    override val sheen: Float? get() = sheenElement?.value
+    override val clearcoatThickness: Float? get() = clearcoatThicknessElement?.value
+    override val clearcoatRoughness: Float? get() = clearcoatRoughnessElement?.value
 
     override val ambientColorMap: String? get() = ambientColorMapElement?.textureFilename
     override val diffuseColorMap: String? get() = diffuseColorMapElement?.textureFilename
@@ -104,6 +113,8 @@ abstract class MtlMaterialElementImpl(
     override val roughnessChannel: MtlScalarChannel? get() = roughnessMapElement?.scalarChannel
     override val metalnessMap: String? get() = metalnessMapElement?.textureFilename
     override val metalnessChannel: MtlScalarChannel? get() = metalnessMapElement?.scalarChannel
+    override val sheenMap: String? get() = sheenMapElement?.textureFilename
+    override val sheenChannel: MtlScalarChannel? get() = sheenMapElement?.scalarChannel
     override val normalMap: String? get() = normalMapElement?.textureFilename
     override val bumpMap: String? get() = bumpMapElement?.textureFilename
     override val bumpMapMultiplier: Float?

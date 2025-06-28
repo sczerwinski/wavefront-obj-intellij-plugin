@@ -47,7 +47,7 @@ class TextureFileReference(
             .toTypedArray()
 
     private fun findMatchingMtlFiles(): List<PsiFile> =
-        myElement.project.findMatchingTextureFiles(filename)
+        myElement.project.findMatchingTextureFiles(filename, relativeTo = element.containingFile?.virtualFile)
 
     override fun resolve(): PsiElement? =
         findMatchingMtlFiles().singleOrNull()

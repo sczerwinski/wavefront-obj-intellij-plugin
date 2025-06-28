@@ -7,6 +7,7 @@
 ### Added
 
 - Add support for platform version `252.*`
+- Support for relative paths to material textures
 
 ### Changed
 

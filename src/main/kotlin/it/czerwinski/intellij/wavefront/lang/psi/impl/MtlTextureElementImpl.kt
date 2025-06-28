@@ -37,7 +37,9 @@ abstract class MtlTextureElementImpl(
         get() = textureFilenameNode?.text
 
     override val textureFiles: Collection<PsiFile>
-        get() = textureFilename?.let { filename -> project.findMatchingTextureFiles(filename) }.orEmpty()
+        get() = textureFilename
+            ?.let { filename -> project.findMatchingTextureFiles(filename, relativeTo = containingFile.virtualFile) }
+            .orEmpty()
 
     override val valueModifierOptionElement: MtlValueModifierOption?
         get() = valueModifierOptionList.firstOrNull()

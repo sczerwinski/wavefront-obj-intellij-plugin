@@ -18,6 +18,7 @@ package it.czerwinski.intellij.wavefront.editor.gl.textures
 
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.GlimpseAdapter
 import graphics.glimpse.textures.BufferedImageProvider
@@ -43,9 +44,11 @@ class TexturesManager {
      *
      * This method can be executed without GL thread.
      */
-    fun prepare(profile: GLProfile, project: Project, filename: String) {
+    fun prepare(profile: GLProfile, project: Project, filename: String, relativeTo: VirtualFile? = null) {
         prepare(profile = profile, key = filename) bufferedImageProvider@{
-            val file = checkNotNull(runReadAction { project.findMatchingTextureVirtualFiles(filename).firstOrNull() }) {
+            val file = checkNotNull(
+                value = runReadAction { project.findMatchingTextureVirtualFiles(filename, relativeTo).firstOrNull() }
+            ) {
                 "Could not find texture file: $filename"
             }
             return@bufferedImageProvider ImageIO.read(file.inputStream)

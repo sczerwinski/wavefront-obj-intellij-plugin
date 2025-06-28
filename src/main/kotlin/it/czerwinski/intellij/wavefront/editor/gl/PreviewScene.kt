@@ -431,46 +431,55 @@ abstract class PreviewScene(
             ambientTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.ambientColorMap, material.diffuseColorMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             diffuseTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.diffuseColorMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             specularTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.specularColorMap, material.metalnessMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             emissionTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.emissionColorMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             specularExponentTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.specularExponentMap, material.roughnessMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             roughnessTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.roughnessMap, material.specularExponentMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             metalnessTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.metalnessMap, material.specularColorMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             normalmapTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.normalMap, material.bumpMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackNormalmap }
             ),
             displacementTextureProvider = FileTextureProvider(
                 project = material.project,
                 paths = listOfNotNull(material.displacementMap),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { fallbackTexture }
             ),
             environmentTextureProvider = FileTextureProvider(
@@ -478,6 +487,7 @@ abstract class PreviewScene(
                 paths = listOfNotNull(
                     material.reflectionMap?.takeIf { material.reflectionMapType == MtlReflectionType.SPHERE }
                 ),
+                relativeTo = material.containingFile?.virtualFile,
                 fallbackTexture = { environmentTexture }
             ),
             irradianceTextureProvider = listOfNotNull(
@@ -485,7 +495,11 @@ abstract class PreviewScene(
             ).firstOrNull()?.let { filename ->
                 GeneratedTextureProvider(
                     key = "$filename\$irradiance",
-                    bufferedImageProvider = DiffuseIrradianceBufferedImageProvider(material.project, filename),
+                    bufferedImageProvider = DiffuseIrradianceBufferedImageProvider(
+                        project = material.project,
+                        environmentTextureFilename = filename,
+                        relativeTo = material.containingFile?.virtualFile
+                    ),
                     fallbackTexture = { irradianceTexture }
                 )
             } ?: FallbackTextureProvider { irradianceTexture },
@@ -498,6 +512,7 @@ abstract class PreviewScene(
                         bufferedImageProvider = PreFilteredEnvironmentBufferedImageProvider(
                             project = material.project,
                             environmentTextureFilename = filename,
+                            relativeTo = material.containingFile?.virtualFile,
                             roughness = index.toFloat() / (TextureResources.REFLECTION_LEVELS_COUNT - 1).toFloat()
                         ),
                         fallbackTexture = { reflectionTextureLevels[index] }

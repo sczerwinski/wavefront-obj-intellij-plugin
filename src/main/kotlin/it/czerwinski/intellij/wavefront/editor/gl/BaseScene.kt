@@ -21,6 +21,7 @@ import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.progress.util.BackgroundTaskUtil
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.jogamp.opengl.GLAnimatorControl
 import com.jogamp.opengl.GLProfile
 import graphics.glimpse.BlendingFactorFunction
@@ -64,8 +65,8 @@ abstract class BaseScene(
     /**
      * Loads texture image from a file with given [filename] before creating a texture.
      */
-    private fun prepareTexture(project: Project, filename: String) {
-        texturesManager.prepare(profile, project, filename)
+    private fun prepareTexture(project: Project, filename: String, relativeTo: VirtualFile? = null) {
+        texturesManager.prepare(profile, project, filename, relativeTo)
     }
 
     /**
@@ -258,6 +259,7 @@ abstract class BaseScene(
     protected inner class FileTextureProvider(
         private val project: Project,
         private val paths: List<String>,
+        private val relativeTo: VirtualFile? = null,
         private val fallbackTexture: () -> Texture
     ) : TextureProvider {
 
@@ -271,7 +273,7 @@ abstract class BaseScene(
             if (isPreparing.compareAndSet(false, true)) {
                 for (path in paths - errors) {
                     try {
-                        prepareTexture(project, path)
+                        prepareTexture(project, filename = path, relativeTo)
                     } catch (expected: Throwable) {
                         errors.add(path)
                         errorLog.addError(

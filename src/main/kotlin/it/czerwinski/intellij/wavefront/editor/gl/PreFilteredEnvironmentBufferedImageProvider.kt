@@ -16,42 +16,21 @@
 
 package it.czerwinski.intellij.wavefront.editor.gl
 
-import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
-import graphics.glimpse.textures.BufferedImageProvider
+import com.intellij.openapi.vfs.VirtualFile
+import it.czerwinski.intellij.wavefront.actions.gl.BaseMapRenderer
 import it.czerwinski.intellij.wavefront.actions.gl.PreFilteredEnvironmentRenderer
-import it.czerwinski.intellij.wavefront.editor.gl.textures.toBufferedImage
-import it.czerwinski.intellij.wavefront.lang.psi.util.findMatchingTextureVirtualFiles
 import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
-import kotlin.math.max
 
 class PreFilteredEnvironmentBufferedImageProvider(
-    private val project: Project,
-    private val environmentTextureFilename: String,
+    project: Project,
+    environmentTextureFilename: String,
+    relativeTo: VirtualFile? = null,
     private val roughness: Float
-) : BufferedImageProvider {
+) : BaseBufferedImageProvider(project, environmentTextureFilename, relativeTo) {
 
-    override fun createBufferedImage(): BufferedImage? {
-        val inputFile = checkNotNull(
-            runReadAction { project.findMatchingTextureVirtualFiles(environmentTextureFilename).firstOrNull() }
-        ) {
-            "Could not find texture file: $environmentTextureFilename"
-        }
-        val inputImage = ImageIO.read(inputFile.inputStream)
-        val outputHeight = max(inputImage.width / 2, inputImage.height)
-        val outputWidth = outputHeight * 2
-
-        val renderer = PreFilteredEnvironmentRenderer(inputImage, roughness, SAMPLES, outputWidth, outputHeight)
-        renderer.render()
-
-        val outputImage = renderer.outputImage?.toBufferedImage(type = BufferedImage.TYPE_INT_RGB)
-        inputImage.flush()
-        if (outputImage != renderer.outputImage) {
-            renderer.outputImage?.flush()
-        }
-        return outputImage
-    }
+    override fun createRenderer(inputImage: BufferedImage, outputWidth: Int, outputHeight: Int): BaseMapRenderer<*> =
+        PreFilteredEnvironmentRenderer(inputImage, roughness, SAMPLES, outputWidth, outputHeight)
 
     companion object {
         private const val SAMPLES = 100

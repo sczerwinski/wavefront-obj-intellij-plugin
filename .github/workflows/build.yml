@@ -35,7 +35,7 @@ jobs:
 
       # Validate wrapper
       - name: Gradle Wrapper Validation
-        uses: gradle/wrapper-validation-action@v3.5.0
+        uses: gradle/actions/wrapper-validation@v4
 
   # Run verifyPlugin and test Gradle tasks
   test:
@@ -80,9 +80,9 @@ jobs:
       # Publish test results
       - name: Publish Test Report
         if: ${{ always() }}
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        uses: EnricoMi/publish-unit-test-result-action/linux@v2
         with:
-          junit_files: ${{ github.workspace }}/build/test-results/**/*.xml
+          files: ${{ github.workspace }}/build/test-results/**/*.xml
 
       # Annotate sources with detekt issues
       - name: Generate Detekt Annotations

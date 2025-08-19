@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `pluginVerifierIdeVersions` – upgrade to `2024.1.7, 2024.2.6, 2024.3.6, 2025.1.4.1, 2025.2`
+
 ## [1.4.11] - 2025-06-28
 
 ### Added

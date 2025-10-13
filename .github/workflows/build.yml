@@ -96,7 +96,7 @@ jobs:
       # Upload detekt results
       - name: Upload Detekt Report
         if: ${{ always() }}
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: ${{ github.workspace }}/build/reports/detekt.sarif.json
           checkout_path: ${{ github.workspace }}

@@ -173,7 +173,7 @@ jobs:
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-artifact
           path: ./build/distributions/${{ steps.properties.outputs.artifact }}
@@ -181,7 +181,7 @@ jobs:
       # Collect Tests Result of failed tests
       - name: Collect Tests Result
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-artifact
           path: ./build/distributions/${{ steps.properties.outputs.artifact }}
@@ -242,7 +242,7 @@ jobs:
 
       # Upload Plugin Verifier Report
       - name: Upload Plugin Verifier Report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.ideVersion }}
           path: ${{ github.workspace }}/build/reports/pluginVerifier/${{ steps.verify.outputs.outputDir }}/

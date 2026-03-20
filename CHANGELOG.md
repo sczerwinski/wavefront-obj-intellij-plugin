@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## 1.4.13 - 2026-03-20
+
 ### Added
 
 - Add support for platform version `261.*`
@@ -670,7 +672,6 @@
   - Up vector axis selection
 
 [Unreleased]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.13...main
-[1.4.12]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.12...v1.4.13
 [1.4.12]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.11...v1.4.12
 [1.4.11]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.10...v1.4.11
 [1.4.10]: https://github.com/sczerwinski/wavefront-obj-intellij-plugin/compare/v1.4.9...v1.4.10

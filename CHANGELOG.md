@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add support for platform version `262.*`
+
 ## 1.4.13 - 2026-03-20
 
 ### Added

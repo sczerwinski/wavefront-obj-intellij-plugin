@@ -4,11 +4,13 @@
 
 ## [Unreleased]
 
+## [1.4.14] - 2026-07-04
+
 ### Added
 
 - Add support for platform version `262.*`
 
-## 1.4.13 - 2026-03-20
+## [1.4.13] - 2026-03-20
 
 ### Added
 

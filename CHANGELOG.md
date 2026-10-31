@@ -19,6 +19,8 @@
 - Remove support for platform version `243.*`
 - Remove support for platform version `251.*`
 - Remove support for platform version `252.*`
+- Remove support for platform version `253.*`
+- Remove support for platform version `261.*`
 
 ## [1.4.14] - 2026-07-04
 

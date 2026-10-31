@@ -17,12 +17,13 @@
 package it.czerwinski.intellij.wavefront.settings.ui
 
 import com.intellij.openapi.fileEditor.TextEditorWithPreview
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
+import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
-fun MtlSplitEditorLayoutListCellRenderer(): SimpleListCellRenderer<TextEditorWithPreview.Layout> =
-    SimpleListCellRenderer.create("") { value ->
+fun MtlSplitEditorLayoutListCellRenderer(): ListCellRenderer<TextEditorWithPreview.Layout?> =
+    textListCellRenderer("") { value ->
         when (value) {
             TextEditorWithPreview.Layout.SHOW_EDITOR ->
                 WavefrontObjBundle.message(key = "settings.editor.fileTypes.mtl.layout.default.text")

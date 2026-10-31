@@ -16,13 +16,14 @@
 
 package it.czerwinski.intellij.wavefront.settings.ui
 
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.PBREnvironment
+import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
-fun PBREnvironmentListCellRenderer(): SimpleListCellRenderer<PBREnvironment> =
-    SimpleListCellRenderer.create("") { value ->
+fun PBREnvironmentListCellRenderer(): ListCellRenderer<PBREnvironment?> =
+    textListCellRenderer("") { value ->
         when (value) {
             PBREnvironment.INTERIOR ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.pbrEnvironment.interior")

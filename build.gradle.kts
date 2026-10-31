@@ -39,11 +39,6 @@ repositories {
     }
 }
 
-// Set the JVM language level used to compile sources and generate files - Java 17 is required since 2022.2
-kotlin {
-    jvmToolchain(17)
-}
-
 dependencies {
     api("graphics.glimpse:glimpse-core:2.0.0-alpha.3")
     api("graphics.glimpse:glimpse-geom:2.0.0-alpha.3")

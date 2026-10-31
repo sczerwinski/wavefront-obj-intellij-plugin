@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.4.15] - 2026-10-31
+
 ### Changed
 
 - Remove upper version limit to allow all future IDE versions by default

@@ -148,7 +148,7 @@ jobs:
         shell: bash
         run: |
           PROPERTIES="$(./gradlew properties --console=plain -q)"
-          NAME="$(echo "$PROPERTIES" | grep "^archivesBaseName:" | cut -f2- -d ' ')"
+          NAME="$(echo "$PROPERTIES" | grep "^name:" | cut -f2- -d ' ')"
           PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:" | cut -f2- -d ' ')"
           PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:" | cut -f2- -d ' ')"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"

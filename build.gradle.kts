@@ -157,7 +157,7 @@ intellijPlatform {
                 .map(String::trim)
                 .filter(String::isNotEmpty)
                 .forEach { version ->
-                    create(IntelliJPlatformType.IntellijIdeaCommunity, version)
+                    create(IntelliJPlatformType.IntellijIdea, version)
                 }
         }
         freeArgs = listOf("-mute", "TemplateWordInPluginId")

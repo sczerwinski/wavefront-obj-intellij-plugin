@@ -240,6 +240,16 @@ jobs:
           OUTPUT_DIR="$(ls ${{ github.workspace }}/build/reports/pluginVerifier/)"
           echo "outputDir=${OUTPUT_DIR##* }" >> $GITHUB_OUTPUT
 
+      # Publish Plugin Verifier Report
+      - name: Publish Verifier Report
+        if: ${{ always() }}
+        uses: sczerwinski/publish-intellij-plugin-verifier-report@v1.4.0
+        with:
+          plugin-id: ${{ needs.build.outputs.pluginGroup }}
+          plugin-version: ${{ needs.build.outputs.pluginVersion }}
+          skip-summary: true
+          report-title: Plugin Verification Results (${{ matrix.ideVersion }})
+
       # Upload Plugin Verifier Report
       - name: Upload Plugin Verifier Report
         uses: actions/upload-artifact@v7
@@ -270,13 +280,14 @@ jobs:
         shell: bash
         run: rm -rf ${{ github.workspace }}/build/reports/pluginVerifier/plugin-artifact
 
-      # Publish Plugin Verifier Results
+      # Publish Plugin Verifier Summary
       - name: Publish Verifier Report
         if: ${{ always() }}
-        uses: sczerwinski/publish-intellij-plugin-verifier-report@v1.3.0
+        uses: sczerwinski/publish-intellij-plugin-verifier-report@v1.4.0
         with:
           plugin-id: ${{ needs.build.outputs.pluginGroup }}
           plugin-version: ${{ needs.build.outputs.pluginVersion }}
+          skip-report: true
 
   # Prepare a draft release for GitHub Releases page for the manual verification
   # If accepted and published, release workflow would be triggered

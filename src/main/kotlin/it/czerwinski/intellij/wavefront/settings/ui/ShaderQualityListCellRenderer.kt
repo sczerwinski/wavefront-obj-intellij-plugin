@@ -16,13 +16,14 @@
 
 package it.czerwinski.intellij.wavefront.settings.ui
 
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.ShaderQuality
+import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
-fun ShaderQualityListCellRenderer(): SimpleListCellRenderer<ShaderQuality> =
-    SimpleListCellRenderer.create("") { value ->
+fun ShaderQualityListCellRenderer(): ListCellRenderer<ShaderQuality?> =
+    textListCellRenderer("") { value ->
         when (value) {
             ShaderQuality.LOW ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.shaderQuality.low")

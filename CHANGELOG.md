@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+### Removed
+
+- Remove support for platform version `253.*`
+- Remove support for platform version `261.*`
+
 ## [1.4.15] - 2026-10-31
 
 ### Changed

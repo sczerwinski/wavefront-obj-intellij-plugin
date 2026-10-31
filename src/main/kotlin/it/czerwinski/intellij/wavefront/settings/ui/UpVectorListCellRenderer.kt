@@ -16,13 +16,14 @@
 
 package it.czerwinski.intellij.wavefront.settings.ui
 
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.UpVector
+import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
-fun UpVectorListCellRenderer(): SimpleListCellRenderer<UpVector> =
-    SimpleListCellRenderer.create("") { value ->
+fun UpVectorListCellRenderer(): ListCellRenderer<UpVector?> =
+    textListCellRenderer("") { value ->
         when (value) {
             UpVector.X_UP ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.obj.preview.upVector.x")

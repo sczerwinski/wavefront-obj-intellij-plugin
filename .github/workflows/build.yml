@@ -152,8 +152,7 @@ jobs:
           PLUGIN_GROUP="$(echo "$PROPERTIES" | grep "^pluginGroup:" | cut -f2- -d ' ')"
           PLUGIN_VERSION="$(echo "$PROPERTIES" | grep "^pluginVersion:" | cut -f2- -d ' ')"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
-          IDE_VERSIONS_STRING="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | cut -f2- -d ' ' | sed 's/ //g')"
-          IDE_VERSIONS="$(echo "\"$IDE_VERSIONS_STRING\"" | jq -c 'split(",")')"
+          IDE_VERSIONS="$(./gradlew printProductsReleases -q | sed 's/IU-//g' | perl -pe 'chomp if eof' | jq -R -s -c 'split("\n")')"
           CHANGELOG="$(./gradlew getChangelog --unreleased --no-header --console=plain -q)"
           ARTIFACT="${NAME}-${VERSION}.zip"
 

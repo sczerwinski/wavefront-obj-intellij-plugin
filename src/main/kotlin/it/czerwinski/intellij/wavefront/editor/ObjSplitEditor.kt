@@ -49,12 +49,12 @@ class ObjSplitEditor(
                 val oldVerticalSplit = WavefrontObjSettingsState.getInstance()?.isVerticalSplit
                     ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
 
-                if (layout === oldDefaultLayout) {
-                    layout = newSettings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
+                if (getLayout() === oldDefaultLayout) {
+                    setLayout(newSettings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT)
                 }
 
-                if (isVerticalSplit == oldVerticalSplit) {
-                    isVerticalSplit = newSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+                if (isVerticalSplit() == oldVerticalSplit) {
+                    setVerticalSplit(newSettings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT)
                 }
             }
         }
@@ -71,8 +71,8 @@ class ObjSplitEditor(
     private fun initializeFromSettings() {
         val settings = WavefrontObjSettingsState.getInstance()
 
-        layout = settings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT
-        isVerticalSplit = settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT
+        setLayout(settings?.editorLayout ?: WavefrontObjSettingsState.DEFAULT_LAYOUT)
+        setVerticalSplit(settings?.isVerticalSplit ?: WavefrontObjSettingsState.DEFAULT_VERTICAL_SPLIT)
     }
 
     private fun observeSettingsChanges() {

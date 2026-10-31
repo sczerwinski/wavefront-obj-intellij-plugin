@@ -251,6 +251,7 @@ jobs:
 
       # Upload Plugin Verifier Report
       - name: Upload Plugin Verifier Report
+        if: ${{ always() }}
         uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.ideVersion }}
@@ -260,6 +261,7 @@ jobs:
   # Requires build and verify jobs to be passed
   publishReport:
     name: Publish Verifier Report
+    if: ${{ always() }}
     needs: [build, verify]
     runs-on: ubuntu-latest
     permissions:

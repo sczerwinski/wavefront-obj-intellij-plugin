@@ -76,7 +76,8 @@ dependencies {
 // Generate parsers and lexers before Kotlin compilation.
 // Read more: https://github.com/JetBrains/gradle-grammar-kit-plugin
 fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {}) =
-    task<GenerateParserTask>("generateParser${suffix.replaceFirstChar { it.uppercaseChar() }}") {
+    tasks.register<GenerateParserTask>("generateParser${suffix.replaceFirstChar { it.uppercaseChar() }}") {
+        description = "Generate parser for ${suffix.uppercase()} file format"
         sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.bnf"))
         targetRootOutputDir.set(file("${project.layout.buildDirectory.get()}/generated/source/parser/$suffix"))
         pathToParser.set("it/czerwinski/intellij/wavefront/lang/parser/${suffix.replaceFirstChar { it.uppercaseChar() }}Parser.java")
@@ -86,7 +87,8 @@ fun generateParserTask(suffix: String, config: GenerateParserTask.() -> Unit = {
     }
 
 fun generateLexerTask(suffix: String, config: GenerateLexerTask.() -> Unit = {}) =
-    task<GenerateLexerTask>("generateLexer${suffix.replaceFirstChar { it.uppercaseChar() }}") {
+    tasks.register<GenerateLexerTask>("generateLexer${suffix.replaceFirstChar { it.uppercaseChar() }}") {
+        description = "Generate lexer for ${suffix.uppercase()} file format"
         sourceFile.set(file("src/main/grammar/${suffix.replaceFirstChar { it.uppercaseChar() }}.flex"))
         targetOutputDir.set(file("${project.layout.buildDirectory.get()}/generated/source/lexer/$suffix/it/czerwinski/intellij/wavefront/lang"))
         purgeOldFiles.set(true)
@@ -160,7 +162,7 @@ intellijPlatform {
                 .map(String::trim)
                 .filter(String::isNotEmpty)
                 .forEach { version ->
-                    ide(IntelliJPlatformType.IntellijIdeaCommunity, version)
+                    create(IntelliJPlatformType.IntellijIdeaCommunity, version)
                 }
         }
         freeArgs = listOf("-mute", "TemplateWordInPluginId")
@@ -224,7 +226,7 @@ tasks {
     }
 }
 
-val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
+val runIdeForUiTests = intellijPlatformTesting.runIde.register("runIdeForUiTests") {
     task {
         jvmArgumentProviders += CommandLineArgumentProvider {
             listOf(

@@ -194,6 +194,10 @@ jobs:
     strategy:
       matrix:
         ideVersion: ${{ fromJson(needs.build.outputs.ideVersions) }}
+    permissions:
+      checks: write
+      pull-requests: write
+      security-events: write
     steps:
 
       # Setup Java 21 environment for the next steps

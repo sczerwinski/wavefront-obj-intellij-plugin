@@ -16,13 +16,14 @@
 
 package it.czerwinski.intellij.wavefront.settings.ui
 
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.MaterialPreviewMesh
+import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
-fun MaterialPreviewMeshListCellRenderer(): SimpleListCellRenderer<MaterialPreviewMesh> =
-    SimpleListCellRenderer.create("") { value ->
+fun MaterialPreviewMeshListCellRenderer(): ListCellRenderer<MaterialPreviewMesh?> =
+    textListCellRenderer("") { value ->
         when (value) {
             MaterialPreviewMesh.PLANE ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.previewMesh.plane")

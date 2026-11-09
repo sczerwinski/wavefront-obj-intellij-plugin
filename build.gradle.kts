@@ -17,7 +17,7 @@ plugins {
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij.platform") version "2.19.0"
     // Gradle Grammar-Kit Plugin
-    id("org.jetbrains.intellij.platform.grammarkit") version "2.19.0"
+    id("org.jetbrains.intellij.platform.grammarkit") version "2.20.0"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.5.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html

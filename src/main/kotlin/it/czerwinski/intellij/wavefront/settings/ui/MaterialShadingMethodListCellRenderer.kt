@@ -16,13 +16,14 @@
 
 package it.czerwinski.intellij.wavefront.settings.ui
 
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.WavefrontObjBundle
 import it.czerwinski.intellij.wavefront.editor.model.ShadingMethod
+import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
-fun MaterialShadingMethodListCellRenderer(): SimpleListCellRenderer<ShadingMethod> =
-    SimpleListCellRenderer.create("") { value ->
+fun MaterialShadingMethodListCellRenderer(): ListCellRenderer<ShadingMethod?> =
+    textListCellRenderer("") { value ->
         when (value) {
             ShadingMethod.MATERIAL ->
                 WavefrontObjBundle.message("settings.editor.fileTypes.mtl.material.shadingMethod.material")

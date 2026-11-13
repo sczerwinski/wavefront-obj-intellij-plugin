@@ -16,10 +16,10 @@
 
 package it.czerwinski.intellij.wavefront.editor.ui
 
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import it.czerwinski.intellij.wavefront.lang.psi.MtlMaterialElement
 import javax.swing.ListCellRenderer
 
 @Suppress("FunctionName")
 fun MaterialListCellRenderer(): ListCellRenderer<MtlMaterialElement?> =
-    SimpleListCellRenderer.create("") { value -> value?.getName() }
+    textListCellRenderer("") { value -> value?.getName() }

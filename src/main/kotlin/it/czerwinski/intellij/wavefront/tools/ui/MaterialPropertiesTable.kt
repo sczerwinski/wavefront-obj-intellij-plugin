@@ -19,8 +19,8 @@ package it.czerwinski.intellij.wavefront.tools.ui
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
-import com.intellij.ui.SimpleListCellRenderer
 import com.intellij.ui.components.JBTextField
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.ui.table.JBTable
 import it.czerwinski.intellij.wavefront.lang.psi.MtlIlluminationValueElement
 import it.czerwinski.intellij.wavefront.lang.psi.MtlReflectionType
@@ -33,6 +33,7 @@ import javax.swing.table.TableCellEditor
 import javax.swing.table.TableCellRenderer
 import javax.swing.table.TableColumnModel
 import javax.swing.table.TableModel
+import kotlin.enums.enumEntries
 
 class MaterialPropertiesTable(
     project: Project,
@@ -51,8 +52,8 @@ class MaterialPropertiesTable(
     private val myColorEditor = ColorTableCellEditor(preferredFocusedComponent)
 
     private val myIlluminationEditor = DefaultCellEditor(
-        ComboBox((listOf(null) + enumValues<MtlIlluminationValueElement.Illumination>()).toTypedArray()).apply {
-            renderer = SimpleListCellRenderer.create("") { value -> value?.description }
+        ComboBox((listOf(null) + enumEntries<MtlIlluminationValueElement.Illumination>()).toTypedArray()).apply {
+            renderer = textListCellRenderer("") { value -> value?.description }
         }
     )
 
@@ -61,14 +62,14 @@ class MaterialPropertiesTable(
     private val myTextureEditor = TextureTableCellEditor(project, parent)
 
     private val myScalarChannelEditor = DefaultCellEditor(
-        ComboBox((listOf(null) + enumValues<MtlScalarChannel>()).toTypedArray()).apply {
-            renderer = SimpleListCellRenderer.create("") { value -> value?.description }
+        ComboBox((listOf(null) + enumEntries<MtlScalarChannel>()).toTypedArray()).apply {
+            renderer = textListCellRenderer("") { value -> value?.description }
         }
     )
 
     private val myReflectionTypeEditor = DefaultCellEditor(
-        ComboBox((listOf(null) + enumValues<MtlReflectionType>()).toTypedArray()).apply {
-            renderer = SimpleListCellRenderer.create("") { value -> value?.description }
+        ComboBox((listOf(null) + enumEntries<MtlReflectionType>()).toTypedArray()).apply {
+            renderer = textListCellRenderer("") { value -> value?.description }
         }
     )
 
